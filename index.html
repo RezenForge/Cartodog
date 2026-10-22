@@ -1555,7 +1555,7 @@ function drawLoop(sx, sy) {
   if (!BL.poly || BL.poly.length < 2) return; const pts = BL.poly, rv = FX.length && fxOf('loop', 0), rp = rv ? Math.min(1, Math.max(0, fxP(rv))) : 1;
   g.save(); g.lineCap = 'round'; g.lineJoin = 'round'; g.beginPath(); pts.forEach((q, i) => i ? g.lineTo(sx(q[0]), sy(q[1])) : g.moveTo(sx(q[0]), sy(q[1])));
   let Lpx = 0; for (let i = 1; i < pts.length; i++) Lpx += Math.hypot(sx(pts[i][0]) - sx(pts[i - 1][0]), sy(pts[i][1]) - sy(pts[i - 1][1]));
-  const ep = rp < 1 ? (rp < .5 ? 2 * rp * rp * (1.5 - rp) : 1 - 2 * (1 - rp) ** 2 * (rp - .5)) : 1, Ld = Lpx * Math.max(0, ep);      // presque linéaire, adouci au début et à la fin
+  const ep = rp < 1 ? rp - .35 * Math.sin(2 * Math.PI * rp) / (2 * Math.PI) : 1, Ld = Lpx * Math.max(0, ep);      // presque linéaire, à peine plus lent au début et à la fin (vitesse entre 0,65 et 1,35, sans à-coup)
   const dash = rp < 1 ? [Ld, Lpx + 20] : [];
   g.setLineDash(dash); g.lineWidth = 10; g.strokeStyle = 'rgba(14,11,8,.6)'; g.stroke(); g.lineWidth = 5.5; g.strokeStyle = '#f4c862'; g.stroke(); g.setLineDash([]);
   { let acc = 0, nx = 60; g.fillStyle = '#2a1806';      // flèches de sens tous les ~90 px (apparaissent derrière le tracé qui avance)
@@ -1827,7 +1827,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.22-7';
+const APP_V = '2026.10.22-8';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
