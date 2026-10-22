@@ -607,7 +607,7 @@ body:has(#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#pls.open,#mkm.op
     <div class="pmb"><button id="welloc">📍 Me localiser</button><button id="weldog">🐕 Mon chien</button><button id="welx" aria-label="Fermer l'accueil">✕</button></div></div>
   <div id="lp" class="dg" hidden><div class="eyb">Balade guidée</div><div id="lpt"></div><div class="pmb"><button id="lpgo">▶ Partir</button><button id="lpn">↻ Autre boucle</button><button id="lpx" aria-label="Masquer la boucle" style="margin-left:auto">✕</button></div></div>
   <div id="rm" class="dg" hidden><div class="eyb">Poser un repère</div><div id="rmt">Touchez la carte pour poser un repère (point d'eau, danger, parking…), ou touchez un repère existant pour le modifier.</div><div class="pmb"><button id="rmg">À ma position</button><button id="rmx" aria-label="Quitter le mode repère">✕</button></div></div>
-  <div id="zb"><button class="ib" id="gr" data-ic="grid" aria-label="Afficher ou cacher la grille"></button><button class="ib" id="pt" data-ic="trail" aria-label="Cartographier les sentiers"><small>Sentiers</small></button><button class="ib" id="rtb" data-ic="home" aria-label="Retour au départ ou au parking"><small>Retour</small></button><button class="ib" id="lb" data-ic="book" aria-label="Mes lieux de balade"><small>Lieux</small></button><i class="sep"></i><button class="ib" id="fit" data-ic="fit" aria-label="Tout voir"><small>Tout voir</small></button><button class="ib" id="zo" data-ic="minus" aria-label="Dézoomer"></button><button class="ib" id="zi" data-ic="plus" aria-label="Zoomer"></button></div></div>
+  <div id="zb"><button class="ib" id="gr" data-ic="grid" aria-label="Afficher ou cacher la grille"></button><button class="ib" id="pt" data-ic="trail" aria-label="Cartographier les sentiers"><small>Sentiers</small></button><button class="ib" id="rtb" data-ic="home" aria-label="Retour au départ ou au parking"><small>Retour</small></button><button class="ib" id="lb" data-ic="book" aria-label="Mes balades"><small>Balades</small></button><i class="sep"></i><button class="ib" id="fit" data-ic="fit" aria-label="Tout voir"><small>Tout voir</small></button><button class="ib" id="zo" data-ic="minus" aria-label="Dézoomer"></button><button class="ib" id="zi" data-ic="plus" aria-label="Zoomer"></button></div></div>
 <div id="dock"><button id="found" aria-label="Lancer ou terminer une balade">▶ Balade</button><button id="visit" data-ic="pin" aria-label="Créer un lieu de balade à ma position"><small>Lieu</small></button><button id="react" data-ic="flag" aria-label="Poser un repère"><small>Repère</small></button><button id="grab" aria-label="Réduire ou ouvrir la fiche">▾</button></div>
 <div id="panel" class="win dg"></div>
 <div id="mkm"><div class="win dg"><h2 id="mkt">Nouveau repère</h2><div class="hint" id="mkw" style="padding:0"></div><button class="btn" id="mkpk" hidden>🅿 Retourner au parking</button>
@@ -651,9 +651,9 @@ body:has(#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#pls.open,#mkm.op
   <button class="btn" id="rf">Actualiser l'application</button>
   <button class="btn gold" id="mc">Fermer</button><input type="file" id="fi" accept=".json,application/json" hidden></div></div>
 <div id="lst"><div class="win dg">
-  <div class="lhd"><h2 id="lh">Mes lieux de balade</h2><button class="ib" id="lc" aria-label="Fermer">✕</button></div>
-  <div class="seg"><button data-s="recent" class="on">Récents</button><button data-s="best">Fréquentés</button><button data-s="bal">Balades</button></div>
-  <input id="lq" type="search" placeholder="Rechercher un lieu…">
+  <div class="lhd"><h2 id="lh">Mes balades</h2><button class="ib" id="lc" aria-label="Fermer">✕</button></div>
+  <div class="seg"><button data-s="recent" class="on">Récents</button><button data-s="best">Les plus fréquentés</button></div>
+  <input id="lq" type="search" placeholder="Rechercher une balade…">
   <ul id="ll"></ul></div></div>
 <div id="pv"><div class="pvb"><button class="ib" id="pvd" data-ic="trash" aria-label="Supprimer la photo"></button><button class="ib" id="pvx" aria-label="Fermer">✕</button></div><img id="pvi" alt="Photo"></div>
 <div id="encm"><div class="win dg">
@@ -1043,9 +1043,10 @@ function renderPanel() {
   const rk = rankK(c), RK = RANKS[rk], last = c.v.reduce((a, v) => v.d > a ? v.d : a, '');
   const hist = c.v.map((v, i) => [v, i]).sort((a, b) => (b[0].d + b[0].h).localeCompare(a[0].d + a[0].h)).map(([v, i]) => `<li${v.id === BSEL ? ' class="on"' : ''}><span data-act="show" data-i="${i}" class="wk"><i class="lg">›</i><b>${fmtD(v.d)}</b>${v.h ? ' · ' + v.h : ''}${v.bal ? ' · 🧭 ' + esc(v.bal) : ''} · ${fmtDist(v.m)} · ${fmtDur(v.s)}${v.pts.length > 1 ? ' <small>🗺 tracé</small>' : ''}${v.t ? '<br><small>' + esc(v.t) + '</small>' : ''}</span><span style="display:flex;flex:none">${v.pts.length > 1 ? `<button data-act="topath" data-i="${i}" aria-label="Ajouter ce tracé à mes sentiers">🥾</button>` : ''}<button data-act="edit" data-i="${i}" aria-label="Modifier">✎</button><button data-act="del" data-i="${i}" aria-label="Supprimer">✕</button></span></li>`).join('');
   p.innerHTML = `<div class="eye"><span class="rar r${rk}">${RK.n}</span><span id="nvt" class="nv">${navTxt(sel)}</span></div>
-    <div class="ph">${crest(rk, 32)}<input class="pname" data-f="name" placeholder="Nommer ce lieu…" value="${esc(c.name)}">${rec(c) ? `<button class="ib sm" data-act="delcell" aria-label="Supprimer ce lieu">${ICO.trash}</button>` : ''}</div>
+    <div class="ph">${crest(rk, 32)}<input class="pname" data-f="name" placeholder="${esc((g => g && !g.auto ? g.name : 'Nommer cette balade…')(cellGroup(sel)))}" value="${esc(c.name)}">${rec(c) ? `<button class="ib sm" data-act="delcell" aria-label="Supprimer ce lieu">${ICO.trash}</button>` : ''}</div>
     <div class="slots"><div class="slot">${SLOT.paw}<span><b data-cu="${n}">${n}</b><small>sortie${n > 1 ? 's' : ''}</small></span></div><div class="slot">${SLOT.route}<span><b data-cu="${m}" data-f="d">${fmtDist(m)}</b><small>parcourus</small></span></div><div class="slot">${SLOT.clock}<span><b data-cu="${s}" data-f="t">${fmtDur(s)}</b><small>en balade</small></span></div></div>
     ${last ? `<div class="lastf">Dernière sortie <b>${ago(last)}</b></div>` : ''}
+    ${(g => g ? `<button class="btn" data-act="bal" style="margin-top:8px">🥾 <b>${esc(g.name)}</b>&nbsp;· ${fmtDist(g.len)} de sentiers <small>&nbsp;🧭 boucle</small></button>` : '')(cellGroup(sel))}
     <div id="wxb" class="vd"><span class="vdc">…</span><span class="vdt"><span class="vdl">Confort de balade</span>${gauge(0)}Lecture du ciel…</span></div>
     <div class="acts"><button class="btn gold" data-act="walk">${BR.on ? '⏹ Terminer' : '▶ Balade'}</button><button class="btn" data-act="addtoggle">+ Noter</button><button class="btn" data-act="go">${ICO.compass}Y aller</button></div>
     <div id="addv" class="row"><input type="date" id="vd" max="${today()}" value="${today()}"><input type="number" id="vn" min="0" step="1" placeholder="Durée min" inputmode="numeric"><input type="number" id="vw" min="0" step="0.1" placeholder="Distance km" inputmode="decimal">
@@ -1175,7 +1176,8 @@ $('#panel').addEventListener('click', e => {
   const b = e.target.closest('[data-act]'); if (!b || !sel) return; const a = b.dataset.act, c = D.cells[sel] ||= blank();
   if (a === 'delcell') { const snap = snapC(), k = sel; if (c.x != null) fxRing(c.x, c.y, 'rgba(171,159,132,.9)', 6, 34, 550); delete D.cells[k]; sel = null; BSEL = null; save(); renderPanel(); draw(); return toast('Lieu supprimé', () => { restoreSnap(snap); sel = k; save(); draw(); renderPanel(); }); }
   if (a === 'go') return goTo(sel);
-  if (a === 'walk') { if (BR.on) return brStop(); BR.k0 = sel; return balOpen(); }
+  if (a === 'walk') { if (BR.on) return brStop(); BR.k0 = sel; const g = cellGroup(sel); return g ? openBal(g.k) : balOpen(); }
+  if (a === 'bal') { const g = cellGroup(sel); if (g) openBal(g.k); return; }
   if (a === 'addtoggle') { const f = $('#addv'); if (editI !== null) { renderPanel(); return $('#addv').classList.add('on'); } f.classList.toggle('on'); if (f.classList.contains('on')) $('#vn').focus(); return; }
   if (a === 'show') { const v = c.v[+b.dataset.i]; if (!v) return; if (BSEL === v.id) { BSEL = null; renderPanel(); return draw(); } BSEL = v.id; ptab = 'hs'; renderPanel();
     if (v.pts.length < 2) { draw(); return toast('Pas de tracé GPS pour cette sortie (notée à la main)'); }
@@ -1762,35 +1764,47 @@ $('#sos').onclick = () => { $('#dogm').classList.remove('open'); encOpen(true); 
 /* ===== Mes lieux de balade ===== */
 let lsort = 'recent';
 const ago = d => { const n = Math.round((new Date(today() + 'T00:00') - new Date(d + 'T00:00')) / 864e5); return n <= 0 ? "aujourd'hui" : n === 1 ? 'hier' : n < 31 ? 'il y a ' + n + ' j' : fmtD(d); };
+/* ===== Lieux et balades fusionnés : une balade = ses sentiers + le ou les lieux à moins de 400 m (sorties, photos, notes) ===== */
+const LINK_M = 400;
+function cellGroup(k) {      // la balade (sentiers) rattachée à un lieu : celle de ses sorties guidées, sinon le réseau le plus proche
+  const c = D.cells[k], G = balGroups(); if (!G.length) return null;
+  const by = new Map(); (c ? c.v : []).forEach(v => { const g = v.bal && G.find(x => x.k === gkey(v.bal)); if (g) by.set(g, (by.get(g) || 0) + 1); });
+  if (by.size) return [...by].sort((a, b) => b[1] - a[1])[0][0];
+  const p = c && c.x != null ? [c.x, c.y] : ctr(k); let best = null, bd = LINK_M;
+  G.forEach(g => g.paths.forEach(pa => { for (let i = 1; i < pa.pts.length; i++) { const d = segProj(p, pa.pts[i - 1], pa.pts[i]).d * cosAt(p[1]); if (d < bd) { bd = d; best = g; } } }));
+  return best;
+}
+function walkPlaces() {      // une entrée par balade (sentiers + lieux rattachés) et une par lieu sans sentier tracé
+  const G = balGroups(), E = new Map(G.map(g => [g.k, { g, cells: [] }])), out = [];
+  Object.entries(D.cells).filter(([k, c]) => rec(c)).forEach(([k, c]) => { const g = cellGroup(k); if (g) E.get(g.k).cells.push(k); else out.push({ g: null, cells: [k] }); });
+  const all = [...E.values(), ...out], allV = Object.values(D.cells).flatMap(c => c.v);
+  all.forEach(x => { const ids = new Set(), V = [];
+    x.cells.forEach(k => D.cells[k].v.forEach(v => { if (!ids.has(v.id)) { ids.add(v.id); V.push(v); } }));
+    if (x.g) allV.forEach(v => { if (v.bal && gkey(v.bal) === x.g.k && !ids.has(v.id)) { ids.add(v.id); V.push(v); } });
+    const named = x.cells.map(k => D.cells[k]).find(c => (c.name || '').trim());
+    x.k = x.cells.slice().sort((a, b) => cnt(D.cells[b]) - cnt(D.cells[a]))[0] || null;
+    if (x.g) x.label = x.g.auto && named ? named.name.trim() : x.g.name;
+    else { const c = D.cells[x.k], [la, lo] = toLL(...ctr(x.k)); x.label = c.name || la.toFixed(4) + ', ' + lo.toFixed(4); }
+    x.n = V.length; x.m = V.reduce((a, v) => a + v.m, 0); x.last = V.reduce((a, v) => v.d > a ? v.d : a, '');
+    x.note = x.cells.map(k => D.cells[k].note || '').join(' '); x.rk = rankK({ v: V }); });
+  return all;
+}
 function renderList() {
-  const q = $('#lq').value.trim().toLowerCase();
-  $('#lq').placeholder = lsort === 'bal' ? 'Rechercher une balade…' : 'Rechercher un lieu…';
-  if (lsort === 'bal') return renderBalList(q);
-  const all = Object.entries(D.cells).filter(([k, c]) => rec(c)).map(([k, c]) => { const [la, lo] = toLL(...ctr(k));
-    return { k, c, n: cnt(c), m: lm(c), last: c.v.reduce((a, v) => v.d > a ? v.d : a, ''), label: c.name || la.toFixed(4) + ', ' + lo.toFixed(4) }; });
-  const it = all.filter(x => !q || x.label.toLowerCase().includes(q) || x.c.note.toLowerCase().includes(q));
-  it.sort(lsort === 'recent' ? (a, b) => b.last.localeCompare(a.last) : (a, b) => b.n - a.n || b.m - a.m);
-  $('#lh').innerHTML = `Mes lieux de balade<small>${all.length} lieu${all.length > 1 ? 'x' : ''} · ${(n => n + ' sortie' + (n > 1 ? 's' : ''))(all.reduce((a, x) => a + x.n, 0))} · ${fmtDist(all.reduce((a, x) => a + x.m, 0))}</small>`;
+  const q = $('#lq').value.trim().toLowerCase(), all = walkPlaces();
+  const it = all.filter(x => !q || x.label.toLowerCase().includes(q) || x.note.toLowerCase().includes(q));
+  it.sort(lsort === 'recent' ? (a, b) => b.last.localeCompare(a.last) || b.n - a.n : (a, b) => b.n - a.n || b.m - a.m);
+  $('#lh').innerHTML = `Mes balades<small>${all.length} balade${all.length > 1 ? 's' : ''} · ${(n => n + ' sortie' + (n > 1 ? 's' : ''))(all.reduce((a, x) => a + x.n, 0))} · ${fmtDist(all.reduce((a, x) => a + x.m, 0))}</small>`;
   document.querySelectorAll('#lst .seg button').forEach(b => b.classList.toggle('on', b.dataset.s === lsort));
   const podium = ['1er', '2e', '3e'];
-  $('#ll').innerHTML = it.map((x, i) => { const k = rankK(x.c); return `<li data-k="${x.k}">${crest(k, 30)}<span class="lt"><b>${esc(x.label)}</b><br><small>${lsort === 'best' && !q && i < 3 && x.n ? `<span class="top">${podium[i]}</span> · ` : ''}<span class="r${k}">${RANKS[k].n}</span>${x.last ? ' · ' + ago(x.last) : ''}</small></span><span class="bd"><b>${x.n}</b> <small>sortie${x.n > 1 ? 's' : ''}</small><br><small>${fmtDist(x.m)}</small></span></li>`; }).join('')
-    || `<li class="hint" style="cursor:default">${all.length ? 'Aucun résultat.' : 'Aucun lieu pour l\'instant : ▶ Balade ou + 📍 en crée un à votre position.'}</li>`;
+  $('#ll').innerHTML = it.map((x, i) => `<li ${x.k ? `data-k="${x.k}"` : ''}${x.g ? ` data-g="${esc(x.g.k)}"` : ''}>${crest(x.rk, 30)}<span class="lt"><b>${esc(x.label)}</b><br><small>${lsort === 'best' && !q && i < 3 && x.n ? `<span class="top">${podium[i]}</span> · ` : ''}${x.g ? '🥾 ' + fmtDist(x.g.len) + ' de sentiers' : '<span class="r' + x.rk + '">' + RANKS[x.rk].n + '</span>'}${x.last ? ' · ' + ago(x.last) : ''}</small></span><span class="bd"><b>${x.n}</b> <small>sortie${x.n > 1 ? 's' : ''}</small><br><small>${fmtDist(x.m)}</small></span></li>`).join('')
+    || `<li class="hint" style="cursor:default">${all.length ? 'Aucun résultat.' : 'Aucune balade pour l\'instant : ▶ Balade enregistre une sortie, 🥾 Sentiers trace un parcours.'}</li>`;
 }
-function renderBalList(q) {      // les balades (sentiers regroupés) dans « Lieux », avec leurs sorties
-  const V = Object.values(D.cells).flatMap(c => c.v), G = balGroups().map(g => { const S = V.filter(v => gkey(v.bal || '') === g.k);
-    return { g, n: S.length, last: S.reduce((a, v) => v.d > a ? v.d : a, '') }; });
-  const it = G.filter(x => !q || x.g.name.toLowerCase().includes(q)).sort((a, b) => b.last.localeCompare(a.last) || b.n - a.n || a.g.name.localeCompare(b.g.name, 'fr'));
-  $('#lh').innerHTML = `Mes balades<small>${G.length} balade${G.length > 1 ? 's' : ''} · ${fmtDist(G.reduce((a, x) => a + x.g.len, 0))} de sentiers</small>`;
-  document.querySelectorAll('#lst .seg button').forEach(b => b.classList.toggle('on', b.dataset.s === lsort));
-  const ub = (D.paths || []).filter(p => p.pts.length >= 2 && !(p.name || '').trim()).length;
-  $('#ll').innerHTML = it.map(x => `<li data-g="${esc(x.g.k)}"><span class="pli">${ICO.trail}</span><span class="lt"><b>${esc(x.g.name)}</b><br><small>${fmtDist(x.g.len)} de sentiers${x.g.paths.length > 1 ? ' · ' + x.g.paths.length + ' tronçons' : ''}${x.last ? ' · ' + ago(x.last) : ''}</small></span><span class="bd"><b>${x.n}</b> <small>sortie${x.n > 1 ? 's' : ''}</small></span></li>`).join('')
-    || `<li class="hint" style="cursor:default">${G.length ? 'Aucun résultat.' : 'Aucune balade pour l\'instant : tracez vos sentiers (🥾 Sentiers), ceux qui se touchent forment une balade.'}</li>`;
-}
+function openBal(k) { $('#lst').classList.remove('open'); if (watch === null) startLoc(); BL.pk = null; balDetail(k); $('#balm').classList.add('open'); }
 $('#lb').onclick = () => { $('#lq').value = ''; renderList(); $('#lst').classList.add('open'); };
 document.querySelectorAll('#lst .seg button').forEach(b => b.onclick = () => { lsort = b.dataset.s; renderList(); });
 $('#lq').oninput = renderList;
 $('#lc').onclick = () => $('#lst').classList.remove('open'); $('#lst').onclick = e => { if (e.target.id === 'lst') $('#lst').classList.remove('open'); };
-$('#ll').onclick = e => { const bg = e.target.closest('li[data-g]'); if (bg) { $('#lst').classList.remove('open'); if (watch === null) startLoc(); BL.pk = null; balDetail(bg.dataset.g); $('#balm').classList.add('open'); return; }
+$('#ll').onclick = e => { const bg = e.target.closest('li[data-g]:not([data-k])'); if (bg) return openBal(bg.dataset.g);
   const li = e.target.closest('li[data-k]'); if (!li) return; const k = li.dataset.k;
   $('#lst').classList.remove('open'); [V.cx, V.cy] = ctr(k); V.mpp = Math.min(V.mpp, 1.5); select(k); };
 
