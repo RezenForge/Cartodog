@@ -652,6 +652,8 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
 .bdln{display:flex;align-items:center;gap:6px;width:100%;margin:0 0 8px;padding:0 2px;border:0;background:none;color:var(--txt);font-size:13.5px;text-align:left}.bdln small{color:var(--mut)}.bdln b{color:#fff1cf}
 .bdav{padding:7px 10px;border:2px solid var(--edge);border-radius:4px;background:var(--slot);cursor:pointer}.bdav span{flex:1}
 #balm.sheet .bdgo{padding:12px 10px;font-size:16px}
+
+#lpgo.lpw{background:linear-gradient(#4d453a,#3a332b)!important;color:#f6ead0!important;text-shadow:1px 1px 0 #000!important;font-size:13px}
 </style></head><body>
 <header class="bar win dg"><button class="emb" id="dogav" aria-label="Profil de mon chien et journal"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></button>
   <div class="brand"><h1>Cartodog</h1><small id="ssn">Carnet de balade</small></div>
@@ -1522,7 +1524,7 @@ function balPropose() {
   const g = BL.g, st = balStart(g, BL.pk), sp = speedOf(g.k), L = BL.min / 60 * sp.kmh * 1000, net = balNet(g, st.q), con = net.off > 3 ? net.off : 0;
   try { localStorage.setItem('cartodog-dur', BL.min); if (st.park) localStorage.setItem('cartodog-pk-' + g.k, st.park.id); } catch (e) {}
   const loops = balLoops(net, Math.max(150, L - 2 * con), BL.avoid); BL.dzAll = net.dzAll; if (!loops.length) return toast('Impossible de calculer une boucle sur ces sentiers');
-  BL.loops = loops.map(l => ({ pts: con ? [st.q, ...l.pts, st.q] : l.pts, tot: l.tot + 2 * con, rep: l.rep, dz: l.dz })); BL.i = 0; BL.park = st.park; BL.pname = st.pname; BL.sp = sp; BL.L = L; BL.arr = false; balClose(); balShow();
+  BL.loops = loops.map(l => ({ pts: con ? [st.q, ...l.pts, st.q] : l.pts, tot: l.tot + 2 * con, rep: l.rep, dz: l.dz })); BL.i = 0; BL.park = st.park; BL.pname = st.pname; BL.sp = sp; BL.L = L; BL.arr = false; BL.wait = false; balClose(); balShow();
 }
 function balShow() {
   const l = BL.loops[BL.i]; if (!l) return; BL.poly = l.pts; BL.tot = l.tot; fxa({ k: 'loop', key: 0, dur: 1100 });
@@ -1537,6 +1539,12 @@ function lpUi() {
   $('#lpt').innerHTML = BR.on && BR.bal ? `<div class="lpk"><b>${fmtDist(BR.m)}</b><small>/ ${fmtDist(l.tot)}</small></div><div class="lps">Suivez le tracé doré, les flèches indiquent le sens</div>` + dzt
     : `<div class="lpk"><b>${fmtDist(l.tot)}</b><small>≈ ${fmtMin(Math.max(5, Math.round(min / 5) * 5))}</small>${BL.loops.length > 1 ? `<span class="lpn">${BL.i + 1}/${BL.loops.length}</span>` : ''}</div>
       <div class="lps">${BL.park ? '🅿 ' + esc(BL.pname) : '📍 Retour au point de départ'}${rp >= 30 ? ` · ${rp} % en aller-retour` : ''}</div>${short ? '<div class="lpz lim">Les sentiers ne permettent pas plus long</div>' : ''}` + dzt;
+  if (BL.wait && !BR.on) { const d = startDist(), q = BL.poly[0];
+    let dir = ''; if (me && isFinite(d)) { const bz = (Math.atan2(q[0] - me.x, q[1] - me.y) * 180 / Math.PI + 360) % 360, i = Math.round(bz / 45) % 8; dir = ' ' + ['↑', '↗', '→', '↘', '↓', '↙', '←', '↖'][i] + ' ' + ['nord', 'nord-est', 'est', 'sud-est', 'sud', 'sud-ouest', 'ouest', 'nord-ouest'][i]; }
+    $('#lpt').innerHTML = `<div class="lpk"><b>${me ? fmtDist(d) : '…'}</b><small>${me ? dir : 'recherche du GPS'}</small></div>
+      <div class="lps">En route vers ${BL.park ? '🅿 <b>' + esc(BL.pname) + '</b>' : 'le départ de la boucle'} · la sortie démarrera toute seule à l'arrivée</div>`;
+    $('#lpgo').textContent = '▶ Démarrer ici'; $('#lpgo').classList.add('lpw'); $('#lpn').hidden = true; $('#lpd').hidden = false; return draw(); }
+  $('#lpgo').textContent = '▶ Partir'; $('#lpgo').classList.remove('lpw');
   $('#lpd').hidden = !!BR.on;
   $('#lpgo').hidden = $('#lpn').hidden = !!BR.on; $('#lpn').hidden = BR.on || BL.loops.length < 2; draw();
 }
@@ -1570,10 +1578,24 @@ $('#balx').onclick = balClose; $('#balb').onclick = () => balList(); $('#bals').
   if (e.target.closest('[data-share]')) return balShare(BL.g);
   if (e.target.closest('[data-go]')) return balPropose();
   const li = e.target.closest('li[data-g]'); if (li) { BL.pk = null; balDetail(li.dataset.g); } };
-$('#lpn').onclick = () => { BL.i = (BL.i + 1) % BL.loops.length; balShow(); };
-$('#lpgo').onclick = () => { BR.bal0 = BL.g.name; brStart(); lpUi(); };
-$('#lpx').onclick = () => { BL.poly = null; lpUi(); };
-$('#lpd').onclick = () => { if (!BL.g) return; BL.poly = null; lpUi(); openBal(BL.g.k); };
+$('#lpn').onclick = () => { if (BL.wait) return; BL.i = (BL.i + 1) % BL.loops.length; balShow(); };
+const START_R = 60;      // rayon autour du départ (parking ou début de boucle) où la sortie démarre
+const startDist = () => me && BL.poly ? rdist([me.x, me.y], BL.poly[0]) : Infinity;
+function balGo() { BL.wait = false; BR.bal0 = BL.g.name; brStart(); lpUi(); }
+$('#lpgo').onclick = () => {
+  if (BL.wait) return balGo();      // « Démarrer quand même »
+  if (startDist() <= Math.max(START_R, me ? Math.min(me.acc, 100) : 0)) return balGo();
+  BL.wait = true; if (watch === null) startLoc(); try { navigator.vibrate && navigator.vibrate(40); } catch (e) {}
+  const q = BL.poly[0]; if (me) { const xs = [me.x, q[0]], ys = [me.y, q[1]], W = cv.clientWidth, H = cv.clientHeight; flyXY((xs[0] + xs[1]) / 2, (ys[0] + ys[1]) / 2, Math.max(1, Math.abs(xs[1] - xs[0]) / (W * .7), Math.abs(ys[1] - ys[0]) / (H * .5)), 700); }
+  lpUi(); toast('📍 La sortie démarrera toute seule en arrivant ' + (BL.park ? 'au parking' : 'au départ'));
+};
+function balWaitTick() {      // appelé à chaque position GPS
+  if (!BL.wait || !BL.poly || BR.on) return;
+  if (startDist() <= Math.max(START_R, Math.min(me.acc, 100))) { try { navigator.vibrate && navigator.vibrate([80, 50, 80]); } catch (e) {} balGo(); return toast('▶ Vous êtes au départ : sortie lancée, bonne promenade !'); }
+  lpUi();
+}
+$('#lpx').onclick = () => { BL.wait = false; BL.poly = null; lpUi(); };
+$('#lpd').onclick = () => { if (!BL.g) return; BL.wait = false; BL.poly = null; lpUi(); openBal(BL.g.k); };
 
 /* ===== Écran allumé (Wake Lock) : la page et le GPS ne tournent que si l'écran reste actif ===== */
 var wlk = null, wakeOn = (() => { try { return localStorage.getItem('cartodog-wake') !== '0'; } catch (e) { return true; } })();
@@ -1770,7 +1792,7 @@ function onPos(p) { setTimeout(() => P.on && pmUpdate(), 0); if (samp) { const [
   const [x, y] = toM(p.coords.latitude, p.coords.longitude); const first = !me; me = { x, y, acc: p.coords.accuracy }; trackHd(x, y, p.coords.accuracy, p.coords.heading, p.coords.speed); hereK = nearestSpot(x, y, 15); updNav();
   if (first) { flyXY(x, y, V.mpp > 4 ? 1.5 : V.mpp, 900); fxRing(x, y, '#ffd27a', 12, 60, 1100, 500, 2.5); fxRing(x, y, '#ffd27a', 12, 60, 1100, 850, 2); }
   if (pending) { pending = false; addLieu(); }
-  recTick(); brTick(); routeTick(); dangerCheck();
+  recTick(); brTick(); routeTick(); dangerCheck(); balWaitTick();
   if ((RC.on || BR.on) && me && Date.now() - lastPan > 8000) { const W = cv.clientWidth, H = cv.clientHeight, dx = (me.x - V.cx) / V.mpp, dy = (V.cy - me.y) / V.mpp; if (Math.abs(dx) > W * .3 || Math.abs(dy) > H * .25) flyXY(me.x, me.y, V.mpp > 4 ? 1.5 : V.mpp, 700); }      // enregistrement : la carte vous suit
   schedule();
 }
