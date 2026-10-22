@@ -538,7 +538,7 @@ body{background:
 #balm.open{display:flex;animation:fadeIn .2s ease both}#balm .win{width:100%;max-width:420px;max-height:88dvh;overflow:auto;overscroll-behavior:contain;padding:16px}
 #balm.open .win{animation:pop .38s cubic-bezier(.2,.9,.3,1.15) both}#balm .btn small{font-weight:600;opacity:.75}
 .blul{margin:0}.blul li{cursor:pointer;padding:9px 10px;margin-bottom:6px;gap:10px;background:var(--slot);border:2px solid var(--edge);border-radius:4px;box-shadow:inset 0 0 0 1px var(--rim);color:var(--txt)}
-#ll .pli,.blul .pli{flex:none;width:36px;height:36px;display:grid;place-items:center;border-radius:4px;background:#0d0b08;border:2px solid #3a332a;color:var(--ember2)}
+#ll .pli,.ftr .pli,.blul .pli{flex:none;width:36px;height:36px;display:grid;place-items:center;border-radius:4px;background:#0d0b08;border:2px solid #3a332a;color:var(--ember2)}
 .blul .lt{flex:1;min-width:0}.blul .lt b{color:#fff1cf}.blul small{color:var(--mut)}.blul .bd{text-align:right;white-space:nowrap}.blul .bd b{font:800 15px var(--num);color:var(--ember2)}
 .bln{margin:2px 0 0;font:800 23px/1.15 var(--px);color:#fff1cf;text-shadow:2px 2px 0 #000}
 .echips button.on{border-color:var(--ember)!important;color:var(--ember2);box-shadow:inset 0 0 0 1px var(--ember),0 0 10px rgba(234,165,60,.35)!important}#blpk small{color:var(--mut);margin-left:4px}
@@ -592,6 +592,29 @@ body:has(#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#pls.open,#mkm.op
 .wxr{padding:6px 8px;margin:5px 0;border-left:3px solid #8a99a3;background:rgba(0,0,0,.25);border-radius:0 4px 4px 0}.wxr.l2{border-color:#eaa53c}.wxr.l3{border-color:#ff5f4a}.wxr b{display:block;font-size:14px;color:#fff1cf}.wxr small{display:block;font-size:12px;color:var(--mut)}
 .wxs{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-top:8px}.wxs span{display:flex;flex-direction:column;align-items:center;padding:4px 0;background:var(--slot);border:1.5px solid var(--edge);border-radius:3px;font-size:15px;line-height:1.2}.wxs small{font-size:10.5px;color:var(--mut);font-weight:700}.wxs b{font:800 12px var(--num);color:#fff1cf}.wxs em{font-style:normal;font-size:10px;color:#8fc9ff;font-weight:700}
 #bh{top:40px!important;left:10px!important;transform:none!important;max-width:48%!important}
+
+/* ===== Fiche d'un lieu (refonte) : en-tête, compteurs en une barre, progression de rang, infos regroupées ===== */
+.fh{display:flex;gap:10px;align-items:center;margin:2px 0 8px}.fh .crest{flex:none;filter:drop-shadow(1px 2px 0 #000)}
+.fht{flex:1;min-width:0}.fht .pname{width:100%;min-height:32px}
+.fsub{display:flex;align-items:center;gap:8px;margin-top:5px;white-space:nowrap;min-width:0}
+.fsub .rar{flex:none;font-size:9.5px;padding:1px 6px}.fsub .nv{min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:12px;color:var(--mut)}.fsub .nv b{color:var(--txt)}
+.fst{display:grid;grid-template-columns:1fr 1.15fr 1fr;background:var(--slot);border:2px solid var(--edge);border-radius:4px;box-shadow:inset 0 0 0 1px var(--rim),inset 0 4px 8px rgba(0,0,0,.55)}
+.fst span{display:grid;grid-template-columns:auto auto;justify-content:center;align-items:center;column-gap:6px;row-gap:1px;padding:7px 2px 6px;min-width:0}
+.fst span+span{border-left:1px solid var(--rim)}
+.fst svg{width:20px;height:20px;filter:drop-shadow(1px 1px 0 #000)}
+.fst b{font:800 17px/1.1 var(--num);font-variant-numeric:tabular-nums;color:#fff3d6;white-space:nowrap;text-shadow:1px 1px 0 #000}
+.fst small{grid-column:1/-1;text-align:center;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);white-space:nowrap}
+.frk{height:4px;margin:6px 2px 0;background:#14110e;border-radius:2px;overflow:hidden}.frk i{display:block;height:100%;background:linear-gradient(90deg,var(--ember),var(--ember2));border-radius:2px;transition:width .6s}
+.frkt{margin:5px 2px 9px;font-size:12px;color:var(--mut)}.frkt b{color:var(--ember2);font-weight:700}
+#panel #wxb{margin:0 0 8px;padding:5px 9px 5px 5px}#panel #wxb .gauge{display:none}#panel #wxb .vdl{margin-bottom:1px}
+.dg #panel .vdc{width:40px;height:40px;font-size:18px}
+.fdz{display:flex;align-items:center;gap:8px;width:100%;margin:0 0 8px;padding:8px 10px;border:2px solid #7a4a14;border-radius:4px;background:rgba(224,140,40,.12);color:#f3d08a;font-size:13px;line-height:1.35;text-align:left;cursor:pointer}
+.fdz b{color:#ffc35a}.fdz i{margin-left:auto;font-style:normal;font-size:20px;color:#ffc35a}.fdz[hidden]{display:none}
+.ftr{display:flex;align-items:center;gap:10px;width:100%;margin:0 0 6px;padding:8px;border:2px solid var(--edge);border-radius:4px;background:var(--slot);color:var(--txt);text-align:left;cursor:pointer}.ftr small{color:var(--mut)}
+#panel .tp .esec{margin:10px 2px 5px}#panel .tp .esec:first-child{margin-top:2px}
+.fco{margin:8px 2px 2px;font-size:12px;color:var(--mut)}
+.fdel{display:flex;align-items:center;gap:6px;margin:12px auto 4px;padding:7px 12px;border:1px solid rgba(194,59,59,.5);border-radius:4px;background:transparent;color:#e2806f;font-size:13px;cursor:pointer}.fdel svg{width:16px;height:16px}
+#panel .acts .btn{white-space:nowrap}
 </style></head><body>
 <header class="bar win dg"><button class="emb" id="dogav" aria-label="Profil de mon chien et journal"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></button>
   <div class="brand"><h1>Cartodog</h1><small id="ssn">Carnet de balade</small></div>
@@ -1032,40 +1055,48 @@ function select(k) { const neu = k !== sel || document.body.classList.contains('
 const collapse = () => { document.body.classList.add('pmin'); $('#grab').textContent = '▴'; };
 function pick(k) { if (rec(D.cells[k])) select(k); else { sel = k; collapse(); draw(); } }      // une case vide se sélectionne sans ouvrir le carnet
 $('#grab').onclick = () => { const m = document.body.classList.toggle('pmin'); $('#grab').textContent = m ? '▴' : '▾'; if (!m) renderPanel(); };
-let ptab = 'wx';
+let ptab = 'hs';
 function setTab() { document.querySelectorAll('#panel [data-tab]').forEach(b => b.classList.toggle('on', b.dataset.tab === ptab)); document.querySelectorAll('#panel [data-pane]').forEach(x => x.classList.toggle('on', x.dataset.pane === ptab)); }
 let editI = null;
+const dayLbl = d => { const t = new Date(d + 'T12:00'), y = new Date().getFullYear(); if (isNaN(t)) return fmtD(d); const x = t.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', ...(t.getFullYear() !== y ? { year: 'numeric' } : {}) }); return x.charAt(0).toUpperCase() + x.slice(1); };
+const navSub = k => me ? navTxt(k) : '';
+const walkLbl = () => BR.on ? '⏹ Terminer' : sel && cellGroup(sel) ? '🧭 Boucle ici' : '▶ Sortie ici';
 function renderPanel() {
   editI = null; document.body.classList.toggle('nosel', !sel);
   const p = $('#panel');
   if (!sel) { p.innerHTML = ''; return; }
   const c = D.cells[sel] || blank(), [la, lo] = toLL(...ctr(sel)), n = c.v.length, m = lm(c), s = c.v.reduce((a, v) => a + v.s, 0);
   const rk = rankK(c), RK = RANKS[rk], last = c.v.reduce((a, v) => v.d > a ? v.d : a, '');
-  const hist = c.v.map((v, i) => [v, i]).sort((a, b) => (b[0].d + b[0].h).localeCompare(a[0].d + a[0].h)).map(([v, i]) => `<li${v.id === BSEL ? ' class="on"' : ''}><span data-act="show" data-i="${i}" class="wk"><i class="lg">›</i><b>${fmtD(v.d)}</b>${v.h ? ' · ' + v.h : ''}${v.bal ? ' · 🧭 ' + esc(v.bal) : ''} · ${fmtDist(v.m)} · ${fmtDur(v.s)}${v.pts.length > 1 ? ' <small>🗺 tracé</small>' : ''}${v.t ? '<br><small>' + esc(v.t) + '</small>' : ''}</span><span style="display:flex;flex:none">${v.pts.length > 1 ? `<button data-act="topath" data-i="${i}" aria-label="Ajouter ce tracé à mes sentiers">🥾</button>` : ''}<button data-act="edit" data-i="${i}" aria-label="Modifier">✎</button><button data-act="del" data-i="${i}" aria-label="Supprimer">✕</button></span></li>`).join('');
-  p.innerHTML = `<div class="eye"><span class="rar r${rk}">${RK.n}</span><span id="nvt" class="nv">${navTxt(sel)}</span></div>
-    <div class="ph">${crest(rk, 32)}<input class="pname" data-f="name" placeholder="${esc((g => g && !g.auto ? g.name : 'Nommer cette balade…')(cellGroup(sel)))}" value="${esc(c.name)}">${rec(c) ? `<button class="ib sm" data-act="delcell" aria-label="Supprimer ce lieu">${ICO.trash}</button>` : ''}</div>
-    <div class="slots"><div class="slot">${SLOT.paw}<span><b data-cu="${n}">${n}</b><small>sortie${n > 1 ? 's' : ''}</small></span></div><div class="slot">${SLOT.route}<span><b data-cu="${m}" data-f="d">${fmtDist(m)}</b><small>parcourus</small></span></div><div class="slot">${SLOT.clock}<span><b data-cu="${s}" data-f="t">${fmtDur(s)}</b><small>en balade</small></span></div></div>
-    ${last ? `<div class="lastf">Dernière sortie <b>${ago(last)}</b></div>` : ''}
-    ${(g => g ? `<button class="btn" data-act="bal" style="margin-top:8px">🥾 <b>${esc(g.name)}</b>&nbsp;· ${fmtDist(g.len)} de sentiers <small>&nbsp;🧭 boucle</small></button>` : '')(cellGroup(sel))}
-    <div id="wxb" class="vd"><span class="vdc">…</span><span class="vdt"><span class="vdl">Confort de balade</span>${gauge(0)}Lecture du ciel…</span></div>
-    <div class="acts"><button class="btn gold" data-act="walk">${BR.on ? '⏹ Terminer' : '▶ Balade'}</button><button class="btn" data-act="addtoggle">+ Noter</button><button class="btn" data-act="go">${ICO.compass}Y aller</button></div>
+  const hist = c.v.map((v, i) => [v, i]).sort((a, b) => (b[0].d + b[0].h).localeCompare(a[0].d + a[0].h)).map(([v, i]) => `<li${v.id === BSEL ? ' class="on"' : ''}><span data-act="show" data-i="${i}" class="wk"><i class="lg">›</i><b>${dayLbl(v.d)}</b>${v.h ? ' <small>' + v.h + '</small>' : ''}<br>${fmtDist(v.m)} · ${fmtDur(v.s)}${v.bal ? ' · 🧭 ' + esc(v.bal) : ''}${v.pts.length > 1 ? ' <small>· 🗺 tracé</small>' : ''}${v.t ? '<br><small>' + esc(v.t) + '</small>' : ''}</span><span style="display:flex;flex:none">${v.pts.length > 1 ? `<button data-act="topath" data-i="${i}" aria-label="Ajouter ce tracé à mes sentiers">🥾</button>` : ''}<button data-act="edit" data-i="${i}" aria-label="Modifier">✎</button><button data-act="del" data-i="${i}" aria-label="Supprimer">✕</button></span></li>`).join('');
+  const g = cellGroup(sel), TH = [1, 5, 15, 40], nx = rk < 4 ? TH[rk] : 0, prv = rk ? TH[rk - 1] : 0, pct = nx ? Math.round((n - prv) / (nx - prv) * 100) : 100;
+  p.innerHTML = `<div class="fh">${crest(rk, 40)}<div class="fht"><input class="pname" data-f="name" placeholder="${esc(g && !g.auto ? g.name : 'Nommer cette balade…')}" value="${esc(c.name)}" aria-label="Nom du lieu">
+      <div class="fsub"><span class="rar r${rk}">${RK.n}</span><span id="nvt" class="nv">${navSub(sel)}</span></div></div></div>
+    <div class="fst"><span>${SLOT.paw}<b data-cu="${n}">${n}</b><small>sortie${n > 1 ? 's' : ''}</small></span><span>${SLOT.route}<b data-cu="${m}" data-f="d">${fmtDist(m)}</b><small>parcourus</small></span><span>${SLOT.clock}<b data-cu="${s}" data-f="t">${fmtDur(s)}</b><small>en balade</small></span></div>
+    <div class="frk" aria-hidden="true"><i class="r${rk}" style="width:${pct}%"></i></div>
+    <div class="frkt">${last ? `Dernière sortie <b>${ago(last)}</b>` : 'Pas encore de sortie ici'}${nx ? ` · encore ${nx - n} pour <b class="r${rk + 1}">${RANKS[rk + 1].n}</b>` : ''}</div>
+    <div id="wxb" class="vd"><span class="vdc">…</span><span class="vdt"><span class="vdl">Confort de balade</span>Lecture du ciel…</span></div>
+    <button id="pdzc" class="fdz" data-tab="nt" hidden></button>
+    <div class="acts"><button class="btn${g ? ' gold' : ''}" data-act="walk">${walkLbl()}</button><button class="btn" data-act="go">${ICO.compass}Y aller</button><button class="btn" data-act="addtoggle">+ Sortie</button></div>
     <div id="addv" class="row"><input type="date" id="vd" max="${today()}" value="${today()}"><input type="number" id="vn" min="0" step="1" placeholder="Durée min" inputmode="numeric"><input type="number" id="vw" min="0" step="0.1" placeholder="Distance km" inputmode="decimal">
       <input class="full" id="vt" placeholder="Note : rencontres, état du chien, météo…"><button class="btn gold full" data-act="add">Consigner la sortie</button></div>
-    <div class="ptab"><button data-tab="wx">${ICO.wx}<small>Météo</small></button><button data-tab="tr">${ICO.tree}<small>Terrain</small></button><button data-tab="hs">${ICO.book}<small>Sorties</small></button><button data-tab="ph">${ICO.photo}<small>Photos${c.ph.length ? ' •' : ''}</small></button><button data-tab="nt">${ICO.pen}<small>Notes${c.note ? ' •' : ''}</small></button></div>
+    <div class="ptab"><button data-tab="hs">${ICO.book}<small>Sorties${n ? ' ' + n : ''}</small></button><button data-tab="wx">${ICO.wx}<small>Météo</small></button><button data-tab="ph">${ICO.photo}<small>Photos${c.ph.length ? ' ' + c.ph.length : ''}</small></button><button data-tab="nt">${ICO.pen}<small>Infos</small></button></div>
     <div class="tpw">
+    <div class="tp" data-pane="hs"><ul>${hist || '<li class="hint">Aucune sortie pour l\'instant : lancez-en une, ou « + Sortie » pour en noter une passée.</li>'}</ul></div>
     <div class="tp" data-pane="wx"><div id="wx"><div class="hint">Chargement…</div></div></div>
-    <div class="tp" data-pane="tr"><div id="dzn" class="wxb"></div><div id="fty" class="wxb">Type de forêt…</div><div id="rel" class="wxb">Relief…</div></div>
-    <div class="tp" data-pane="ph"><label class="btn gold"><input type="file" accept="image/*" id="phf" multiple hidden>${ICO.photo}Ajouter une photo</label><div class="gal" id="gal"></div></div>
-    <div class="tp" data-pane="hs"><ul>${hist || '<li class="hint">Aucune sortie pour l\'instant : ▶ Balade enregistre la prochaine.</li>'}</ul></div>
-    <div class="tp" data-pane="nt"><textarea data-f="note" placeholder="Notes : accès, parking, ombre, points d'eau, chemins boueux…">${esc(c.note)}</textarea>
-      <div class="hint" style="padding:2px 0">${la.toFixed(5)}, ${lo.toFixed(5)}</div></div></div>`;
+    <div class="tp" data-pane="ph"><label class="btn">${ICO.photo}Ajouter une photo<input type="file" accept="image/*" id="phf" multiple hidden></label><div class="gal" id="gal"></div></div>
+    <div class="tp" data-pane="nt"><div class="esec">Notes</div><textarea data-f="note" placeholder="Accès, parking, ombre, points d'eau, chemins boueux…">${esc(c.note)}</textarea>
+      ${g ? `<div class="esec">Sentiers</div><button class="ftr" data-act="bal"><span class="pli">${ICO.trail}</span><span><b>${esc(g.name)}</b><br><small>${fmtDist(g.len)} de sentiers${g.paths.length > 1 ? ' · ' + g.paths.length + ' tronçons' : ''} · 🧭 proposer une boucle</small></span></button>` : ''}
+      <div class="esec">Autour</div><div id="pdz" class="wxb"></div><div id="fty" class="wxb">Type de forêt…</div><div id="rel" class="wxb">Relief…</div>
+      <div class="fco">📍 ${la.toFixed(5)}, ${lo.toFixed(5)}</div>
+      ${rec(c) ? `<button class="fdel" data-act="delcell">${ICO.trash} Supprimer ce lieu</button>` : ''}</div></div>`;
   setTab(); showWx(sel); showFt(sel); showRel(sel); showNear(sel); loadGal(sel);
 }
 /* ===== Dangers signalés autour d'un lieu (vos repères « danger ») ===== */
 function showNear(k) {
-  const el = $('#dzn'); if (!el) return; const p = ctr(k), L = (D.marks || []).filter(m => MK[m.t] && MK[m.t][2]).map(m => [m, rdist(p, [m.x, m.y])]).filter(a => a[1] < 800).sort((a, b) => a[1] - b[1]).slice(0, 8);
+  const el = $('#pdz'); if (!el) return; const p = ctr(k), L = (D.marks || []).filter(m => MK[m.t] && MK[m.t][2]).map(m => [m, rdist(p, [m.x, m.y])]).filter(a => a[1] < 800).sort((a, b) => a[1] - b[1]).slice(0, 8);
   el.innerHTML = L.length ? `⚠️ <b>${L.length} danger${L.length > 1 ? 's' : ''} signalé${L.length > 1 ? 's' : ''} à moins de 800 m</b>` + L.map(([m, d]) => `<br><small>${MK[m.t][0]} · ${fmtDist(d)}${m.note ? ' · ' + esc(m.note.slice(0, 50)) : ''}</small>`).join('')
     : '✅ Aucun danger signalé à moins de 800 m<br><small>Posez des repères (chenilles, tiques, vipère…) pour les retrouver ici et être alerté sur place.</small>';
+  const ch = $('#pdzc'); if (ch) { ch.hidden = !L.length; if (L.length) ch.innerHTML = `<span>⚠️ <b>${L.length} danger${L.length > 1 ? 's' : ''}</b> à moins de 800 m : ${[...new Set(L.map(([m]) => MK[m.t][0]))].slice(0, 3).map(esc).join(', ')}</span><i>›</i>`; }
 }
 /* ===== Type de forêt (BD Forêt v2 de l'IGN, service WFS gratuit) : polygone au centre de la case ===== */
 const ftCache = new Map();
@@ -1209,7 +1240,7 @@ function brTick() {      // un point tous les ~10 m, position lissée selon la p
 }
 function brUi() {
   const b = $('#found'), h = $('#bh'), wb = document.querySelector('#panel [data-act=walk]');
-  if (wb) wb.textContent = BR.on ? '⏹ Terminer' : '▶ Balade';
+  if (wb) wb.textContent = walkLbl();
   b.classList.toggle('rec', BR.on);
   if (!BR.on) { b.innerHTML = foundOff(); h.hidden = true; return; }
   const el = Date.now() - BR.t0, kmh = el > 60000 ? BR.m / (el / 1000) * 3.6 : 0;
@@ -2518,7 +2549,7 @@ function navTxt(k) {
     return '<b>' + (d < 1000 ? Math.round(d) + ' m' : (d / 1000).toFixed(1) + ' km') + '</b> ' + (a < 15 ? '⬆ droit devant' : a < 50 ? (rl > 0 ? '↗' : '↖') + ' un peu à ' + sd : a < 130 ? (rl > 0 ? '➡' : '⬅') + ' à ' + sd : '⬇ derrière vous') + ' (±' + Math.round(me.acc) + ' m)'; }
   return '<b>' + (d < 1000 ? Math.round(d) + ' m' : (d / 1000).toFixed(1) + ' km') + '</b> ' + ['\u2191', '\u2197', '\u2192', '\u2198', '\u2193', '\u2199', '\u2190', '\u2196'][i] + ' ' + ['nord', 'nord-est', 'est', 'sud-est', 'sud', 'sud-ouest', 'ouest', 'nord-ouest'][i] + ' (\u00b1' + Math.round(me.acc) + ' m)';
 }
-function updNav() { const e = $('#nvt'); if (e && sel && D.cells[sel]) e.innerHTML = navTxt(sel); }
+function updNav() { const e = $('#nvt'); if (e && sel && D.cells[sel]) e.innerHTML = navSub(sel); }
 /* ===== Tap : 1 = action, 2 = zoom doux à l'endroit touché, 3 = dézoom doux ===== */
 function onTap(e) { const r = cv.getBoundingClientRect(); const pt = spotAt(e.clientX - r.left, e.clientY - r.top), mk = markAt(e.clientX - r.left, e.clientY - r.top); if (RM) { if (mk) openMark(mk.id); else openMk({ id: null, t: mkLast, note: '', x: V.cx + (e.clientX - r.left - r.width / 2) * V.mpp, y: V.cy - (e.clientY - r.top - r.height / 2) * V.mpp, where: 'tap' }); } else if (P.on) (ED.on ? (ED.draw ? edDrawTap : edPick) : pathTap)(e.clientX - r.left, e.clientY - r.top); else if (pt && pt !== sel) { select(pt); flyTo(pt); } else if (mk && !pt) openMark(mk.id); else if (sel) { sel = null; collapse(); renderPanel(); draw(); } }
 var TT = { t: 0, n: 0, x: 0, y: 0, timer: 0 };
