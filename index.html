@@ -641,6 +641,17 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
 .lpk .lpn{margin-left:auto;align-self:center;padding:2px 8px;border:1px solid var(--edge);border-radius:10px;background:#14110e;font-size:12px;color:var(--mut)}
 .lps{font-size:13px;color:var(--mut)}.lpz{margin-top:3px;font-size:13px}
 #lp .pmb button{white-space:nowrap}#lpgo{flex:1.4!important}#lpn,#lpd{flex:1!important}#lpx{flex:none}
+
+/* ===== Choix de la durée : petit panneau en bas, la carte reste visible ===== */
+#balm.sheet{align-items:flex-end;background:transparent;pointer-events:none;padding:0 6px 6px}
+#balm.sheet .win{pointer-events:auto;max-height:58dvh;padding:10px 12px 12px;box-shadow:0 -10px 30px rgba(0,0,0,.65);animation:rise .3s cubic-bezier(.2,.85,.25,1) both}
+#balm.sheet .lhd{margin-bottom:6px}#balm.sheet .lhd .ib{width:36px;height:36px}#balm.sheet #balh{font-size:19px}#bals[hidden]{display:none}
+#balm.sheet .bdur{gap:10px}#balm.sheet .bdst{width:40px;height:40px;font-size:23px}#balm.sheet .bdv b{font-size:28px}#balm.sheet .bdv small{font-size:12px;margin-top:1px}
+#balm.sheet .bdch{margin:9px 0 8px}#balm.sheet .bdch button{padding:7px 2px;font-size:13px}
+.bdpk .bdi{flex:none;align-self:center;font-size:16px}#balm.sheet .bdpk{padding:0 0 8px;margin:0;gap:6px;align-items:center}
+.bdln{display:flex;align-items:center;gap:6px;width:100%;margin:0 0 8px;padding:0 2px;border:0;background:none;color:var(--txt);font-size:13.5px;text-align:left}.bdln small{color:var(--mut)}.bdln b{color:#fff1cf}
+.bdav{padding:7px 10px;border:2px solid var(--edge);border-radius:4px;background:var(--slot);cursor:pointer}.bdav span{flex:1}
+#balm.sheet .bdgo{padding:12px 10px;font-size:16px}
 </style></head><body>
 <header class="bar win dg"><button class="emb" id="dogav" aria-label="Profil de mon chien et journal"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></button>
   <div class="brand"><h1>Cartodog</h1><small id="ssn">Carnet de balade</small></div>
@@ -665,7 +676,7 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
 <div id="dzq"><div class="win dg"><div class="dzh"><img id="dzi" alt=""><div><small id="dzk"></small><h2 id="dzt"></h2></div></div>
   <p id="dzn" class="dzn"></p><div class="hint" id="dzm" style="padding:0 0 8px"></div><div class="dzq">Ce risque est-il toujours là ?</div>
   <button class="btn gold" id="dzy">⚠️ Oui, toujours un risque <small>(+24 h)</small></button><button class="btn" id="dzno">✅ Non, plus de risque</button><button class="btn" id="dzl">Plus tard</button></div></div>
-<div id="balm"><div class="win dg"><div class="lhd"><button class="ib" id="balb" aria-label="Toutes les balades" hidden>‹</button><h2 id="balh">Partir en balade</h2><button class="ib" id="balx" aria-label="Fermer">✕</button></div><div id="balc"></div></div></div>
+<div id="balm"><div class="win dg"><div class="lhd"><button class="ib" id="balb" aria-label="Toutes les balades" hidden>‹</button><h2 id="balh">Partir en balade</h2><button class="ib" id="bals" aria-label="Partager cette balade" hidden>📤</button><button class="ib" id="balx" aria-label="Fermer">✕</button></div><div id="balc"></div></div></div>
 <div id="dogm"><div class="win dg">
   <div class="lhd"><h2>Profil<small id="dgsub">Mon chien</small></h2><button class="ib" id="dgx" aria-label="Fermer">✕</button></div>
   <div class="dgtop"><label class="dgph"><input type="file" accept="image/*" id="dgf" hidden><span id="dgimg"></span><small>📷 Photo</small></label>
@@ -1473,36 +1484,39 @@ function balStart(g, pkId) {      // départ : le parking choisi (ou le plus pro
   const p0 = g.paths.reduce((a, p) => pathLen(p) > pathLen(a) ? p : a).pts[0]; return { q: p0, park: null, parks: L, txt: '⚠️ Aucun parking (repère 🅿) près de ces sentiers : départ au début du plus long sentier' };
 }
 function balOpen() { if (watch === null) startLoc(); balList(); $('#balm').classList.add('open'); }
-const balClose = () => $('#balm').classList.remove('open');
+const balClose = () => { $('#balm').classList.remove('open', 'sheet'); BL.hl = null; draw(); };
 function balList() {
   const G = balGroups(), ub = (D.paths || []).filter(p => !(p.name || '').trim()).length, cnt = k => Object.values(D.cells).flatMap(c => c.v).filter(v => gkey(v.bal || '') === k).length;
   const dme = g => me ? Math.min(...g.paths.flatMap(p => p.pts).map(q => rdist(q, [me.x, me.y]))) : null;
   G.forEach(g => { g.dm = dme(g); g.n = cnt(g.k); }); G.sort((a, b) => a.dm != null && b.dm != null ? a.dm - b.dm : b.n - a.n || a.name.localeCompare(b.name, 'fr'));
-  $('#balb').hidden = true;
+  $('#balb').hidden = $('#bals').hidden = true; $('#balm').classList.remove('sheet'); BL.hl = null;
   $('#balh').innerHTML = `Partir en balade<small>${G.length} balade${G.length > 1 ? 's' : ''} tracée${G.length > 1 ? 's' : ''}${D.dog ? ' · avec ' + esc(D.dog) : ''}</small>`;
   $('#balc').innerHTML = `<button class="btn gold" data-free>▶ Balade libre <small>&nbsp;enregistrer sans parcours</small></button>
     <div class="mh">Mes balades</div><ul class="blul">${G.map(g => `<li data-g="${esc(g.k)}"><span class="pli">${ICO.trail}</span><span class="lt"><b>${esc(g.name)}</b><br><small>${fmtDist(g.len)} de sentiers${g.paths.length > 1 ? ' · ' + g.paths.length + ' tronçons' : ''}${g.n ? ' · faite ' + g.n + ' fois' : ''}</small></span><span class="bd">${g.dm != null ? `<b>${fmtDist(g.dm)}</b><br><small>de vous</small>` : '›'}</span></li>`).join('') || '<li class="hint" style="cursor:default">Aucune balade : tracez des sentiers (bouton 🥾 de la carte) et donnez-leur un nom. Les sentiers qui portent le même nom forment une seule balade.</li>'}</ul>` +
     (ub ? `<div class="hint">${ub} sentier${ub > 1 ? 's' : ''} sans nom : nommez-le${ub > 1 ? 's' : ''} (🥾 ▸ 📋 Mes sentiers) pour ${ub > 1 ? 'les' : 'l\''}ajouter à une balade.</div>` : '');
 }
 const DURS = [30, 45, 60, 90, 120];
-function balDetail(k) {      // une seule question (combien de temps ?), le reste en options discrètes, puis un gros bouton
+function balDetail(k) {      // petit panneau en bas : la carte reste visible et suit le parking choisi
   const g = balGroups().find(x => x.k === k); if (!g) return balList(); BL.g = g; const st = balStart(g, BL.pk), sp = speedOf(k); BL.pk = st.park ? st.park.id : null;
   const ndz = balNet(g, st.q).dzAll.length, pk = st.parks.find(o => o.m.id === BL.pk);
-  $('#balb').hidden = false;
-  $('#balh').innerHTML = `${esc(g.name)}<small>${fmtDist(g.len)} de sentiers${g.paths.length > 1 ? ' · ' + g.paths.length + ' tronçons' : ''}</small>`;
-  $('#balc').innerHTML = `<div class="bdq">Combien de temps ?</div>
-    <div class="bdur"><button class="bdst" data-step="-5" aria-label="5 minutes de moins">−</button><div class="bdv"><b id="bldv"></b><small id="blsp"></small></div><button class="bdst" data-step="5" aria-label="5 minutes de plus">+</button></div>
+  $('#balm').classList.add('sheet'); $('#balb').hidden = $('#bals').hidden = false;
+  $('#balh').innerHTML = `${esc(g.name)}<small>${fmtDist(g.len)} de sentiers</small>`;
+  $('#balc').innerHTML = `<div class="bdur"><button class="bdst" data-step="-5" aria-label="5 minutes de moins">−</button><div class="bdv"><b id="bldv"></b><small id="blsp"></small></div><button class="bdst" data-step="5" aria-label="5 minutes de plus">+</button></div>
     <div class="bdch" id="bldc">${DURS.map(m => `<button data-m="${m}">${fmtMin(m)}</button>`).join('')}</div>
-    <div class="bdop">
-      <div class="bdrow"><span class="bdi">🅿</span><span class="bdt"><small>Départ et retour</small>${st.parks.length > 1 ? '<b>Choisissez votre parking</b>' : pk ? `<b>${esc(pk.name)}</b>${pk.d > 15 ? ` <small>à ${fmtDist(pk.d)} du sentier</small>` : ''}` : `<b>${me ? 'Votre position' : 'Début du plus long sentier'}</b> <small>aucun parking 🅿 à moins de 500 m</small>`}</span></div>
-      ${st.parks.length > 1 ? `<div class="bdpk" id="blpk">${st.parks.map(o => `<button data-pk="${o.m.id}"${o.m.id === BL.pk ? ' class="on"' : ''}>${esc(o.name)}${o.me != null ? ` <small>${fmtDist(o.me)}</small>` : ''}</button>`).join('')}</div>` : ''}
-      ${ndz ? `<button class="bdrow" data-avoid><span class="bdi">⚠️</span><span class="bdt"><small>${ndz} danger${ndz > 1 ? 's' : ''} signalé${ndz > 1 ? 's' : ''} sur ces sentiers</small><b>Les contourner</b></span><em class="sw${BL.avoid ? ' on' : ''}" aria-hidden="true"></em></button>` : ''}
-    </div>
-    <button class="btn gold bdgo" data-go>🧭 <span id="blgo"></span></button>
-    <button class="bdsh" data-share>📤 Partager cette balade</button>`;
-  const upd = () => { $('#bldv').textContent = fmtMin(BL.min); $('#blsp').textContent = `≈ ${fmtDist(BL.min / 60 * sp.kmh * 1000)} · allure ${sp.kmh.toFixed(1).replace('.', ',')} km/h${sp.n ? ', apprise ici' : sp.all ? ', apprise de vos sorties' : ''}`;
+    ${st.parks.length > 1 ? `<div class="bdpk" id="blpk"><span class="bdi">🅿</span>${st.parks.map(o => `<button data-pk="${o.m.id}"${o.m.id === BL.pk ? ' class="on"' : ''}>${esc(o.name)}${o.me != null ? ` <small>${fmtDist(o.me)}</small>` : ''}</button>`).join('')}</div>`
+      : `<div class="bdln">${pk ? `🅿 <b>${esc(pk.name)}</b>${pk.d > 15 ? ` <small>à ${fmtDist(pk.d)} du sentier</small>` : ''}` : `📍 Départ : <b>${me ? 'votre position' : 'début du plus long sentier'}</b> <small>(aucun parking 🅿)</small>`}</div>`}
+    ${ndz ? `<button class="bdln bdav" data-avoid>⚠️ <span>Éviter ${ndz > 1 ? 'les ' + ndz + ' dangers signalés' : 'le danger signalé'}</span><em class="sw${BL.avoid ? ' on' : ''}" aria-hidden="true"></em></button>` : ''}
+    <button class="btn gold bdgo" data-go>🧭 <span id="blgo"></span></button>`;
+  const upd = () => { $('#bldv').textContent = fmtMin(BL.min); $('#blsp').textContent = `≈ ${fmtDist(BL.min / 60 * sp.kmh * 1000)} · ${sp.kmh.toFixed(1).replace('.', ',')} km/h`;
     $('#blgo').textContent = 'Proposer une boucle de ' + fmtMin(BL.min); document.querySelectorAll('#bldc button').forEach(b => b.classList.toggle('on', +b.dataset.m === BL.min)); };
   BL.upd = upd; upd();
+  BL.hl = pk ? [pk.m.x, pk.m.y] : null;
+  requestAnimationFrame(() => { const pts = g.paths.flatMap(p => p.pts); if (BL.hl) pts.push(BL.hl); if (!BL.focusPk) sheetFit(pts); else { const [x, y] = BL.hl; sheetFit([[x - 220, y - 220], [x + 220, y + 220]]); } BL.focusPk = false; });
+}
+function sheetFit(pts) {      // cadre ces points dans la partie de carte que le panneau laisse visible
+  const cr = cv.getBoundingClientRect(), wt = $('#balm .win').getBoundingClientRect().top, visH = Math.max(140, Math.min(cr.bottom, wt - 8) - cr.top);
+  const xs = pts.map(q => q[0]), ys = pts.map(q => q[1]), x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+  const m = Math.max(.6, (x1 - x0) / (cr.width * .82), (y1 - y0) / (visH * .78)); flyXY((x0 + x1) / 2, (y0 + y1) / 2 - (cr.height / 2 - visH / 2) * m, m, 550);
 }
 function balPropose() {
   const g = BL.g, st = balStart(g, BL.pk), sp = speedOf(g.k), L = BL.min / 60 * sp.kmh * 1000, net = balNet(g, st.q), con = net.off > 3 ? net.off : 0;
@@ -1527,6 +1541,7 @@ function lpUi() {
   $('#lpgo').hidden = $('#lpn').hidden = !!BR.on; $('#lpn').hidden = BR.on || BL.loops.length < 2; draw();
 }
 function drawLoop(sx, sy) {
+  if (BL.hl && $('#balm').classList.contains('sheet')) { const x = sx(BL.hl[0]), y = sy(BL.hl[1]); g.save(); g.beginPath(); g.arc(x, y - 14, 24, 0, 7); g.fillStyle = 'rgba(244,200,98,.18)'; g.fill(); g.lineWidth = 5; g.strokeStyle = '#0e0b08'; g.stroke(); g.lineWidth = 3; g.strokeStyle = '#f4c862'; g.stroke(); g.restore(); }
   if (!BL.poly || BL.poly.length < 2) return; const pts = BL.poly, rv = FX.length && fxOf('loop', 0), rp = rv ? Math.min(1, Math.max(0, fxP(rv))) : 1;
   g.save(); g.lineCap = 'round'; g.lineJoin = 'round'; g.beginPath(); pts.forEach((q, i) => i ? g.lineTo(sx(q[0]), sy(q[1])) : g.moveTo(sx(q[0]), sy(q[1])));
   let Lpx = 0; for (let i = 1; i < pts.length; i++) Lpx += Math.hypot(sx(pts[i][0]) - sx(pts[i - 1][0]), sy(pts[i][1]) - sy(pts[i - 1][1]));
@@ -1544,12 +1559,12 @@ function balArrive() {      // de retour au départ après une bonne partie de l
   if (!BL.poly || BL.arr || !BR.on || !BR.bal || !me || BR.m < BL.tot * .6) return;
   if (rdist([me.x, me.y], BL.poly[0]) < 40) { BL.arr = true; toast('🏁 De retour au départ : touchez ⏹ pour terminer la balade'); try { navigator.vibrate && navigator.vibrate([100, 60, 100]); } catch (e) {} }
 }
-$('#balx').onclick = balClose; $('#balb').onclick = () => balList(); $('#balm').onclick = e => { if (e.target.id === 'balm') return balClose();
+$('#balx').onclick = balClose; $('#balb').onclick = () => balList(); $('#bals').onclick = () => BL.g && balShare(BL.g); $('#balm').onclick = e => { if (e.target.id === 'balm') return balClose();
   if (e.target.closest('[data-free]')) { balClose(); BL.poly = null; lpUi(); return brStart(); }
   if (e.target.closest('[data-back]')) return balList();
   const m = e.target.closest('[data-m]'); if (m) { BL.min = +m.dataset.m; return BL.upd(); }
   const stp = e.target.closest('[data-step]'); if (stp) { BL.min = Math.max(10, Math.min(240, BL.min + +stp.dataset.step)); return BL.upd(); }
-  const pk = e.target.closest('[data-pk]'); if (pk) { BL.pk = pk.dataset.pk; return balDetail(BL.g.k); }
+  const pk = e.target.closest('[data-pk]'); if (pk) { BL.pk = pk.dataset.pk; BL.focusPk = true; return balDetail(BL.g.k); }
   if (e.target.closest('[data-ren]')) { const v = prompt('Nom de la balade (appliqué à tous ses tronçons)', BL.g.auto ? '' : BL.g.name); if (v && v.trim()) { renameGroup(BL.g, v); balDetail(gkey(v.trim().slice(0, 60))); } return; }
   if (e.target.closest('[data-avoid]')) { BL.avoid = !BL.avoid; try { localStorage.setItem('cartodog-avoid', BL.avoid ? '1' : '0'); } catch (x) {} e.target.closest('[data-avoid]').querySelector('.sw').classList.toggle('on', BL.avoid); return; }
   if (e.target.closest('[data-share]')) return balShare(BL.g);
