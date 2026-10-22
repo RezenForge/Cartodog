@@ -631,7 +631,7 @@ body:has(#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#pls.open,#mkm.op
   <div id="lp" class="dg" hidden><div class="eyb">Balade guidée</div><div id="lpt"></div><div class="pmb"><button id="lpgo">▶ Partir</button><button id="lpn">↻ Autre boucle</button><button id="lpx" aria-label="Masquer la boucle" style="margin-left:auto">✕</button></div></div>
   <div id="rm" class="dg" hidden><div class="eyb">Poser un repère</div><div id="rmt">Touchez la carte pour poser un repère (point d'eau, danger, parking…), ou touchez un repère existant pour le modifier.</div><div class="pmb"><button id="rmg">À ma position</button><button id="rmx" aria-label="Quitter le mode repère">✕</button></div></div>
   <div id="zb"><button class="ib" id="gr" data-ic="grid" aria-label="Afficher ou cacher la grille"></button><button class="ib" id="pt" data-ic="trail" aria-label="Cartographier les sentiers"><small>Sentiers</small></button><button class="ib" id="rtb" data-ic="home" aria-label="Retour au départ ou au parking"><small>Retour</small></button><button class="ib" id="lb" data-ic="book" aria-label="Mes balades"><small>Balades</small></button><i class="sep"></i><button class="ib" id="fit" data-ic="fit" aria-label="Tout voir"><small>Tout voir</small></button><button class="ib" id="zo" data-ic="minus" aria-label="Dézoomer"></button><button class="ib" id="zi" data-ic="plus" aria-label="Zoomer"></button></div></div>
-<div id="dock"><button id="found" aria-label="Lancer ou terminer une balade">▶ Balade</button><button id="visit" data-ic="pin" aria-label="Créer un lieu de balade à ma position"><small>Lieu</small></button><button id="react" data-ic="flag" aria-label="Poser un repère"><small>Repère</small></button><button id="grab" aria-label="Réduire ou ouvrir la fiche">▾</button></div>
+<div id="dock"><button id="found" aria-label="Lancer ou terminer une balade">▶ Balade</button><button id="visit" data-ic="pin" aria-label="Créer une balade à ma position"><small>Nouvelle</small></button><button id="react" data-ic="flag" aria-label="Poser un repère"><small>Repère</small></button><button id="grab" aria-label="Réduire ou ouvrir la fiche">▾</button></div>
 <div id="panel" class="win dg"></div>
 <div id="mkm"><div class="win dg"><h2 id="mkt">Nouveau repère</h2><div class="hint" id="mkw" style="padding:0"></div><button class="btn" id="mkpk" hidden>🅿 Retourner au parking</button>
   <div id="mkg"></div><div class="hint" id="mkx" style="padding:2px 0 4px"></div><button class="btn" id="mkp" hidden></button><textarea id="mkn" placeholder="Note : ce que vous avez vu, à retenir…" maxlength="500" style="min-height:76px"></textarea>
@@ -729,7 +729,7 @@ const SLOT = {
   clock: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8.6" fill="#b8894b" stroke="#140e08" stroke-width="1.6"/><circle cx="12" cy="13" r="6.6" fill="#f3e6c4"/><path d="M12 8.6V13l3 2" fill="none" stroke="#140e08" stroke-width="1.8" stroke-linecap="round"/><path d="M10 2.6h4M12 2.6v1.8" stroke="#140e08" stroke-width="1.6" stroke-linecap="round"/></svg>'
 };
 const gauge = s => `<span class="gauge" aria-hidden="true">${[...Array(10)].map((_, i) => `<i${i < Math.round(s / 10) ? ' class="f"' : ''}></i>`).join('')}</span>`;
-const RANKS = [{ n: 'Lieu repéré', c: '#8b857a' }, { n: 'Lieu découvert', c: '#5f7350' }, { n: 'Balade habituelle', c: '#87481f' }, { n: 'Terrain favori', c: '#466f24' }, { n: 'Royaume canin', c: '#a87a0e' }];
+const RANKS = [{ n: 'Balade repérée', c: '#8b857a' }, { n: 'Balade découverte', c: '#5f7350' }, { n: 'Balade habituelle', c: '#87481f' }, { n: 'Terrain favori', c: '#466f24' }, { n: 'Royaume canin', c: '#a87a0e' }];
 const rankK = c => { const n = c ? c.v.length : 0; return n >= 40 ? 4 : n >= 15 ? 3 : n >= 5 ? 2 : n >= 1 ? 1 : 0; };
 const crest = (k, s = 30) => `<svg class="crest" width="${s}" height="${s}" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2.5l11 4v8.2c0 7-4.6 12.2-11 14.8C9.6 26.9 5 21.7 5 14.7V6.5z" fill="${k ? RANKS[k].c : 'rgba(255,255,255,.4)'}" stroke="${k ? 'rgba(0,0,0,.35)' : RANKS[0].c}" stroke-width="1.6"${k ? '' : ' stroke-dasharray="2.5 2"'}/>${[...Array(k)].map((_, i) => `<path d="M10.6 ${8.6 + i * 3.7}l5.4 3.1 5.4-3.1" fill="none" stroke="#fff6dd" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>`).join('')}</svg>`;
 /* Confort de balade pour le chien : 4 niveaux */
@@ -765,7 +765,8 @@ let D = { cells: {}, paths: [], marks: [], dog: '', prof: null }, sel = null, he
 /* ===== Sauvegarde ===== */
 let saveT = 0; const saveSoon = () => { clearTimeout(saveT); saveT = setTimeout(save, 400); };
 addEventListener('pagehide', () => { if (saveT) { clearTimeout(saveT); save(); } });
-function save() { clearTimeout(saveT); saveT = 0; try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) { toast('Stockage plein : exportez vos données'); } }
+const CGM = new Map();      // fiche → sentiers rattachés (cache, vidé à chaque enregistrement)
+function save() { clearTimeout(saveT); saveT = 0; CGM.clear(); try { if (syncBal()) CGM.clear(); } catch (e) {} try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) { toast('Stockage plein : exportez vos données'); } }
 const cleanPts = a => Array.isArray(a) ? a.filter(q => Array.isArray(q) && isFinite(q[0]) && isFinite(q[1])).map(q => [+q[0], +q[1]]).slice(0, 6000) : [];
 function clean(c) { const ok = c && c.x != null && c.y != null && isFinite(c.x) && isFinite(c.y); return { ...(ok ? { x: +c.x, y: +c.y } : {}), name: String(c?.name || ''), note: String(c?.note || ''),
   ph: (Array.isArray(c?.ph) ? c.ph : []).filter(p => p && /^[\w-]+$/.test(String(p.id))).map(p => ({ id: String(p.id), d: /^\d{4}-\d\d-\d\d$/.test(p.d) ? p.d : '' })),
@@ -977,7 +978,7 @@ function draw() {
     if (im && im.complete && im.naturalWidth) g.drawImage(im, x - ps / 2, y - ps, ps, ps);      // la pointe du marqueur est posée sur la position exacte
     if (n) { const bx = x + ps * .36, by = y - ps * .2, br = Math.max(8, ps * .24); g.beginPath(); g.arc(bx, by, br, 0, 7); g.fillStyle = '#2a2018'; g.fill(); g.lineWidth = 1.6; g.strokeStyle = '#e3c071'; g.stroke(); g.fillStyle = '#f6ecd2'; g.font = '700 ' + Math.round(br * 1.05) + 'px system-ui,sans-serif'; g.fillText(n > 99 ? '99+' : n, bx, by + .5); }
     if (sc !== 1) g.restore();
-    if (c.name && mpp < 14) { g.font = '600 11.5px system-ui,sans-serif'; g.fillStyle = '#fff6e0'; g.strokeStyle = 'rgba(20,14,8,.85)'; g.lineWidth = 3.5; g.lineJoin = 'round'; const t = c.name.length > 16 ? c.name.slice(0, 15) + '\u2026' : c.name; g.strokeText(t, x, y + 12); g.fillText(t, x, y + 12); }
+    const nm = mpp < 14 ? balName(k) : ''; if (nm) { g.font = '700 12px system-ui,sans-serif'; g.fillStyle = '#fff6e0'; g.strokeStyle = 'rgba(20,14,8,.9)'; g.lineWidth = 4; g.lineJoin = 'round'; const t = nm.length > 22 ? nm.slice(0, 21) + '\u2026' : nm; g.strokeText(t, x, y + 11); g.fillText(t, x, y + 11); }
   });
   drawMarks(sx, sy);
   if (commOn) drawComm(1, sx, sy, W, x0, x1, y0, y1, mpp);
@@ -1069,7 +1070,7 @@ function renderPanel() {
   const rk = rankK(c), RK = RANKS[rk], last = c.v.reduce((a, v) => v.d > a ? v.d : a, '');
   const hist = c.v.map((v, i) => [v, i]).sort((a, b) => (b[0].d + b[0].h).localeCompare(a[0].d + a[0].h)).map(([v, i]) => `<li${v.id === BSEL ? ' class="on"' : ''}><span data-act="show" data-i="${i}" class="wk"><i class="lg">›</i><b>${dayLbl(v.d)}</b>${v.h ? ' <small>' + v.h + '</small>' : ''}<br>${fmtDist(v.m)} · ${fmtDur(v.s)}${v.bal ? ' · 🧭 ' + esc(v.bal) : ''}${v.pts.length > 1 ? ' <small>· 🗺 tracé</small>' : ''}${v.t ? '<br><small>' + esc(v.t) + '</small>' : ''}</span><span style="display:flex;flex:none">${v.pts.length > 1 ? `<button data-act="topath" data-i="${i}" aria-label="Ajouter ce tracé à mes sentiers">🥾</button>` : ''}<button data-act="edit" data-i="${i}" aria-label="Modifier">✎</button><button data-act="del" data-i="${i}" aria-label="Supprimer">✕</button></span></li>`).join('');
   const g = cellGroup(sel), TH = [1, 5, 15, 40], nx = rk < 4 ? TH[rk] : 0, prv = rk ? TH[rk - 1] : 0, pct = nx ? Math.round((n - prv) / (nx - prv) * 100) : 100;
-  p.innerHTML = `<div class="fh">${crest(rk, 40)}<div class="fht"><input class="pname" data-f="name" placeholder="${esc(g && !g.auto ? g.name : 'Nommer cette balade…')}" value="${esc(c.name)}" aria-label="Nom du lieu">
+  p.innerHTML = `<div class="fh">${crest(rk, 40)}<div class="fht"><input class="pname" data-f="name" placeholder="${esc(g ? g.name : 'Nommer cette balade…')}" value="${esc(c.name)}" aria-label="Nom de la balade">
       <div class="fsub"><span class="rar r${rk}">${RK.n}</span><span id="nvt" class="nv">${navSub(sel)}</span></div></div></div>
     <div class="fst"><span>${SLOT.paw}<b data-cu="${n}">${n}</b><small>sortie${n > 1 ? 's' : ''}</small></span><span>${SLOT.route}<b data-cu="${m}" data-f="d">${fmtDist(m)}</b><small>parcourus</small></span><span>${SLOT.clock}<b data-cu="${s}" data-f="t">${fmtDur(s)}</b><small>en balade</small></span></div>
     <div class="frk" aria-hidden="true"><i class="r${rk}" style="width:${pct}%"></i></div>
@@ -1085,10 +1086,10 @@ function renderPanel() {
     <div class="tp" data-pane="wx"><div id="wx"><div class="hint">Chargement…</div></div></div>
     <div class="tp" data-pane="ph"><label class="btn">${ICO.photo}Ajouter une photo<input type="file" accept="image/*" id="phf" multiple hidden></label><div class="gal" id="gal"></div></div>
     <div class="tp" data-pane="nt"><div class="esec">Notes</div><textarea data-f="note" placeholder="Accès, parking, ombre, points d'eau, chemins boueux…">${esc(c.note)}</textarea>
-      ${g ? `<div class="esec">Sentiers</div><button class="ftr" data-act="bal"><span class="pli">${ICO.trail}</span><span><b>${esc(g.name)}</b><br><small>${fmtDist(g.len)} de sentiers${g.paths.length > 1 ? ' · ' + g.paths.length + ' tronçons' : ''} · 🧭 proposer une boucle</small></span></button>` : ''}
+      ${g ? `<div class="esec">Sentiers</div><button class="ftr" data-act="bal"><span class="pli">${ICO.trail}</span><span><b>${esc(g.name)}</b><br><small>${fmtDist(g.len)}${g.paths.length > 1 ? ' · ' + g.paths.length + ' tronçons' : ''} · 🧭 proposer une boucle</small></span></button>` : ''}
       <div class="esec">Autour</div><div id="pdz" class="wxb"></div><div id="fty" class="wxb">Type de forêt…</div><div id="rel" class="wxb">Relief…</div>
       <div class="fco">📍 ${la.toFixed(5)}, ${lo.toFixed(5)}</div>
-      ${rec(c) ? `<button class="fdel" data-act="delcell">${ICO.trash} Supprimer ce lieu</button>` : ''}</div></div>`;
+      ${rec(c) ? `<button class="fdel" data-act="delcell">${ICO.trash} Supprimer la balade</button>` : ''}</div></div>`;
   setTab(); showWx(sel); showFt(sel); showRel(sel); showNear(sel); loadGal(sel);
 }
 /* ===== Dangers signalés autour d'un lieu (vos repères « danger ») ===== */
@@ -1200,12 +1201,15 @@ async function showWx(k) {
   } catch (e) { put('<div class="hint">Météo indisponible (connexion ?)</div>', '<span class="vdc">?</span><span class="vdt"><span class="vdl">Confort de balade</span>' + gauge(0) + 'Météo indisponible (connexion ?)</span>'); }
 }
 
-$('#panel').addEventListener('input', e => { const f = e.target.dataset.f; if (!f || !sel) return; (D.cells[sel] ||= blank())[f] = e.target.value; saveSoon(); if (f === 'name') schedule(); });
+$('#panel').addEventListener('input', e => { const f = e.target.dataset.f; if (!f || !sel) return; if (f === 'name') setBalName(cellGroup(sel), e.target.value); (D.cells[sel] ||= blank())[f] = e.target.value; saveSoon(); if (f === 'name') schedule(); });
 $('#panel').addEventListener('click', e => {
   const gi = e.target.closest('#gal img'); if (gi) { pvId = gi.dataset.id; $('#pvi').src = gi.src; $('#pv').classList.add('open'); return; }
   const t = e.target.closest('[data-tab]'); if (t) { ptab = t.dataset.tab; return setTab(); }
   const b = e.target.closest('[data-act]'); if (!b || !sel) return; const a = b.dataset.act, c = D.cells[sel] ||= blank();
-  if (a === 'delcell') { const snap = snapC(), k = sel; if (c.x != null) fxRing(c.x, c.y, 'rgba(171,159,132,.9)', 6, 34, 550); delete D.cells[k]; sel = null; BSEL = null; save(); renderPanel(); draw(); return toast('Lieu supprimé', () => { restoreSnap(snap); sel = k; save(); draw(); renderPanel(); }); }
+  if (a === 'delcell') { const g = cellGroup(sel); if (g && !confirm(`Supprimer la balade « ${g.name} » : sa fiche (sorties, photos, notes) et ${g.paths.length > 1 ? 'ses ' + g.paths.length + ' sentiers' : 'son sentier'} ?`)) return;
+    const snap = snapC(), pj = JSON.stringify(D.paths), k = sel; if (c.x != null) fxRing(c.x, c.y, 'rgba(171,159,132,.9)', 6, 34, 550);
+    if (g) { const ids = new Set(g.paths.map(p => p.id)); D.paths = D.paths.filter(p => !ids.has(p.id)); NG.sig = ''; } delete D.cells[k]; sel = null; BSEL = null; save(); renderPanel(); draw();
+    return toast('Balade supprimée', () => { restoreSnap(snap); D.paths = JSON.parse(pj); NG.sig = ''; sel = k; save(); draw(); renderPanel(); }); }
   if (a === 'go') return goTo(sel);
   if (a === 'walk') { if (BR.on) return brStop(); BR.k0 = sel; const g = cellGroup(sel); return g ? openBal(g.k) : balOpen(); }
   if (a === 'bal') { const g = cellGroup(sel); if (g) openBal(g.k); return; }
@@ -1265,13 +1269,13 @@ function simplifyPts(pts, tolM = 3) {      // Douglas-Peucker sur un tracé de b
 function brStop() {
   if (!BR.on) return; const b = BR, dur = Math.round((Date.now() - b.t0) / 1000); BR = { on: false, pts: [], m: 0 }; wakeSync(); brUi();
   if (dur < 60 && b.m < 50) { draw(); return toast('⏹ Sortie annulée (moins d\'une minute)'); }
-  const start = b.pts[0] || (me ? [me.x, me.y] : null), snap = snapC(); let k = b.k && D.cells[b.k] ? b.k : start ? nearestSpot(start[0], start[1], 400) : sel, neu = false;
+  const start = b.pts[0] || (me ? [me.x, me.y] : null), snap = snapC(); let k = b.k && D.cells[b.k] ? b.k : b.bal ? Object.keys(D.cells).find(x => { const g = cellGroup(x); return g && g.k === gkey(b.bal); }) : null; if (!k) k = start ? nearestSpot(start[0], start[1], 400) : sel; let neu = false;
   if (!k) { const p = start || [V.cx, V.cy]; k = newSpot(p[0], p[1]); neu = true; fxa({ k: 'pop', key: k, dur: 520 }); }
   const d0 = new Date(b.t0), v = { id: rid(), d: dayOf(d0), h: pad(d0.getHours()) + ':' + pad(d0.getMinutes()), s: dur, m: Math.round(b.m), t: '', pts: simplifyPts(b.pts), bal: b.bal || '' }; BL.poly = null; lpUi();
   D.cells[k].v.push(v); BSEL = v.id; save(); ptab = 'hs'; select(k);
   const c = D.cells[k]; if (c.x != null) { fxGain(c.x, c.y + spotSz() * V.mpp * .6, '🏁', true); fxRing(c.x, c.y, '#ffd27a', 6, 40, 700); }
   try { navigator.vibrate && navigator.vibrate([60, 40, 60]); } catch (e) {}
-  toast(`🏁 ${fmtDist(v.m)} en ${fmtDur(v.s)}${neu ? ' · nouveau lieu créé : nommez-le' : c.name ? ' · ' + c.name : ''}`, () => { restoreSnap(snap); BSEL = null; save(); draw(); renderPanel(); });
+  toast(`🏁 ${fmtDist(v.m)} en ${fmtDur(v.s)}${neu ? ' · nouvelle balade créée : nommez-la' : c.name ? ' · ' + c.name : ''}`, () => { restoreSnap(snap); BSEL = null; save(); draw(); renderPanel(); });
 }
 function findWalk(id) { for (const c of Object.values(D.cells)) { const v = c.v.find(x => x.id === id); if (v) return v; } return null; }
 function drawWalks(sx, sy) {
@@ -1286,9 +1290,9 @@ function drawWalks(sx, sy) {
 /* ===== « + Lieu » : crée (ou retrouve) un lieu de balade à votre position ===== */
 function addLieu() {
   if (!me) return askGps('lieu'); const k0 = nearestSpot(me.x, me.y, 40);
-  if (k0) { select(k0); flyTo(k0, V.mpp); return toast('Vous êtes déjà sur « ' + (D.cells[k0].name || 'ce lieu') + ' »'); }
+  if (k0) { select(k0); flyTo(k0, V.mpp); return toast('Vous êtes déjà sur « ' + (balName(k0) || 'cette balade') + ' »'); }
   const snap = snapC(), k = newSpot(me.x, me.y); fxa({ k: 'pop', key: k, dur: 520 }); bump('#visit'); save(); select(k);
-  toast('📍 Lieu créé à votre position : nommez-le', () => { restoreSnap(snap); save(); draw(); renderPanel(); });
+  toast('📍 Balade créée à votre position : nommez-la', () => { restoreSnap(snap); save(); draw(); renderPanel(); });
 }
 /* ===== Risques éphémères : un repère « danger » reste 24 h ; en passant à moins de 45 m, une fenêtre demande s'il est toujours là.
    Oui : il reste 24 h de plus. Non : il disparaît. Un risque marqué « permanent » (route, troupeau…) ne disparaît jamais. ===== */
@@ -1333,6 +1337,7 @@ let NG = { sig: '', G: [] };
 function netGroups() {
   const ps = (D.paths || []).filter(p => p.pts.length >= 2), sig = ps.length + ':' + ps.map(p => p.id + p.pts.length + (p.name || '') + p.pts[0][0] + p.pts[p.pts.length - 1][1]).join('|') + ':' + (D.marks || []).length + ':' + Object.keys(D.cells).length + ':' + comm.size;
   if (sig === NG.sig) return NG.G;
+  CGM.clear();
   const par = ps.map((_, i) => i), f = i => par[i] === i ? i : (par[i] = f(par[i])), u = (a, b) => { a = f(a); b = f(b); if (a !== b) par[a] = b; };
   const key = q => q[0].toFixed(1) + ',' + q[1].toFixed(1), vm = new Map(), BB = ps.map(pathBB);
   ps.forEach((p, i) => p.pts.forEach(q => { const k = key(q); if (vm.has(k)) u(i, vm.get(k)); else vm.set(k, i); }));
@@ -1728,7 +1733,7 @@ $('#visit').onclick = addLieu;
 /* ===== Menu, import / export, toast ===== */
 const bump = s => { const b = $(s); if (!b || RMO.matches) return; b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); };
 let tt; function toast(m, undo) { $('#tm').textContent = m; $('#tu').hidden = !undo; $('#tu').onclick = () => { undo && undo(); $('#toast').classList.remove('show'); }; { const el = $('#toast'); el.classList.remove('show'); void el.offsetWidth; el.classList.add('show'); } clearTimeout(tt); tt = setTimeout(() => $('#toast').classList.remove('show'), undo ? 7000 : 3500); }
-$('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(rec).length, nm = (D.marks || []).length, np = (D.paths || []).length; $('#info').textContent = `${nl} lieu${nl > 1 ? 'x' : ''} · ${nm} repère${nm > 1 ? 's' : ''} · ${np} sentier${np > 1 ? 's' : ''} dans le carnet`; $('#menu').classList.add('open'); };
+$('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(rec).length, nm = (D.marks || []).length, np = (D.paths || []).length; $('#info').textContent = `${nl} balade${nl > 1 ? 's' : ''} · ${nm} repère${nm > 1 ? 's' : ''} · ${np} sentier${np > 1 ? 's' : ''} dans le carnet`; $('#menu').classList.add('open'); };
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 $('#mc').onclick = $('#mx').onclick = () => $('#menu').classList.remove('open'); $('#menu').onclick = e => { if (e.target.id === 'menu') $('#menu').classList.remove('open'); };
@@ -1797,8 +1802,35 @@ let lsort = 'recent';
 const ago = d => { const n = Math.round((new Date(today() + 'T00:00') - new Date(d + 'T00:00')) / 864e5); return n <= 0 ? "aujourd'hui" : n === 1 ? 'hier' : n < 31 ? 'il y a ' + n + ' j' : fmtD(d); };
 /* ===== Lieux et balades fusionnés : une balade = ses sentiers + le ou les lieux à moins de 400 m (sorties, photos, notes) ===== */
 const LINK_M = 400;
-function cellGroup(k) {      // la balade (sentiers) rattachée à un lieu : celle de ses sorties guidées, sinon le réseau le plus proche
-  const c = D.cells[k], G = balGroups(); if (!G.length) return null;
+/* Une balade = un seul objet : ses sentiers + sa fiche (sorties, photos, notes), un seul nom, un seul marqueur.
+   Des sentiers sans fiche en reçoivent une, posée au milieu du plus long tronçon ; plusieurs fiches sur les mêmes sentiers sont réunies. */
+let syncing = false;
+function syncBal() {
+  if (syncing || P.on) return false; syncing = true; let ch = false;
+  try {
+    const G = balGroups(), by = new Map(); if (!G.length) return false;
+    Object.keys(D.cells).forEach(k => { if (!rec(D.cells[k]) || D.cells[k].x == null) return; const g = cellGroup0(k, G); if (g) (by.get(g) || by.set(g, []).get(g)).push(k); });
+    G.forEach(g => { let ks = by.get(g) || [];
+      if (!ks.length) { const q = g.main.pts[g.main.pts.length >> 1]; ks = [newSpot(q[0], q[1])]; ch = true; }
+      ks.sort((a, b) => cnt(D.cells[b]) - cnt(D.cells[a]) || (D.cells[b].ph || []).length - (D.cells[a].ph || []).length);
+      const k0 = ks[0], c0 = D.cells[k0];
+      ks.slice(1).forEach(k => { const c = D.cells[k]; c0.v.push(...c.v); c0.ph = [...(c0.ph || []), ...(c.ph || [])];
+        c0.note = [c0.note, c.note].filter(t => (t || '').trim()).join('\n'); if (!(c0.name || '').trim() && c.name) c0.name = c.name;
+        if (sel === k) sel = k0; if (hereK === k) hereK = k0; if (BR.k === k) BR.k = k0; delete D.cells[k]; ch = true; });
+      const cn = (c0.name || '').trim();
+      if (!g.auto && cn !== g.name) { if (cn && !(c0.note || '').includes(cn)) c0.note = ((c0.note || '').trim() ? c0.note.trim() + '\n' : '') + 'Ancien nom : ' + cn; c0.name = g.name; ch = true; }
+      else if (g.auto && cn) { g.paths.forEach(p => p.name = cn.slice(0, 60)); NG.sig = ''; ch = true; } });
+  } finally { syncing = false; }
+  return ch;
+}
+function setBalName(g, nm) {      // renommer une balade depuis sa fiche : ses sentiers et ses sorties guidées suivent
+  nm = nm.trim().slice(0, 60); if (!nm || !g) return; const old = g.k; g.paths.forEach(p => p.name = nm);
+  Object.values(D.cells).forEach(c => c.v.forEach(v => { if (v.bal && gkey(v.bal) === old) v.bal = nm; })); NG.sig = ''; CGM.clear();
+}
+const balName = k => { const c = D.cells[k]; if (c && (c.name || '').trim()) return c.name.trim(); const g = cellGroup(k); return g ? g.name : ''; };
+function cellGroup(k) { const G = balGroups(); if (CGM.has(k)) return CGM.get(k); const g = cellGroup0(k, G); CGM.set(k, g); return g; }
+function cellGroup0(k, G) {      // les sentiers rattachés à une fiche : ceux de ses sorties guidées, sinon le réseau le plus proche (≤ 400 m)
+  const c = D.cells[k]; if (!G.length) return null;
   const by = new Map(); (c ? c.v : []).forEach(v => { const g = v.bal && G.find(x => x.k === gkey(v.bal)); if (g) by.set(g, (by.get(g) || 0) + 1); });
   if (by.size) return [...by].sort((a, b) => b[1] - a[1])[0][0];
   const p = c && c.x != null ? [c.x, c.y] : ctr(k); let best = null, bd = LINK_M;
@@ -1943,8 +1975,7 @@ function drawPaths(sx, sy) {
   if (jpts.length) { g.save(); g.beginPath(); const R = w * 4 + 8; jpts.forEach(([x, y]) => { g.moveTo(sx(x) + R, sy(y)); g.arc(sx(x), sy(y), R, 0, 7); }); g.clip(); layers([all], true); g.restore(); }
   if (P.on) ps.forEach(p => p.pts.forEach(([x, y], i) => { const e = i === 0 || i === p.pts.length - 1, j = cnt.get(x + ',' + y) > 1, hs = ED.on && p.id === P.sel, dr = ED.drag && ED.drag.p === p && ED.drag.i === i; g.beginPath(); g.arc(sx(x), sy(y), dr ? 11 : hs ? (j ? 9 : 7.5) : ED.on ? (j ? 7 : 4.5) : j ? 6 : e ? 4.5 : 3, 0, 7); g.fillStyle = j ? '#fff6e0' : p.id === P.sel ? '#e3c071' : '#f1e6c9'; g.fill(); g.lineWidth = j ? 2.5 : 1.5; g.strokeStyle = j ? '#e3c071' : '#3a2a1a'; g.stroke(); }));
   if (ED.on && ED.seg) { const a = ED.seg.p.pts[ED.seg.i - 1], b = ED.seg.p.pts[ED.seg.i]; if (a && b) { g.save(); g.setLineDash([8, 6]); g.lineCap = 'round'; g.lineWidth = w + 4; g.strokeStyle = 'rgba(255,95,80,.9)'; g.beginPath(); g.moveTo(sx(a[0]), sy(a[1])); g.lineTo(sx(b[0]), sy(b[1])); g.stroke(); g.restore(); } }
-  if (fa > .6 && V.mpp < 12) { g.font = '700 12px system-ui,sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineWidth = 4; g.lineJoin = 'round';
-    netGroups().filter(gr => !gr.auto && ps.includes(gr.main)).map(gr => ({ pts: gr.main.pts, name: gr.name })).forEach(p => { const m = p.pts[p.pts.length >> 1], x = sx(m[0]), y = sy(m[1]) - 10 - w / 2; g.strokeStyle = 'rgba(20,14,8,.85)'; g.strokeText(p.name, x, y); g.fillStyle = '#fff6e0'; g.fillText(p.name, x, y); }); }
+  /* le nom de la balade s'affiche sous son marqueur (voir draw) */
   g.globalAlpha = 1;
   if (P.start) { const x = sx(P.start[0]), y = sy(P.start[1]); g.beginPath(); g.arc(x, y, 10, 0, 7); g.lineWidth = 3; g.strokeStyle = 'rgba(255,255,255,.9)'; g.stroke(); g.beginPath(); g.arc(x, y, 5, 0, 7); g.fillStyle = 'rgba(255,120,40,.9)'; g.fill(); }
   g.restore();
@@ -2190,7 +2221,7 @@ $('#pll').onclick = e => { const rn = e.target.closest('[data-ren]'); if (rn) { 
 /* ----- Lisser un sentier existant (édition) ----- */
 $('#pmsm').onclick = () => { const p = (D.paths || []).find(x => x.id === P.sel); if (!p) return; edBackup(); const n0 = p.pts.length, rm = simplifyPath(p, 3);
   if (!rm) return toast('Ce sentier est déjà propre : aucun point superflu'); edCommit(`〰 Sentier lissé : ${n0} → ${p.pts.length} points`); };
-$('#pt').onclick = () => { if (P.on && RC.on) recToggle(); P.on = !P.on; if (!P.on && ED.on) edToggle(false); if (P.on) { if (watch === null) startLoc(); } else { P.cur = null; P.start = null; P.sel = null; P.sa = null; P.adds = []; } pmUpdate(); draw(); };
+$('#pt').onclick = () => { if (P.on && RC.on) recToggle(); P.on = !P.on; if (!P.on && ED.on) edToggle(false); if (P.on) { if (watch === null) startLoc(); } else { P.cur = null; P.start = null; P.sel = null; P.sa = null; P.adds = []; save(); } pmUpdate(); draw(); };
 $('#pmp').onclick = addPathPt; $('#pmu').onclick = undoPathPt; $('#pme').onclick = finishPath; $('#pmd').onclick = delPath; $('#pmx').onclick = () => $('#pt').click();
 $('#pmrec').onclick = recToggle;
 $('#pmn').onclick = () => { const id = P.sel || (P.cur && P.cur.id), p = (D.paths || []).find(x => x.id === id); if (!p) return; const g = groupOf(p), nm = prompt('Nom de la balade (appliqué à tous ses tronçons)', g && !g.auto ? g.name : p.name || ''); if (nm === null) return; if (g && nm.trim()) renameGroup(g, nm); else { p.name = nm.trim().slice(0, 60); NG.sig = ''; save(); } pmUpdate(); draw(); };
@@ -2399,7 +2430,7 @@ $('#encm').addEventListener('click', e => {
 document.addEventListener('click', e => { const b = e.target.closest('[data-guide]'); if (!b) return; $('#menu').classList.remove('open'); $('#dogm').classList.remove('open'); encOpen(true); encShow(encById(b.dataset.guide)); });
 
 /* ===== Démarrage ===== */
-load();
+load(); try { if (syncBal()) save(); } catch (e) {}
 if (!Object.keys(D.cells).length && !(D.paths || []).length && !(D.marks || []).length) {      // Cartocèpe utilisé sur cet appareil (même adresse) : proposer de reprendre sentiers, repères et brouillard
   try { const old = JSON.parse(localStorage.getItem('carnet-cepes-v4') || 'null');
     if (old && ((old.paths || []).length || (old.marks || []).length) && confirm('Des sentiers et repères de Cartocèpe ont été trouvés sur cet appareil. Les récupérer dans Cartodog ?')) {
@@ -2539,7 +2570,7 @@ function longSpot(px, py) {      // appui long sur la carte : pose un point exac
   const r = cv.getBoundingClientRect(), ex = spotAt(px - r.left, py - r.top), em = markAt(px - r.left, py - r.top);
   if (ex) { select(ex); return; } if (em) { openMark(em.id); return; }
   const snap = snapC(), k = newSpot(V.cx + (px - r.left - r.width / 2) * V.mpp, V.cy - (py - r.top - r.height / 2) * V.mpp);
-  fxa({ k: 'pop', key: k, dur: 520 }); save(); try { navigator.vibrate && navigator.vibrate(60); } catch (e) {} select(k); toast('📍 Lieu posé ici : nommez-le, ou lancez une balade', () => { restoreSnap(snap); save(); draw(); renderPanel(); });
+  fxa({ k: 'pop', key: k, dur: 520 }); save(); try { navigator.vibrate && navigator.vibrate(60); } catch (e) {} select(k); toast('📍 Balade créée ici : nommez-la, ou lancez une sortie', () => { restoreSnap(snap); save(); draw(); renderPanel(); });
 }
 function navTxt(k) {
   const [x, y] = ctr(k), [la, lo] = toLL(x, y); if (!me) return la.toFixed(5) + ', ' + lo.toFixed(5);
