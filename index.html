@@ -615,6 +615,32 @@ body:has(#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#pls.open,#mkm.op
 .fco{margin:8px 2px 2px;font-size:12px;color:var(--mut)}
 .fdel{display:flex;align-items:center;gap:6px;margin:12px auto 4px;padding:7px 12px;border:1px solid rgba(194,59,59,.5);border-radius:4px;background:transparent;color:#e2806f;font-size:13px;cursor:pointer}.fdel svg{width:16px;height:16px}
 #panel .acts .btn{white-space:nowrap}
+
+/* ===== « Partir en balade » : une seule question, options discrètes ===== */
+#balm .lhd{align-items:center}#balb{font-size:24px;line-height:1;padding-bottom:3px}#balb[hidden]{display:none}
+.bdq{margin:10px 0 6px;text-align:center;font:800 11px/1 var(--num);letter-spacing:.14em;text-transform:uppercase;color:var(--ember)}
+.bdur{display:flex;align-items:center;justify-content:center;gap:14px}
+.bdst{flex:none;width:52px;height:52px;border-radius:50%;border:2px solid var(--edge);background:linear-gradient(#4d453a,#3a332b);color:#f6ead0;font:700 28px/1 var(--sans);box-shadow:inset 0 2px 0 rgba(255,255,255,.13),0 2px 0 #000;cursor:pointer}
+.bdst:active{transform:translateY(1px);box-shadow:inset 0 2px 0 rgba(255,255,255,.08)}
+.bdv{flex:1;max-width:190px;text-align:center}.bdv b{display:block;font:800 42px/1.05 var(--num);color:var(--ember2);text-shadow:2px 2px 0 #000;font-variant-numeric:tabular-nums}
+.bdv small{display:block;margin-top:3px;font-size:12.5px;color:var(--mut)}
+.bdch{display:flex;gap:6px;margin:14px 0 16px}.bdch button{flex:1;min-width:0;padding:9px 2px;border:2px solid var(--edge);border-radius:4px;background:var(--slot);color:var(--txt);font-size:13.5px;font-weight:700;white-space:nowrap;cursor:pointer}
+.bdch button.on{border-color:var(--ember);color:var(--ember2);box-shadow:inset 0 0 0 1px var(--ember),0 0 10px rgba(234,165,60,.3)}
+.bdop{border:2px solid var(--edge);border-radius:4px;background:var(--slot);box-shadow:inset 0 0 0 1px var(--rim);margin-bottom:14px}
+.bdrow{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:0;background:none;color:var(--txt);text-align:left;font:inherit}
+button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
+.bdi{flex:none;width:24px;text-align:center;font-size:17px}.bdt{flex:1;min-width:0;font-size:14px;line-height:1.3}.bdt>small:first-child{display:block;font-size:11px;color:var(--mut);letter-spacing:.03em}.bdt b{color:#fff1cf}.bdt small{color:var(--mut)}
+.bdpk{display:flex;gap:6px;overflow-x:auto;padding:0 12px 10px 46px;scrollbar-width:none;border-top:0!important}.bdpk::-webkit-scrollbar{display:none}
+.bdpk button{flex:none;padding:6px 10px;border:2px solid var(--edge);border-radius:20px;background:#14110e;color:var(--txt);font-size:13px;white-space:nowrap;cursor:pointer}.bdpk button small{color:var(--mut);margin-left:3px}
+.bdpk button.on{border-color:var(--ember);color:var(--ember2)}
+.bdgo{margin:0;padding:15px 10px;font-size:17px}
+.bdsh{display:block;margin:10px auto 0;padding:8px 12px;border:0;background:none;color:var(--mut);font-size:13.5px;cursor:pointer}.bdsh:active{color:var(--ember2)}
+
+#lp .eyb{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lpk{display:flex;align-items:baseline;gap:8px;margin:1px 0 2px}.lpk b{font:800 24px/1.1 var(--num);color:#fff1cf;text-shadow:1px 1px 0 #000}.lpk small{font-size:15px;font-weight:700;color:var(--ember2)}
+.lpk .lpn{margin-left:auto;align-self:center;padding:2px 8px;border:1px solid var(--edge);border-radius:10px;background:#14110e;font-size:12px;color:var(--mut)}
+.lps{font-size:13px;color:var(--mut)}.lpz{margin-top:3px;font-size:13px}
+#lp .pmb button{white-space:nowrap}#lpgo{flex:1.4!important}#lpn,#lpd{flex:1!important}#lpx{flex:none}
 </style></head><body>
 <header class="bar win dg"><button class="emb" id="dogav" aria-label="Profil de mon chien et journal"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></button>
   <div class="brand"><h1>Cartodog</h1><small id="ssn">Carnet de balade</small></div>
@@ -628,7 +654,7 @@ body:has(#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#pls.open,#mkm.op
   <div id="wel" class="dg" hidden><div class="eyb">Bienvenue sur Cartodog</div><h3>Cartographiez vos forêts et promenez votre chien en sécurité</h3>
     <ol><li><b>🐕 Créez le profil</b> de votre chien : photo, poids, vétérinaire</li><li><b>🥾 Tracez vos sentiers</b> en marchant ; ceux qui se touchent forment une balade</li><li><b>▶ Partez en balade</b> : choisissez une durée, l'appli propose une boucle</li><li><b>🚩 Signalez les dangers</b> : ils restent 24 h, confirmés sur place</li></ol>
     <div class="pmb"><button id="welloc">📍 Me localiser</button><button id="weldog">🐕 Mon chien</button><button id="welx" aria-label="Fermer l'accueil">✕</button></div></div>
-  <div id="lp" class="dg" hidden><div class="eyb">Balade guidée</div><div id="lpt"></div><div class="pmb"><button id="lpgo">▶ Partir</button><button id="lpn">↻ Autre boucle</button><button id="lpx" aria-label="Masquer la boucle" style="margin-left:auto">✕</button></div></div>
+  <div id="lp" class="dg" hidden><div class="eyb" id="lpe">Balade guidée</div><div id="lpt"></div><div class="pmb"><button id="lpgo">▶ Partir</button><button id="lpn" aria-label="Proposer une autre boucle">↻ Autre</button><button id="lpd" aria-label="Changer la durée ou le départ">⏱ Durée</button><button id="lpx" aria-label="Masquer la boucle">✕</button></div></div>
   <div id="rm" class="dg" hidden><div class="eyb">Poser un repère</div><div id="rmt">Touchez la carte pour poser un repère (point d'eau, danger, parking…), ou touchez un repère existant pour le modifier.</div><div class="pmb"><button id="rmg">À ma position</button><button id="rmx" aria-label="Quitter le mode repère">✕</button></div></div>
   <div id="zb"><button class="ib" id="gr" data-ic="grid" aria-label="Afficher ou cacher la grille"></button><button class="ib" id="pt" data-ic="trail" aria-label="Cartographier les sentiers"><small>Sentiers</small></button><button class="ib" id="rtb" data-ic="home" aria-label="Retour au départ ou au parking"><small>Retour</small></button><button class="ib" id="lb" data-ic="book" aria-label="Mes balades"><small>Balades</small></button><i class="sep"></i><button class="ib" id="fit" data-ic="fit" aria-label="Tout voir"><small>Tout voir</small></button><button class="ib" id="zo" data-ic="minus" aria-label="Dézoomer"></button><button class="ib" id="zi" data-ic="plus" aria-label="Zoomer"></button></div></div>
 <div id="dock"><button id="found" aria-label="Lancer ou terminer une balade">▶ Balade</button><button id="visit" data-ic="pin" aria-label="Créer une balade à ma position"><small>Nouvelle</small></button><button id="react" data-ic="flag" aria-label="Poser un repère"><small>Repère</small></button><button id="grab" aria-label="Réduire ou ouvrir la fiche">▾</button></div>
@@ -639,7 +665,7 @@ body:has(#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#pls.open,#mkm.op
 <div id="dzq"><div class="win dg"><div class="dzh"><img id="dzi" alt=""><div><small id="dzk"></small><h2 id="dzt"></h2></div></div>
   <p id="dzn" class="dzn"></p><div class="hint" id="dzm" style="padding:0 0 8px"></div><div class="dzq">Ce risque est-il toujours là ?</div>
   <button class="btn gold" id="dzy">⚠️ Oui, toujours un risque <small>(+24 h)</small></button><button class="btn" id="dzno">✅ Non, plus de risque</button><button class="btn" id="dzl">Plus tard</button></div></div>
-<div id="balm"><div class="win dg"><div class="lhd"><h2 id="balh">Partir en balade</h2><button class="ib" id="balx" aria-label="Fermer">✕</button></div><div id="balc"></div></div></div>
+<div id="balm"><div class="win dg"><div class="lhd"><button class="ib" id="balb" aria-label="Toutes les balades" hidden>‹</button><h2 id="balh">Partir en balade</h2><button class="ib" id="balx" aria-label="Fermer">✕</button></div><div id="balc"></div></div></div>
 <div id="dogm"><div class="win dg">
   <div class="lhd"><h2>Profil<small id="dgsub">Mon chien</small></h2><button class="ib" id="dgx" aria-label="Fermer">✕</button></div>
   <div class="dgtop"><label class="dgph"><input type="file" accept="image/*" id="dgf" hidden><span id="dgimg"></span><small>📷 Photo</small></label>
@@ -1452,19 +1478,31 @@ function balList() {
   const G = balGroups(), ub = (D.paths || []).filter(p => !(p.name || '').trim()).length, cnt = k => Object.values(D.cells).flatMap(c => c.v).filter(v => gkey(v.bal || '') === k).length;
   const dme = g => me ? Math.min(...g.paths.flatMap(p => p.pts).map(q => rdist(q, [me.x, me.y]))) : null;
   G.forEach(g => { g.dm = dme(g); g.n = cnt(g.k); }); G.sort((a, b) => a.dm != null && b.dm != null ? a.dm - b.dm : b.n - a.n || a.name.localeCompare(b.name, 'fr'));
+  $('#balb').hidden = true;
   $('#balh').innerHTML = `Partir en balade<small>${G.length} balade${G.length > 1 ? 's' : ''} tracée${G.length > 1 ? 's' : ''}${D.dog ? ' · avec ' + esc(D.dog) : ''}</small>`;
   $('#balc').innerHTML = `<button class="btn gold" data-free>▶ Balade libre <small>&nbsp;enregistrer sans parcours</small></button>
     <div class="mh">Mes balades</div><ul class="blul">${G.map(g => `<li data-g="${esc(g.k)}"><span class="pli">${ICO.trail}</span><span class="lt"><b>${esc(g.name)}</b><br><small>${fmtDist(g.len)} de sentiers${g.paths.length > 1 ? ' · ' + g.paths.length + ' tronçons' : ''}${g.n ? ' · faite ' + g.n + ' fois' : ''}</small></span><span class="bd">${g.dm != null ? `<b>${fmtDist(g.dm)}</b><br><small>de vous</small>` : '›'}</span></li>`).join('') || '<li class="hint" style="cursor:default">Aucune balade : tracez des sentiers (bouton 🥾 de la carte) et donnez-leur un nom. Les sentiers qui portent le même nom forment une seule balade.</li>'}</ul>` +
     (ub ? `<div class="hint">${ub} sentier${ub > 1 ? 's' : ''} sans nom : nommez-le${ub > 1 ? 's' : ''} (🥾 ▸ 📋 Mes sentiers) pour ${ub > 1 ? 'les' : 'l\''}ajouter à une balade.</div>` : '');
 }
-function balDetail(k) {
+const DURS = [30, 45, 60, 90, 120];
+function balDetail(k) {      // une seule question (combien de temps ?), le reste en options discrètes, puis un gros bouton
   const g = balGroups().find(x => x.k === k); if (!g) return balList(); BL.g = g; const st = balStart(g, BL.pk), sp = speedOf(k); BL.pk = st.park ? st.park.id : null;
-  $('#balc').innerHTML = `<button class="eback" data-back>‹ Toutes les balades</button><h3 class="bln">${esc(g.name)} <button class="blren" data-ren aria-label="Renommer la balade">✎</button></h3>${g.auto ? '<div class="hint" style="padding:0">Nom proposé automatiquement : touchez ✎ pour le changer.</div>' : ''}<div class="hint" style="padding:2px 0 8px">${fmtDist(g.len)} de sentiers · ${st.txt}</div>${st.parks.length > 1 ? `<div class="esec">Parking de départ</div><div class="echips" id="blpk">${st.parks.map(o => `<button data-pk="${o.m.id}"${o.m.id === BL.pk ? ' class="on"' : ''}>🅿 ${esc(o.name)}${o.me != null ? ` <small>${fmtDist(o.me)}</small>` : ''}</button>`).join('')}</div>` : ''}
-    <div class="esec">Combien de temps voulez-vous marcher ?</div><div class="bldur"><b id="bldv">${fmtMin(BL.min)}</b><input type="range" id="bldr" min="10" max="240" step="5" value="${BL.min}" aria-label="Durée de la balade"></div>
-    <div class="echips" id="bldc">${[20, 30, 45, 60, 90, 120].map(m => `<button data-m="${m}">${fmtMin(m)}</button>`).join('')}</div>
-    <button class="btn" data-avoid style="margin-top:8px">${sw('Contourner les dangers signalés sur le chemin', BL.avoid)}</button><div class="hint" id="blsp" style="padding:8px 0"></div><button class="btn gold" data-go>🧭 Proposer une boucle</button><button class="btn" data-share>📤 Partager cette balade</button>`;
-  const upd = () => { $('#bldv').textContent = fmtMin(BL.min); $('#blsp').textContent = spdTxt(sp) + ` → environ ${fmtDist(BL.min / 60 * sp.kmh * 1000)} à parcourir.`; }; upd();
-  $('#bldr').oninput = e => { BL.min = +e.target.value; upd(); };
+  const ndz = balNet(g, st.q).dzAll.length, pk = st.parks.find(o => o.m.id === BL.pk);
+  $('#balb').hidden = false;
+  $('#balh').innerHTML = `${esc(g.name)}<small>${fmtDist(g.len)} de sentiers${g.paths.length > 1 ? ' · ' + g.paths.length + ' tronçons' : ''}</small>`;
+  $('#balc').innerHTML = `<div class="bdq">Combien de temps ?</div>
+    <div class="bdur"><button class="bdst" data-step="-5" aria-label="5 minutes de moins">−</button><div class="bdv"><b id="bldv"></b><small id="blsp"></small></div><button class="bdst" data-step="5" aria-label="5 minutes de plus">+</button></div>
+    <div class="bdch" id="bldc">${DURS.map(m => `<button data-m="${m}">${fmtMin(m)}</button>`).join('')}</div>
+    <div class="bdop">
+      <div class="bdrow"><span class="bdi">🅿</span><span class="bdt"><small>Départ et retour</small>${st.parks.length > 1 ? '<b>Choisissez votre parking</b>' : pk ? `<b>${esc(pk.name)}</b>${pk.d > 15 ? ` <small>à ${fmtDist(pk.d)} du sentier</small>` : ''}` : `<b>${me ? 'Votre position' : 'Début du plus long sentier'}</b> <small>aucun parking 🅿 à moins de 500 m</small>`}</span></div>
+      ${st.parks.length > 1 ? `<div class="bdpk" id="blpk">${st.parks.map(o => `<button data-pk="${o.m.id}"${o.m.id === BL.pk ? ' class="on"' : ''}>${esc(o.name)}${o.me != null ? ` <small>${fmtDist(o.me)}</small>` : ''}</button>`).join('')}</div>` : ''}
+      ${ndz ? `<button class="bdrow" data-avoid><span class="bdi">⚠️</span><span class="bdt"><small>${ndz} danger${ndz > 1 ? 's' : ''} signalé${ndz > 1 ? 's' : ''} sur ces sentiers</small><b>Les contourner</b></span><em class="sw${BL.avoid ? ' on' : ''}" aria-hidden="true"></em></button>` : ''}
+    </div>
+    <button class="btn gold bdgo" data-go>🧭 <span id="blgo"></span></button>
+    <button class="bdsh" data-share>📤 Partager cette balade</button>`;
+  const upd = () => { $('#bldv').textContent = fmtMin(BL.min); $('#blsp').textContent = `≈ ${fmtDist(BL.min / 60 * sp.kmh * 1000)} · allure ${sp.kmh.toFixed(1).replace('.', ',')} km/h${sp.n ? ', apprise ici' : sp.all ? ', apprise de vos sorties' : ''}`;
+    $('#blgo').textContent = 'Proposer une boucle de ' + fmtMin(BL.min); document.querySelectorAll('#bldc button').forEach(b => b.classList.toggle('on', +b.dataset.m === BL.min)); };
+  BL.upd = upd; upd();
 }
 function balPropose() {
   const g = BL.g, st = balStart(g, BL.pk), sp = speedOf(g.k), L = BL.min / 60 * sp.kmh * 1000, net = balNet(g, st.q), con = net.off > 3 ? net.off : 0;
@@ -1480,9 +1518,12 @@ function balShow() {
 function lpUi() {
   const lp = $('#lp'); if (!BL.poly) { lp.hidden = true; return draw(); } lp.hidden = false; const l = BL.loops[BL.i], min = Math.round(l.tot / 1000 / BL.sp.kmh * 60), rp = Math.round(l.rep / l.tot * 100);
   const short = l.tot < BL.L * .8, nm = a => [...new Set(a.map(m => MK[m.t][0]))].join(', '), av = BL.dzAll.filter(m => !l.dz.includes(m));
-  const dzt = l.dz.length ? `<br><small class="lim">⚠️ Passe près de : ${esc(nm(l.dz))}${BL.avoid ? ' (impossible à contourner)' : ''}</small>` : av.length ? `<br><small class="eon">✅ Contourne ${av.length} danger${av.length > 1 ? 's' : ''} signalé${av.length > 1 ? 's' : ''} : ${esc(nm(av))}</small>` : '';
-  $('#lpt').innerHTML = (BR.on && BR.bal ? `<b>${esc(BL.g.name)}</b> · ${fmtDist(BR.m)} / ${fmtDist(l.tot)}<br><small>Suivez le tracé doré · les flèches indiquent le sens</small>`
-    : `<b>${esc(BL.g.name)}</b> · ${fmtDist(l.tot)} · ≈ ${fmtMin(Math.max(5, Math.round(min / 5) * 5))}<br><small>${BL.loops.length > 1 ? `Boucle ${BL.i + 1}/${BL.loops.length} · ` : ''}${BL.park ? '🅿 ' + esc(BL.pname) + ' → ' + esc(BL.pname) : 'retour au point de départ'}${rp >= 10 ? ` · ${rp} % en aller-retour` : ''}${short ? ` · ⚠️ le réseau ne permet pas plus long : refaites la boucle ou tracez d'autres sentiers` : ''}</small>`) + dzt;
+  const dzt = l.dz.length ? `<div class="lpz lim">⚠️ Passe près : ${esc(nm(l.dz))}${BL.avoid ? ' (impossible à éviter)' : ''}</div>` : av.length ? `<div class="lpz eon">✅ Évite : ${esc(nm(av))}</div>` : '';
+  $('#lpe').textContent = BL.g.name;
+  $('#lpt').innerHTML = BR.on && BR.bal ? `<div class="lpk"><b>${fmtDist(BR.m)}</b><small>/ ${fmtDist(l.tot)}</small></div><div class="lps">Suivez le tracé doré, les flèches indiquent le sens</div>` + dzt
+    : `<div class="lpk"><b>${fmtDist(l.tot)}</b><small>≈ ${fmtMin(Math.max(5, Math.round(min / 5) * 5))}</small>${BL.loops.length > 1 ? `<span class="lpn">${BL.i + 1}/${BL.loops.length}</span>` : ''}</div>
+      <div class="lps">${BL.park ? '🅿 ' + esc(BL.pname) : '📍 Retour au point de départ'}${rp >= 30 ? ` · ${rp} % en aller-retour` : ''}</div>${short ? '<div class="lpz lim">Les sentiers ne permettent pas plus long</div>' : ''}` + dzt;
+  $('#lpd').hidden = !!BR.on;
   $('#lpgo').hidden = $('#lpn').hidden = !!BR.on; $('#lpn').hidden = BR.on || BL.loops.length < 2; draw();
 }
 function drawLoop(sx, sy) {
@@ -1503,19 +1544,21 @@ function balArrive() {      // de retour au départ après une bonne partie de l
   if (!BL.poly || BL.arr || !BR.on || !BR.bal || !me || BR.m < BL.tot * .6) return;
   if (rdist([me.x, me.y], BL.poly[0]) < 40) { BL.arr = true; toast('🏁 De retour au départ : touchez ⏹ pour terminer la balade'); try { navigator.vibrate && navigator.vibrate([100, 60, 100]); } catch (e) {} }
 }
-$('#balx').onclick = balClose; $('#balm').onclick = e => { if (e.target.id === 'balm') return balClose();
+$('#balx').onclick = balClose; $('#balb').onclick = () => balList(); $('#balm').onclick = e => { if (e.target.id === 'balm') return balClose();
   if (e.target.closest('[data-free]')) { balClose(); BL.poly = null; lpUi(); return brStart(); }
   if (e.target.closest('[data-back]')) return balList();
-  const m = e.target.closest('[data-m]'); if (m) { BL.min = +m.dataset.m; $('#bldr').value = BL.min; return $('#bldr').oninput({ target: $('#bldr') }); }
+  const m = e.target.closest('[data-m]'); if (m) { BL.min = +m.dataset.m; return BL.upd(); }
+  const stp = e.target.closest('[data-step]'); if (stp) { BL.min = Math.max(10, Math.min(240, BL.min + +stp.dataset.step)); return BL.upd(); }
   const pk = e.target.closest('[data-pk]'); if (pk) { BL.pk = pk.dataset.pk; return balDetail(BL.g.k); }
   if (e.target.closest('[data-ren]')) { const v = prompt('Nom de la balade (appliqué à tous ses tronçons)', BL.g.auto ? '' : BL.g.name); if (v && v.trim()) { renameGroup(BL.g, v); balDetail(gkey(v.trim().slice(0, 60))); } return; }
-  if (e.target.closest('[data-avoid]')) { BL.avoid = !BL.avoid; try { localStorage.setItem('cartodog-avoid', BL.avoid ? '1' : '0'); } catch (x) {} e.target.closest('[data-avoid]').innerHTML = sw('Contourner les dangers signalés sur le chemin', BL.avoid); return; }
+  if (e.target.closest('[data-avoid]')) { BL.avoid = !BL.avoid; try { localStorage.setItem('cartodog-avoid', BL.avoid ? '1' : '0'); } catch (x) {} e.target.closest('[data-avoid]').querySelector('.sw').classList.toggle('on', BL.avoid); return; }
   if (e.target.closest('[data-share]')) return balShare(BL.g);
   if (e.target.closest('[data-go]')) return balPropose();
   const li = e.target.closest('li[data-g]'); if (li) { BL.pk = null; balDetail(li.dataset.g); } };
 $('#lpn').onclick = () => { BL.i = (BL.i + 1) % BL.loops.length; balShow(); };
 $('#lpgo').onclick = () => { BR.bal0 = BL.g.name; brStart(); lpUi(); };
 $('#lpx').onclick = () => { BL.poly = null; lpUi(); };
+$('#lpd').onclick = () => { if (!BL.g) return; BL.poly = null; lpUi(); openBal(BL.g.k); };
 
 /* ===== Écran allumé (Wake Lock) : la page et le GPS ne tournent que si l'écran reste actif ===== */
 var wlk = null, wakeOn = (() => { try { return localStorage.getItem('cartodog-wake') !== '0'; } catch (e) { return true; } })();
