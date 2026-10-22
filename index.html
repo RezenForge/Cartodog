@@ -1529,7 +1529,7 @@ function balPropose() {
   BL.loops = loops.map(l => ({ pts: con ? [st.q, ...l.pts, st.q] : l.pts, tot: l.tot + 2 * con, rep: l.rep, dz: l.dz })); BL.i = 0; BL.park = st.park; BL.pname = st.pname; BL.sp = sp; BL.L = L; BL.arr = false; BL.wait = false; balClose(); balShow();
 }
 function balShow() {
-  const l = BL.loops[BL.i]; if (!l) return; BL.poly = l.pts; BL.tot = l.tot; fxa({ k: 'loop', key: 0, dur: 1100 });
+  const l = BL.loops[BL.i]; if (!l) return; BL.poly = l.pts; BL.tot = l.tot; FX = FX.filter(f => f.k !== 'loop'); fxa({ k: 'loop', key: 0, dur: Math.max(3200, Math.min(7000, 2400 + l.tot)), delay: 650 });      // le tracé se dessine à allure régulière, après le cadrage
   const xs = l.pts.map(q => q[0]), ys = l.pts.map(q => q[1]), W = cv.clientWidth, H = cv.clientHeight;
   flyXY((Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2 - (Math.max(...ys) - Math.min(...ys)) * .12, Math.max(.8, (Math.max(...xs) - Math.min(...xs)) / (W * .85), (Math.max(...ys) - Math.min(...ys)) / (H * .55)), 650); lpUi();
 }
@@ -1555,13 +1555,21 @@ function drawLoop(sx, sy) {
   if (!BL.poly || BL.poly.length < 2) return; const pts = BL.poly, rv = FX.length && fxOf('loop', 0), rp = rv ? Math.min(1, Math.max(0, fxP(rv))) : 1;
   g.save(); g.lineCap = 'round'; g.lineJoin = 'round'; g.beginPath(); pts.forEach((q, i) => i ? g.lineTo(sx(q[0]), sy(q[1])) : g.moveTo(sx(q[0]), sy(q[1])));
   let Lpx = 0; for (let i = 1; i < pts.length; i++) Lpx += Math.hypot(sx(pts[i][0]) - sx(pts[i - 1][0]), sy(pts[i][1]) - sy(pts[i - 1][1]));
-  const dash = rp < 1 ? [Lpx * EZ.out(rp), Lpx + 20] : [];
+  const ep = rp < 1 ? (rp < .5 ? 2 * rp * rp * (1.5 - rp) : 1 - 2 * (1 - rp) ** 2 * (rp - .5)) : 1, Ld = Lpx * Math.max(0, ep);      // presque linéaire, adouci au début et à la fin
+  const dash = rp < 1 ? [Ld, Lpx + 20] : [];
   g.setLineDash(dash); g.lineWidth = 10; g.strokeStyle = 'rgba(14,11,8,.6)'; g.stroke(); g.lineWidth = 5.5; g.strokeStyle = '#f4c862'; g.stroke(); g.setLineDash([]);
-  if (rp >= 1) { let acc = 0, nx = 60; g.fillStyle = '#2a1806';      // flèches de sens tous les ~90 px
+  { let acc = 0, nx = 60; g.fillStyle = '#2a1806';      // flèches de sens tous les ~90 px (apparaissent derrière le tracé qui avance)
     for (let i = 1; i < pts.length; i++) { const ax = sx(pts[i - 1][0]), ay = sy(pts[i - 1][1]), bx = sx(pts[i][0]), by = sy(pts[i][1]), d = Math.hypot(bx - ax, by - ay); if (!d) continue;
-      while (acc + d >= nx) { const t = (nx - acc) / d, x = ax + (bx - ax) * t, y = ay + (by - ay) * t, a = Math.atan2(by - ay, bx - ax); g.save(); g.translate(x, y); g.rotate(a); g.beginPath(); g.moveTo(4, 0); g.lineTo(-3, -3.4); g.lineTo(-3, 3.4); g.closePath(); g.fill(); g.restore(); nx += 90; }
+      while (acc + d >= nx && nx <= Ld - 8) { const t = (nx - acc) / d, x = ax + (bx - ax) * t, y = ay + (by - ay) * t, a = Math.atan2(by - ay, bx - ax); g.save(); g.translate(x, y); g.rotate(a); g.beginPath(); g.moveTo(4, 0); g.lineTo(-3, -3.4); g.lineTo(-3, 3.4); g.closePath(); g.fill(); g.restore(); nx += 90; }
       acc += d; } }
-  const lc = BL.loops[BL.i]; if (lc && lc.dz) lc.dz.forEach(m => { g.beginPath(); g.arc(sx(m.x), sy(m.y) - 14, 24, 0, 7); g.lineWidth = 3.5; g.setLineDash([6, 5]); g.strokeStyle = '#ff5f4a'; g.stroke(); g.setLineDash([]); });
+  if (rp < 1 && rp >= 0) { let acc = 0, tx = sx(pts[0][0]), ty = sy(pts[0][1]), ang = 0;      // la patte qui trace la boucle
+    for (let i = 1; i < pts.length; i++) { const ax = sx(pts[i - 1][0]), ay = sy(pts[i - 1][1]), bx = sx(pts[i][0]), by = sy(pts[i][1]), d = Math.hypot(bx - ax, by - ay);
+      if (acc + d >= Ld) { const t = d ? (Ld - acc) / d : 0; tx = ax + (bx - ax) * t; ty = ay + (by - ay) * t; ang = Math.atan2(by - ay, bx - ax); break; } acc += d; tx = bx; ty = by; }
+    const pulse = 1 + .12 * Math.sin(performance.now() / 120);
+    g.beginPath(); g.arc(tx, ty, 18 * pulse, 0, 7); g.fillStyle = 'rgba(244,200,98,.28)'; g.fill();
+    g.beginPath(); g.arc(tx, ty, 12, 0, 7); g.fillStyle = '#f4c862'; g.fill(); g.lineWidth = 3; g.strokeStyle = '#0e0b08'; g.stroke();
+    g.font = '13px system-ui,sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('🐾', tx, ty + 1); }
+  const lc = BL.loops[BL.i]; if (rp >= 1 && lc && lc.dz) lc.dz.forEach(m => { g.beginPath(); g.arc(sx(m.x), sy(m.y) - 14, 24, 0, 7); g.lineWidth = 3.5; g.setLineDash([6, 5]); g.strokeStyle = '#ff5f4a'; g.stroke(); g.setLineDash([]); });
   const x = sx(pts[0][0]), y = sy(pts[0][1]); g.beginPath(); g.arc(x, y, 9, 0, 7); g.fillStyle = '#9ee070'; g.fill(); g.lineWidth = 3; g.strokeStyle = '#0e0b08'; g.stroke();
   g.restore();
 }
@@ -1819,7 +1827,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.22-6';
+const APP_V = '2026.10.22-7';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
