@@ -1815,9 +1815,21 @@ $('#visit').onclick = addLieu;
 /* ===== Menu, import / export, toast ===== */
 const bump = s => { const b = $(s); if (!b || RMO.matches) return; b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); };
 let tt; function toast(m, undo) { $('#tm').textContent = m; $('#tu').hidden = !undo; $('#tu').onclick = () => { undo && undo(); $('#toast').classList.remove('show'); }; { const el = $('#toast'); el.classList.remove('show'); void el.offsetWidth; el.classList.add('show'); } clearTimeout(tt); tt = setTimeout(() => $('#toast').classList.remove('show'), undo ? 7000 : 3500); }
-$('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(rec).length, nm = (D.marks || []).length, np = (D.paths || []).length; $('#info').textContent = `${nl} balade${nl > 1 ? 's' : ''} · ${nm} repère${nm > 1 ? 's' : ''} · ${np} sentier${np > 1 ? 's' : ''} dans le carnet`; $('#menu').classList.add('open'); };
+$('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(rec).length, nm = (D.marks || []).length, np = (D.paths || []).length; $('#info').textContent = `Version ${APP_V} · ${nl} balade${nl > 1 ? 's' : ''} · ${nm} repère${nm > 1 ? 's' : ''} · ${np} sentier${np > 1 ? 's' : ''} dans le carnet`; $('#menu').classList.add('open'); };
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
+/* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
+const APP_V = '2026.10.22-6';
+async function checkUpdate(manual) {
+  if (location.protocol === 'file:') return;
+  try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
+    if (!m || m[1] === APP_V) { if (manual) toast('✅ Cartodog est à jour (version ' + APP_V + ')'); return; }
+    if (new URLSearchParams(location.search).get('maj') === m[1]) return manual && toast('🆕 La version ' + m[1] + ' est en ligne : fermez complètement l\u2019appli puis rouvrez-la');
+    if (BR.on || RC.on || P.on) return toast('🆕 Nouvelle version disponible : elle s’installera après votre sortie');
+    toast('🆕 Mise à jour de Cartodog…'); save(); setTimeout(() => { const u = new URL(location.href); u.searchParams.set('maj', m[1]); location.replace(u.href); }, 600);
+  } catch (e) { if (manual) toast('Impossible de vérifier les mises à jour (connexion ?)'); }
+}
+setTimeout(checkUpdate, 2500); document.addEventListener('visibilitychange', () => { if (!document.hidden) checkUpdate(); });
 $('#mc').onclick = $('#mx').onclick = () => $('#menu').classList.remove('open'); $('#menu').onclick = e => { if (e.target.id === 'menu') $('#menu').classList.remove('open'); };
 $('#imp').onclick = () => $('#fi').click();
 $('#fi').onchange = e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { importData(JSON.parse(r.result)); $('#menu').classList.remove('open'); } catch (x) { toast('Fichier illisible'); } }; r.readAsText(f); e.target.value = ''; };
