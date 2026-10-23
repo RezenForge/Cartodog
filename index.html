@@ -835,6 +835,9 @@ input,textarea,[contenteditable]{-webkit-user-select:text;user-select:text;-webk
 #pmt .pmhelp{margin-top:2px;font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block!important}
 #pm .pmb{margin-top:8px}#pm .pmb button{flex:1}#pm .pmb button[hidden]{display:none}#pm #pmd{flex:none;min-width:48px}
 #pmrec{background:linear-gradient(#c84a32,#8e2c1c)!important;color:#fff!important;font-size:15px!important;height:48px!important}#pmrec.rec{background:linear-gradient(#5a4a30,#3f331f)!important}
+
+.hbth{flex:none;width:44px;height:44px;border-radius:50%;object-fit:cover;border:2.5px solid #8b857a;box-shadow:0 0 0 2px #0e0b08}
+.hbth.r1{border-color:#5f7350}.hbth.r2{border-color:#87481f}.hbth.r3{border-color:#466f24}.hbth.r4{border-color:#a87a0e}
 </style></head><body>
 <header class="bar win dg"><button class="emb" id="dogav" aria-label="Profil de mon chien et journal"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></button>
   <div class="brand"><h1>Cartodog</h1><small id="ssn">Carnet de balade</small></div>
@@ -1075,7 +1078,14 @@ var SPOT = { min: 24, max: 46, ref: 30 };      // taille de l'icône en px : sui
 var spotSz = () => Math.max(SPOT.min, Math.min(SPOT.max, SPOT.ref / (V.mpp * Math.cos(toLL(V.cx, V.cy)[0] * Math.PI / 180))));
 var spSvg = on => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><g${on ? '' : ' opacity=".72"'}><path d="M16 31C16 31 5.2 20.6 5.2 12.8a10.8 10.8 0 0 1 21.6 0C26.8 20.6 16 31 16 31z" fill="${on ? '#c78a2e' : '#8c867a'}" stroke="#1e140a" stroke-width="1.8" stroke-linejoin="round"/><circle cx="16" cy="12.8" r="8" fill="${on ? '#f6e3b4' : '#d8d2c4'}" stroke="#1e140a" stroke-opacity=".5"/><g transform="translate(9.6 6.4) scale(.4)">${PAWP(on ? '#6b3f17' : '#5d574c', 'none', 0)}</g></g></svg>`;
 var CL = [];      // groupes de repères affichés (pour le toucher)
-const pinR = () => Math.round(Math.max(15, Math.min(21, 15 + (14 - Math.min(14, Math.log2(Math.max(1, V.mpp)) * 3.2)) * .45)));
+const pinR = () => Math.round(Math.max(15, Math.min(21, 15 + (14 - Math.min(14, Math.log2(Math.max(1, V.mpp)) * 3.2)) * .45)) + (V.mpp < 3 ? 6 : V.mpp < 6 ? 3 : 0));      // grossit en zoom rapproché
+/* Indicateurs d'une balade (danger en cours, eau, parking, WC…) : repères à moins de 60 m de ses sentiers, ou 250 m de son repère ; recalculés seulement si les repères ou les sentiers changent */
+let BIC = { sig: '', m: new Map() };
+function balInd(k) { const sig = (D.marks || []).length + '|' + (NG.sig || '') + '|' + Math.floor(Date.now() / 6e4); if (BIC.sig !== sig) BIC = { sig, m: new Map() }; if (BIC.m.has(k)) return BIC.m.get(k);
+  const c = D.cells[k], g = cellGroup(k), o = { dz: 0, water: 0, park: 0, wc: 0 }, now = Date.now();
+  (D.marks || []).forEach(m => { const t = m.t, kind = isDz(m) ? ((m.perm || !m.exp || m.exp > now) ? 'dz' : null) : t === 'water' || t === 'drink' || t === 'swim' ? 'water' : t === 'park' ? 'park' : t === 'wc' ? 'wc' : null; if (!kind) return;
+    const q = [m.x, m.y]; let near = c && c.x != null && rdist(q, [c.x, c.y]) < 250; if (!near && g) { const k2 = 60 / cosAt(m.y); near = g.paths.some(p => { const b = pathBB(p); if (m.x < b[0] - k2 || m.x > b[2] + k2 || m.y < b[1] - k2 || m.y > b[3] + k2) return false; for (let i = 1; i < p.pts.length; i++) if (segProj(q, p.pts[i - 1], p.pts[i]).d < k2) return true; return false; }); } if (near) o[kind]++; });
+  BIC.m.set(k, o); return o; }
 var SPI = {}; [['on', 1], ['off', 0]].forEach(([k, on]) => { const im = new Image(); im.onload = () => schedule(); im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(spSvg(on)); SPI[k] = im; });
 const OLDMK = { yes: 'view', chest: 'view', no: 'pin', girolle: 'pin', oak: 'shade', chat: 'shade', pine: 'shade' };      // repères venant de Cartocèpe
 const cleanMarks = a => (Array.isArray(a) ? a : []).filter(m => m && /^[\w-]+$/.test(String(m.id)) && isFinite(m.x) && isFinite(m.y)).map(m => ({ id: String(m.id), x: +m.x, y: +m.y, t: MK[m.t] ? m.t : OLDMK[m.t] || 'pin', note: String(m.note || '').slice(0, 500), d: /^\d{4}-\d\d-\d\d$/.test(m.d) ? m.d : '', perm: !!m.perm, cf: Math.max(0, Math.round(+m.cf || 0)) })).map(m => { const t = MK[m.t] && MK[m.t][2]; m.perm = m.perm && !!t; const src = a.find(x => String(x.id) === m.id); m.exp = t && !m.perm ? (isFinite(+src.exp) && +src.exp > 0 ? +src.exp : Date.now() + 864e5) : 0; return m; });
@@ -1278,6 +1288,9 @@ function draw() {
     if (n) { const bx = x + R * .78, by = cy - R * .72, br = Math.max(8, R * .36); g.beginPath(); g.arc(bx, by, br + 1.5, 0, 7); g.fillStyle = '#0e0b08'; g.fill(); g.beginPath(); g.arc(bx, by, br, 0, 7); g.fillStyle = '#2a2018'; g.fill(); g.lineWidth = 1.6; g.strokeStyle = '#e3c071'; g.stroke(); g.fillStyle = '#f6ecd2'; g.font = '800 ' + Math.round(br * 1.1) + 'px system-ui,sans-serif'; g.fillText(n > 99 ? '99+' : n, bx, by + .5); }
     if (sc !== 1) g.restore();
     const nm = mpp < 14 || isS ? balName(k) : ''; if (nm) { g.font = (isS ? '800 13px' : '700 12px') + ' system-ui,sans-serif'; g.fillStyle = isS ? '#ffd27a' : '#fff6e0'; g.strokeStyle = 'rgba(20,14,8,.92)'; g.lineWidth = 4; g.lineJoin = 'round'; const t = nm.length > 22 ? nm.slice(0, 21) + '…' : nm; g.strokeText(t, x, y + 10); g.fillText(t, x, y + 10); }
+    if (mpp < 3) { const o = balInd(k), ic = [o.dz && ['⚠', '#ff5f4a'], o.water && ['💧', '#2b8fc4'], o.park && ['🅿', '#3f64a8'], o.wc && ['WC', '#5b6fa8']].filter(Boolean);      // de près : petits indicateurs sous le nom
+      if (ic.length) { const s0 = 18, gap = 4, tw = ic.length * s0 + (ic.length - 1) * gap; let ix = x - tw / 2 + s0 / 2; const iy = y + 26; ic.forEach(([t, col]) => { g.beginPath(); g.arc(ix, iy, s0 / 2 + 1.5, 0, 7); g.fillStyle = '#0e0b08'; g.fill(); g.beginPath(); g.arc(ix, iy, s0 / 2, 0, 7); g.fillStyle = t === '⚠' ? '#3a1410' : '#1b1814'; g.fill(); g.lineWidth = 1.6; g.strokeStyle = col; g.stroke(); g.fillStyle = t === '⚠' ? '#ff8a6e' : '#f1e6c9'; g.font = (t === 'WC' ? '800 8px' : '11px') + ' system-ui,sans-serif'; g.fillText(t, ix, iy + .5); ix += s0 + gap; });
+        if (o.dz) { const pl = .5 + .5 * Math.sin(performance.now() / 300); g.beginPath(); g.arc(x - tw / 2 + s0 / 2, iy, s0 / 2 + 3 + pl * 2, 0, 7); g.strokeStyle = `rgba(255,95,74,${.5 - pl * .3})`; g.lineWidth = 2; g.stroke(); } } }
     if (upr) g.restore(); });
   drawMarks(sx, sy, UP);
   if (commOn) drawComm(1, sx, sy, W, x0, x1, y0, y1, mpp);
@@ -1830,14 +1843,14 @@ function balStart(g, pkId) {      // départ : le parking choisi (ou le plus pro
 function balOpen() { if (watch === null) startLoc(); balList(); $('#balm').classList.add('open'); }
 const balClose = () => { $('#balm').classList.remove('open', 'sheet'); BL.hl = null; draw(); };
 function balList() {      // le hub Balades : partir (libre ou en boucle), ouvrir une fiche, tracer des sentiers
-  const all = walkPlaces(), dme = x => { if (!me) return null; const pts = x.g ? x.g.paths.flatMap(p => p.pts) : [ctr(x.k)]; return Math.min(...pts.map(q => rdist(q, [me.x, me.y]))); };
-  all.forEach(x => x.dm = dme(x)); all.sort((a, b) => a.dm != null && b.dm != null ? a.dm - b.dm : b.last.localeCompare(a.last) || b.n - a.n);
+  const all = walkPlaces(), ref = me ? [me.x, me.y] : [V.cx, V.cy], dme = x => { const pts = x.g ? x.g.paths.flatMap(p => p.pts) : [ctr(x.k)]; return Math.min(...pts.map(q => rdist(q, ref))); };
+  all.forEach(x => x.dm = dme(x)); all.sort((a, b) => a.dm - b.dm || b.n - a.n);      // les plus proches d'abord (de vous, sinon du centre de la carte)
   $('#balb').hidden = $('#bals').hidden = true; $('#balm').classList.remove('sheet'); BL.hl = null;
   $('#balh').innerHTML = `Balades<small>${all.length ? all.length + ' balade' + (all.length > 1 ? 's' : '') + ' · ' + all.reduce((a, x) => a + x.n, 0) + ' sorties' : 'Votre carnet de balades'}${D.dog ? ' · avec ' + esc(D.dog) : ''}</small>`;
   $('#balc').innerHTML = `<button class="btn gold hbfree" data-free>▶ Sortie libre <small>enregistrer sans parcours</small></button>
     ${all.length > 6 ? '<input id="hbq" type="search" placeholder="Rechercher une balade…">' : ''}
-    <ul class="blul hbl">${all.map(x => `<li ${x.g ? `data-g="${esc(x.g.k)}"` : `data-k="${x.k}"`}>${crest(x.rk, 30)}<span class="lt"><b>${esc(x.label)}</b><br><small>${x.g ? '🥾 ' + fmtDist(x.g.len) : '📍 sans sentier'}${x.n ? ' · ' + x.n + ' sortie' + (x.n > 1 ? 's' : '') : ''}${x.last ? ' · ' + ago(x.last) : ''}</small></span>
-      <span class="bd">${x.dm != null ? `<b>${fmtDist(x.dm)}</b>` : ''}${x.g ? '<i class="hbgo">🧭</i>' : ''}</span>${x.k ? `<button class="hbi" data-fiche="${x.k}" aria-label="Fiche de ${esc(x.label)}">ⓘ</button>` : ''}</li>`).join('')
+    <ul class="blul hbl">${all.map(x => { const th = x.k && D.cells[x.k] && D.cells[x.k].th; return `<li ${x.g ? `data-g="${esc(x.g.k)}"` : `data-k="${x.k}"`}>${th ? `<img class="hbth r${x.rk}" src="${th}" alt="">` : crest(x.rk, 30)}<span class="lt"><b>${esc(x.label)}</b><br><small>${x.g ? '🥾 ' + fmtDist(x.g.len) : '📍 sans sentier'}${x.n ? ' · ' + x.n + ' sortie' + (x.n > 1 ? 's' : '') : ''}${x.last ? ' · ' + ago(x.last) : ''}</small></span>
+      <span class="bd">${me ? `<b>${fmtDist(x.dm)}</b>` : ''}${x.g ? '<i class="hbgo">🧭</i>' : ''}</span>${x.k ? `<button class="hbi" data-fiche="${x.k}" aria-label="Fiche de ${esc(x.label)}">ⓘ</button>` : ''}</li>`; }).join('')
       || '<li class="hint" style="cursor:default">Aucune balade pour l’instant : faites une sortie libre, ou tracez vos sentiers ci-dessous.</li>'}</ul>
     <button class="btn hbtr" data-trail>🥾 Tracer ou modifier mes sentiers</button>`;
   const q = $('#hbq'); if (q) q.oninput = () => { const v = q.value.trim().toLowerCase(); document.querySelectorAll('#balc .hbl li').forEach(li => { li.hidden = !!v && !li.textContent.toLowerCase().includes(v); }); };
@@ -2265,7 +2278,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-35';
+const APP_V = '2026.10.23-36';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
