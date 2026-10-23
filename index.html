@@ -910,7 +910,7 @@ input,textarea,[contenteditable]{-webkit-user-select:text;user-select:text;-webk
   <div class="seg"><button data-s="recent" class="on">Récents</button><button data-s="best">Les plus fréquentés</button></div>
   <input id="lq" type="search" placeholder="Rechercher une balade…">
   <ul id="ll"></ul></div></div>
-<div id="pv"><div class="pvb"><button class="ib" id="pvd" data-ic="trash" aria-label="Supprimer la photo"></button><button class="ib" id="pvx" aria-label="Fermer">✕</button></div><img id="pvi" alt="Photo"></div>
+<div id="pv"><div class="pvb"><button class="ib" id="pvc" aria-label="Choisir comme photo de couverture">★</button><button class="ib" id="pvd" data-ic="trash" aria-label="Supprimer la photo"></button><button class="ib" id="pvx" aria-label="Fermer">✕</button></div><img id="pvi" alt="Photo"></div>
 <div id="encm"><div class="win dg">
   <div class="ehd"><button class="ib" id="encbk" data-back aria-label="Retour à la liste" hidden>‹</button><span class="elogo" id="elogo"></span><h2>Guide du promeneur<small>Bestiaire et premiers secours</small></h2><button class="ib" id="encx" aria-label="Fermer">✕</button></div>
   <div id="encbd">
@@ -1013,6 +1013,7 @@ function save() { clearTimeout(saveT); saveT = 0; CGM.clear(); try { if (syncBal
 const cleanPts = a => Array.isArray(a) ? a.filter(q => Array.isArray(q) && isFinite(q[0]) && isFinite(q[1])).map(q => [+q[0], +q[1]]).slice(0, 6000) : [];
 function clean(c) { const ok = c && c.x != null && c.y != null && isFinite(c.x) && isFinite(c.y); return { ...(ok ? { x: +c.x, y: +c.y } : {}), name: String(c?.name || ''), note: String(c?.note || ''),
   ph: (Array.isArray(c?.ph) ? c.ph : []).filter(p => p && /^[\w-]+$/.test(String(p.id))).map(p => ({ id: String(p.id), d: /^\d{4}-\d\d-\d\d$/.test(p.d) ? p.d : '' })),
+  ...(/^[\w-]+$/.test(String(c?.cov || '')) ? { cov: String(c.cov) } : {}), ...(typeof c?.th === 'string' && c.th.startsWith('data:image/') && c.th.length < 40000 ? { th: c.th } : {}),
   v: (Array.isArray(c?.v) ? c.v : []).filter(v => v && /^\d{4}-\d\d-\d\d$/.test(v.d)).map(v => ({ id: /^[\w-]+$/.test(String(v.id)) ? String(v.id) : rid(), d: v.d, h: /^\d\d:\d\d$/.test(v.h) ? v.h : '', s: Math.max(0, Math.round(+v.s || 0)), m: Math.max(0, Math.round(+v.m || 0)), t: String(v.t || ''), pts: cleanPts(v.pts), bal: String(v.bal || '').slice(0, 60) })) }; }
 function mergeCell(k, c) {      // fusionne sans doublon (importer deux fois le même fichier ne double rien)
   c = clean(c); if (c.x == null) return; const a = D.cells[k] ||= { ...blank(), x: c.x, y: c.y }; const have = new Set(a.v.map(v => v.id));
@@ -1073,6 +1074,8 @@ var MKI = {}; Object.keys(MK).forEach(t => { const im = new Image(); im.onload =
 var SPOT = { min: 24, max: 46, ref: 30 };      // taille de l'icône en px : suit le zoom de près (≈ ref mètres de large), plafonnée à max, puis ne rapetisse plus sous min
 var spotSz = () => Math.max(SPOT.min, Math.min(SPOT.max, SPOT.ref / (V.mpp * Math.cos(toLL(V.cx, V.cy)[0] * Math.PI / 180))));
 var spSvg = on => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><g${on ? '' : ' opacity=".72"'}><path d="M16 31C16 31 5.2 20.6 5.2 12.8a10.8 10.8 0 0 1 21.6 0C26.8 20.6 16 31 16 31z" fill="${on ? '#c78a2e' : '#8c867a'}" stroke="#1e140a" stroke-width="1.8" stroke-linejoin="round"/><circle cx="16" cy="12.8" r="8" fill="${on ? '#f6e3b4' : '#d8d2c4'}" stroke="#1e140a" stroke-opacity=".5"/><g transform="translate(9.6 6.4) scale(.4)">${PAWP(on ? '#6b3f17' : '#5d574c', 'none', 0)}</g></g></svg>`;
+var CL = [];      // groupes de repères affichés (pour le toucher)
+const pinR = () => Math.round(Math.max(15, Math.min(21, 15 + (14 - Math.min(14, Math.log2(Math.max(1, V.mpp)) * 3.2)) * .45)));
 var SPI = {}; [['on', 1], ['off', 0]].forEach(([k, on]) => { const im = new Image(); im.onload = () => schedule(); im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(spSvg(on)); SPI[k] = im; });
 const OLDMK = { yes: 'view', chest: 'view', no: 'pin', girolle: 'pin', oak: 'shade', chat: 'shade', pine: 'shade' };      // repères venant de Cartocèpe
 const cleanMarks = a => (Array.isArray(a) ? a : []).filter(m => m && /^[\w-]+$/.test(String(m.id)) && isFinite(m.x) && isFinite(m.y)).map(m => ({ id: String(m.id), x: +m.x, y: +m.y, t: MK[m.t] ? m.t : OLDMK[m.t] || 'pin', note: String(m.note || '').slice(0, 500), d: /^\d{4}-\d\d-\d\d$/.test(m.d) ? m.d : '', perm: !!m.perm, cf: Math.max(0, Math.round(+m.cf || 0)) })).map(m => { const t = MK[m.t] && MK[m.t][2]; m.perm = m.perm && !!t; const src = a.find(x => String(x.id) === m.id); m.exp = t && !m.perm ? (isFinite(+src.exp) && +src.exp > 0 ? +src.exp : Date.now() + 864e5) : 0; return m; });
@@ -1229,10 +1232,11 @@ try { ['cartodog-fog', 'cartodog-fogon', 'cartodog-forest'].forEach(k => localSt
 function repPos() {      // le bouton Signaler reste au-dessus de la barre et des cartes posées en bas de la carte
   const b = $('#rep'); if (!b) return; const box = $('#mapBox').getBoundingClientRect(); let top = box.bottom;
   ['#lp', '#pm', '#rm', '#shm', '#rt'].forEach(q => { const el = $(q); if (!el || el.hidden || !el.offsetParent) return; const rc = el.getBoundingClientRect(); if (rc.bottom > box.top + box.height * .6) top = Math.min(top, rc.top); });
-  const v = Math.round(box.bottom - top + 10) + 'px'; if (b.style.bottom !== v) b.style.bottom = v; b.hidden = P.on || ED.on;
+  const v = Math.round(box.bottom - top + 10) + 'px'; if (b.style.bottom !== v) b.style.bottom = v; const hid = !!(P.on || ED.on); if (b.hidden !== hid) b.hidden = hid;      // n'écrit que si ça change (sinon l'observateur se relancerait sans fin)
 }
 new MutationObserver(() => repPos()).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['hidden'] });      // le bouton Signaler suit l'apparition / disparition des cartes du bas
 function draw() {
+  FR++;
   const dpr = devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight; if (!W || !H) return;
   if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
   g.setTransform(dpr, 0, 0, dpr, 0, 0); g.fillStyle = '#2c4a28'; g.fillRect(0, 0, W, H);
@@ -1249,20 +1253,36 @@ function draw() {
   if (commOn) drawComm(0, sx, sy, W, x0, x1, y0, y1, mpp);
   drawRoads(sx, sy, x0, x1, y0, y1, mpp); drawPaths(sx, sy); drawLoop(sx, sy); drawShared(sx, sy); drawWalks(sx, sy); drawRoute(sx, sy); const ps = spotSz();
   g.textAlign = 'center'; g.textBaseline = 'middle';
-  Object.entries(D.cells).forEach(([k, c]) => {      // un point = ses coordonnées exactes ; le centre du rond EST la position
-    if (!rec(c) || c.x == null) return; const x = sx(c.x), y = sy(c.y); if (x < -40 - pad || x > W + 40 + pad || y < -40 - pad || y > H + 60 + pad) return; const upr = UP(x, y);
-    const n = cnt(c), im = n ? SPI.on : SPI.off, pf = FX.length && fxOf('pop', k), sc = pf ? Math.max(.01, EZ.back(Math.min(1, Math.max(0, fxP(pf))))) : 1;
-    if (sc !== 1) { g.save(); g.translate(x, y); g.scale(sc, sc); g.translate(-x, -y); }      // nouvelle zone : jaillit du sol
-    if (im && im.complete && im.naturalWidth) g.drawImage(im, x - ps / 2, y - ps, ps, ps);      // la pointe du marqueur est posée sur la position exacte
-    if (n) { const bx = x + ps * .36, by = y - ps * .2, br = Math.max(8, ps * .24); g.beginPath(); g.arc(bx, by, br, 0, 7); g.fillStyle = '#2a2018'; g.fill(); g.lineWidth = 1.6; g.strokeStyle = '#e3c071'; g.stroke(); g.fillStyle = '#f6ecd2'; g.font = '700 ' + Math.round(br * 1.05) + 'px system-ui,sans-serif'; g.fillText(n > 99 ? '99+' : n, bx, by + .5); }
+  /* Repères de balade : pastille ronde (photo de couverture, contour couleur du rang), pointe sur la position ; regroupés quand ils se chevauchent */
+  const PR = pinR(), vis = [];
+  Object.entries(D.cells).forEach(([k, c]) => { if (!rec(c) || c.x == null) return; const x = sx(c.x), y = sy(c.y); if (x < -60 - pad || x > W + 60 + pad || y < -80 - pad || y > H + 60 + pad) return; vis.push({ k, c, x, y, n: cnt(c) }); });
+  vis.sort((a, b) => (b.k === sel) - (a.k === sel) || b.n - a.n); CL = [];
+  const solo = [], thr = PR * 2.8, cs = thr * mpp, GR = new Map();      // regroupement sur une grille fixée à la carte (stable quand on la déplace), puis fusion des groupes voisins
+  vis.forEach(m => { if (m.k === sel) return solo.push(m); const key = Math.floor(m.c.x / cs) + ',' + Math.floor(m.c.y / cs); (GR.get(key) || GR.set(key, []).get(key)).push(m); });
+  let G2 = [...GR.values()].map(items => ({ items, wx: items.reduce((a, m) => a + m.c.x, 0) / items.length, wy: items.reduce((a, m) => a + m.c.y, 0) / items.length }));
+  for (let pass = 0, ch = true; ch && pass < 4; pass++) { ch = false; for (let i = 0; i < G2.length; i++) for (let j = i + 1; j < G2.length; j++) { const a = G2[i], b = G2[j]; if (Math.hypot(a.wx - b.wx, a.wy - b.wy) / mpp < thr) {
+    const n = a.items.length + b.items.length; a.wx = (a.wx * a.items.length + b.wx * b.items.length) / n; a.wy = (a.wy * a.items.length + b.wy * b.items.length) / n; a.items.push(...b.items); G2.splice(j--, 1); ch = true; } } }
+  G2.forEach(q => { if (q.items.length > 1) CL.push(q); else solo.push(q.items[0]); });
+  CL.forEach(q => { const x = sx(q.wx), y = sy(q.wy), upr = UP(x, y), n = q.items.length, rr = PR + Math.min(8, n);      // pastille de groupe : « 5 balades »
+    g.beginPath(); g.arc(x, y, rr + 3, 0, 7); g.fillStyle = '#0e0b08'; g.fill(); g.beginPath(); g.arc(x, y, rr, 0, 7); const gr = g.createRadialGradient(x - rr * .3, y - rr * .4, 2, x, y, rr); gr.addColorStop(0, '#ffd27a'); gr.addColorStop(1, '#c6862a'); g.fillStyle = gr; g.fill();
+    g.fillStyle = '#2a1806'; g.font = '900 ' + Math.round(rr * .8) + 'px system-ui,sans-serif'; g.fillText(n, x, y - 2); g.font = '800 ' + Math.round(rr * .34) + 'px system-ui,sans-serif'; g.fillText('balades', x, y + rr * .45); if (upr) g.restore(); });
+  solo.forEach(({ k, c, x, y, n }) => { const upr = UP(x, y), pf = FX.length && fxOf('pop', k), sc = pf ? Math.max(.01, EZ.back(Math.min(1, Math.max(0, fxP(pf))))) : 1;
+    if (sc !== 1) { g.save(); g.translate(x, y); g.scale(sc, sc); g.translate(-x, -y); }
+    const isS = k === sel, R = isS ? PR + 4 : PR, cy = y - R - 8, col = isS ? '#ffd27a' : RANKS[rankK(c)].c, im = thImg(k, c);
+    g.beginPath(); g.ellipse(x, y, 5, 2, 0, 0, 7); g.fillStyle = 'rgba(0,0,0,.45)'; g.fill();
+    g.beginPath(); g.moveTo(x - 7, cy + R - 2); g.lineTo(x, y); g.lineTo(x + 7, cy + R - 2); g.closePath(); g.fillStyle = '#0e0b08'; g.fill();
+    g.beginPath(); g.arc(x, cy, R + 4, 0, 7); g.fillStyle = '#0e0b08'; g.fill(); g.beginPath(); g.arc(x, cy, R + 2.5, 0, 7); g.fillStyle = col; g.fill();
+    g.save(); g.beginPath(); g.arc(x, cy, R - .5, 0, 7); g.clip();
+    if (im) g.drawImage(im, x - R, cy - R, R * 2, R * 2); else { const bg = g.createRadialGradient(x, cy - R * .3, 2, x, cy, R); bg.addColorStop(0, '#4d453a'); bg.addColorStop(1, '#1b1814'); g.fillStyle = bg; g.fillRect(x - R, cy - R, R * 2, R * 2); const pi = n ? SPI.on : SPI.off; if (pi && pi.complete && pi.naturalWidth) g.drawImage(pi, x - R * .85, cy - R * 1.05, R * 1.7, R * 1.7); }
+    g.restore();
+    if (n) { const bx = x + R * .78, by = cy - R * .72, br = Math.max(8, R * .36); g.beginPath(); g.arc(bx, by, br + 1.5, 0, 7); g.fillStyle = '#0e0b08'; g.fill(); g.beginPath(); g.arc(bx, by, br, 0, 7); g.fillStyle = '#2a2018'; g.fill(); g.lineWidth = 1.6; g.strokeStyle = '#e3c071'; g.stroke(); g.fillStyle = '#f6ecd2'; g.font = '800 ' + Math.round(br * 1.1) + 'px system-ui,sans-serif'; g.fillText(n > 99 ? '99+' : n, bx, by + .5); }
     if (sc !== 1) g.restore();
-    const nm = mpp < 14 ? balName(k) : ''; if (nm) { g.font = '700 12px system-ui,sans-serif'; g.fillStyle = '#fff6e0'; g.strokeStyle = 'rgba(20,14,8,.9)'; g.lineWidth = 4; g.lineJoin = 'round'; const t = nm.length > 22 ? nm.slice(0, 21) + '\u2026' : nm; g.strokeText(t, x, y + 11); g.fillText(t, x, y + 11); }
-    if (upr) g.restore();
-  });
+    const nm = mpp < 14 || isS ? balName(k) : ''; if (nm) { g.font = (isS ? '800 13px' : '700 12px') + ' system-ui,sans-serif'; g.fillStyle = isS ? '#ffd27a' : '#fff6e0'; g.strokeStyle = 'rgba(20,14,8,.92)'; g.lineWidth = 4; g.lineJoin = 'round'; const t = nm.length > 22 ? nm.slice(0, 21) + '…' : nm; g.strokeText(t, x, y + 10); g.fillText(t, x, y + 10); }
+    if (upr) g.restore(); });
   drawMarks(sx, sy, UP);
   if (commOn) drawComm(1, sx, sy, W, x0, x1, y0, y1, mpp);
   const ring = (k, col, w) => { const c = D.cells[k]; if (!c || c.x == null) return; const u = UP(sx(c.x), sy(c.y)); g.beginPath(); g.arc(sx(c.x), sy(c.y) - ps / 2, ps * .62 + 3, 0, 7); g.lineWidth = w; g.strokeStyle = col; g.stroke(); if (u) g.restore(); };
-  if (hereK && hereK !== sel) { g.setLineDash([5, 4]); ring(hereK, '#0e0b08', 5); ring(hereK, '#ffd27a', 2.5); g.setLineDash([]); } if (sel) { ring(sel, '#2a2018', 5); ring(sel, '#e3c071', 3); }
+  
   if (me) { const q = meDisp(); drawMe(sx(q[0]), sy(q[1]), mpp); }
   drawFX(sx, sy); repPos();
   g.setTransform(dpr, 0, 0, dpr, 0, 0); if (CAM.shown !== RT) { CAM.shown = RT; $('#nr svg').style.transform = RT ? `rotate(${RT}rad)` : ''; }
@@ -1308,6 +1328,15 @@ $('#zi').onclick = () => zoomAt(1.6); $('#zo').onclick = () => zoomAt(1 / 1.6);
 const idb = new Promise(res => { try { const r = indexedDB.open('cartodog-photos', 1); r.onupgradeneeded = () => r.result.createObjectStore('p'); r.onsuccess = () => res(r.result); r.onerror = () => res(null); } catch (e) { res(null); } });
 const pdb = async (mode, fn) => { const db = await idb; if (!db) throw new Error('idb'); return new Promise((res, rej) => { const t = db.transaction('p', mode), r = fn(t.objectStore('p')); t.oncomplete = () => res(r.result); t.onerror = t.onabort = () => rej(t.error); }); };
 const pPut = (id, u) => pdb('readwrite', s => s.put(u, id)), pGet = id => pdb('readonly', s => s.get(id)), pDel = id => pdb('readwrite', s => s.delete(id));
+/* Photo de couverture d'une balade : vignette carrée de 128 px gardée dans le carnet (légère, affichée sur la carte sans lag) */
+function mkThumb(url) { return new Promise((res, rej) => { const im = new Image(); im.onload = () => { const S = 128, c = document.createElement('canvas'); c.width = c.height = S; const m = Math.min(im.width, im.height);
+  c.getContext('2d').drawImage(im, (im.width - m) / 2, (im.height - m) / 2, m, m, 0, 0, S, S); res(c.toDataURL('image/jpeg', .72)); }; im.onerror = rej; im.src = url; }); }
+async function setCover(k, id) { const c = D.cells[k]; if (!c) return; if (!id) { delete c.cov; delete c.th; THI.delete(k); return; } try { const u = await pGet(id); if (!u) return; c.cov = id; c.th = await mkThumb(u); THI.delete(k); save(); draw(); } catch (e) {} }
+const THI = new Map(), thBusy = new Set();
+function thImg(k, c) {      // image de la vignette (créée une fois) ; une balade avec photos mais sans vignette en reçoit une, en arrière-plan
+  if (!c.th) { if (c.ph && c.ph.length && !thBusy.has(k)) { thBusy.add(k); setCover(k, c.cov && c.ph.some(p => p.id === c.cov) ? c.cov : c.ph[0].id).finally(() => thBusy.delete(k)); } return null; }
+  let o = THI.get(k); if (!o || o.src !== c.th) { o = new Image(); o.onload = () => schedule(); o.src = c.th; THI.set(k, o); } return o.complete && o.naturalWidth ? o : null;
+}
 function shrink(f) { return new Promise((res, rej) => { const u = URL.createObjectURL(f), im = new Image(); im.onload = () => { const s = Math.min(1, 1280 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * s); c.height = Math.round(im.height * s); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(u); res(c.toDataURL('image/jpeg', .72)); }; im.onerror = () => { URL.revokeObjectURL(u); rej(new Error('img')); }; im.src = u; }); }
 async function loadGal(k) {
   const el = $('#gal'); if (!el) return; const c = D.cells[k];
@@ -1319,14 +1348,15 @@ async function loadGal(k) {
 let pvId = null;
 const closePh = () => { $('#pv').classList.remove('open'); $('#pvi').removeAttribute('src'); pvId = null; };
 $('#pvx').onclick = closePh;
+$('#pvc').onclick = async () => { const k = sel; if (!k || !pvId) return; await setCover(k, pvId); $('#pvc').classList.add('on'); toast('★ Photo de couverture : elle s\u2019affiche sur la carte'); };
 $('#pvd').onclick = () => { const k = sel, id = pvId, c = k && D.cells[k], i = c ? c.ph.findIndex(p => p.id === id) : -1; if (i < 0) return closePh();
-  const snap = snapC(); c.ph.splice(i, 1); save(); closePh(); draw(); renderPanel();
+  const snap = snapC(); c.ph.splice(i, 1); if (c.cov === id) setCover(k, c.ph[0] ? c.ph[0].id : null); save(); closePh(); draw(); renderPanel();
   setTimeout(() => { if (!D.cells[k]?.ph.some(p => p.id === id)) pDel(id).catch(() => {}); }, 8000);
   toast('Photo supprimée', () => { restoreSnap(snap); save(); draw(); renderPanel(); }); };
 $('#panel').addEventListener('change', async e => {
   if (e.target.id !== 'phf') return; const files = [...e.target.files]; e.target.value = ''; if (!files.length || !sel) return; const k = sel; let n = 0;
   for (const f of files) { try { const url = await shrink(f), id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7); await pPut(id, url); (D.cells[k] ||= blank()).ph.push({ id, d: today() }); n++; } catch (x) { toast('Photo impossible à enregistrer'); } }
-  if (n) { save(); draw(); if (sel === k) { ptab = 'ph'; renderPanel(); } toast('📷 ' + n + ' photo' + (n > 1 ? 's ajoutées' : ' ajoutée')); }
+  if (n) { const c = D.cells[k]; if (!c.cov || !c.ph.some(p => p.id === c.cov)) await setCover(k, c.ph[c.ph.length - n].id); save(); draw(); if (sel === k) { ptab = 'ph'; renderPanel(); } toast('📷 ' + n + ' photo' + (n > 1 ? 's ajoutées' : ' ajoutée') + (c.cov ? ' · ★ la couverture s\u2019affiche sur la carte' : '')); }
 });
 
 /* ===== Fiche d'une case ===== */
@@ -1480,7 +1510,7 @@ async function showWx(k) {
 
 $('#panel').addEventListener('input', e => { const f = e.target.dataset.f; if (!f || !sel) return; if (f === 'name') setBalName(cellGroup(sel), e.target.value); (D.cells[sel] ||= blank())[f] = e.target.value; saveSoon(); if (f === 'name') schedule(); });
 $('#panel').addEventListener('click', e => {
-  const gi = e.target.closest('#gal img'); if (gi) { pvId = gi.dataset.id; $('#pvi').src = gi.src; $('#pv').classList.add('open'); return; }
+  const gi = e.target.closest('#gal img'); if (gi) { pvId = gi.dataset.id; $('#pvi').src = gi.src; $('#pvc').classList.toggle('on', D.cells[sel] && D.cells[sel].cov === pvId); $('#pv').classList.add('open'); return; }
   const t = e.target.closest('[data-tab]'); if (t) { ptab = t.dataset.tab; return setTab(); }
   const b = e.target.closest('[data-act]'); if (!b || !sel) return; const a = b.dataset.act, c = D.cells[sel] ||= blank();
   if (a === 'delcell') { const g = cellGroup(sel); if (g && !confirm(`Supprimer la balade « ${g.name} » : sa fiche (sorties, photos, notes) et ${g.paths.length > 1 ? 'ses ' + g.paths.length + ' sentiers' : 'son sentier'} ?`)) return;
@@ -1613,9 +1643,11 @@ const DEF_KMH = 3.5, gkey = n => normS(n);
    Le nom de la balade est celui qui couvre le plus de longueur ; les tronçons sans nom le reçoivent automatiquement.
    Sans aucun nom, la balade prend le nom du lieu, du parking ou de la commune la plus proche. */
 let NG = { sig: '', G: [] };
+var FR = 0;      // numéro d'image : les balades ne sont recalculées qu'une fois par image
 function netGroups() {
+  if (NG.fr === FR && NG.sig) return NG.G;
   const ps = (D.paths || []).filter(p => p.pts.length >= 2), sig = ps.length + ':' + ps.map(p => p.id + p.pts.length + (p.name || '') + p.pts[0][0] + p.pts[p.pts.length - 1][1]).join('|') + ':' + (D.marks || []).length + ':' + Object.keys(D.cells).length + ':' + comm.size;
-  if (sig === NG.sig) return NG.G;
+  if (sig === NG.sig) { NG.fr = FR; return NG.G; }
   CGM.clear();
   const par = ps.map((_, i) => i), f = i => par[i] === i ? i : (par[i] = f(par[i])), u = (a, b) => { a = f(a); b = f(b); if (a !== b) par[a] = b; };
   const key = q => q[0].toFixed(1) + ',' + q[1].toFixed(1), vm = new Map(), BB = ps.map(pathBB);
@@ -1631,7 +1663,7 @@ function netGroups() {
     else { g.auto = true; g.name = autoName(g, ++n); }
     g.k = gkey(g.name); });
   if (ch) save();
-  NG = { sig: ch ? '' : sig, G }; return G;
+  NG = { sig: ch ? '' : sig, G, fr: FR }; return G;
 }
 function autoName(g, n) {
   const pts = g.paths.flatMap(p => p.pts), c = [pts.reduce((a, q) => a + q[0], 0) / pts.length, pts.reduce((a, q) => a + q[1], 0) / pts.length], dn = q => Math.min(...pts.map(v => rdist(v, q)));
@@ -2233,7 +2265,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-32';
+const APP_V = '2026.10.23-35';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2497,9 +2529,15 @@ function pathBB(p) {      // emprise d'un sentier, recalculée seulement s'il a 
   let a = Infinity, b = Infinity, x = -Infinity, y = -Infinity; for (const q of p.pts) { if (q[0] < a) a = q[0]; if (q[0] > x) x = q[0]; if (q[1] < b) b = q[1]; if (q[1] > y) y = q[1]; }
   const bb = [a, b, x, y]; bbC.set(p, { n, lx: l[0], ly: l[1], b: bb }); return bb; }
 function drawPaths(sx, sy) {
-  const fa = P.on ? 1 : Math.max(0, Math.min(1, Math.log2(80 / V.mpp) / Math.log2(80 / 6)));      // plein à fort zoom (≤ 6 m/px), invisible vers 80 m/px ; toujours plein en mode chemins
+  /* Tracés affichés seulement quand ils servent : mode Sentiers (tous), balade sélectionnée, sortie en cours (sentiers autour de vous), zoom très rapproché (discrets) */
   const W = cv.clientWidth, H = cv.clientHeight, mg = 60 * V.mpp, vx0 = V.cx - W / 2 * V.mpp - mg, vx1 = V.cx + W / 2 * V.mpp + mg, vy0 = V.cy - H / 2 * V.mpp - mg, vy1 = V.cy + H / 2 * V.mpp + mg;
-  const ps = fa > .02 ? (D.paths || []).filter(p => { const b = pathBB(p); return b[2] >= vx0 && b[0] <= vx1 && b[3] >= vy0 && b[1] <= vy1; }) : []; if (!ps.length && !P.start) return;
+  const inView = p => { const b = pathBB(p); return b[2] >= vx0 && b[0] <= vx1 && b[3] >= vy0 && b[1] <= vy1; };
+  let ps, fa = 1;
+  if (P.on) ps = (D.paths || []).filter(inView);
+  else { const want = new Set(), sg = sel && cellGroup(sel); if (sg) sg.paths.forEach(p => want.add(p));
+    if (BR.on && me) { const m = 500 / cosAt(me.y); (D.paths || []).forEach(p => { const b = pathBB(p); if (me.x >= b[0] - m && me.x <= b[2] + m && me.y >= b[1] - m && me.y <= b[3] + m) want.add(p); }); }
+    const close = V.mpp < 1.6; ps = (D.paths || []).filter(p => (want.has(p) || close) && inView(p)); fa = want.size ? 1 : .6; if (V.mpp > 80) ps = ps.filter(p => want.has(p)); }
+  if (!ps.length && !P.start) return;
   g.save(); g.lineCap = 'round'; g.lineJoin = 'round'; g.globalAlpha = fa;
   const cnt = new Map(); ps.forEach(p => p.pts.forEach(([x, y]) => { const k = x + ',' + y; cnt.set(k, (cnt.get(k) || 0) + 1); }));      // sommet partagé = carrefour
   const jn = q => cnt.get(q[0] + ',' + q[1]) > 1;
@@ -3243,11 +3281,12 @@ $('#mkd').onclick = () => { const snap = JSON.stringify(D.marks || []); fxRing(M
 /* ===== Points précis : chaque lieu de balade a ses coordonnées exactes ===== */
 function newSpot(x, y) { const k = 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); D.cells[k] = { ...blank(), x, y }; return k; }
 function nearestSpot(x, y, m) { let best = null, bd = m; Object.entries(D.cells).forEach(([k, c]) => { if (!rec(c) || c.x == null) return; const d = rdist([x, y], [c.x, c.y]); if (d < bd) { bd = d; best = k; } }); return best; }
-function spotAt(px, py) {
-  const W = cv.clientWidth, H = cv.clientHeight; const ps = spotSz(); let best = null, bd = Math.max(28, ps * .75);
-  Object.entries(D.cells).forEach(([k, c]) => { if (!rec(c) || c.x == null) return; const [qx, qy] = scrOf(c.x, c.y), d = Math.hypot(px - qx, py - (qy - ps / 2)); if (d < bd) { bd = d; best = k; } });
+function spotAt(px, py) {      // repère de balade touché (pastille au-dessus de sa pointe)
+  const R = pinR(); let best = null, bd = R + 12;
+  Object.entries(D.cells).forEach(([k, c]) => { if (!rec(c) || c.x == null || CL.some(q => q.items.some(m => m.k === k))) return; const [qx, qy] = scrOf(c.x, c.y), d = Math.hypot(px - qx, py - (qy - R - 8)); if (d < bd) { bd = d; best = k; } });
   return best;
 }
+function clusterAt(px, py) { let best = null, bd = pinR() + 14; CL.forEach(q => { const [x, y] = scrOf(q.wx, q.wy), d = Math.hypot(px - x, py - y); if (d < bd) { bd = d; best = q; } }); return best; }
 function target() { if (me) { const near = sel && D.cells[sel] && rdist(ctr(sel), [me.x, me.y]) < 40; return near ? [sel, null] : [hereK, [me.x, me.y]]; } return [sel, null]; }
 function longSpot(px, py) {      // appui long sur la carte : pose un point exactement là
   const r = cv.getBoundingClientRect(), ex = spotAt(px - r.left, py - r.top), em = markAt(px - r.left, py - r.top);
@@ -3265,7 +3304,7 @@ function navTxt(k) {
 }
 function updNav() { const e = $('#nvt'); if (e && sel && D.cells[sel]) e.innerHTML = navSub(sel); }
 /* ===== Tap : 1 = action, 2 = zoom doux à l'endroit touché, 3 = dézoom doux ===== */
-function onTap(e) { const r = cv.getBoundingClientRect(); const pt = spotAt(e.clientX - r.left, e.clientY - r.top), mk = markAt(e.clientX - r.left, e.clientY - r.top); if (RM) { const w = (([ux, uy]) => ({ x: V.cx + ux * V.mpp, y: V.cy - uy * V.mpp }))(unr(e.clientX - r.left - r.width / 2, e.clientY - r.top - r.height / 2)); if (RMT) { const t = RMT; setRM(false); mkQuick(t, w.x, w.y); } else if (mk) openMark(mk.id); else openMk({ id: null, t: mkLast, note: '', ...w, where: 'tap' }); } else if (P.on) { const px = e.clientX - r.left, py = e.clientY - r.top; if (ED.on) (ED.draw ? edDrawTap : edPick)(px, py); else if (!RC.on && !P.cur && !P.start) { edToggle(true); edPick(px, py); } }      /* en mode Marcher, toucher un sentier passe en Modifier sur ce tronçon */ else if (pt && pt !== sel) { select(pt); flyTo(pt); } else if (mk && !pt) openMark(mk.id); else if (sel) { sel = null; collapse(); renderPanel(); draw(); } }
+function onTap(e) { const r = cv.getBoundingClientRect(); if (!RM && !P.on) { const q = clusterAt(e.clientX - r.left, e.clientY - r.top); if (q) { const xs = q.items.map(m => m.c.x), ys = q.items.map(m => m.c.y), W = cv.clientWidth, H = cv.clientHeight; flyXY((Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2, Math.max(.8, Math.min(V.mpp / 2.5, (Math.max(...xs) - Math.min(...xs)) / (W * .6), (Math.max(...ys) - Math.min(...ys)) / (H * .5))), 550); return; } } const pt = spotAt(e.clientX - r.left, e.clientY - r.top), mk = markAt(e.clientX - r.left, e.clientY - r.top); if (RM) { const w = (([ux, uy]) => ({ x: V.cx + ux * V.mpp, y: V.cy - uy * V.mpp }))(unr(e.clientX - r.left - r.width / 2, e.clientY - r.top - r.height / 2)); if (RMT) { const t = RMT; setRM(false); mkQuick(t, w.x, w.y); } else if (mk) openMark(mk.id); else openMk({ id: null, t: mkLast, note: '', ...w, where: 'tap' }); } else if (P.on) { const px = e.clientX - r.left, py = e.clientY - r.top; if (ED.on) (ED.draw ? edDrawTap : edPick)(px, py); else if (!RC.on && !P.cur && !P.start) { edToggle(true); edPick(px, py); } }      /* en mode Marcher, toucher un sentier passe en Modifier sur ce tronçon */ else if (pt && pt !== sel) { select(pt); flyTo(pt); } else if (mk && !pt) openMark(mk.id); else if (sel) { sel = null; collapse(); renderPanel(); draw(); } }
 var TT = { t: 0, n: 0, x: 0, y: 0, timer: 0 };
 function multiTap(e) {
   const now = performance.now(), same = now - TT.t < 330 && Math.hypot(e.clientX - TT.x, e.clientY - TT.y) < 36;
