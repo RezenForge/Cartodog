@@ -852,8 +852,17 @@ input,textarea,[contenteditable]{-webkit-user-select:text;user-select:text;-webk
 .hinf small{display:flex;align-items:center;gap:5px;white-space:nowrap;overflow:hidden;font:800 10px/1.3 var(--num);letter-spacing:.06em;text-transform:uppercase}
 .hrk{color:var(--ember);}.hst{padding:0 5px;border-radius:7px;background:rgba(255,120,40,.18);color:#ffb070;letter-spacing:0}.hwk{color:var(--mut);letter-spacing:.02em}.hcta{color:var(--ember2);letter-spacing:.02em}
 .bar .ib{flex:none}
+
+.hbr{flex:1;min-width:0;display:flex;align-items:center;gap:8px;padding:2px 4px;border:0;background:none;text-align:left;cursor:pointer}
+.hlogo{flex:none;width:34px;height:34px;color:var(--brass)}.hlogo svg{display:block;width:100%;height:100%}
+.hbr .hinf b{font-size:22px}.hdog{flex:none!important;padding:0!important;border-radius:50%}
+.hwk{color:#d9cba8!important;text-transform:none;letter-spacing:0;font-weight:700}
+
+.hdog.new .hav .emb{display:grid;place-items:center;background:#14110e}.hdog.new .hav .emb>*{display:none}.hdog.new .hav .emb::after{content:'+';font:900 24px/1 var(--num);color:var(--ember2)}
+.hdog.new .hr0{stroke-dasharray:4 4;stroke:#6b5b44}
+.hcta{text-transform:none!important;letter-spacing:.02em!important;font-size:11px}.hdog.new .hr1{display:none}
 </style></head><body>
-<header class="bar win dg"><button class="hdog brand" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span><span class="hinf"><b id="hnm">Mon chien</b><small id="hsub">Créer son profil</small></span></button>
+<header class="bar win dg"><button class="hbr brand" id="hbr" aria-label="Cartodog : profil de mon chien"><span class="hlogo"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><span class="hinf"><b>Cartodog</b><small id="hsub">Carnet de balade</small></span></button><button class="hdog" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span></button><b id="hnm" hidden></b>
 <small id="ssn" hidden></small>
   <button class="ib" id="encb" data-ic="guide" aria-label="Guide du promeneur : dangers et premiers secours"></button><button class="ib" id="loc" data-ic="loc" aria-label="Ma position"></button><button class="ib" id="mn" data-ic="set" aria-label="Réglages"></button></header>
 <div id="mapBox"><canvas id="cv"></canvas><button id="rep" aria-label="Signaler un danger ou un point utile"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="repg" cx="45%" cy="30%" r="75%"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#e0861e"/></radialGradient></defs>
@@ -2319,7 +2328,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-41';
+const APP_V = '2026.10.23-42';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2348,10 +2357,10 @@ async function dogAvatar() {      // photo du chien : en-tête, journal et fiche
 }
 function hdrRender() {      // bandeau : le chien est le héros (photo, niveau, rang, série en cours)
   const p = D.prof, nm = p.name || D.dog, el = $('#hnm'); if (!el) return;
-  if (!nm) { el.textContent = 'Mon chien'; $('#hsub').innerHTML = '<span class="hcta">✚ Créer son profil</span>'; $('#hlv').hidden = true; $('#hring').style.strokeDasharray = '0 200'; return; }
+  if (!nm) { el.textContent = 'Mon chien'; $('#hsub').innerHTML = '<span class="hcta">Carnet de balade</span>'; $('#hdog').classList.add('new'); $('#hlv').hidden = true; $('#hring').style.strokeDasharray = '0 200'; return; }
   const S = dogStats(), a0 = lvNeed(S.L), a1 = lvNeed(S.L + 1), pc = Math.max(0, Math.min(1, (S.xp - a0) / (a1 - a0))), C = 2 * Math.PI * 21.5;
   el.textContent = nm; $('#hlv').hidden = false; $('#hlv').textContent = S.L; $('#hring').style.strokeDasharray = `${(C * pc).toFixed(1)} ${C.toFixed(1)}`;
-  $('#hsub').innerHTML = `<span class="hrk">${S.rank}</span>${S.st ? `<span class="hst">🔥${S.st}</span>` : ''}`;
+  $('#hdog').classList.remove('new'); $('#hsub').innerHTML = `<span class="hwk">Avec ${esc(nm)}</span>${S.st ? `<span class="hst">🔥${S.st}</span>` : ''}`;
 }
 function dogLabel() {
   const p = D.prof, w = lastW(), bits = [p.breed, ageTxt(p.bd), w ? fkg(w.kg) : ''].filter(Boolean).join(' · ');
@@ -2417,7 +2426,7 @@ function dogPane(k) { document.querySelectorAll('#dogm .dgp').forEach(x => x.cla
   $('#dgh').firstChild.textContent = { main: 'Profil', id: 'Fiche', w: 'Poids', h: 'Santé' }[k]; $('#dgsub').style.display = k === 'main' ? 'none' : ''; $('#dogm .win').scrollTop = 0; if (k === 'main') dogMain(); }
 function dogOpen() { $('#menu').classList.remove('open'); $('#vgm').innerHTML = vigil(); dogRender(); dogPane('main'); dogAvatar().then(() => dogMain()); $('#dogm').classList.add('open'); }
 const dogClose = () => { $('#dogm').classList.remove('open'); dogLabel(); hdrRender(); };
-$('#hdog').onclick = dogOpen; $('#dgx').onclick = dogClose; $('#dgb').onclick = () => dogPane('main');
+$('#hdog').onclick = dogOpen; $('#hbr').onclick = dogOpen; $('#dgx').onclick = dogClose; $('#dgb').onclick = () => dogPane('main');
 $('#dogm').onclick = e => { if (e.target.id === 'dogm') return dogClose();
   const go = e.target.closest('[data-go]'); if (go) return dogPane(go.dataset.go);
   const bd = e.target.closest('[data-bd]'); if (bd) return toast((bd.classList.contains('ok') ? '🏅 ' : '🔒 ') + bd.dataset.bd);
