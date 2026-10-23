@@ -1479,7 +1479,7 @@ function balNet(g, startQ) {
       const f = near / S.length; if (f > .3 && e.len * f > 25) e.tw.push([j, f]); }); });
   return { P, E, NA, s0, off: bd, dzAll: [...dzAll] };
 }
-function balLoops(net, L, avoid = true) {
+function balLoops(net, L, avoid = true, K = 3) {
   const { E, NA, s0 } = net, cost = e => e.len * (avoid && e.dz.length ? 40 : 1), dist = new Map([[s0, 0]]), via = new Map(), Q = [s0], done = new Set();
   while (Q.length) { let bi = 0; Q.forEach((n, i) => { if (dist.get(n) < dist.get(Q[bi])) bi = i; }); const u = Q.splice(bi, 1)[0]; if (done.has(u)) continue; done.add(u);
     for (const e of NA.get(u) || []) { const v = e.a === u ? e.b : e.a, d = dist.get(u) + cost(e); if (!dist.has(v) || d < dist.get(v)) { dist.set(v, d); via.set(v, e); Q.push(v); } } }
@@ -1489,16 +1489,16 @@ function balLoops(net, L, avoid = true) {
     walk.forEach(w => cnt.set(w[0].i, (cnt.get(w[0].i) || 0) + 1)); bk.forEach(w => cnt.set(w[0].i, (cnt.get(w[0].i) || 0) + 1));
     let rep = 0; cnt.forEach((c, i) => { let f = c - 1; E[i].tw.forEach(([j, fj]) => { if (cnt.has(j)) f += fj; }); if (f > 0) rep += Math.min(c, f) * E[i].len; E[i].dz.forEach(m => dz.add(m)); });      // longueur parcourue en double : même tronçon repris, ou tronçon jumeau collé à un autre déjà pris
     const gap = (tot - L) / L, sc = (gap < 0 ? Math.max(0, -gap - .12) * .9 + -gap * .25 : gap + Math.max(0, gap - .3) * 2) + 1.6 * rep / Math.max(tot, 1) + (avoid ? 3 * dz.size : 0);      // un peu plus court que voulu : presque sans pénalité ; les doublons coûtent cher
-    if (best.length >= 3 && sc >= best[best.length - 1].sc) return; const sig = [...cnt.keys()].sort((a, b) => a - b).join(',');
+    if (best.length >= K && sc >= best[best.length - 1].sc) return; const sig = [...cnt.keys()].sort((a, b) => a - b).join(',');
     const o = { sc, tot, rep, dz: [...dz], steps: [...walk, ...bk] }, k = best.findIndex(b => b.sig === sig); o.sig = sig;
-    if (k >= 0) { if (sc < best[k].sc) best[k] = o; } else best.push(o); best.sort((a, b) => a.sc - b.sc); best = best.slice(0, 3); };
+    if (k >= 0) { if (sc < best[k].sc) best[k] = o; } else best.push(o); best.sort((a, b) => a.sc - b.sc); best = best.slice(0, K); };
   for (let t = 0; t < 350; t++) { let node = s0, len = 0, last = null; const walk = [], used = new Set();
     for (let st = 0; st < 500 && len <= L * 1.2; st++) { const opts = NA.get(node) || []; if (!opts.length) break;
       const w = opts.map(e => (used.has(e.i) ? .06 : 1) * (e.tw.some(([j]) => used.has(j)) ? .08 : 1) * (e === last && opts.length > 1 ? .01 : 1) * (avoid && e.dz.length ? .02 : 1)), sum = w.reduce((a, b) => a + b, 0); let r = Math.random() * sum, k = 0; while (r > w[k] && k < w.length - 1) r -= w[k++];
       const e = opts[k], to = e.a === node ? e.b : e.a; walk.push([e, to]); used.add(e.i); len += e.len; node = to; last = e; consider(walk, len, node); } }
   return best.map(b => { const pts = [net.P[s0]]; let cur = s0;
     b.steps.forEach(([e, to]) => { const seg = (e.a === cur && e.b === to) || e.a === e.b ? e.poly : e.poly.slice().reverse(); for (let i = 1; i < seg.length; i++) pts.push(seg[i]); cur = to; });
-    return { pts, tot: b.tot, rep: b.rep, dz: b.dz }; });
+    return { pts, tot: b.tot, rep: b.rep, dz: b.dz, sc: b.sc, sig: b.sig }; });
 }
 /* ----- partage d'une balade : ses sentiers, ses parkings (≤ 500 m), points utiles et dangers à moins de 300 m (fichier à importer, ou partage du téléphone) ----- */
 async function balShare(g) {
@@ -1567,8 +1567,20 @@ function sheetFit(pts) {      // cadre ces points dans la partie de carte que le
 function balPropose() {
   const g = BL.g, st = balStart(g, BL.pk), sp = speedOf(g.k), L = BL.min / 60 * sp.kmh * 1000, net = balNet(g, st.q), con = net.off > 3 ? net.off : 0;
   try { localStorage.setItem('cartodog-dur', BL.min); if (st.park) localStorage.setItem('cartodog-pk-' + g.k, st.park.id); } catch (e) {}
-  const loops = balLoops(net, Math.max(150, L - 2 * con), BL.avoid); BL.dzAll = net.dzAll; if (!loops.length) return toast('Impossible de calculer une boucle sur ces sentiers');
-  BL.loops = loops.map(l => ({ pts: con ? [st.q, ...l.pts, st.q] : l.pts, tot: l.tot + 2 * con, rep: l.rep, dz: l.dz })); BL.i = 0; BL.park = st.park; BL.pname = st.pname; BL.sp = sp; BL.L = L; BL.arr = false; BL.wait = false; balClose(); balShow();
+  BL.net = net; BL.st = st; BL.con = con; BL.Lt = Math.max(150, L - 2 * con); BL.seen = new Set();
+  const lp = balPick(balLoops(net, BL.Lt, BL.avoid, 12), true); BL.dzAll = net.dzAll; if (!lp) return toast('Impossible de calculer une boucle sur ces sentiers');
+  BL.loops = [lp]; BL.i = 0; BL.park = st.park; BL.pname = st.pname; BL.sp = sp; BL.L = L; BL.arr = false; BL.wait = false; balClose(); balShow();
+}
+/* Une seule boucle proposée ; ↻ en tire une autre au hasard parmi les bonnes, différente de celles déjà vues */
+const sigSim = (a, b) => { const A = new Set(a.split(',')), B = b.split(','); let n = 0; B.forEach(x => A.has(x) && n++); return n / Math.max(A.size, B.length, 1); };
+function balPick(L, first) {
+  if (!L.length) return null; const top = L[0].sc, ok = L.filter(l => l.sc <= top + .3);
+  const seen = [...BL.seen], fresh = l => seen.every(s => sigSim(s, l.sig) < .8);
+  let C = first ? [ok[0]] : ok.filter(fresh);
+  if (!C.length && !first) { const cur = BL.loops[0] && BL.loops[0].sig; C = ok.filter(l => !cur || sigSim(cur, l.sig) < .8); if (!C.length) return null; BL.seen = new Set(cur ? [cur] : []); }
+  const w = C.map(l => 1 / (1 + 4 * (l.sc - top))), sum = w.reduce((a, b) => a + b, 0); let x = Math.random() * sum, i = 0; while (x > w[i] && i < w.length - 1) x -= w[i++];
+  const l = C[i], st = BL.st, con = BL.con; BL.seen.add(l.sig);
+  return { pts: con ? [st.q, ...l.pts, st.q] : l.pts, tot: l.tot + 2 * con, rep: l.rep, dz: l.dz, sig: l.sig };
 }
 function balShow() {
   const l = BL.loops[BL.i]; if (!l) return; BL.poly = l.pts; BL.tot = l.tot; FX = FX.filter(f => f.k !== 'loop'); fxa({ k: 'loop', key: 0, dur: Math.max(3200, Math.min(7000, 2400 + l.tot)), delay: 650 });      // le tracé se dessine à allure régulière, après le cadrage
@@ -1581,7 +1593,7 @@ function lpUi() {
   const dzt = l.dz.length ? `<div class="lpz lim">⚠️ Passe près : ${esc(nm(l.dz))}${BL.avoid ? ' (impossible à éviter)' : ''}</div>` : av.length ? `<div class="lpz eon">✅ Évite : ${esc(nm(av))}</div>` : '';
   $('#lpe').textContent = BL.g.name;
   $('#lpt').innerHTML = BR.on && BR.bal ? `<div class="lpk"><b>${fmtDist(BR.m)}</b><small>/ ${fmtDist(l.tot)}</small></div><div class="lps">Suivez le tracé doré, les flèches indiquent le sens</div>` + dzt
-    : `<div class="lpk"><b>${fmtDist(l.tot)}</b><small>≈ ${fmtMin(Math.max(5, Math.round(min / 5) * 5))}</small>${BL.loops.length > 1 ? `<span class="lpn">${BL.i + 1}/${BL.loops.length}</span>` : ''}</div>
+    : `<div class="lpk"><b>${fmtDist(l.tot)}</b><small>≈ ${fmtMin(Math.max(5, Math.round(min / 5) * 5))}</small></div>
       <div class="lps">${BL.park ? '🅿 ' + esc(BL.pname) : '📍 Retour au point de départ'}${rp >= 30 ? ` · ${rp} % en aller-retour` : ''}</div>${short ? '<div class="lpz lim">Les sentiers ne permettent pas plus long</div>' : ''}` + dzt;
   if (BL.wait && !BR.on) { const d = startDist(), q = BL.poly[0];
     let dir = ''; if (me && isFinite(d)) { const bz = (Math.atan2(q[0] - me.x, q[1] - me.y) * 180 / Math.PI + 360) % 360, i = Math.round(bz / 45) % 8; dir = ' ' + ['↑', '↗', '→', '↘', '↓', '↙', '←', '↖'][i] + ' ' + ['nord', 'nord-est', 'est', 'sud-est', 'sud', 'sud-ouest', 'ouest', 'nord-ouest'][i]; }
@@ -1590,7 +1602,7 @@ function lpUi() {
     $('#lpgo').textContent = '▶'; $('#lpgo').setAttribute('aria-label', 'Démarrer ici sans attendre'); $('#lpgo').classList.add('lpw'); $('#lpn').hidden = true; $('#lpd').hidden = false; return draw(); }
   $('#lpgo').textContent = '▶'; $('#lpgo').setAttribute('aria-label', 'Partir'); $('#lpgo').classList.remove('lpw');
   $('#lpd').hidden = !!BR.on;
-  $('#lpgo').hidden = $('#lpn').hidden = !!BR.on; $('#lpn').hidden = BR.on || BL.loops.length < 2; draw();
+  $('#lpgo').hidden = $('#lpn').hidden = !!BR.on; $('#lpn').hidden = !!BR.on; draw();
 }
 function drawLoop(sx, sy) {
   if (BL.hl && $('#balm').classList.contains('sheet')) { const x = sx(BL.hl[0]), y = sy(BL.hl[1]); g.save(); g.beginPath(); g.arc(x, y - 14, 24, 0, 7); g.fillStyle = 'rgba(244,200,98,.18)'; g.fill(); g.lineWidth = 5; g.strokeStyle = '#0e0b08'; g.stroke(); g.lineWidth = 3; g.strokeStyle = '#f4c862'; g.stroke(); g.restore(); }
@@ -1630,7 +1642,7 @@ $('#balx').onclick = balClose; $('#balb').onclick = () => balList(); $('#bals').
   if (e.target.closest('[data-share]')) return balShare(BL.g);
   if (e.target.closest('[data-go]')) return balPropose();
   const li = e.target.closest('li[data-g]'); if (li) { BL.pk = null; balDetail(li.dataset.g); } };
-$('#lpn').onclick = () => { if (BL.wait) return; BL.i = (BL.i + 1) % BL.loops.length; balShow(); };
+$('#lpn').onclick = () => { if (BL.wait || !BL.net) return; const l = balPick(balLoops(BL.net, BL.Lt, BL.avoid, 12), false); if (!l) return toast('Pas d\u2019autre boucle intéressante sur ces sentiers pour cette durée'); BL.loops = [l]; BL.i = 0; BL.arr = false; balShow(); };
 const START_R = 60;      // rayon autour du départ (parking ou début de boucle) où la sortie démarre
 const startDist = () => me && BL.poly ? rdist([me.x, me.y], BL.poly[0]) : Infinity;
 function balGo() { BL.wait = false; BR.bal0 = BL.g.name; brStart(); lpUi(); }
@@ -1870,7 +1882,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-1';
+const APP_V = '2026.10.23-2';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
