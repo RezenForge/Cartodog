@@ -1428,7 +1428,7 @@ function brUi() {
 setInterval(() => { if (BR.on) brUi(); }, 1000);
 function brStart() {
   if (BR.on) return; const k0 = BR.k0 && D.cells[BR.k0] ? BR.k0 : null;
-  const bal = BR.bal0 || ''; BR = { on: true, t0: Date.now(), pts: [], m: 0, f: null, k: k0, hyd: 0, bal }; BSEL = null;
+  VOX.said = new Set(); const bal = BR.bal0 || ''; BR = { on: true, t0: Date.now(), pts: [], m: 0, f: null, k: k0, hyd: 0, bal }; BSEL = null;
   if (watch === null) startLoc(); wakeSync(); brTick(); brUi(); bump('#found'); schedule();
   toast('▶ ' + (bal ? bal : 'Balade lancée') + (D.dog ? ' avec ' + D.dog : '') + ' : bonne promenade !');
   setTimeout(brWeather, me ? 600 : 6000);
@@ -1487,6 +1487,7 @@ function dangerCheck() {
   if (!alertOn || !me || me.acc > 50 || $('#dzq').classList.contains('open')) return; const now = Date.now();
   for (const m of D.marks || []) { if (!isDz(m)) continue; const d = rdist([me.x, me.y], [m.x, m.y]); if (d > 45 || (DZ[m.id] && now - DZ[m.id] < 9e5)) continue; DZ[m.id] = now;
     try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {} fxRing(m.x, m.y, '#ff5f4a', 8, 50, 900, 0, 3);
+    if (BR.on && !VOX.said.has('dzn' + m.id)) { VOX.said.add('dzn' + m.id); say(dzSay(m, `à ${Math.max(5, Math.round(d / 5) * 5)} mètres`)); }
     if (m.perm) { toast(`⚠️ ${MK[m.t][0]} à ${Math.round(d)} m${m.note ? ' : ' + m.note.slice(0, 60) : ''}`); break; }
     DZQ = m; $('#dzi').src = MKI[m.t].src; $('#dzt').textContent = MK[m.t][0]; $('#dzk').textContent = `Risque signalé à ${Math.round(d)} m`;
     $('#dzn').textContent = m.note || ''; $('#dzn').hidden = !m.note;
@@ -1803,12 +1804,16 @@ function meDisp() {
 const bbNear = (p, q, m) => { const b = pathBB(p); return q[0] >= b[0] - m && q[0] <= b[2] + m && q[1] >= b[1] - m && q[1] <= b[3] + m; };
 /* ===== Guidage vocal sur la boucle : « Dans 40 mètres, tournez à gauche », aux carrefours seulement ===== */
 let VOX = { on: (() => { try { return localStorage.getItem('cartodog-vox') !== '0'; } catch (e) { return true; } })(), turns: [], pi: 0, off: 0, said: new Set(), cum: [] };
+const DZV = { chenille: 'chenilles processionnaires', tick: 'tiques', viper: 'vipère', grass: 'épillets', hunt: 'chasse en cours', boar: 'sangliers', dogs: 'chien agressif', toxic: 'plante toxique', algae: 'eau douteuse, ne le laissez pas boire', road: 'route, tenez votre chien', cattle: 'troupeau, gardez votre chien en laisse', danger: 'danger signalé' };
+const dzSay = (m, where) => `Attention : ${DZV[m.t] || MK[m.t][0].toLowerCase()}, ${where}.` + (m.note && m.note.length < 80 ? ' ' + m.note : '');
 function say(t) { if (!VOX.on || !window.speechSynthesis) return; try { const u = new SpeechSynthesisUtterance(t); u.lang = 'fr-FR'; u.rate = 1.02; const v = speechSynthesis.getVoices().find(x => /^fr/i.test(x.lang)); if (v) u.voice = v; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {} }
 function voxPlan() {      // repère les carrefours de la boucle et la direction à y prendre
   const pts = BL.poly || [], N = BL.net, deg = new Map(); VOX = { ...VOX, turns: [], pi: 0, off: 0, said: new Set(), cum: [0] };
   for (let i = 1; i < pts.length; i++) VOX.cum.push(VOX.cum[i - 1] + rdist(pts[i - 1], pts[i]));
   if (N) N.P.forEach((q, i) => { const n = (N.NA.get(i) || []).length; if (n >= 3) deg.set(q[0].toFixed(1) + ',' + q[1].toFixed(1), n); });
   const at = (i, dir, m) => { let j = i, acc = 0; while (j + dir >= 0 && j + dir < pts.length && acc < m) { acc += rdist(pts[j], pts[j + dir]); j += dir; } return pts[j]; };
+  VOX.dz = []; (D.marks || []).filter(m => isDz(m) && (m.perm || !m.exp || m.exp > Date.now())).forEach(m => { let bd = Infinity, at = 0; const q = [m.x, m.y], k = cosAt(m.y);      // dangers à moins de 25 m du parcours, repérés par leur position sur la boucle
+    for (let i = 1; i < pts.length; i++) { const r = segProj(q, pts[i - 1], pts[i]), d = r.d * k; if (d < bd) { bd = d; at = VOX.cum[i - 1] + rdist(pts[i - 1], r.q); } } if (bd < 25) VOX.dz.push({ m, at }); });
   for (let i = 1; i < pts.length - 1; i++) { if (!deg.has(pts[i][0].toFixed(1) + ',' + pts[i][1].toFixed(1))) continue;
     const a = at(i, -1, 15), b = at(i, 1, 15), h1 = Math.atan2(pts[i][0] - a[0], pts[i][1] - a[1]), h2 = Math.atan2(b[0] - pts[i][0], b[1] - pts[i][1]);
     let d = (h2 - h1) * 180 / Math.PI; d = ((d + 540) % 360) - 180; const ad = Math.abs(d), side = d > 0 ? 'à droite' : 'à gauche';
@@ -1821,6 +1826,7 @@ function voxTick() {      // à chaque position GPS pendant une boucle guidée
   let bi = -1, bd = Infinity; for (let i = Math.max(1, VOX.pi - 3); i < Math.min(pts.length, VOX.pi + 80); i++) { const d = segProj(q, pts[i - 1], pts[i]).d * k; if (d < bd) { bd = d; bi = i; } }
   if (bd > 40) { if (++VOX.off === 3) say('Vous vous éloignez du parcours'); return; } if (VOX.off >= 3) say('Vous êtes de retour sur le parcours'); VOX.off = 0;
   VOX.pi = Math.max(VOX.pi, bi - 1); const pos = VOX.cum[bi - 1] + rdist(pts[bi - 1], segProj(q, pts[bi - 1], pts[bi]).q), nx = VOX.turns.find(t => t.at > pos + 3); VOX.next = nx ? { ...nx, d: nx.at - pos } : null;
+  for (const z of VOX.dz || []) { const d = z.at - pos; if (d > 25 && d <= 130 && !VOX.said.has('dz' + z.m.id)) { VOX.said.add('dz' + z.m.id); say(dzSay(z.m, `dans ${Math.round(d / 10) * 10} mètres sur le chemin`)); return; } }      // un danger devant : il passe avant les directions
   if (nx) { const d = nx.at - pos, k1 = nx.i + 'a', k2 = nx.i + 'b';
     if (nx.ic === '⬆') { if (d <= 20 && !VOX.said.has(k2)) { VOX.said.add(k2); say('Au croisement, continuez tout droit'); } return; }      // tout droit : une seule annonce, courte
     if (d <= 12 && !VOX.said.has(k2)) { VOX.said.add(k1); VOX.said.add(k2); say(nx.txt.charAt(0).toUpperCase() + nx.txt.slice(1)); }
@@ -2110,7 +2116,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-17';
+const APP_V = '2026.10.23-18';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
