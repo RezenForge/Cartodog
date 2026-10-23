@@ -2043,7 +2043,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-9';
+const APP_V = '2026.10.23-10';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2861,8 +2861,8 @@ async function wxQuick(force) {
   if (!force && WXX.at && rdist(WXX.at, q) < 5000 && Date.now() - WXX.t < 6e5) return;
   WXX.at = q; WXX.t = Date.now();
   try { const [la, lo] = toLL(...q), d = await wxFor(la, lo), r = wxNowAlerts(d); if (!r) return; WXX.r = r; const a = r.A[0], w = $('#wxw');
-    const shortAl = t => { const m = t.trim().match(/^(\S+)\s+(\S+)/); return m ? m[1] + ' ' + m[2] : t; };      // « 🌧️ Pluie en cours » → « 🌧️ Pluie » : le badge garde une taille fixe
-    w.innerHTML = `<span class="wxn1">${a ? '' : r.ic + ' '}<b>${r.t}°</b>${a ? `<em class="wxa l${a.lv}">${esc(shortAl(a.t))}${r.A.length > 1 ? ' <i>+' + (r.A.length - 1) + '</i>' : ''}</em>` : ''}</span>`; w.hidden = false; w.classList.toggle('al', !!a);
+    const shortAl = t => t.trim().split(/\s+/)[0];      // seulement le logo de l'alerte (« 🌧️ ») : le détail s'ouvre en touchant le badge
+    w.innerHTML = `<span class="wxn1">${a ? '' : r.ic + ' '}<b>${r.t}°</b>${a ? `<em class="wxa l${a.lv}" title="${esc(a.t)}">${esc(shortAl(a.t))}${r.A.length > 1 ? ' <i>+' + (r.A.length - 1) + '</i>' : ''}</em>` : ''}</span>`; w.hidden = false; w.classList.toggle('al', !!a);
     if (BR.on) r.A.filter(x => x.lv >= 2 && !WXX.said.has(x.k) && x.ts <= (BR.end || Date.now() + 36e5)).forEach(x => { WXX.said.add(x.k); toast(x.t + ' · ' + x.d); try { navigator.vibrate && navigator.vibrate(120); } catch (e) {} });
     if (!$('#wxp').hidden) wxPop(true);
   } catch (e) { WXX.t = Date.now() - 5.4e5; }      // nouvel essai dans 1 min
