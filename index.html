@@ -2220,7 +2220,7 @@ function startLoc() {
     if (Date.now() - gpsWarn > 60000) { gpsWarn = Date.now(); toast('📡 Signal GPS faible : la localisation continue de chercher'); } }, { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 });      // délai dépassé ou signal perdu : on continue d'écouter
 }
 function stopLoc() { if (CAM.m) camSet(0, true); if (watch !== null) navigator.geolocation.clearWatch(watch); watch = null; if (RC.on) { RC.on = false; if (P.cur) finishPath(); } wakeSync(); compStop(); hereK = null; me = null; HD = { ax: null, ay: null, h: null, t: 0 }; pending = false; $('#loc').classList.remove('on'); schedule(); }
-$('#nr').onclick = () => camSet((CAM.m + 1) % 3); $('#fitb').onclick = () => $('#fit').click();
+$('#nr').onclick = () => camSet((CAM.m + 1) % 3, true);      // sans message : le badge de la boussole montre le mode $('#fitb').onclick = () => $('#fit').click();
 $('#loc').onclick = () => watch === null ? startLoc() : (stopLoc(), toast('Localisation arrêtée'));
 const askGps = kind => { pending = kind; if (watch === null) startLoc(); else toast('Position pas encore trouvée…'); };
 $('#found').innerHTML = foundOff(); $('#found').onclick = () => { if (BR.on) return brStop(); BR.k0 = null; balOpen(); };
@@ -2233,7 +2233,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-30';
+const APP_V = '2026.10.23-31';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
