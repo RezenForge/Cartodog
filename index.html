@@ -1267,10 +1267,10 @@ function draw() {
   const PR = pinR(), vis = [];
   Object.entries(D.cells).forEach(([k, c]) => { if (!rec(c) || c.x == null) return; const x = sx(c.x), y = sy(c.y); if (x < -60 - pad || x > W + 60 + pad || y < -80 - pad || y > H + 60 + pad) return; vis.push({ k, c, x, y, n: cnt(c) }); });
   vis.sort((a, b) => (b.k === sel) - (a.k === sel) || b.n - a.n); CL = [];
-  const solo = [], thr = PR * 2.8, cs = thr * mpp, GR = new Map();      // regroupement sur une grille fixée à la carte (stable quand on la déplace), puis fusion des groupes voisins
+  const solo = [], thr = PR * 2.8, mq = 2 ** (Math.ceil(Math.log2(mpp) * 2) / 2), cs = thr * mq, GR = new Map();      // échelle arrondie par paliers (×1,4) : les groupes ne changent qu'en franchissant un palier, pas à chaque image      // regroupement sur une grille fixée à la carte (stable quand on la déplace), puis fusion des groupes voisins
   vis.forEach(m => { if (m.k === sel) return solo.push(m); const key = Math.floor(m.c.x / cs) + ',' + Math.floor(m.c.y / cs); (GR.get(key) || GR.set(key, []).get(key)).push(m); });
   let G2 = [...GR.values()].map(items => ({ items, wx: items.reduce((a, m) => a + m.c.x, 0) / items.length, wy: items.reduce((a, m) => a + m.c.y, 0) / items.length }));
-  for (let pass = 0, ch = true; ch && pass < 4; pass++) { ch = false; for (let i = 0; i < G2.length; i++) for (let j = i + 1; j < G2.length; j++) { const a = G2[i], b = G2[j]; if (Math.hypot(a.wx - b.wx, a.wy - b.wy) / mpp < thr) {
+  for (let pass = 0, ch = true; ch && pass < 4; pass++) { ch = false; for (let i = 0; i < G2.length; i++) for (let j = i + 1; j < G2.length; j++) { const a = G2[i], b = G2[j]; if (Math.hypot(a.wx - b.wx, a.wy - b.wy) / mq < thr) {
     const n = a.items.length + b.items.length; a.wx = (a.wx * a.items.length + b.wx * b.items.length) / n; a.wy = (a.wy * a.items.length + b.wy * b.items.length) / n; a.items.push(...b.items); G2.splice(j--, 1); ch = true; } } }
   G2.forEach(q => { if (q.items.length > 1) CL.push(q); else solo.push(q.items[0]); });
   /* Animation : chaque repère glisse vers son groupe (ou en ressort) en douceur ; la pastille du groupe apparaît quand ils l'ont rejoint */
@@ -2288,7 +2288,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-37';
+const APP_V = '2026.10.23-38';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
