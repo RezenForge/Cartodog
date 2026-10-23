@@ -816,6 +816,11 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
 .f3f{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 2px 0;font-size:11px;color:var(--mut)}.f3f .fdel{margin:0;padding:4px 8px;font-size:12px}
 #panel #wx .esec,#panel #wx .echips,#panel #wx .wxi{display:none}
 @media (max-height:700px){.f3p{height:86px!important;max-height:86px!important}.f3gi img,.f3add{width:78px!important;height:78px!important}#panel .acts .btn{padding:7px 4px}.f3m{margin-bottom:4px}}
+
+/* pas de sélection de texte (sauf dans les champs de saisie), pas de menu « copier » à l'appui long */
+html,body,*{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,[contenteditable]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+#fs{display:none!important}
 </style></head><body>
 <header class="bar win dg"><button class="emb" id="dogav" aria-label="Profil de mon chien et journal"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></button>
   <div class="brand"><h1>Cartodog</h1><small id="ssn">Carnet de balade</small></div>
@@ -874,7 +879,7 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
   <button class="btn" id="rdb"></button>
   <button class="btn" id="cmb"></button>
   <button class="btn" id="compb"></button>
-  <button class="btn" id="fs"></button>
+  <button class="btn" id="fs" hidden></button>
   <button class="btn" id="wk"></button>
   <div class="mh">Hors connexion</div>
   <button class="btn" id="dl">Enregistrer la zone affichée</button>
@@ -2209,7 +2214,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-27';
+const APP_V = '2026.10.23-28';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2455,7 +2460,7 @@ $('#cmb').onclick = () => { commOn = !commOn; try { localStorage.setItem('cartod
 $('#mn').addEventListener('click', cmLabel); cmLabel();
 
 /* ===== Plein écran (activé par défaut ; le navigateur exige un premier toucher pour l'accorder) ===== */
-let fsOn = (() => { try { return localStorage.getItem('cartodog-full') !== '0'; } catch (e) { return true; } })();
+let fsOn = true;      // plein écran permanent
 const fsEl = document.documentElement, fsCan = !!(fsEl.requestFullscreen || fsEl.webkitRequestFullscreen);
 const inFs = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
 const enterFs = () => { try { return Promise.resolve((fsEl.requestFullscreen || fsEl.webkitRequestFullscreen).call(fsEl, { navigationUI: 'hide' })); } catch (e) { return Promise.reject(e); } };
@@ -2464,7 +2469,7 @@ const fsLabel = () => { $('#fs').innerHTML = sw('Plein écran' + (fsCan ? '' : '
 $('#fs').onclick = () => { fsOn = !fsOn; try { localStorage.setItem('cartodog-full', fsOn ? '1' : '0'); } catch (e) {} fsLabel();
   if (fsOn) { if (!fsCan) toast(`Plein écran indisponible ici : ajoutez la page à l'écran d'accueil`); else if (!inFs()) enterFs().catch(() => toast('Plein écran refusé par le navigateur')); } else if (inFs()) exitFs(); };
 $('#mn').addEventListener('click', fsLabel); fsLabel();
-document.addEventListener('click', () => { if (fsOn && fsCan && !inFs()) enterFs().catch(() => {}); }, { once: true });
+['pointerup', 'click'].forEach(ev => document.addEventListener(ev, e => { if (fsCan && !inFs() && !e.target.closest('input,textarea,label,select,a[href]')) enterFs().catch(() => {}); }, true));      // revient en plein écran au premier toucher après chaque sortie (retour, partage, photo…)
 
 /* ===== Chemins : lignes posées point par point avec le GPS (coordonnées en mètres Mercator) ===== */
 const bbC = new WeakMap();
