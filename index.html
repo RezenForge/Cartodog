@@ -892,7 +892,7 @@ function mergePaths(a) { const have = new Set((D.paths ||= []).map(p => p.id)); 
 /* ===== Repères : balises de carte façon RPG (socle de pierre, gemme colorée, cerclage laiton) =====
    [nom, couleur, danger] : les repères « danger » déclenchent une alerte quand on s'en approche et apparaissent dans la fiche des lieux voisins */
 var MK = {
-  pin: ['Repère', '#c23b3b'], water: ["Point d'eau", '#2b8fc4'], swim: ['Baignade OK', '#1f9fb0'], park: ['Parking', '#3f64a8'], free: ['Liberté OK', '#4f8a35'],
+  pin: ['Repère', '#c23b3b'], water: ["Point d'eau", '#2b8fc4'], swim: ['Baignade OK', '#1f9fb0'], park: ['Parking', '#3f64a8'], wc: ['WC', '#5b6fa8'], drink: ['Boire', '#2f9c8c'], free: ['Liberté OK', '#4f8a35'],
   leash: ['Laisse obligatoire', '#8a6a3a'], nodog: ['Interdit aux chiens', '#7a2a2a'], bin: ['Sacs / poubelle', '#5f6b58'], shade: ['Ombre / pause', '#3f7a4a'], view: ['Beau coin', '#d4a23a'],
   danger: ['Danger', '#e0b22a', 1], chenille: ['Chenilles', '#c76a1a', 1], tick: ['Tiques', '#6b3a2a', 1], viper: ['Vipère', '#5a6b2a', 1], grass: ['Épillets', '#b59a3a', 1],
   toxic: ['Plante toxique', '#a82d36', 1], algae: ['Eau douteuse', '#2f7f5a', 1], hunt: ['Chasse', '#d0611e', 1], boar: ['Sangliers', '#5a4636', 1], dogs: ['Chien hostile', '#8e3b2b', 1],
@@ -905,6 +905,8 @@ var MKG = {      // pictogrammes centrés sur la gemme (16, 13)
   pin: `<path d="M16 7.6l5.4 5.4-5.4 5.4-5.4-5.4z" ${W_}/><path d="M16 10.4l2.6 2.6-2.6 2.6-2.6-2.6z" fill="#c23b3b"/>`,
   water: dropG + `<path d="M14.2 15.6c.2 1 .9 1.6 1.8 1.8" stroke="#2b8fc4" stroke-width="1.2" fill="none" stroke-linecap="round"/>`,
   swim: `<path d="M9.6 10.6c1.1-1 2.1-1 3.2 0s2.1 1 3.2 0 2.1-1 3.2 0 2.1 1 3.2 0M9.6 14.6c1.1-1 2.1-1 3.2 0s2.1 1 3.2 0 2.1-1 3.2 0 2.1 1 3.2 0" ${S_} stroke-width="1.8"/>`,
+  wc: `<text x="16" y="16.6" font-size="9.5" font-weight="900" text-anchor="middle" fill="#fff" font-family="Arial,Helvetica,sans-serif">WC</text>`,
+  drink: `<path d="M12 8.6h8l-1.2 9.6h-5.6z" ${W_}/><path d="M12.5 11.6h7" stroke="#2f9c8c" stroke-width="1.4"/><path d="M18.2 6.6l1.4-1.6" ${S_} stroke-width="1.4"/>`,
   park: `<text x="16" y="17.6" font-size="13" font-weight="800" text-anchor="middle" fill="#fff" font-family="Arial,Helvetica,sans-serif">P</text>`,
   free: pawG,
   leash: `<path d="M11.2 10.2a3 3 0 1 1 4.2 2.9l4.6 5" ${S_} stroke-width="2"/><circle cx="20.4" cy="18" r="1.7" ${W_}/>`,
@@ -2043,7 +2045,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-11';
+const APP_V = '2026.10.23-12';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2916,7 +2918,7 @@ var RM = false, RMT = null;
 function setRM(on, t) { RM = on; RMT = on ? t || null : null; $('#rm').hidden = !on; $('#rep').classList.toggle('on', on); if (on) $('#rmt').innerHTML = RMT ? `Touchez la carte à l\u2019endroit exact : <b>${esc(MK[RMT][0])}</b>` : 'Touchez la carte pour poser un repère, ou touchez un repère existant pour le modifier.'; if (on && P.on) $('#pt').click(); if (!on) closeMk(); draw(); }
 $('#rmx').onclick = () => setRM(false);
 /* ===== Bouton « Signaler » (sur la carte) : choisir quoi, c'est posé à votre position ; sans GPS, on touche la carte ===== */
-const RQ_DZ = ['chenille', 'tick', 'viper', 'grass', 'hunt', 'boar', 'dogs', 'toxic', 'algae', 'road', 'cattle', 'danger'], RQ_OK = ['water', 'swim', 'park', 'free', 'leash', 'nodog', 'bin', 'shade', 'view', 'private', 'pin'];
+const RQ_DZ = ['chenille', 'tick', 'viper', 'grass', 'hunt', 'boar', 'dogs', 'toxic', 'algae', 'road', 'cattle', 'danger'], RQ_OK = ['water', 'drink', 'wc', 'swim', 'park', 'free', 'leash', 'nodog', 'bin', 'shade', 'view', 'private', 'pin'];
 const gpsOk = () => me && me.acc <= 40;
 function rqOpen() {
   if (RM) return setRM(false); if (watch === null) startLoc();
