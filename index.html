@@ -1323,7 +1323,7 @@ function draw() {
   if (commOn) drawComm(1, sx, sy, W, x0, x1, y0, y1, mpp);
   const ring = (k, col, w) => { const c = D.cells[k]; if (!c || c.x == null) return; const u = UP(sx(c.x), sy(c.y)); g.beginPath(); g.arc(sx(c.x), sy(c.y) - ps / 2, ps * .62 + 3, 0, 7); g.lineWidth = w; g.strokeStyle = col; g.stroke(); if (u) g.restore(); };
   
-  if (me) { const q = meDisp(); drawMe(sx(q[0]), sy(q[1]), mpp); }
+  if (me && mpp < 30) { const q = meDisp(), fa = Math.min(1, (30 - mpp) / 12); g.save(); g.globalAlpha = fa; drawMe(sx(q[0]), sy(q[1]), mpp); g.restore(); }      // s'efface au dézoom (au-delà d'≈ 1 km d'échelle) pour ne pas cacher les repères
   drawFX(sx, sy); repPos();
   g.setTransform(dpr, 0, 0, dpr, 0, 0); if (CAM.shown !== RT) { CAM.shown = RT; $('#nr svg').style.transform = RT ? `rotate(${RT}rad)` : ''; }
   { const real = mpp * Math.cos(toLL(V.cx, V.cy)[0] * Math.PI / 180), m = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000].filter(v => v / real <= 110).pop() || 1, el = $('#sc'); el.textContent = m >= 1000 ? m / 1000 + ' km' : m + ' m'; el.style.minWidth = Math.max(26, m / real) + 'px'; el.style.borderBottom = '3px solid #fff'; el.style.textAlign = 'center'; } if (commOn) scanSoon();
@@ -2305,7 +2305,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-39';
+const APP_V = '2026.10.23-40';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
