@@ -653,7 +653,7 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
 #balm.sheet .bdch{margin:9px 0 8px}#balm.sheet .bdch button{padding:7px 2px;font-size:13px}
 .bdpk .bdi{flex:none;align-self:center;font-size:16px}#balm.sheet .bdpk{display:flex;padding:0 0 8px;margin:0;gap:5px;flex-wrap:nowrap;overflow:hidden}
 #balm.sheet .bdpk button{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 4px;border-radius:4px;text-align:center}
-#balm.sheet .bdpk button b{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;font-weight:700}#balm.sheet .bdpk button small{margin:0;font-size:10.5px}
+#balm.sheet .bdpk button b{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;font-weight:700}#balm.sheet .bdpk button small{margin:0;font-size:10.5px}.pkf{color:#ff7a6a;text-shadow:0 0 6px rgba(255,90,70,.5)}
 .bdln{display:flex;align-items:center;gap:6px;width:100%;margin:0 0 8px;padding:0 2px;border:0;background:none;color:var(--txt);font-size:13.5px;text-align:left}.bdln small{color:var(--mut)}.bdln b{color:#fff1cf}
 .bdav{padding:7px 10px;border:2px solid var(--edge);border-radius:4px;background:var(--slot);cursor:pointer}.bdav span{flex:1}
 #balm.sheet .bdgo{padding:12px 10px;font-size:16px}
@@ -1517,13 +1517,17 @@ const pkName = (m, i) => (m.note || '').trim().split('\n')[0].slice(0, 40) || 'P
 function balParks(g) {      // parkings à moins de 500 m du réseau de la balade, du plus proche de vous au plus lointain
   const pts = g.paths.flatMap(p => p.pts), dn = q => Math.min(...pts.map(v => rdist(v, q)));
   const L = (D.marks || []).filter(m => m.t === 'park').map(m => ({ m, d: dn([m.x, m.y]) })).filter(o => o.d < 500);
-  L.forEach((o, i) => { o.name = pkName(o.m, i); o.me = me ? rdist([me.x, me.y], [o.m.x, o.m.y]) : null; });
-  return L.sort((a, b) => a.me != null && b.me != null ? a.me - b.me : a.d - b.d);
+  L.forEach((o, i) => { o.name = pkName(o.m, i); o.me = me ? rdist([me.x, me.y], [o.m.x, o.m.y]) : null; o.n = 0; });
+  Object.values(D.cells).forEach(c => c.v.forEach(v => { if (!v.pts || !v.pts.length) return;      // utilisation : sorties parties à moins de 150 m d'un parking (le plus proche)
+    let b = null, bd = 150; L.forEach(o => { const d = rdist(v.pts[0], [o.m.x, o.m.y]); if (d < bd) { bd = d; b = o; } }); if (b) b.n++; }));
+  L.sort((a, b) => a.me != null && b.me != null ? a.me - b.me : a.d - b.d);
+  const fav = L.reduce((a, o) => o.n > (a ? a.n : 0) ? o : a, null); if (fav) { fav.fav = true; L.splice(L.indexOf(fav), 1); L.unshift(fav); }      // le plus utilisé en premier
+  return L;
 }
 function balStart(g, pkId) {      // départ : le parking choisi (ou le plus proche de vous), sinon le point du réseau le plus proche de vous
   const pts = g.paths.flatMap(p => p.pts), dn = q => Math.min(...pts.map(v => rdist(v, q))), L = balParks(g);
   let lastId = ''; try { lastId = localStorage.getItem('cartodog-pk-' + g.k) || ''; } catch (e) {}
-  const pk = L.find(o => o.m.id === pkId) || (me ? L[0] : L.find(o => o.m.id === lastId) || L[0]);
+  const pk = L.find(o => o.m.id === pkId) || L.find(o => o.fav) || (me ? L[0] : L.find(o => o.m.id === lastId) || L[0]);
   if (pk) return { q: [pk.m.x, pk.m.y], park: pk.m, pname: pk.name, parks: L, txt: `🅿 Départ et retour : <b>${esc(pk.name)}</b>${pk.d > 15 ? ` (à ${fmtDist(pk.d)} du sentier)` : ''}` };
   if (me && dn([me.x, me.y]) < 3000) return { q: [me.x, me.y], park: null, parks: L, txt: '⚠️ Aucun parking (repère 🅿) près de ces sentiers : départ depuis votre position' };
   const p0 = g.paths.reduce((a, p) => pathLen(p) > pathLen(a) ? p : a).pts[0]; return { q: p0, park: null, parks: L, txt: '⚠️ Aucun parking (repère 🅿) près de ces sentiers : départ au début du plus long sentier' };
@@ -1549,7 +1553,7 @@ function balDetail(k) {      // petit panneau en bas : la carte reste visible et
   $('#balh').innerHTML = `${esc(g.name)}<small>${fmtDist(g.len)} de sentiers</small>`;
   $('#balc').innerHTML = `<div class="bdur"><button class="bdst" data-step="-5" aria-label="5 minutes de moins">−</button><div class="bdv"><b id="bldv"></b><small id="blsp"></small></div><button class="bdst" data-step="5" aria-label="5 minutes de plus">+</button></div>
     <div class="bdch" id="bldc">${DURS.map(m => `<button data-m="${m}">${fmtMin(m)}</button>`).join('')}</div>
-    ${st.parks.length > 1 ? `<div class="bdpk" id="blpk">${st.parks.slice(0, 4).map(o => `<button data-pk="${o.m.id}"${o.m.id === BL.pk ? ' class="on"' : ''} aria-label="${esc(o.name)}"><b>🅿 ${esc(pkShort(o.name))}</b>${o.me != null ? `<small>${fmtDist(o.me)}</small>` : ''}</button>`).join('')}</div>`
+    ${st.parks.length > 1 ? `<div class="bdpk" id="blpk">${st.parks.slice(0, 4).map(o => `<button data-pk="${o.m.id}"${o.m.id === BL.pk ? ' class="on"' : ''} aria-label="${esc(o.name)}${o.fav ? ' (votre parking habituel)' : ''}"><b>${o.fav ? '<span class="pkf">♥</span>' : '🅿'} ${esc(pkShort(o.name))}</b>${o.me != null ? `<small>${fmtDist(o.me)}</small>` : ''}</button>`).join('')}</div>`
       : `<div class="bdln">${pk ? `🅿 <b>${esc(pk.name)}</b>${pk.d > 15 ? ` <small>à ${fmtDist(pk.d)} du sentier</small>` : ''}` : `📍 Départ : <b>${me ? 'votre position' : 'début du plus long sentier'}</b> <small>(aucun parking 🅿)</small>`}</div>`}
     ${ndz ? `<button class="bdln bdav" data-avoid>⚠️ <span>Éviter ${ndz > 1 ? 'les ' + ndz + ' dangers signalés' : 'le danger signalé'}</span><em class="sw${BL.avoid ? ' on' : ''}" aria-hidden="true"></em></button>` : ''}
     <button class="btn gold bdgo" data-go>🧭 <span id="blgo"></span></button>`;
@@ -1882,7 +1886,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-2';
+const APP_V = '2026.10.23-3';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
