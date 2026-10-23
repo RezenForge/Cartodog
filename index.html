@@ -589,7 +589,7 @@ body:has(#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#pls.open,#mkm.op
 .jrh img.jav{width:42px;height:42px;flex:none;border-radius:50%;object-fit:cover;border:2px solid var(--ember)}
 #wxw{position:absolute;top:12px;right:58px;z-index:4;display:flex;align-items:center;padding:0;border:0;background:none;cursor:pointer;max-width:calc(100% - 150px)}
 #wxw[hidden]{display:none}.wxn1{display:inline-flex;align-items:center;gap:5px;max-width:100%;padding:5px 7px 5px 9px;border-radius:5px;background:rgba(14,12,9,.82);border:2px solid var(--edge);box-shadow:inset 0 0 0 1px #5a4f40;color:var(--txt);font:700 13px var(--num);white-space:nowrap}.wxn1 b{font-size:15px;color:#fff1cf}
-.wxa{flex:none;font-style:normal;padding:2px 6px;border-radius:4px;font:800 11.5px/1.25 var(--num);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;border:1.5px solid var(--edge);color:#1f1408;animation:pop .35s cubic-bezier(.2,.9,.3,1.2) both}.wxa i{font-style:normal;opacity:.75}
+.wxa{flex:none;font-style:normal;padding:2px 6px;border-radius:4px;font:800 11.5px/1.25 var(--num);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;border:1.5px solid var(--edge);color:#1f1408;animation:pop .35s cubic-bezier(.2,.9,.3,1.2) both}.wxa i{font-style:normal;opacity:.75}.wxa u{text-decoration:none;font-variant-numeric:tabular-nums}
 .wxa.l1{background:#cfd8de}.wxa.l2{background:linear-gradient(#ffd27a,#e9a53c)}.wxa.l3{background:linear-gradient(#ff8a6e,#d9472c);color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.35)}
 #wxp{position:absolute;top:56px;right:8px;z-index:6;width:min(300px,calc(100% - 16px));padding:10px 12px;animation:pop .3s cubic-bezier(.2,.9,.3,1.2) both}#wxp[hidden]{display:none}
 .wxr{padding:6px 8px;margin:5px 0;border-left:3px solid #8a99a3;background:rgba(0,0,0,.25);border-radius:0 4px 4px 0}.wxr.l2{border-color:#eaa53c}.wxr.l3{border-color:#ff5f4a}.wxr b{display:block;font-size:14px;color:#fff1cf}.wxr small{display:block;font-size:12px;color:var(--mut)}
@@ -1299,7 +1299,7 @@ async function showRel(k) {
 const wxCache = new Map(), clp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 async function wxFor(la, lo) {
   const k = la.toFixed(2) + ',' + lo.toFixed(2), c = wxCache.get(k); if (c && Date.now() - c.t < 36e5) return c.d;
-  const r = await fetchT(`https://api.open-meteo.com/v1/forecast?latitude=${la.toFixed(3)}&longitude=${lo.toFixed(3)}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_gusts_10m_max,uv_index_max,sunrise,sunset&hourly=temperature_2m,apparent_temperature,precipitation,precipitation_probability,weather_code,is_day,wind_gusts_10m&forecast_days=8&timezone=auto`);
+  const r = await fetchT(`https://api.open-meteo.com/v1/forecast?latitude=${la.toFixed(3)}&longitude=${lo.toFixed(3)}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_gusts_10m_max,uv_index_max,sunrise,sunset&hourly=temperature_2m,apparent_temperature,precipitation,precipitation_probability,weather_code,is_day,wind_gusts_10m&minutely_15=precipitation&forecast_days=8&timezone=auto`);
   if (!r.ok) throw new Error('wx'); const d = await r.json(); wxCache.set(k, { t: Date.now(), d }); return d;
 }
 function hrScore(t, r, gu) {
@@ -2043,7 +2043,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-10';
+const APP_V = '2026.10.23-11';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2854,15 +2854,25 @@ function wxNowAlerts(d) {
   const ss = d.daily && d.daily.sunset && d.daily.sunset[0], mn = ss ? (new Date(ss) - now) / 6e4 : null;
   if (mn != null && mn > 0 && mn <= 75) A.push({ k: 'nuit' + dayOf(now), ts: new Date(ss).getTime(), lv: 1, t: '🌇 Nuit dans ' + (mn < 60 ? Math.round(mn) + ' min' : '1 h'), d: 'Coucher du soleil à ' + hhmm(ss) });
   A.sort((a, b) => b.lv - a.lv);
+  { const M = d.minutely_15; if (M && M.time && M.precipitation) {      // pluie au quart d'heure près dans les 3 h : heure de début précise
+      const t0 = Date.now() - 9e5; let ts = 0; for (let i = 0; i < M.time.length; i++) { const t = new Date(M.time[i]).getTime(); if (t < t0) continue; if (t > Date.now() + 3 * 36e5) break; if ((M.precipitation[i] || 0) >= .1) { ts = t; break; } }
+      const cur = A.find(x => x.k === 'pluie-en-cours'), soon = A.find(x => /^pluie\d/.test(x.k));
+      if (ts > Date.now() + 6e4 && !cur) { if (soon) soon.ts = ts; else A.splice(A.findIndex(x => /^orage/.test(x.k)) + 1, 0, { k: 'pluie' + ts, ts, lv: 2, t: '🌧️ Pluie bientôt', d: 'Vers ' + new Date(ts).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) }); } } }
   return { A, i0, t: Math.round(H.temperature_2m[i0]), ic: WXI(code[i0], H.is_day ? H.is_day[i0] : 1), next: [1, 2, 3, 4, 5, 6].map(k => i0 + k).filter(i => i < H.time.length).map(i => ({ h: hr(i), ic: WXI(code[i], H.is_day ? H.is_day[i] : 1), t: Math.round(H.temperature_2m[i]), r: H.precipitation[i] ?? 0 })) };
 }
+const inMin = ts => { const m = Math.max(1, Math.round((ts - Date.now()) / 6e4)); return m < 60 ? '≈' + m + 'm' : '≈' + Math.floor(m / 60) + 'h' + (m % 60 >= 5 ? pad(Math.round(m % 60 / 5) * 5 % 60) : ''); };
+function wxBadge() {      // température + logo de l'alerte ; pluie ou orage à venir : délai juste avant le logo (« ≈27m 🌧️ »)
+  const r = WXX.r, w = $('#wxw'); if (!r || !w) return; const a = r.A[0], soon = a && a.ts > Date.now() + 6e4 && /^(pluie|orage)/.test(a.k);
+  w.innerHTML = `<span class="wxn1">${a ? '' : r.ic + ' '}<b>${r.t}°</b>${a ? `<em class="wxa l${a.lv}" title="${esc(a.t)}">${soon ? `<u>${inMin(a.ts)}</u> ` : ''}${esc(a.t.trim().split(/\s+/)[0])}${r.A.length > 1 ? ' <i>+' + (r.A.length - 1) + '</i>' : ''}</em>` : ''}</span>`;
+}
+setInterval(() => { if (WXX.r && !$('#wxw').hidden) wxBadge(); }, 3e4);
 async function wxQuick(force) {
   const q = me ? [me.x, me.y] : [V.cx, V.cy]; if (V.mpp > 400 && !me) { $('#wxw').hidden = true; return; }
   if (!force && WXX.at && rdist(WXX.at, q) < 5000 && Date.now() - WXX.t < 6e5) return;
   WXX.at = q; WXX.t = Date.now();
   try { const [la, lo] = toLL(...q), d = await wxFor(la, lo), r = wxNowAlerts(d); if (!r) return; WXX.r = r; const a = r.A[0], w = $('#wxw');
     const shortAl = t => t.trim().split(/\s+/)[0];      // seulement le logo de l'alerte (« 🌧️ ») : le détail s'ouvre en touchant le badge
-    w.innerHTML = `<span class="wxn1">${a ? '' : r.ic + ' '}<b>${r.t}°</b>${a ? `<em class="wxa l${a.lv}" title="${esc(a.t)}">${esc(shortAl(a.t))}${r.A.length > 1 ? ' <i>+' + (r.A.length - 1) + '</i>' : ''}</em>` : ''}</span>`; w.hidden = false; w.classList.toggle('al', !!a);
+    wxBadge(); w.hidden = false; w.classList.toggle('al', !!a);
     if (BR.on) r.A.filter(x => x.lv >= 2 && !WXX.said.has(x.k) && x.ts <= (BR.end || Date.now() + 36e5)).forEach(x => { WXX.said.add(x.k); toast(x.t + ' · ' + x.d); try { navigator.vibrate && navigator.vibrate(120); } catch (e) {} });
     if (!$('#wxp').hidden) wxPop(true);
   } catch (e) { WXX.t = Date.now() - 5.4e5; }      // nouvel essai dans 1 min
