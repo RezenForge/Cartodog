@@ -1228,9 +1228,10 @@ const cosAt = y => Math.cos(toLL(0, y)[0] * Math.PI / 180);
 try { ['cartodog-fog', 'cartodog-fogon', 'cartodog-forest'].forEach(k => localStorage.removeItem(k)); } catch (e) {}      // anciens réglages
 function repPos() {      // le bouton Signaler reste au-dessus de la barre et des cartes posées en bas de la carte
   const b = $('#rep'); if (!b) return; const box = $('#mapBox').getBoundingClientRect(); let top = box.bottom;
-  ['#zb', '#lp', '#pm', '#rm', '#shm', '#rt', '#wel'].forEach(q => { const el = $(q); if (!el || el.hidden || !el.offsetParent) return; const rc = el.getBoundingClientRect(); if (rc.bottom > box.top + box.height * .6) top = Math.min(top, rc.top); });
+  ['#lp', '#pm', '#rm', '#shm', '#rt'].forEach(q => { const el = $(q); if (!el || el.hidden || !el.offsetParent) return; const rc = el.getBoundingClientRect(); if (rc.bottom > box.top + box.height * .6) top = Math.min(top, rc.top); });
   const v = Math.round(box.bottom - top + 10) + 'px'; if (b.style.bottom !== v) b.style.bottom = v; b.hidden = P.on || ED.on;
 }
+new MutationObserver(() => repPos()).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['hidden'] });      // le bouton Signaler suit l'apparition / disparition des cartes du bas
 function draw() {
   const dpr = devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight; if (!W || !H) return;
   if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
@@ -2232,7 +2233,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-29';
+const APP_V = '2026.10.23-30';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
