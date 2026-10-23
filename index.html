@@ -1869,7 +1869,7 @@ const bbNear = (p, q, m) => { const b = pathBB(p); return q[0] >= b[0] - m && q[
 let VOX = { on: (() => { try { return localStorage.getItem('cartodog-vox') !== '0'; } catch (e) { return true; } })(), turns: [], pi: 0, off: 0, said: new Set(), cum: [] };
 const DZV = { chenille: 'chenilles processionnaires', tick: 'tiques', viper: 'vipère', grass: 'épillets', hunt: 'chasse en cours', boar: 'sangliers', dogs: 'chien agressif', toxic: 'plante toxique', algae: 'eau douteuse, ne le laissez pas boire', road: 'route, tenez votre chien', cattle: 'troupeau, gardez votre chien en laisse', danger: 'danger signalé' };
 const dzSay = (m, where) => `Attention : ${DZV[m.t] || MK[m.t][0].toLowerCase()}, ${where}.` + (m.note && m.note.length < 80 ? ' ' + m.note : '');
-function say(t) { if (!VOX.on || !window.speechSynthesis) return; try { const u = new SpeechSynthesisUtterance(t); u.lang = 'fr-FR'; u.rate = 1.02; const v = speechSynthesis.getVoices().find(x => /^fr/i.test(x.lang)); if (v) u.voice = v; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {} }
+function say(t) { if (!VOX.on || !window.speechSynthesis) return; try { const u = new SpeechSynthesisUtterance(t); u.lang = 'fr-FR'; u.rate = 1.02; const v = speechSynthesis.getVoices().find(x => /^fr/i.test(x.lang)); if (v) u.voice = v; speechSynthesis.speak(u); } catch (e) {} }      // file d'attente : chaque phrase est dite en entier avant la suivante
 function voxPlan() {      // repère les carrefours de la boucle et la direction à y prendre
   const pts = BL.poly || [], N = BL.net, deg = new Map(); VOX = { ...VOX, turns: [], pi: 0, off: 0, said: new Set(), cum: [0] };
   for (let i = 1; i < pts.length; i++) VOX.cum.push(VOX.cum[i - 1] + rdist(pts[i - 1], pts[i]));
