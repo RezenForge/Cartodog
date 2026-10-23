@@ -1077,7 +1077,7 @@ var MKI = {}; Object.keys(MK).forEach(t => { const im = new Image(); im.onload =
 var SPOT = { min: 24, max: 46, ref: 30 };      // taille de l'icône en px : suit le zoom de près (≈ ref mètres de large), plafonnée à max, puis ne rapetisse plus sous min
 var spotSz = () => Math.max(SPOT.min, Math.min(SPOT.max, SPOT.ref / (V.mpp * Math.cos(toLL(V.cx, V.cy)[0] * Math.PI / 180))));
 var spSvg = on => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><g${on ? '' : ' opacity=".72"'}><path d="M16 31C16 31 5.2 20.6 5.2 12.8a10.8 10.8 0 0 1 21.6 0C26.8 20.6 16 31 16 31z" fill="${on ? '#c78a2e' : '#8c867a'}" stroke="#1e140a" stroke-width="1.8" stroke-linejoin="round"/><circle cx="16" cy="12.8" r="8" fill="${on ? '#f6e3b4' : '#d8d2c4'}" stroke="#1e140a" stroke-opacity=".5"/><g transform="translate(9.6 6.4) scale(.4)">${PAWP(on ? '#6b3f17' : '#5d574c', 'none', 0)}</g></g></svg>`;
-var CL = [];      // groupes de repères affichés (pour le toucher)
+var CL = [], PA = { t: 0, s: new Map() };      // PA : positions animées des repères      // groupes de repères affichés (pour le toucher)
 const pinR = () => Math.round(Math.max(15, Math.min(21, 15 + (14 - Math.min(14, Math.log2(Math.max(1, V.mpp)) * 3.2)) * .45)) + (V.mpp < 3 ? 6 : V.mpp < 6 ? 3 : 0));      // grossit en zoom rapproché
 /* Indicateurs d'une balade (danger en cours, eau, parking, WC…) : repères à moins de 60 m de ses sentiers, ou 250 m de son repère ; recalculés seulement si les repères ou les sentiers changent */
 let BIC = { sig: '', m: new Map() };
@@ -1273,10 +1273,20 @@ function draw() {
   for (let pass = 0, ch = true; ch && pass < 4; pass++) { ch = false; for (let i = 0; i < G2.length; i++) for (let j = i + 1; j < G2.length; j++) { const a = G2[i], b = G2[j]; if (Math.hypot(a.wx - b.wx, a.wy - b.wy) / mpp < thr) {
     const n = a.items.length + b.items.length; a.wx = (a.wx * a.items.length + b.wx * b.items.length) / n; a.wy = (a.wy * a.items.length + b.wy * b.items.length) / n; a.items.push(...b.items); G2.splice(j--, 1); ch = true; } } }
   G2.forEach(q => { if (q.items.length > 1) CL.push(q); else solo.push(q.items[0]); });
-  CL.forEach(q => { const x = sx(q.wx), y = sy(q.wy), upr = UP(x, y), n = q.items.length, rr = PR + Math.min(8, n);      // pastille de groupe : « 5 balades »
-    g.beginPath(); g.arc(x, y, rr + 3, 0, 7); g.fillStyle = '#0e0b08'; g.fill(); g.beginPath(); g.arc(x, y, rr, 0, 7); const gr = g.createRadialGradient(x - rr * .3, y - rr * .4, 2, x, y, rr); gr.addColorStop(0, '#ffd27a'); gr.addColorStop(1, '#c6862a'); g.fillStyle = gr; g.fill();
-    g.fillStyle = '#2a1806'; g.font = '900 ' + Math.round(rr * .8) + 'px system-ui,sans-serif'; g.fillText(n, x, y - 2); g.font = '800 ' + Math.round(rr * .34) + 'px system-ui,sans-serif'; g.fillText('balades', x, y + rr * .45); if (upr) g.restore(); });
-  solo.forEach(({ k, c, x, y, n }) => { const upr = UP(x, y), pf = FX.length && fxOf('pop', k), sc = pf ? Math.max(.01, EZ.back(Math.min(1, Math.max(0, fxP(pf))))) : 1;
+  /* Animation : chaque repère glisse vers son groupe (ou en ressort) en douceur ; la pastille du groupe apparaît quand ils l'ont rejoint */
+  const now = performance.now(), dt = Math.min(34, now - (PA.t || now)), kk = 1 - Math.exp(-dt / 220), tgt = new Map(), fly = []; PA.t = now; let moving = false;
+  CL.forEach(q => q.items.forEach(m => tgt.set(m.k, { x: q.wx, y: q.wy, m: 1, it: m })));
+  solo.forEach(m => tgt.set(m.k, { x: m.c.x, y: m.c.y, m: 0, it: m }));
+  for (const k of [...PA.s.keys()]) if (!tgt.has(k)) PA.s.delete(k);
+  tgt.forEach((t, k) => { let a = PA.s.get(k); if (!a || RMO.matches) { a = { x: t.x, y: t.y, m: t.m }; PA.s.set(k, a); }
+    else { a.x += (t.x - a.x) * kk; a.y += (t.y - a.y) * kk; a.m += (t.m - a.m) * kk; if (Math.hypot(t.x - a.x, t.y - a.y) / mpp > .4 || Math.abs(t.m - a.m) > .02) moving = true; else { a.x = t.x; a.y = t.y; a.m = t.m; } }
+    if (a.m < .97) fly.push({ ...t.it, x: sx(a.x), y: sy(a.y), shr: 1 - .5 * a.m, al: 1 - .85 * a.m }); });
+  CL.forEach(q => { q.al = q.items.reduce((s0, m) => s0 + PA.s.get(m.k).m, 0) / q.items.length; });
+  if (moving) schedule();
+  CL.forEach(q => { if (q.al < .05) return; const x = sx(q.wx), y = sy(q.wy), upr = UP(x, y), n = q.items.length, rr = (PR + Math.min(8, n)) * (.55 + .45 * q.al);      // pastille de groupe : « 5 balades »
+    g.save(); g.globalAlpha = Math.min(1, q.al * 1.15); g.beginPath(); g.arc(x, y, rr + 3, 0, 7); g.fillStyle = '#0e0b08'; g.fill(); g.beginPath(); g.arc(x, y, rr, 0, 7); const gr = g.createRadialGradient(x - rr * .3, y - rr * .4, 2, x, y, rr); gr.addColorStop(0, '#ffd27a'); gr.addColorStop(1, '#c6862a'); g.fillStyle = gr; g.fill();
+    g.fillStyle = '#2a1806'; g.font = '900 ' + Math.round(rr * .8) + 'px system-ui,sans-serif'; g.fillText(n, x, y - 2); g.font = '800 ' + Math.round(rr * .34) + 'px system-ui,sans-serif'; g.fillText('balades', x, y + rr * .45); g.restore(); if (upr) g.restore(); });
+  fly.forEach(({ k, c, x, y, n, shr, al }) => { const upr = UP(x, y), pf = FX.length && fxOf('pop', k), sc = (pf ? Math.max(.01, EZ.back(Math.min(1, Math.max(0, fxP(pf))))) : 1) * shr; g.save(); g.globalAlpha = al;
     if (sc !== 1) { g.save(); g.translate(x, y); g.scale(sc, sc); g.translate(-x, -y); }
     const isS = k === sel, R = isS ? PR + 4 : PR, cy = y - R - 8, col = isS ? '#ffd27a' : RANKS[rankK(c)].c, im = thImg(k, c);
     g.beginPath(); g.ellipse(x, y, 5, 2, 0, 0, 7); g.fillStyle = 'rgba(0,0,0,.45)'; g.fill();
@@ -1291,7 +1301,7 @@ function draw() {
     if (mpp < 3) { const o = balInd(k), ic = [o.dz && ['⚠', '#ff5f4a'], o.water && ['💧', '#2b8fc4'], o.park && ['🅿', '#3f64a8'], o.wc && ['WC', '#5b6fa8']].filter(Boolean);      // de près : petits indicateurs sous le nom
       if (ic.length) { const s0 = 18, gap = 4, tw = ic.length * s0 + (ic.length - 1) * gap; let ix = x - tw / 2 + s0 / 2; const iy = y + 26; ic.forEach(([t, col]) => { g.beginPath(); g.arc(ix, iy, s0 / 2 + 1.5, 0, 7); g.fillStyle = '#0e0b08'; g.fill(); g.beginPath(); g.arc(ix, iy, s0 / 2, 0, 7); g.fillStyle = t === '⚠' ? '#3a1410' : '#1b1814'; g.fill(); g.lineWidth = 1.6; g.strokeStyle = col; g.stroke(); g.fillStyle = t === '⚠' ? '#ff8a6e' : '#f1e6c9'; g.font = (t === 'WC' ? '800 8px' : '11px') + ' system-ui,sans-serif'; g.fillText(t, ix, iy + .5); ix += s0 + gap; });
         if (o.dz) { const pl = .5 + .5 * Math.sin(performance.now() / 300); g.beginPath(); g.arc(x - tw / 2 + s0 / 2, iy, s0 / 2 + 3 + pl * 2, 0, 7); g.strokeStyle = `rgba(255,95,74,${.5 - pl * .3})`; g.lineWidth = 2; g.stroke(); } } }
-    if (upr) g.restore(); });
+    g.restore(); if (upr) g.restore(); });
   drawMarks(sx, sy, UP);
   if (commOn) drawComm(1, sx, sy, W, x0, x1, y0, y1, mpp);
   const ring = (k, col, w) => { const c = D.cells[k]; if (!c || c.x == null) return; const u = UP(sx(c.x), sy(c.y)); g.beginPath(); g.arc(sx(c.x), sy(c.y) - ps / 2, ps * .62 + 3, 0, 7); g.lineWidth = w; g.strokeStyle = col; g.stroke(); if (u) g.restore(); };
@@ -2278,7 +2288,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-36';
+const APP_V = '2026.10.23-37';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
