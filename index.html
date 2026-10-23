@@ -418,71 +418,106 @@ body{background:
 
 #toast{width:max-content;max-width:min(92vw,420px)}
 
-/* ===== Encyclopédie : grimoire de pierre ===== */
+/* ===== Guide du promeneur : bestiaire de pierre (sceaux, menace en losanges, fiches façon RPG) ===== */
 #encm{position:fixed;inset:0;background:rgba(6,5,3,.72);display:none;align-items:center;justify-content:center;padding:10px;z-index:22}
 #encm.open{display:flex;animation:fadeIn .2s ease both}
-#encm .win{width:100%;max-width:460px;height:92dvh;display:flex;flex-direction:column;padding:14px 14px 10px;overflow:hidden}
+#encm .win{width:100%;max-width:460px;height:92dvh;display:flex;flex-direction:column;padding:12px 14px 12px;overflow:hidden}
 #encm.open .win{animation:pop .38s cubic-bezier(.2,.9,.3,1.15) both}
-.ehd{display:flex;align-items:flex-start;gap:8px}.ehd h2{flex:1;margin:0}
-.ehd .ib{width:38px;height:38px;flex:none}
+.ehd{display:flex;align-items:center;gap:10px;margin-bottom:2px}.ehd h2{flex:1;min-width:0;margin:0;font-size:21px!important}
+.ehd .ib{width:38px;height:38px;flex:none}#encbk{font-size:25px;line-height:1;padding-bottom:3px}
+#encbk[hidden],.elogo[hidden],#encbd[hidden],#encv[hidden]{display:none}
+.elogo{flex:none;width:48px;height:48px;filter:drop-shadow(2px 2px 0 #000)}.elogo svg{display:block;width:100%;height:100%}
+#encm.open .elogo{animation:bump .6s cubic-bezier(.2,.9,.3,1.2) .15s both}
+.sgl{display:block;flex:none;width:40px;height:40px}.sgl.sm{width:24px;height:24px}.sgl.big{width:60px;height:60px;filter:drop-shadow(2px 2px 0 #000)}
+#encbd{flex:1;min-height:0;display:flex;flex-direction:column}
+/* recherche */
 .dg .esrch{position:relative;z-index:6;margin:10px 0 8px}
 #encq{margin:0;padding-left:38px;min-height:46px;font-size:16px}
 .esrch::before{content:'';position:absolute;left:12px;top:50%;width:14px;height:14px;margin-top:-9px;border:2.2px solid var(--ember);border-radius:50%;pointer-events:none;z-index:2}
 .esrch::after{content:'';position:absolute;left:24px;top:50%;width:7px;height:2.4px;margin-top:5px;background:var(--ember);transform:rotate(45deg);pointer-events:none;z-index:2}
 #encac{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:5;max-height:55dvh;overflow:auto;background:#1b1814;border:2px solid var(--edge);border-radius:5px;box-shadow:inset 0 0 0 1px var(--rim),0 12px 28px rgba(0,0,0,.65);animation:rise .18s ease both}
 #encac[hidden]{display:none}
-#encac button{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border:0;border-bottom:1px solid #2e2821;background:transparent;color:var(--txt);text-align:left;font-size:14px}
-#encac button:active{background:#2e2618}
+#encac button{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:0;border-bottom:1px solid #2e2821;background:transparent;color:var(--txt);text-align:left;font-size:14px}
+#encac button:active{background:#2e2618}#encac .sgl{width:30px;height:30px}
 #encac b{display:block;font-weight:700}#encac small{display:block;font-size:12px;color:var(--mut)}
 #encac mark,#encl mark{background:none;color:var(--ember2);text-decoration:underline;text-decoration-color:rgba(255,210,122,.5);text-underline-offset:2px}
 .ach{padding:7px 10px 4px;font:800 10px/1 var(--num);letter-spacing:.14em;text-transform:uppercase;color:var(--ember)}
-.eic{flex:none;width:28px;height:28px;display:grid;place-items:center;border-radius:4px;background:#0d0b08;border:2px solid var(--ec,#5a4f40);color:var(--ec,#ab9f84);font:800 14px/1 var(--num)}
-.eic.gl{--ec:#c9a46a;color:#e8c98a}.eic.wk{--ec:#8aa0b8;color:#c9d6e4;font-family:Georgia,serif}
-#encf{display:flex;gap:4px;overflow-x:auto;margin-bottom:8px;padding:3px;scrollbar-width:none}
-#encf button{flex:none;padding:8px 11px;font-size:12.5px;white-space:nowrap}
-#encl{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:0 1px}
-#encl li{display:flex;align-items:center;gap:10px;padding:7px 8px;margin-bottom:6px;cursor:pointer;background:var(--slot);border:2px solid var(--edge);border-radius:4px;box-shadow:inset 0 0 0 1px var(--rim);color:var(--txt)}
+/* onglets : emplacements à icône, celui choisi se déploie avec son nom */
+.etabs{flex:none;display:flex;gap:3px;margin-bottom:8px;padding:3px;background:#14110e;border:2px solid var(--edge);border-radius:4px;box-shadow:inset 0 0 0 1px #362f27}
+.etabs button{flex:1 1 0;min-width:0;height:42px;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 4px;border:0;border-radius:3px;background:transparent;color:var(--mut);overflow:hidden;cursor:pointer;transition:flex-grow .28s cubic-bezier(.2,.85,.25,1),background .2s,color .2s}
+.etabs button svg.i{width:21px;height:21px}.etabs button small{display:none;font:800 12.5px/1 var(--num);white-space:nowrap}
+.etabs button.on{flex-grow:3.2;background:linear-gradient(#4d453a,#3a332b);color:var(--ember2);box-shadow:inset 0 -2px 0 var(--ember),inset 0 1px 0 rgba(255,255,255,.12)}
+.etabs button.on small{display:inline;animation:fadeIn .25s ease both}.etabs button.on svg.i{filter:drop-shadow(0 0 4px rgba(234,165,60,.5))}
+.etabs button[data-k=u]{color:#e58a74}.etabs button[data-k=u].on{color:#ffb39f;box-shadow:inset 0 -2px 0 #ff5f4a,inset 0 1px 0 rgba(255,255,255,.12)}
+/* liste */
+#encl{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:0 1px 2px}
+#encl li{display:flex;align-items:center;gap:10px;padding:6px 10px 6px 6px;margin-bottom:6px;cursor:pointer;background:var(--slot);border:2px solid var(--edge);border-radius:4px;box-shadow:inset 0 0 0 1px var(--rim);color:var(--txt)}
+#encl li.eg-u{background:linear-gradient(90deg,rgba(255,95,74,.11),transparent 45%),var(--slot)}
 #encl li:active{background:#2a241d}
+#encl li .sgl{width:44px;height:44px;filter:drop-shadow(1px 2px 0 #000)}
 #encm.open #encl li{animation:rise .3s cubic-bezier(.2,.85,.25,1) both}
-.eth{flex:none;width:52px;height:52px;border-radius:3px;overflow:hidden;display:grid;place-items:center;background:#0d0b08;border:2px solid #3a332a}
-.eth svg{width:30px;height:30px;opacity:.55}.eth img{width:100%;height:100%;object-fit:cover;animation:fadeIn .4s ease both}
-.eth.gl{color:#e8c98a;font-size:22px}.eth.big{width:46px;height:46px}
-.ett{flex:1;min-width:0}.ett b{display:block;font-size:15px;color:#fff1cf}.ett small{display:block;font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ebd{display:inline-block;margin-top:3px;padding:1px 7px;border:1px solid var(--ec);border-radius:2px;background:rgba(0,0,0,.4);color:var(--ec);font:800 10px/1.5 var(--num);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
-#encv{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:0 2px 6px;animation:rise .3s cubic-bezier(.2,.85,.25,1) both}
-#encv[hidden],#encl[hidden]{display:none}
-.eback{border:0;background:none;color:var(--ember2);font-weight:700;padding:6px 0 8px;font-size:14px}
-.eimg{position:relative;aspect-ratio:16/10;border:3px solid var(--edge);border-radius:4px;overflow:hidden;background:#0d0b08;box-shadow:0 0 0 2px #574c3d,inset 0 0 20px rgba(0,0,0,.8)}
+.ett{flex:1;min-width:0}.ett b{display:block;font-size:15px;line-height:1.25;color:#fff1cf}
+.ett small{display:block;margin-top:2px;font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.egv{color:var(--ec);font-weight:800}
+.epip{flex:none;display:inline-flex;gap:4px;padding:0 2px}.epip i{width:7px;height:7px;transform:rotate(45deg);background:#0d0b08;border:1px solid #3a332a}
+.epip i.f{background:var(--ec);border-color:rgba(0,0,0,.55);box-shadow:0 0 6px var(--ec)}
+.ego{flex:none;font-style:normal;font-size:22px;line-height:1;color:var(--mut)}
+#encl li.esh{display:flex;align-items:baseline;justify-content:space-between;gap:8px;cursor:default;background:none;border:0;box-shadow:none;padding:10px 2px 2px;margin:0 0 6px;font:800 10.5px/1.2 var(--num);letter-spacing:.14em;text-transform:uppercase;color:var(--ember)}
+#encl li.esh:first-child{padding-top:0}#encl li.esh::before{content:'◆';color:#6b5d47;margin-right:-2px}#encl li.esh span{flex:1}
+#encl li.esh b{font-weight:700;letter-spacing:.04em;color:var(--mut)}#encl li.esh.on span{color:#b9e88f}
+#encl li.hint{cursor:default;background:none;border:0;box-shadow:none;justify-content:center;color:var(--mut)}
+/* bouton d'urgence, toujours au pied de la liste */
+.esos{flex:none;display:flex;align-items:center;gap:10px;width:100%;margin:6px 0 0;padding:6px 12px 6px 6px;border:2px solid #2a0a06;border-radius:4px;background:linear-gradient(#9a3020,#62190f);color:#fff3e6;text-align:left;cursor:pointer;box-shadow:inset 0 2px 0 rgba(255,255,255,.16),inset 0 -3px 0 rgba(0,0,0,.35),0 2px 0 rgba(0,0,0,.45),0 0 14px rgba(220,70,40,.28)}
+.esos:active{transform:translateY(2px);box-shadow:inset 0 3px 0 rgba(0,0,0,.45)}
+.esos .sgl{width:38px;height:38px;filter:drop-shadow(1px 1px 0 #000)}.esos span{flex:1;min-width:0}
+.esos b{display:block;font:800 15px/1.2 var(--num);text-shadow:1px 1px 0 #000}.esos small{display:block;margin-top:1px;font-size:12px;color:#ffc9bb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.esos i{font-style:normal;font-size:22px;line-height:1}
+/* fiche */
+#encv{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;margin-top:8px;padding:2px 2px 6px;animation:rise .3s cubic-bezier(.2,.85,.25,1) both}
+.eimg{position:relative;aspect-ratio:16/9;margin-bottom:-26px;border:3px solid var(--edge);border-radius:4px;overflow:hidden;background:#0d0b08;box-shadow:0 0 0 2px #574c3d,inset 0 0 20px rgba(0,0,0,.8)}
 .eimg img{width:100%;height:100%;object-fit:cover;display:block;animation:fadeIn .5s ease both}
+.eimg::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(transparent 55%,rgba(14,11,8,.85))}
 .eimg0{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--mut);font-size:12px;background:linear-gradient(110deg,#14110e 30%,#221d17 50%,#14110e 70%) 0 0/250% 100%;animation:shimmer 1.6s linear infinite}
-.eimg0 svg{width:44px;height:44px;opacity:.4}
+.eimg0 .sgl{width:52px;height:52px;opacity:.35;filter:grayscale(.6)}
 @keyframes shimmer{to{background-position:-250% 0}}
-.ecr{position:absolute;right:0;bottom:0;padding:2px 6px;background:rgba(0,0,0,.65);color:#d8ccb0;font-size:10px;text-decoration:none;border-top-left-radius:4px}
-.eph{display:flex;align-items:center;gap:10px;margin:12px 0 4px}.eph>div{flex:1;min-width:0}
-.eph h3{margin:2px 0 0;font:800 23px/1.15 var(--px);color:#fff1cf;text-shadow:2px 2px 0 #000}
-.ekd{font:800 10px/1 var(--num);letter-spacing:.14em;text-transform:uppercase;color:var(--ember)}
-.elat{color:var(--mut);font-size:14px}
-.esec{margin:14px 0 5px;font:800 10.5px/1 var(--num);letter-spacing:.14em;text-transform:uppercase;color:var(--ember)}
+.ecr{position:absolute;right:0;top:0;z-index:1;padding:2px 6px;background:rgba(0,0,0,.65);color:#d8ccb0;font-size:10px;text-decoration:none;border-bottom-left-radius:4px}
+.eph{position:relative;z-index:1;display:flex;align-items:flex-end;gap:10px;margin:0 0 10px;padding:0 6px}.eph>div{flex:1;min-width:0;padding-bottom:2px}
+.eph .sgl.big{animation:pop .45s cubic-bezier(.2,.9,.3,1.25) .1s both}
+.eph h3{margin:2px 0 0;font:800 24px/1.12 var(--px);color:#fff1cf;text-shadow:2px 2px 0 #000}
+.ekd{font:800 10px/1 var(--num);letter-spacing:.14em;text-transform:uppercase;color:var(--ember);text-shadow:1px 1px 0 #000}
+.estat{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 4px}
+.estat div{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;padding:7px 3px 6px;text-align:center;background:var(--slot);border:2px solid var(--edge);border-radius:4px;box-shadow:inset 0 0 0 1px var(--rim),inset 0 4px 8px rgba(0,0,0,.5);animation:pop .4s cubic-bezier(.2,.9,.3,1.2) both}
+.estat div:nth-child(2){animation-delay:.05s}.estat div:nth-child(3){animation-delay:.1s}
+.estat b{display:block;max-width:100%;font:800 14px/1.15 var(--num);color:#fff3d6;text-shadow:1px 1px 0 #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.estat small{display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.estat .gv b{color:var(--ec)}.estat .on{border-color:#2d4a18;box-shadow:inset 0 0 0 1px #6f9a45,0 0 12px rgba(158,224,112,.22)}.estat .on b{color:#b9e88f}
+.estat svg.i{width:18px;height:18px;color:var(--ember2)}
+.esec{margin:14px 0 6px;font:800 10.5px/1 var(--num);letter-spacing:.14em;text-transform:uppercase;color:var(--ember)}
 .esec::before{content:'◆ ';color:#6b5d47}.eon{color:#9ee070}
 #encv p{margin:0;font-size:14.5px;line-height:1.5;color:var(--txt)}
 .edef{font-size:16px!important}
+.ecall{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:14px 0 4px}.ecall a{display:flex;flex-direction:column;gap:2px;padding:10px 8px;text-align:center;text-decoration:none;color:#fff3e6;border:2px solid #2a0a06;border-radius:4px;background:linear-gradient(#9a3020,#62190f);box-shadow:inset 0 2px 0 rgba(255,255,255,.16),inset 0 -3px 0 rgba(0,0,0,.35),0 2px 0 rgba(0,0,0,.45)}
+.ecall b{font:800 15px var(--num);text-shadow:1px 1px 0 #000}.ecall small{font-size:11.5px;color:#ffc9bb}.ecall a:active{transform:translateY(2px)}
 .emo{display:grid;grid-template-columns:repeat(12,1fr);gap:3px}
-.emo i{font-style:normal;text-align:center;padding:5px 0;font:800 11px/1 var(--num);color:#6b604c;background:#0d0b08;border:1px solid #3a332a;border-radius:2px}
-.emo i.f{color:#1f1a11;background:linear-gradient(#ffd27a,#c6862a);border-color:rgba(0,0,0,.5)}
-.emo i.now{box-shadow:0 0 0 2px #fff1cf}
-.econf{display:flex;flex-direction:column;gap:6px}
-.econf button,.echips button{display:flex;align-items:center;gap:10px;text-align:left;padding:8px;border:2px solid var(--edge);border-radius:4px;background:var(--slot);box-shadow:inset 0 0 0 1px var(--rim);color:var(--txt)}
-.econf b{margin-right:6px;color:#fff1cf}.econf small{display:block;margin-top:2px;font-size:12.5px;color:var(--mut)}
-.echips{display:flex;flex-wrap:wrap;gap:6px}.echips button{padding:6px 9px;font-size:13px}.echips .eic{width:22px;height:22px;font-size:11px}
+.emo i{font-style:normal;text-align:center;padding:6px 0;font:800 11px/1 var(--num);color:#6b604c;background:#0d0b08;border:1px solid #3a332a;border-radius:2px}
+.emo i.f{color:#1f1a11;background:linear-gradient(#ffd27a,#c6862a);border-color:rgba(0,0,0,.5);box-shadow:inset 0 2px 0 rgba(255,255,255,.35)}
+.emo i.now{box-shadow:0 0 0 2px #fff1cf,0 0 10px rgba(255,241,207,.5)}
+.edo{margin-top:16px;padding:10px 12px 11px;background:var(--slot);border:2px solid var(--edge);border-radius:4px;box-shadow:inset 3px 0 0 var(--ember),inset 0 0 0 1px var(--rim)}
+.edo.danger{background:linear-gradient(rgba(170,45,28,.2),rgba(170,45,28,.07)),var(--slot);box-shadow:inset 3px 0 0 #ff5f4a,inset 0 0 0 1px #5c2a20,0 0 16px rgba(255,80,60,.16)}
+.edoh{display:flex;align-items:center;gap:7px;margin-bottom:6px;font:800 11px/1 var(--num);letter-spacing:.14em;text-transform:uppercase;color:var(--ember2)}
+.edo.danger .edoh{color:#ff9b85}.edoh::before{content:'✚';font-size:14px;letter-spacing:0}
 .epre{margin-top:12px;padding:9px 11px;border-left:3px solid var(--ember);background:rgba(234,165,60,.08);font-size:14px;line-height:1.45}
-.epre.danger{border-color:#ff5f5f;background:rgba(255,80,80,.1);color:#ffd9d0}
 .eal{margin-top:10px!important;font-size:13px!important;color:var(--mut)!important}
 .ewx{font-size:13.5px!important;color:#d9ceb2!important}
-.elink{display:inline-block;margin-top:6px;color:var(--ember2);font-weight:700;font-size:13.5px;text-decoration:none}
+.elink{display:inline-block;margin-top:6px;margin-right:8px;color:var(--ember2);font-weight:700;font-size:13.5px;text-decoration:none}
 .glk{color:var(--ember2);text-decoration:underline dotted;text-underline-offset:3px;cursor:pointer}
+.esig{margin-top:14px!important}.esig img{width:28px;height:28px;margin:-6px 2px -6px -4px}
+.echips{display:flex;flex-wrap:wrap;gap:6px}
+.econf button,.echips button{display:flex;align-items:center;gap:8px;text-align:left;padding:5px 10px 5px 5px;border:2px solid var(--edge);border-radius:4px;background:var(--slot);box-shadow:inset 0 0 0 1px var(--rim);color:var(--txt);font-size:13px;cursor:pointer}
 .ewarn{margin:16px 0 4px;padding:9px 11px;border:2px solid #6e2416;border-radius:4px;background:rgba(160,40,25,.18);color:#ffd9d0;font-size:12.5px;line-height:1.45}
-.egl .ett small{white-space:normal}
-
+.egl .ett small{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+@media (max-height:700px){.eimg{aspect-ratio:2/1}.elogo{width:40px;height:40px}#encl li .sgl{width:38px;height:38px}.etabs button{height:38px}.sgl.big{width:52px;height:52px}}
+.etabs button svg.i{order:-1}
 #edm{position:absolute;z-index:7;padding:8px;max-width:calc(100% - 16px);border-radius:6px!important;animation:pop .25s cubic-bezier(.2,.9,.3,1.2) both}
 #edm[hidden]{display:none}
 #edmt{font:800 10.5px/1.2 var(--num);letter-spacing:.12em;text-transform:uppercase;color:var(--ember);margin:0 2px 6px}
@@ -757,7 +792,7 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
 </style></head><body>
 <header class="bar win dg"><button class="emb" id="dogav" aria-label="Profil de mon chien et journal"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></button>
   <div class="brand"><h1>Cartodog</h1><small id="ssn">Carnet de balade</small></div>
-  <button class="ib" id="encb" data-ic="aid" aria-label="Guide des dangers et premiers secours"></button><button class="ib" id="loc" data-ic="loc" aria-label="Ma position"></button><button class="ib" id="mn" data-ic="set" aria-label="Réglages"></button></header>
+  <button class="ib" id="encb" data-ic="guide" aria-label="Guide du promeneur : dangers et premiers secours"></button><button class="ib" id="loc" data-ic="loc" aria-label="Ma position"></button><button class="ib" id="mn" data-ic="set" aria-label="Réglages"></button></header>
 <div id="mapBox"><canvas id="cv"></canvas><button id="rep" aria-label="Signaler un danger ou un point utile"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="repg" cx="45%" cy="30%" r="75%"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#e0861e"/></radialGradient></defs>
   <g fill="#0e0b08" stroke="#0e0b08" stroke-width="5" stroke-linejoin="round"><ellipse cx="13" cy="27" rx="6" ry="8" transform="rotate(-22 13 27)"/><ellipse cx="24.5" cy="14" rx="6.4" ry="8.4" transform="rotate(-8 24.5 14)"/><ellipse cx="39.5" cy="14" rx="6.4" ry="8.4" transform="rotate(8 39.5 14)"/><ellipse cx="51" cy="27" rx="6" ry="8" transform="rotate(22 51 27)"/><path d="M32 28c8 0 20 11 20 21 0 7-6 10-12 9-4-.5-6-2-8-2s-4 1.5-8 2c-6 1-12-2-12-9 0-10 12-21 20-21z"/></g>
   <g fill="url(#repg)"><ellipse cx="13" cy="27" rx="6" ry="8" transform="rotate(-22 13 27)"/><ellipse cx="24.5" cy="14" rx="6.4" ry="8.4" transform="rotate(-8 24.5 14)"/><ellipse cx="39.5" cy="14" rx="6.4" ry="8.4" transform="rotate(8 39.5 14)"/><ellipse cx="51" cy="27" rx="6" ry="8" transform="rotate(22 51 27)"/><path d="M32 28c8 0 20 11 20 21 0 7-6 10-12 9-4-.5-6-2-8-2s-4 1.5-8 2c-6 1-12-2-12-9 0-10 12-21 20-21z"/></g>
@@ -827,10 +862,13 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
   <ul id="ll"></ul></div></div>
 <div id="pv"><div class="pvb"><button class="ib" id="pvd" data-ic="trash" aria-label="Supprimer la photo"></button><button class="ib" id="pvx" aria-label="Fermer">✕</button></div><img id="pvi" alt="Photo"></div>
 <div id="encm"><div class="win dg">
-  <div class="ehd"><h2>Guide du promeneur<small>Dangers, plantes, bêtes et premiers secours</small></h2><button class="ib" id="encx" aria-label="Fermer">✕</button></div>
-  <div class="esrch"><input id="encq" type="search" placeholder="Tique, vipère, épillet, chaleur…" autocomplete="off" aria-label="Rechercher un danger ou un geste de secours"><div id="encac" hidden></div></div>
-  <div id="encf" class="seg"><button data-k="all" class="on">Tout</button><button data-k="u">✚ Urgences</button><button data-k="pl">Plantes</button><button data-k="an">Animaux</button><button data-k="pa">Parasites</button><button data-k="mi">Milieu</button><button data-k="gl">Secours</button></div>
-  <ul id="encl"></ul><div id="encv" hidden></div></div></div>
+  <div class="ehd"><button class="ib" id="encbk" data-back aria-label="Retour à la liste" hidden>‹</button><span class="elogo" id="elogo"></span><h2>Guide du promeneur<small>Bestiaire et premiers secours</small></h2><button class="ib" id="encx" aria-label="Fermer">✕</button></div>
+  <div id="encbd">
+    <div class="esrch"><input id="encq" type="search" placeholder="Tique, vipère, épillet, chaleur…" autocomplete="off" aria-label="Rechercher un danger ou un geste de secours"><div id="encac" hidden></div></div>
+    <div id="encf" class="etabs" role="tablist"><button data-k="all" class="on" data-ic="call" aria-label="Tout le guide"><small>Tout</small></button><button data-k="u" data-ic="cu" aria-label="Urgences"><small>Urgences</small></button><button data-k="pl" data-ic="cpl" aria-label="Plantes"><small>Plantes</small></button><button data-k="an" data-ic="can" aria-label="Animaux"><small>Animaux</small></button><button data-k="pa" data-ic="cpa" aria-label="Parasites et maladies"><small>Parasites</small></button><button data-k="mi" data-ic="cmi" aria-label="Milieu et situations"><small>Milieu</small></button><button data-k="gl" data-ic="cgl" aria-label="Secours et règles"><small>Secours</small></button></div>
+    <ul id="encl"></ul>
+    <button class="esos" id="esos" data-id="g-urgences-veterinaires"><span id="esosi"></span><span><b>Urgence ?</b><small>Antipoison vétérinaire et votre vétérinaire</small></span><i>›</i></button></div>
+  <div id="encv" hidden></div></div></div>
 <div id="pls"><div class="win dg"><div class="lhd"><h2 id="plh">Mes sentiers</h2><button class="ib" id="plx" aria-label="Fermer">✕</button></div>
   <div class="seg" id="pls-s"><button data-s="recent" class="on">Récents</button><button data-s="long">Les plus longs</button><button data-s="name">Par nom</button></div>
   <ul id="pll"></ul></div></div>
@@ -854,6 +892,14 @@ const ICO = {
   book: SV('<path d="M5 5.2A2.2 2.2 0 0 1 7.2 3H18v14.5H7.2A2.2 2.2 0 0 0 5 19.7z"/><path d="M5 19.7A2.2 2.2 0 0 0 7.2 22H18v-4.5M9 7.5h5.5M9 10.5h4"/>'),
   fit: SV('<path d="M4 9V5h4M20 9V5h-4M4 15v4h4M20 15v4h-4"/><circle cx="12" cy="12" r="2.4"/>'),
   aid: SV('<rect x="3.5" y="7" width="17" height="12.5" rx="2"/><path d="M9 7V5h6v2"/><path d="M12 10.3v6.2M8.9 13.4h6.2" stroke-width="2.4"/>'),
+  guide: SV('<path d="M5 5.6A2.6 2.6 0 0 1 7.6 3H19v14.2H7.6A2.6 2.6 0 0 0 5 19.8z"/><path d="M5 19.8A2.2 2.2 0 0 0 7.2 22h6.3M19 17.2v1"/><g fill="currentColor" stroke="none"><ellipse cx="12.6" cy="11.4" rx="2.4" ry="2"/><circle cx="9.7" cy="8.8" r="1"/><circle cx="11.6" cy="6.9" r="1.05"/><circle cx="14" cy="6.9" r="1.05"/><circle cx="15.7" cy="8.8" r="1"/><circle cx="18.6" cy="19.4" r="4.4"/></g><path d="M18.6 17.4v4M16.6 19.4h4" stroke="#2c2620" stroke-width="1.8"/>'),
+  call: SV('<path d="M4 4h6.5v6.5H4zM13.5 4H20v6.5h-6.5zM4 13.5h6.5V20H4zM13.5 13.5H20V20h-6.5z"/>'),
+  cu: SV('<path d="M12 3.6 21.2 19.6H2.8z"/><path d="M12 9.4v4.8" stroke-width="2.3"/><circle cx="12" cy="16.9" r=".6" fill="currentColor" stroke-width="1.4"/>'),
+  cpl: SV('<path d="M5 19.4c0-8.2 5-13.6 14.6-14-.4 9.4-5.6 14.2-14.6 14z"/><path d="M5 19.4l8.6-8.6"/>'),
+  can: SV('<path d="M17.4 5.2c-3-1.4-7.6-.6-7.6 2.6 0 3.8 7.8 2.2 7.8 6.4 0 3.4-4.8 4.6-10.4 3.2"/><circle cx="18" cy="5.6" r="1.3" fill="currentColor"/><path d="M7.2 17.4 4.4 18"/>'),
+  cpa: SV('<ellipse cx="12" cy="13.6" rx="3.8" ry="4.8"/><circle cx="12" cy="7" r="1.7"/><path d="M8.2 11 5 9.2M8.2 13.8H4.6M8.4 16.6 5.4 18.8M15.8 11 19 9.2M15.8 13.8h3.6M15.6 16.6l3 2.2"/>'),
+  cmi: SV('<path d="M2.8 19.4 9.4 8l4.2 6.8L16.2 11l5 8.4z"/><path d="M7.6 11.2l1.8 1.4 1.4-1.2"/>'),
+  cgl: SV('<path d="M12 3.4 19.6 6v6c0 4.6-3.2 7.8-7.6 9.2C7.6 19.8 4.4 16.6 4.4 12V6z"/><path d="M12 8.4v7.2M8.4 12h7.2" stroke-width="2.3"/>'),
   home: SV('<path d="M4 11.5L12 4l8 7.5"/><path d="M6.5 9.8V20h11V9.8"/><path d="M10 20v-5h4v5"/>'),
   pin: SV('<path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/>'),
   paw: SV('<path d="M12 12.4c-2.8 0-5 2.9-5 5.2 0 1.5 1.2 2.4 2.7 2.4 1 0 1.4-.5 2.3-.5s1.3.5 2.3.5c1.5 0 2.7-.9 2.7-2.4 0-2.3-2.2-5.2-5-5.2z" fill="currentColor" fill-opacity=".3"/><ellipse cx="5.8" cy="11" rx="1.7" ry="2.2"/><ellipse cx="9.2" cy="6.4" rx="1.8" ry="2.4"/><ellipse cx="14.8" cy="6.4" rx="1.8" ry="2.4"/><ellipse cx="18.2" cy="11" rx="1.7" ry="2.2"/>'),
@@ -2140,7 +2186,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-24';
+const APP_V = '2026.10.23-25';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2739,6 +2785,67 @@ $('#dlm').onclick = async e => { if (e.target.id === 'dlm' || e.target.id === 'd
   dlTiles(list, 'Zone 20 km'); };
 
 
+/* ===== Guide du promeneur : sceaux du bestiaire (gemme de catégorie, cerclage de la menace, pictogramme blanc) et emblème ===== */
+const GW = 'fill="#fff"', GS = 'fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"', GD = 'fill="#0e0b08"';
+const gMk = t => `<g transform="translate(0 3)">${MKG[t]}</g>`;      // pictogrammes des repères (centrés sur 16, 13) réutilisés au centre du sceau
+const gThermo = `<path d="M14.2 8.4a1.8 1.8 0 0 1 3.6 0v8.4a3.5 3.5 0 1 1-3.6 0z" ${GW}/><path d="M16 12.2v6.6" stroke="#e8573a" stroke-width="1.5" stroke-linecap="round"/><circle cx="16" cy="19.8" r="1.9" fill="#e8573a"/>`;
+const gPaw = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s}) translate(-16 -13)">${pawG}</g>`;
+const SGP = {
+  chaleur: gThermo + `<path d="M20.6 9.4l1.6-1.2M21.4 12.6h2M20.6 15.8l1.6 1.2" ${GS} stroke-width="1.4"/>`,
+  if: `<path d="M10 22 21.6 10.4" ${GS} stroke-width="1.6"/><path d="M12.6 19.4l-2.6-.4M15 17l-2.6-.4M17.4 14.6l-2.6-.4M19.8 12.2l-2.6-.4M12.6 19.4l.4 2.6M15 17l.4 2.6M17.4 14.6l.4 2.6M19.8 12.2l.4 2.6" ${GS} stroke-width="1.3"/><circle cx="20.6" cy="19.2" r="2.2" fill="#e8573a" stroke="#fff" stroke-width="1.1"/><circle cx="23" cy="15.6" r="1.8" fill="#e8573a" stroke="#fff" stroke-width="1.1"/>`,
+  laurier: [0, 72, 144, 216, 288].map(a => `<ellipse cx="16" cy="11.4" rx="2.7" ry="4.1" transform="rotate(${a} 16 16)" ${GW}/>`).join('') + `<circle cx="16" cy="16" r="2" fill="#e8573a"/>`,
+  colchique: `<path d="M16 17.6v5" ${GS} stroke-width="1.6"/><path d="M11.4 8.6l2.3 2.2 2.3-3.4 2.3 3.4 2.3-2.2v5.4c0 2.6-2 4.4-4.6 4.4s-4.6-1.8-4.6-4.4z" ${GW}/>`,
+  muguet: `<path d="M21.4 23c-2-1.6-3-4.6-2.6-8.2.4-3.6 2.4-6 4.6-6.6-.4 4-1 9.6-2 14.8z" fill="#fff" fill-opacity=".55"/><path d="M11 9.6c3-1.6 6.6-.8 8.6 2" ${GS} stroke-width="1.4"/>` + [[11.6, 10.4], [15, 9.6], [18.4, 10.8]].map(([x, y]) => `<path d="M${x} ${y}v2" ${GS} stroke-width="1.1"/><path d="M${x - 2.3} ${y + 6.4}c0-2.6.9-4.4 2.3-4.4s2.3 1.8 2.3 4.4l-.77-.7-.76.7-.77-.7-.77.7-.76-.7z" ${GW}/>`).join('') + `<path d="M15 23V12" ${GS} stroke-width="1.2"/>`,
+  champi: `<path d="M13.8 15.6h4.4l.7 6.4h-5.8z" ${GW}/><path d="M8.4 15.8c0-4.6 3.4-7.8 7.6-7.8s7.6 3.2 7.6 7.8z" ${GW}/><path d="M9 16h14" stroke="#0e0b08" stroke-opacity=".45" stroke-width="1"/><circle cx="13" cy="12" r="1.2" ${GD} fill-opacity=".3"/><circle cx="17.6" cy="10.6" r="1" ${GD} fill-opacity=".3"/><circle cx="19.4" cy="13.4" r="1.1" ${GD} fill-opacity=".3"/>`,
+  raisin: `<path d="M16 10V7M16 8.4c1.4-1.8 3.6-2 5.2-1.4-.6 1.8-2.6 2.6-5.2 1.4z" ${GS} stroke-width="1.4"/>` + [[12.8, 11.8], [16, 11.6], [19.2, 11.8], [14.4, 14.8], [17.6, 14.8], [12.8, 17.6], [16, 17.8], [19.2, 17.6], [16, 20.8]].filter((p, i) => i !== 5 && i !== 7).map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2" ${GW} stroke="#0e0b08" stroke-opacity=".35" stroke-width=".7"/>`).join(''),
+  marron: [...Array(10)].map((_, k) => { const a = k * Math.PI / 5, c = Math.cos(a), s = Math.sin(a); return `<path d="M${(16 + 5.6 * c).toFixed(1)} ${(16.4 + 5.6 * s).toFixed(1)}L${(16 + 7.6 * c).toFixed(1)} ${(16.4 + 7.6 * s).toFixed(1)}" ${GS} stroke-width="1.3"/>`; }).join('') + `<circle cx="16" cy="16.4" r="5.4" ${GW}/><ellipse cx="16" cy="18.4" rx="3" ry="1.6" ${GD} fill-opacity=".28"/>`,
+  glands: `<path d="M16 9.2V6.6" ${GS} stroke-width="1.6"/><path d="M11.4 13.6h9.2c0 4.6-2 7.8-4.6 8.8-2.6-1-4.6-4.2-4.6-8.8z" ${GW}/><path d="M10.4 13.8c0-2.8 2.4-4.6 5.6-4.6s5.6 1.8 5.6 4.6z" ${GW} stroke="#0e0b08" stroke-opacity=".5" stroke-width=".9"/><path d="M12.4 11.6l2 2M15 10.2l3 3.2M18.6 10.6l2 2" stroke="#0e0b08" stroke-opacity=".3" stroke-width=".8"/>`,
+  crapaud: `<path d="M11.8 14.6 8.6 13l-.6-2.6M20.2 14.6l3.2-1.6.6-2.6M12.2 20.4l-3 1.4-.4 1.8M19.8 20.4l3 1.4.4 1.8" ${GS} stroke-width="1.8"/><ellipse cx="16" cy="16.8" rx="5" ry="5.4" ${GW}/><circle cx="13.2" cy="11.8" r="2" ${GW}/><circle cx="18.8" cy="11.8" r="2" ${GW}/><circle cx="13.2" cy="11.6" r=".85" ${GD}/><circle cx="18.8" cy="11.6" r=".85" ${GD}/><circle cx="14.6" cy="17.4" r=".7" ${GD} fill-opacity=".3"/><circle cx="17.6" cy="15.6" r=".7" ${GD} fill-opacity=".3"/><circle cx="17.2" cy="19.2" r=".7" ${GD} fill-opacity=".3"/>`,
+  guepe: `<ellipse cx="12.2" cy="12.4" rx="3.6" ry="1.8" transform="rotate(-28 12.2 12.4)" fill="#fff" fill-opacity=".62"/><ellipse cx="19.8" cy="12.4" rx="3.6" ry="1.8" transform="rotate(28 19.8 12.4)" fill="#fff" fill-opacity=".62"/><circle cx="16" cy="8.6" r="1.6" ${GW}/><circle cx="16" cy="12" r="2.2" ${GW}/><path d="M16 14.2c2 0 3.3 1.8 3.3 4 0 2.2-1.6 3.6-3.3 4.4-1.7-.8-3.3-2.2-3.3-4.4 0-2.2 1.3-4 3.3-4z" ${GW}/><path d="M13 17.2h6M13.4 19.8h5.2" stroke="#0e0b08" stroke-opacity=".7" stroke-width="1.2"/><path d="M16 22.6v1.4" ${GS} stroke-width="1"/>`,
+  appat: `<path d="M10.2 14.2c0-3.6 2.6-6.2 5.8-6.2s5.8 2.6 5.8 6.2c0 2-1 3.2-2 3.8v2.8h-7.6V18c-1-.6-2-1.8-2-3.8z" ${GW}/><circle cx="13.6" cy="14.4" r="1.6" ${GD}/><circle cx="18.4" cy="14.4" r="1.6" ${GD}/><path d="M16 16.2l-.9 1.5h1.8z" ${GD}/><path d="M14.4 18.8v2M16 18.8v2M17.6 18.8v2" stroke="#0e0b08" stroke-width=".9"/>`,
+  lepto: `<rect x="10.4" y="13.3" width="11.2" height="5.4" rx="2.7" transform="rotate(-32 16 16)" ${GW}/><path d="M20.4 10.6c.8-1 1.6-1.8 3-1.8M11.6 21.4c-.8 1-1.6 1.8-3 1.8" ${GS} stroke-width="1.3"/><circle cx="14.6" cy="16.8" r=".9" ${GD} fill-opacity=".35"/><circle cx="17.4" cy="15.2" r=".9" ${GD} fill-opacity=".35"/>`,
+  leish: `<ellipse cx="11.6" cy="13.2" rx="4" ry="1.6" transform="rotate(35 11.6 13.2)" fill="#fff" fill-opacity=".62"/><ellipse cx="18.6" cy="10" rx="1.6" ry="4" transform="rotate(35 18.6 10)" fill="#fff" fill-opacity=".62"/><path d="M12 20.4l6.4-6.4" ${GS} stroke-width="2.8"/><circle cx="19.4" cy="13" r="1.6" ${GW}/><path d="M20.4 12l2.8-2.8M13.6 19.4l-2.4 3M15 18l-.4 4M16.4 16.6l1.8 3.8" ${GS} stroke-width="1.1"/>`,
+  aoutat: [[12, 12.4], [19.6, 11.6], [15.6, 19.4]].map(([x, y]) => `<path d="M${x - 2.4} ${y - 1.4}l1 .8M${x - 2.6} ${y + .6}h1.2M${x - 2.2} ${y + 2.2}l1-.8M${x + 2.4} ${y - 1.4}l-1 .8M${x + 2.6} ${y + .6}h-1.2M${x + 2.2} ${y + 2.2}l-1-.8" ${GS} stroke-width="1"/><ellipse cx="${x}" cy="${y + .4}" rx="1.7" ry="2" ${GW}/>`).join(''),
+  baton: `<path d="M9 22.4 22.8 9.6" ${GS} stroke-width="2.8"/><path d="M17 15.2l3.6 3.4M13.4 18.6l-.4-3" ${GS} stroke-width="1.6"/><path d="M20.6 18.6c1.6-.4 2.8.4 3 1.8-1.6.4-2.8-.4-3-1.8z" ${GW}/>`,
+  plaie: `<g transform="rotate(-40 16 16)"><rect x="8" y="12.6" width="16" height="6.8" rx="3.4" ${GW}/><rect x="13.2" y="12.6" width="5.6" height="6.8" ${GD} fill-opacity=".22"/><circle cx="10.6" cy="15" r=".55" ${GD} fill-opacity=".4"/><circle cx="10.6" cy="17" r=".55" ${GD} fill-opacity=".4"/><circle cx="21.4" cy="15" r=".55" ${GD} fill-opacity=".4"/><circle cx="21.4" cy="17" r=".55" ${GD} fill-opacity=".4"/></g>`,
+  torsion: `<path d="M11.6 19.8a5.8 5.8 0 1 1 7.6 1.4" ${GS} stroke-width="2.4"/><path d="M9.4 18.6l2.6 3.4 2.4-3.6z" ${GW}/><circle cx="16" cy="16" r="1.6" ${GW}/>`,
+  glace: `<path d="M16 8.2v15.6M9.2 12.1l13.6 7.8M9.2 19.9l13.6-7.8" ${GS} stroke-width="1.6"/><path d="M14 9.4l2 1.8 2-1.8M14 22.6l2-1.8 2 1.8M9.8 14.6l2.6-.6-.8-2.6M22.2 17.4l-2.6.6.8 2.6M9.8 17.4l2.6.6-.8 2.6M22.2 14.6l-2.6-.6.8-2.6" ${GS} stroke-width="1.2"/>`,
+  /* secours et règles */
+  'g-urgences-veterinaires': `<path d="M11.2 8.4l2.4-.8 1.7 3.7-1.8 1.4c.8 1.8 2 3 3.8 3.8l1.4-1.8 3.7 1.7-.8 2.4c-.4 1-1.4 1.6-2.4 1.4-5-1-8.8-4.8-9.8-9.8-.2-1 .4-2 1.4-2.4z" ${GW}/>`,
+  'g-trousse-de-secours': `<path d="M13.4 10.4V8.6h5.2v1.8" ${GS} stroke-width="1.6"/><rect x="8.6" y="10.4" width="14.8" height="11" rx="2" ${GW}/><path d="M16 13v5.8M13.1 15.9h5.8" stroke="#a33c28" stroke-width="2.2" stroke-linecap="round"/>`,
+  'g-tire-tique': `<path d="M10.4 21.8 18.6 11" ${GS} stroke-width="2.6"/><path d="M18.6 11l-.8-3.2M18.6 11l3.2-.6" ${GS} stroke-width="1.8"/><ellipse cx="21.4" cy="7.6" rx="1.5" ry="1.8" ${GW}/>`,
+  'g-temperature-du-chien': gThermo,
+  'g-gencives': `<path d="M12 9.4c1.4-.8 2.6-.4 4 .2 1.4-.6 2.6-1 4-.2 1.6 1 1.4 3.6.8 5.2-.6 1.6-.8 3-1 4.6-.2 1.4-1.6 1.6-2-.2-.2-1.2-.6-2.8-1.8-2.8s-1.6 1.6-1.8 2.8c-.4 1.8-1.8 1.6-2 .2-.2-1.6-.4-3-1-4.6-.6-1.6-.8-4.2.8-5.2z" ${GW}/>`,
+  'g-deshydratation': `<g transform="translate(0 2.6)">${dropG}</g><path d="M14.4 18.2l1.4-1.6 1 1.2 1.4-1.8" fill="none" stroke="#0e0b08" stroke-opacity=".5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>`,
+  'g-test-du-bitume': `<circle cx="16" cy="13" r="3.4" ${GW}/><path d="M16 7.2v-1M10.2 13h-1M21.8 13h1M11.9 8.9l-.7-.7M20.1 8.9l.7-.7" ${GS} stroke-width="1.5"/><path d="M8.6 20.4h14.8M10.6 23h10.8" ${GS} stroke-width="1.7"/>`,
+  'g-coussinets': `<g transform="translate(0 3)">${pawG}</g>`,
+  'g-periode-de-nidification': `<ellipse cx="13.2" cy="14.4" rx="1.8" ry="2.4" ${GW} stroke="#0e0b08" stroke-opacity=".4" stroke-width=".6"/><ellipse cx="18.8" cy="14.4" rx="1.8" ry="2.4" ${GW} stroke="#0e0b08" stroke-opacity=".4" stroke-width=".6"/><ellipse cx="16" cy="13.6" rx="1.9" ry="2.5" ${GW} stroke="#0e0b08" stroke-opacity=".4" stroke-width=".6"/><path d="M9.2 16.2h13.6c-.6 3.8-3.4 6-6.8 6s-6.2-2.2-6.8-6z" ${GW}/><path d="M10.6 18.4h10.8M12.2 20.4h7.6" stroke="#0e0b08" stroke-opacity=".3" stroke-width=".8"/>`,
+  'g-divagation': gPaw(12, 19.6, .55) + gPaw(19.8, 12.4, .55) + `<path d="M14.6 7.8h3M22.4 18.4v3" ${GS} stroke-width="1.4" stroke-dasharray="1 1.6"/>`,
+  'g-rappel': `<path d="M8.8 12.4h7.6v3.4H8.8z" ${GW}/><circle cx="18.4" cy="17" r="4.2" ${GW}/><circle cx="18.4" cy="17" r="1.5" ${GD} fill-opacity=".4"/><path d="M21.6 9.4l1.4-1.6M19.4 8.6l.4-2M23.4 11.6l1.8-.6" ${GS} stroke-width="1.3"/>`,
+  'g-museliere-de-panier': `<path d="M10 11.2h12v4.4c0 3.4-2.6 6-6 6s-6-2.6-6-6z" ${GS} stroke-width="1.7"/><path d="M14 11.2v10M18 11.2v10M10.4 15.6h11.2" ${GS} stroke-width="1.3"/><path d="M10 11.2 8.4 8.4M22 11.2l1.6-2.8" ${GS} stroke-width="1.5"/>`,
+  'g-gilet-fluo': `<path d="M12.4 8.4l2 2.4h3.2l2-2.4 2.8 2.2v11.2H9.6V10.6z" ${GW}/><path d="M9.6 16.4h12.8" stroke="#ffd27a" stroke-width="2"/><path d="M16 10.8v11" stroke="#0e0b08" stroke-opacity=".35" stroke-width=".8"/>`,
+  'g-identification': `<circle cx="16" cy="10" r="1.7" ${GS} stroke-width="1.4"/><circle cx="16" cy="17" r="5.4" ${GW}/><text x="16" y="19.1" font-size="5.8" font-weight="900" text-anchor="middle" fill="#a33c28" font-family="Arial,Helvetica,sans-serif">ID</text>`
+};
+const CATC = { pl: '#3e7a34', an: '#7a5232', pa: '#6c3f78', mi: '#365d78' };      // couleur de la gemme selon la catégorie
+const GRC = { u: '#ff5f4a', g: '#f0913a', m: '#d6ab55', l: '#9cc06a' };      // cerclage selon la menace
+const GPIP = { u: 4, g: 3, m: 2, l: 1 };
+function sigil(x, cls = '') {
+  const gl = !x || x.t === 'gl', id = x && x.id, ring = gl ? '#d6ab55' : GRC[x.g], gem = gl ? '#9e3324' : CATC[x.cat];
+  const p = (id && SGP[id]) || (!gl && x.mk && MKG[x.mk] ? gMk(x.mk) : gl ? `<path d="M16 10v12M10 16h12" ${GS} stroke-width="3.4"/>` : gMk('danger'));
+  return `<svg class="sgl ${cls}" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="${ring}" stroke="#0e0b08" stroke-width="1.4"/><circle cx="16" cy="16" r="12.3" fill="${gem}" stroke="#0e0b08" stroke-opacity=".7" stroke-width="1"/><path d="M6.6 13.4a9.8 9.8 0 0 1 14.6-6.8" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="2.2" stroke-linecap="round"/>${p}</svg>`;
+}
+/* emblème du guide : grimoire relié, patte en relief et sceau de secours */
+const GLOGO = `<svg class="glogo" viewBox="0 0 64 64" aria-hidden="true">
+  <g stroke="#0e0b08" stroke-width="4" stroke-linejoin="round"><path d="M14 9h33a5 5 0 0 1 5 5v39H19a5 5 0 0 1-5-5z" fill="#0e0b08"/></g>
+  <path d="M14 48a5 5 0 0 1 5-5h33v10H19a5 5 0 0 1-5-5z" fill="#f1e6c9"/><path d="M19 46.4h30M19 49.6h30" stroke="#bfae88" stroke-width="1"/>
+  <path d="M14 9h33a5 5 0 0 1 5 5v29H19a5 5 0 0 0-5 5z" fill="#7a3b22"/><path d="M14 9h7v34.6A5 5 0 0 0 14 48z" fill="#5a2a16"/>
+  <path d="M24 12.4h23.6a1.8 1.8 0 0 1 1.8 1.8v25.4H24z" fill="none" stroke="#e3b660" stroke-width="1.6"/>
+  <g fill="#e3b660"><ellipse cx="36.4" cy="29.6" rx="6" ry="5"/><ellipse cx="28.6" cy="23.4" rx="2.3" ry="2.9" transform="rotate(-20 28.6 23.4)"/><ellipse cx="33.2" cy="18.6" rx="2.4" ry="3" transform="rotate(-6 33.2 18.6)"/><ellipse cx="39.6" cy="18.6" rx="2.4" ry="3" transform="rotate(6 39.6 18.6)"/><ellipse cx="44.2" cy="23.4" rx="2.3" ry="2.9" transform="rotate(20 44.2 23.4)"/></g>
+  <path d="M42 39.6v14l3.6-2.6 3.6 2.6v-14z" fill="#c23b2b" stroke="#0e0b08" stroke-width="1.6" stroke-linejoin="round"/>
+  <circle cx="45.6" cy="39.6" r="9.2" fill="#c23b2b" stroke="#0e0b08" stroke-width="2.4"/><circle cx="45.6" cy="39.6" r="6.6" fill="none" stroke="#8a2416" stroke-width="1.4"/>
+  <path d="M45.6 35.2v8.8M41.2 39.6h8.8" stroke="#fff3e6" stroke-width="3" stroke-linecap="round"/>
+  <path d="M17 12.6v28" stroke="#fff" stroke-opacity=".14" stroke-width="2" stroke-linecap="round"/></svg>`;
+
 /* ===== Guide du promeneur : dangers pour le chien, premiers secours et règles, recherche avec autocomplétion, images Wikipédia ===== */
 const GRV = { u: ['Urgence vétérinaire', '#ff5f5f'], g: ['Grave', '#ff8a5c'], m: ['À surveiller', '#e8b766'], l: ['Gênant', '#b9cf8e'] };
 const CAT = { pl: ['Plante', '🌿'], an: ['Animal', '🐾'], pa: ['Parasite et maladie', '🦟'], mi: ['Milieu et situation', '⚠️'] };
@@ -2818,7 +2925,12 @@ async function wikiOf(title) {
     const o = { src: j.thumbnail ? j.thumbnail.source : '', ext: (j.extract || '').slice(0, 600), url: j.content_urls ? j.content_urls.mobile.page : '', t: Date.now() };
     imgMem[title] = o; try { localStorage.setItem(IMGK, JSON.stringify(imgMem)); } catch (e) {} return o; } catch (e) { return null; }
 }
-const encIco = x => x.t === 'gl' ? '<span class="eic gl">✚</span>' : `<span class="eic" style="--ec:${GRV[x.g][1]}">${x.g === 'u' ? '!' : x.g === 'g' ? '!' : '•'}</span>`;
+const encIco = x => sigil(x, 'sm');
+const SGR = { u: 'Urgence', g: 'Grave', m: 'À surveiller', l: 'Gênant' };
+const pips = g => `<span class="epip" style="--ec:${GRC[g]}" aria-label="Menace : ${GRV[g][0]}">${[1, 2, 3, 4].map(k => `<i class="${k <= GPIP[g] ? 'f' : ''}"></i>`).join('')}</span>`;
+const MOISL = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+const MOISF = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+const CATI = { pl: 'cpl', an: 'can', pa: 'cpa', mi: 'cmi' };
 const badge = g => `<span class="ebd" style="--ec:${GRV[g][1]}">${g === 'u' ? '✚ ' : ''}${GRV[g][0]}</span>`;
 
 /* ----- interface ----- */
@@ -2826,20 +2938,24 @@ let encKind = 'all', encStack = [];
 function encOpen(direct) { $('#encm').classList.add('open'); encList(); }      // pas de focus automatique : le clavier ne s'ouvre que si l'on touche la recherche
 let encFrom = null;
 function encClose() { $('#encm').classList.remove('open'); $('#encac').hidden = true; const f = encFrom; encFrom = null; if (f) $('#' + f).classList.add('open'); }      // retour à la fenêtre d'où l'on venait (profil, réglages)
-function encList() {
-  encStack = []; $('#encv').hidden = true; $('#encv').dataset.cur = ''; $('#encl').hidden = false; const q = $('#encq').value, m = new Date().getMonth() + 1;
-  let it = encSearch(q, encKind); if (!normS(q)) it = it.slice().sort((a, b) => (a.t === 'gl') - (b.t === 'gl') || (b.t === 'dg' && inSeason(b.mo, m)) - (a.t === 'dg' && inSeason(a.mo, m)));      // en saison d'abord
-  document.querySelectorAll('#encf button').forEach(b => b.classList.toggle('on', b.dataset.k === encKind));
-  $('#encl').innerHTML = it.map(x => x.t === 'gl'
-    ? `<li data-id="${x.id}" class="egl"><span class="eth gl">✚</span><span class="ett"><b>${hl(x.nom, q)}</b><small>${esc(x.def.slice(0, 80))}…</small></span></li>`
-    : `<li data-id="${x.id}"><span class="eth gl"${x.wk ? ` data-img="${x.id}"` : ''}>${CAT[x.cat][1]}</span><span class="ett"><b>${hl(x.nom, q)}</b><small>${CAT[x.cat][0]}${inSeason(x.mo, m) && !(x.mo[0] === 1 && x.mo[1] === 12) ? ' · <span class="eon">en saison</span>' : ''}</small>${badge(x.g)}</span></li>`).join('')
-    || '<li class="hint" style="cursor:default">Rien trouvé dans le guide.</li>';
-  encThumbs();
+function encMode(fiche) { $('#encbd').hidden = fiche; $('#encv').hidden = !fiche; $('#encbk').hidden = !fiche; $('#elogo').hidden = fiche; }
+function encRow(x, q, m) {
+  if (x.t === 'gl') return `<li data-id="${x.id}" class="egl">${sigil(x)}<span class="ett"><b>${hl(x.nom, q)}</b><small>${esc(x.def)}</small></span><i class="ego">›</i></li>`;
+  const on = inSeason(x.mo, m) && !(x.mo[0] === 1 && x.mo[1] === 12);
+  return `<li data-id="${x.id}" class="eg-${x.g}">${sigil(x)}<span class="ett"><b>${hl(x.nom, q)}</b><small><span class="egv" style="--ec:${GRC[x.g]}">${SGR[x.g]}</span> · ${CAT[x.cat][0]}${q && on ? ' · <span class="eon">en saison</span>' : ''}</small></span>${pips(x.g)}</li>`;
 }
-let thumbObs = null;
-function encThumbs() {      // vignettes chargées seulement quand elles apparaissent à l'écran
-  if (!('IntersectionObserver' in window)) return; thumbObs ||= new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; thumbObs.unobserve(e.target); const x = encById(e.target.dataset.img); if (x) wikiOf(x.wk).then(o => { if (o && o.src) e.target.innerHTML = `<img src="${o.src}" alt="" loading="lazy">`; }); }), { root: $('#encl'), rootMargin: '120px' });
-  document.querySelectorAll('#encl [data-img]').forEach(el => thumbObs.observe(el));
+function encList() {
+  encStack = []; encMode(false); $('#encv').dataset.cur = ''; const q = $('#encq').value, m = new Date().getMonth() + 1;
+  document.querySelectorAll('#encf button').forEach(b => { b.classList.toggle('on', b.dataset.k === encKind); b.setAttribute('aria-selected', b.dataset.k === encKind); });
+  const it = encSearch(q, normS(q) ? 'all' : encKind); let h;      // une recherche porte sur tout le guide
+  if (normS(q)) h = it.map(x => encRow(x, q, m)).join('');
+  else {      // sans recherche : rangé par saison, du plus grave au moins grave
+    const all = x => x.mo[0] === 1 && x.mo[1] === 12, rk = (a, b) => GPIP[b.g] - GPIP[a.g] || a.nom.localeCompare(b.nom, 'fr'), dg = it.filter(x => x.t === 'dg');
+    const G = [['on', 'En pleine saison · ' + MOISF[m - 1], dg.filter(x => !all(x) && inSeason(x.mo, m)).sort(rk)], ['', 'Toute l\'année', dg.filter(all).sort(rk)], ['', 'Hors saison', dg.filter(x => !all(x) && !inSeason(x.mo, m)).sort(rk)], ['', 'Secours et règles', it.filter(x => x.t === 'gl')]];
+    h = G.filter(g => g[2].length).map(([c, t, L]) => `<li class="esh ${c}"><span>${t}</span><b>${L.length}</b></li>` + L.map(x => encRow(x, '', m)).join('')).join('');
+  }
+  $('#encl').innerHTML = h || '<li class="hint">Rien trouvé dans le guide.</li>';
+  $('#encl').scrollTop = 0;
 }
 function encAC() {      // autocomplétion
   const q = $('#encq').value.trim(), box = $('#encac'); encList(); if (!q) { box.hidden = true; return; }
@@ -2856,29 +2972,32 @@ function glossify(txt) {      // les termes « secours et règles » deviennent 
 }
 function encShow(x, push = true) {
   if (!x) return; if (push && $('#encv').dataset.cur) encStack.push($('#encv').dataset.cur);
-  $('#encac').hidden = true; $('#encl').hidden = true; const v = $('#encv'); v.hidden = false; v.dataset.cur = x.id; v.scrollTop = 0;
-  const back = `<button class="eback" data-back>‹ ${encStack.length ? 'Retour' : 'Tout le guide'}</button>`;
+  $('#encac').hidden = true; encMode(true); const v = $('#encv'); v.dataset.cur = x.id; v.scrollTop = 0;
   const warn = '<div class="ewarn">Ce guide ne remplace pas l\'avis d\'un vétérinaire. Au moindre doute, appelez-le : en cas d\'urgence, chaque minute compte.</div>';
   if (x.t === 'gl') {
-    v.innerHTML = back + `<div class="eph"><span class="eth gl big">✚</span><div><small class="ekd">Secours et règles</small><h3>${esc(x.nom)}</h3></div></div><p class="edef">${glossify(x.def)}</p>` + (x.id === 'g-urgences-veterinaires' ? (D.prof.vtel || D.prof.vet ? `<div class="epre"><b>Votre vétérinaire :</b> ${esc(D.prof.vet || '')} ${D.prof.vtel ? `<a class="elink" href="tel:${esc(D.prof.vtel.replace(/[^\d+]/g, ''))}">📞 ${esc(D.prof.vtel)}</a>` : ''}${D.prof.chip ? `<br><small>Puce : ${esc(D.prof.chip)}</small>` : ''}</div>` : '<p class="eal">Enregistrez votre vétérinaire dans le profil de votre chien (menu ▸ Mon chien) pour l\'appeler d\'ici.</p>') : warn);
+    v.innerHTML = `<div class="eph">${sigil(x, 'big')}<div><small class="ekd">Secours et règles</small><h3>${esc(x.nom)}</h3></div></div><p class="edef">${glossify(x.def)}</p>` + (x.id === 'g-urgences-veterinaires' ? `<div class="ecall"><a href="tel:0240687740"><b>📞 CAPAE-Ouest</b><small>Antipoison · 24 h/24</small></a><a href="tel:0478871040"><b>📞 CNITV</b><small>Antipoison · 8 h 30–0 h</small></a></div>` : '') + (x.id === 'g-urgences-veterinaires' ? (D.prof.vtel || D.prof.vet ? `<div class="epre"><b>Votre vétérinaire :</b> ${esc(D.prof.vet || '')} ${D.prof.vtel ? `<a class="elink" href="tel:${esc(D.prof.vtel.replace(/[^\d+]/g, ''))}">📞 ${esc(D.prof.vtel)}</a>` : ''}${D.prof.chip ? `<br><small>Puce : ${esc(D.prof.chip)}</small>` : ''}</div>` : '<p class="eal">Enregistrez votre vétérinaire dans le profil de votre chien (menu ▸ Mon chien) pour l\'appeler d\'ici.</p>') : warn);
     return;
   }
-  const m = new Date().getMonth() + 1, all = x.mo[0] === 1 && x.mo[1] === 12;
-  v.innerHTML = back + (x.wk ? `<div class="eimg" id="eimg"><div class="eimg0"><span style="font-size:34px">${CAT[x.cat][1]}</span><span>Image…</span></div></div>` : '') +
-    `<div class="eph">${x.wk ? '' : `<span class="eth gl big">${CAT[x.cat][1]}</span>`}<div><small class="ekd">${CAT[x.cat][0]}</small><h3>${esc(x.nom)}</h3></div>${badge(x.g)}</div>
-    <div class="esec">Période à risque${all ? ' · toute l\'année' : inSeason(x.mo, m) ? ' · <span class="eon">en ce moment</span>' : ''}</div><div class="emo">${MOIS.map((l, i) => `<i class="${inSeason(x.mo, i + 1) ? 'f' : ''}${i + 1 === m ? ' now' : ''}">${l}</i>`).join('')}</div>
+  const m = new Date().getMonth() + 1, all = x.mo[0] === 1 && x.mo[1] === 12, on = all || inSeason(x.mo, m);
+  v.innerHTML = (x.wk ? `<div class="eimg" id="eimg"><div class="eimg0">${sigil(x)}<span>Image…</span></div></div>` : '') +
+    `<div class="eph">${sigil(x, 'big')}<div><small class="ekd">${CAT[x.cat][0]}</small><h3>${esc(x.nom)}</h3></div></div>
+    <div class="estat"><div class="gv" style="--ec:${GRC[x.g]}">${pips(x.g)}<b>${SGR[x.g]}</b><small>Menace</small></div>
+      <div class="${on ? 'on' : ''}"><b>${all ? 'Toute l\'année' : on ? 'En saison' : 'Hors saison'}</b><small>${all ? 'Saison' : MOISL[x.mo[0] - 1] + ' → ' + MOISL[x.mo[1] - 1]}</small></div>
+      <div>${ICO[CATI[x.cat]]}<b>${{ pl: 'Plante', an: 'Animal', pa: 'Parasite', mi: 'Milieu' }[x.cat]}</b></div></div>
+    <div class="esec">Période à risque</div><div class="emo">${MOIS.map((l, i) => `<i class="${inSeason(x.mo, i + 1) ? 'f' : ''}${i + 1 === m ? ' now' : ''}">${l}</i>`).join('')}</div>
     <div class="esec">Où le rencontrer</div><p>${glossify(x.ou)}</p>
     <div class="esec">Signes d'alerte</div><p>${glossify(x.sig)}</p>
-    <div class="epre ${x.g === 'u' ? 'danger' : ''}"><b>Que faire ?</b> ${glossify(x.faire)}</div>
+    <div class="edo ${x.g === 'u' ? 'danger' : ''}"><div class="edoh">Que faire ?</div><p>${glossify(x.faire)}</p></div>
     <div class="esec">Prévention</div><p>${glossify(x.prev)}</p>` +
-    (x.mk ? `<button class="btn gold" data-mk="${x.mk}" style="margin-top:12px">📍 Signaler ce danger sur la carte</button>` : '') +
+    (x.mk ? `<button class="btn gold esig" data-mk="${x.mk}"><img src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(mkSvg(x.mk))}" alt="">Signaler ce danger sur la carte</button>` : '') +
     (x.al.length ? `<p class="eal">Aussi appelé : ${x.al.map(esc).join(', ')}</p>` : '') + '<div id="ewk"></div>' +
-    `<div class="echips" style="margin-top:12px"><button data-id="g-urgences-veterinaires">${encIco({ t: 'gl' })}Urgences vétérinaires</button><button data-id="g-trousse-de-secours">${encIco({ t: 'gl' })}Trousse de secours</button></div>` + warn;
+    `<div class="esec">Bons réflexes</div><div class="echips">${['g-urgences-veterinaires', 'g-trousse-de-secours'].map(id => { const g = encById(id); return `<button data-id="${id}">${sigil(g, 'sm')}${esc(g.nom)}</button>`; }).join('')}</div>` + warn;
   if (x.wk) wikiOf(x.wk).then(o => { if ($('#encv').dataset.cur !== x.id) return; const im = $('#eimg'); if (!im) return;
-    if (o && o.src) im.innerHTML = `<img src="${o.src.replace(/\/\d+px-/, '/640px-')}" alt="${esc(x.nom)}" onerror="this.src='${o.src}'"><a class="ecr" href="${o.url}" target="_blank" rel="noopener">Image et texte : Wikipédia (licences libres)</a>`;
-    else im.remove();
+    if (o && o.src) im.innerHTML = `<img src="${o.src.replace(/\/\d+px-/, '/640px-')}" alt="${esc(x.nom)}" onerror="this.src='${o.src}'"><a class="ecr" href="${o.url}" target="_blank" rel="noopener">Image : Wikipédia</a>`;
+    else { im.remove(); }
     if (o && o.ext && $('#ewk')) $('#ewk').innerHTML = `<div class="esec">Selon Wikipédia</div><p class="ewx">${esc(o.ext)}</p><a class="elink" href="${o.url}" target="_blank" rel="noopener">Lire l'article complet ›</a>`; });
 }
+$('#elogo').innerHTML = GLOGO; $('#esosi').outerHTML = sigil(encById('g-urgences-veterinaires'));
 $('#encb').onclick = () => encOpen(); $('#encx').onclick = encClose; $('#encm').onclick = e => { if (e.target.id === 'encm') encClose(); };
 $('#encq').oninput = encAC; $('#encq').onfocus = () => { if ($('#encq').value.trim()) encAC(); };
 $('#encq').onkeydown = e => { if (e.key === 'Enter') { const b = $('#encac button'); if (b) b.click(); } if (e.key === 'Escape') $('#encac').hidden = true; };
@@ -2905,7 +3024,7 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
   /* couches, de la plus haute à la plus basse : [ouverte ?, retour (sous-page, sinon fermeture)] */
   const LAY = [
     [op('pv'), () => closePh()], [op('rqm'), () => rqClose()], [op('dzq'), () => $('#dzl').click()], [op('mkm'), () => closeMk()],
-    [op('encm'), () => { const b = !$('#encv').hidden && !(encFrom && !encStack.length) && $('#encv [data-back]'); b ? b.click() : encClose(); }],      // ouvert directement sur une fiche depuis une autre fenêtre : retour = revenir à cette fenêtre
+    [op('encm'), () => { const b = !$('#encv').hidden && !(encFrom && !encStack.length) && $('#encbk'); b ? b.click() : encClose(); }],      // ouvert directement sur une fiche depuis une autre fenêtre : retour = revenir à cette fenêtre
     [op('dogm'), () => { const p = document.querySelector('#dogm .dgp.on'); p && p.dataset.p !== 'main' ? dogPane('main') : dogClose(); }],
     [op('balm'), () => { !$('#balb').hidden ? $('#balb').click() : balClose(); }],
     [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('menu'), () => $('#menu').classList.remove('open')],
