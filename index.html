@@ -697,6 +697,8 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
 .dgbg button.new{animation:bnew 1.4s ease-in-out 4;border-color:#ffd27a}@keyframes bnew{50%{box-shadow:inset 0 0 0 1px #ffd27a,0 0 18px rgba(255,210,122,.8);transform:scale(1.08)}}
 .dgnav{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}.dgnav button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 4px;border:2px solid var(--edge);border-radius:4px;background:linear-gradient(#4d453a,#3a332b);color:#f6ead0;font-size:19px;box-shadow:inset 0 2px 0 rgba(255,255,255,.13),0 2px 0 #000;cursor:pointer}.dgnav small{font-size:11.5px;font-weight:700}
 @media (max-height:700px){.dgav{width:88px;height:88px}.dgst{margin:10px 0 8px}.dgst div{padding:5px 3px}.dgst b{font-size:17px}.dgbars{height:48px}.dgbg button{font-size:18px}.dgnav button{padding:6px 4px}}
+
+#edsm .edmh small{font-weight:600;color:var(--mut);text-transform:none;letter-spacing:0}#edsm .esdel{background:linear-gradient(#a8322a,#7a1f19)!important;color:#fff!important;border-color:#3a0d0a!important;flex:1.4}
 </style></head><body>
 <header class="bar win dg"><button class="emb" id="dogav" aria-label="Profil de mon chien et journal"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></button>
   <div class="brand"><h1>Cartodog</h1><small id="ssn">Carnet de balade</small></div>
@@ -704,7 +706,7 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
 <div id="mapBox"><canvas id="cv"></canvas><div id="sc"></div><div id="bh" hidden></div>
   <button id="wxw" hidden aria-label="Météo et alertes"></button><div id="wxp" class="dg" hidden></div><button id="nr" aria-label="Mode de vue : libre"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="16.5" fill="rgba(17,24,18,.66)" stroke="rgba(227,192,113,.6)"/><text x="18" y="11.6" text-anchor="middle" font-size="8.5" font-weight="700" fill="#e3c071" font-family="system-ui,sans-serif">N</text><path d="M18 13.5l3.6 9H14.4z" fill="#e3c071"/><path d="M18 31l-3.6-8.5h7.2z" fill="#f1e6c9" opacity=".45"/></svg><i></i></button>
   <div id="pm" class="dg" hidden><div id="pmt"></div><div class="pmb"><button id="pmp">📍 Point</button><button id="pmu" aria-label="Annuler le dernier point">↩</button><button id="pme" aria-label="Terminer le chemin">✔</button><button id="pmsm" hidden aria-label="Lisser le sentier">〰 Lisser</button><button id="pmls" aria-label="Mes sentiers">📋</button><button id="pmd" hidden aria-label="Supprimer le sentier">🗑</button><button id="pmx" aria-label="Quitter le mode chemins">✕</button></div><div class="pmb"><button id="pmrec">⏺ Enregistrer</button><button id="pmn" hidden aria-label="Nommer le chemin">✎ Nom</button><button id="pmdraw" hidden>✏ Tracer</button><button id="pmed">✎ Éditer</button><button id="pmmag" aria-label="Aimantation des points">🧲</button></div></div>
-  <div id="edsm" class="dg" hidden><div class="edmh">Tronçon de sentier</div><div class="edb"><button id="esadd">➕ Ajouter un point</button><button id="esdel">✂ Supprimer</button><button id="esx" aria-label="Fermer">✕</button></div></div>
+  <div id="edsm" class="dg" hidden><div class="edmh">Ce tronçon <small id="eslen"></small></div><div class="edb"><button id="esdel" class="esdel">✂ Supprimer</button><button id="esadd" aria-label="Ajouter un point sur ce tronçon">➕ Point</button><button id="esx" aria-label="Fermer">✕</button></div></div>
   <div id="edm" class="dg" hidden><div id="edmt"></div><div class="edb"><button id="eddl">🗑 Supprimer</button><button id="eddt" hidden>✂ Détacher</button><button id="edsp">✂ Couper ici</button><button id="edx" aria-label="Fermer">✕</button></div></div>
   <div id="rt" class="dg" hidden><div class="eyb">Itinéraire</div><div id="rtt"></div><div id="rts"></div><div class="pmb"><button id="rtn" aria-label="Point suivant">Suivant ›</button><button id="rtg" aria-label="Ouvrir dans Maps">Ouvrir dans Maps</button><button id="rtx" aria-label="Fermer l'itinéraire" style="margin-left:auto">✕</button></div></div>
   <div id="wel" class="dg" hidden><div class="eyb">Bienvenue sur Cartodog</div><h3>Cartographiez vos forêts et promenez votre chien en sécurité</h3>
@@ -1954,7 +1956,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-5';
+const APP_V = '2026.10.23-6';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2228,7 +2230,7 @@ function drawPaths(sx, sy) {
     if (n === 2) return path.lineTo(q[1][0], q[1][1]);
     for (let i = 1; i < n - 1; i++) { if (jn(p.pts[i])) { path.lineTo(q[i][0], q[i][1]); continue; } path.quadraticCurveTo(q[i][0], q[i][1], (q[i][0] + q[i + 1][0]) / 2, (q[i][1] + q[i + 1][1]) / 2); }
     path.lineTo(q[n - 1][0], q[n - 1][1]); };
-  const all = new Path2D(), own = ps.map(p => { const q = new Path2D(); trace(q, p); all.addPath(q); return q; }), selI = ps.findIndex(p => p.id === P.sel);
+  const all = new Path2D(), own = ps.map(p => { const q = new Path2D(); trace(q, p); all.addPath(q); return q; }), selI = ED.seg ? -1 : ps.findIndex(p => p.id === P.sel);      // un tronçon choisi : seul lui est mis en évidence
   const jpts = [...cnt].filter(([, c]) => c > 1).map(([k]) => k.split(',').map(Number));
   const real = V.mpp * Math.cos(toLL(V.cx, V.cy)[0] * Math.PI / 180), w = Math.max(3.5, Math.min(15, 2.6 / real));      // largeur ≈ 2,6 m réels, lisible à tout zoom
   const blob = (r, col) => { if (!jpts.length) return; g.beginPath(); jpts.forEach(([x, y]) => { g.moveTo(sx(x) + r, sy(y)); g.arc(sx(x), sy(y), r, 0, 7); }); g.fillStyle = col; g.fill(); };      // petit élargissement aux carrefours
@@ -2243,7 +2245,7 @@ function drawPaths(sx, sy) {
   /* 2. Autour des carrefours seulement, toutes les couches sont redessinées d'un seul trait : les sentiers qui se rejoignent fusionnent sans couture */
   if (jpts.length) { g.save(); g.beginPath(); const R = w * 4 + 8; jpts.forEach(([x, y]) => { g.moveTo(sx(x) + R, sy(y)); g.arc(sx(x), sy(y), R, 0, 7); }); g.clip(); layers([all], true); g.restore(); }
   if (P.on) ps.forEach(p => p.pts.forEach(([x, y], i) => { const e = i === 0 || i === p.pts.length - 1, j = cnt.get(x + ',' + y) > 1, hs = ED.on && p.id === P.sel, dr = ED.drag && ED.drag.p === p && ED.drag.i === i; g.beginPath(); g.arc(sx(x), sy(y), dr ? 11 : hs ? (j ? 9 : 7.5) : ED.on ? (j ? 7 : 4.5) : j ? 6 : e ? 4.5 : 3, 0, 7); g.fillStyle = j ? '#fff6e0' : p.id === P.sel ? '#e3c071' : '#f1e6c9'; g.fill(); g.lineWidth = j ? 2.5 : 1.5; g.strokeStyle = j ? '#e3c071' : '#3a2a1a'; g.stroke(); }));
-  if (ED.on && ED.seg) { const a = ED.seg.p.pts[ED.seg.i - 1], b = ED.seg.p.pts[ED.seg.i]; if (a && b) { g.save(); g.setLineDash([8, 6]); g.lineCap = 'round'; g.lineWidth = w + 4; g.strokeStyle = 'rgba(255,95,80,.9)'; g.beginPath(); g.moveTo(sx(a[0]), sy(a[1])); g.lineTo(sx(b[0]), sy(b[1])); g.stroke(); g.restore(); } }
+  if (ED.on && ED.seg) { const a = ED.seg.p.pts[ED.seg.i - 1], b = ED.seg.p.pts[ED.seg.i]; if (a && b) { g.save(); g.lineCap = 'round'; g.lineWidth = w + 9; g.strokeStyle = 'rgba(14,11,8,.85)'; g.beginPath(); g.moveTo(sx(a[0]), sy(a[1])); g.lineTo(sx(b[0]), sy(b[1])); g.stroke(); g.setLineDash([]); g.lineWidth = w + 4; g.strokeStyle = '#ff5f4a'; g.beginPath(); g.moveTo(sx(a[0]), sy(a[1])); g.lineTo(sx(b[0]), sy(b[1])); g.stroke(); g.restore(); } }
   /* le nom de la balade s'affiche sous son marqueur (voir draw) */
   g.globalAlpha = 1;
   if (P.start) { const x = sx(P.start[0]), y = sy(P.start[1]); g.beginPath(); g.arc(x, y, 10, 0, 7); g.lineWidth = 3; g.strokeStyle = 'rgba(255,255,255,.9)'; g.stroke(); g.beginPath(); g.arc(x, y, 5, 0, 7); g.fillStyle = 'rgba(255,120,40,.9)'; g.fill(); }
@@ -2347,7 +2349,8 @@ function undoPathPt() {
 }
 function finishPath() { if (!P.cur && !P.start) return toast('Aucun chemin en cours'); P.cur = null; P.start = null; P.sel = null; P.sa = null; P.adds = []; pmUpdate(); draw(); toast('✔ Chemin terminé'); }
 function delPath() {
-  if (!P.sel) return; const snap = JSON.stringify(D.paths || []), id = P.sel; D.paths = D.paths.filter(p => p.id !== id); if (P.cur && P.cur.id === id) P.cur = null; P.sel = null; P.start = null; P.sa = null;
+  if (ED.seg) return $('#esdel').click();
+  if (!P.sel) return; { const p0 = (D.paths || []).find(p => p.id === P.sel); if (p0 && !confirm(`Supprimer tout ce sentier (${fmtDist(pathLen(p0))}, ${p0.pts.length} points) ?\n\nPour n'enlever qu'un tronçon entre deux points : ✎ Éditer, puis touchez ce tronçon.`)) return; } const snap = JSON.stringify(D.paths || []), id = P.sel; D.paths = D.paths.filter(p => p.id !== id); if (P.cur && P.cur.id === id) P.cur = null; P.sel = null; P.start = null; P.sa = null;
   save(); pmUpdate(); draw(); toast('Sentier supprimé', () => { D.paths = JSON.parse(snap); save(); draw(); pmUpdate(); });
 }
 function pathTap(px, py) {      // toucher une ligne : la sélectionne et pose le départ (sur un sommet proche, sinon au milieu du trait = futur carrefour)
@@ -2369,6 +2372,9 @@ function edTwins(q) { const t = []; (D.paths || []).forEach(p => p.pts.forEach((
 function edHit(px, py) {      // point (sommet) le plus proche du doigt, en priorité sur le sentier sélectionné
   const S = edScr(); let best = null, bd = 26;
   (D.paths || []).forEach(p => p.pts.forEach((v, i) => { const d = Math.hypot(S.sx(v[0]) - px, S.sy(v[1]) - py) - (p.id === P.sel ? 6 : 0); if (d < bd) { bd = d; best = { p, i }; } }));
+  if (best && bd > 11) {      // doigt sur le trait, entre deux points : c'est le tronçon qui est visé, pas le point
+    let sd = Infinity; (D.paths || []).forEach(p => { for (let i = 1; i < p.pts.length; i++) { const a = [S.sx(p.pts[i - 1][0]), S.sy(p.pts[i - 1][1])], b = [S.sx(p.pts[i][0]), S.sy(p.pts[i][1])], r = segProj([px, py], a, b); if (r.d < sd) sd = r.d; } });
+    if (sd < bd - 3) return null; }
   return best;
 }
 let edSnap = null;
@@ -2417,7 +2423,7 @@ $('#edx').onclick = () => edMenu(null);
 function edToggle(on) {
   ED.on = on ?? !ED.on; ED.drag = null; edMenu(null); edSegMenu(null); if (ED.on) { if (RC.on) recToggle(); P.cur = null; P.start = null; P.sa = null; P.adds = []; }
   if (!ED.on && ED.draw) edDrawToggle(false); ['pmp', 'pmu', 'pme', 'pmrec'].forEach(id => $('#' + id).hidden = ED.on); $('#pmdraw').hidden = !ED.on; $('#pmed').classList.toggle('on', ED.on); $('#pm').classList.toggle('ed', ED.on); $('#pmed').textContent = ED.on ? '✔ Fin' : '✎ Éditer';
-  pmUpdate(); draw(); if (ED.on) toast('✎ Édition : glissez un point pour le déplacer, touchez-le pour plus d\'options');
+  pmUpdate(); draw(); if (ED.on) toast('✎ Édition : touchez un tronçon pour le supprimer, glissez un point pour le déplacer');
 }
 const magLabel = () => { $('#pmmag').classList.toggle('on', P.mag); $('#pmmag').setAttribute('aria-pressed', P.mag); };
 $('#pmed').onclick = () => edToggle(); $('#pmmag').onclick = () => { P.mag = !P.mag; try { localStorage.setItem('cartodog-mag', P.mag ? '1' : '0'); } catch (e) {} magLabel(); toast(P.mag ? '🧲 Aimantation activée : un point posé près d\'un autre s\'y relie' : '🧲 Aimantation coupée : les points restent exactement où vous les posez'); }; magLabel();
@@ -2425,14 +2431,14 @@ function edPick(px, py) {      // en édition, toucher une ligne la sélectionne
   const S = edScr(); let best = null, bd = 22;
   (D.paths || []).forEach(p => { for (let i = 1; i < p.pts.length; i++) { const r = segProj([px, py], [S.sx(p.pts[i - 1][0]), S.sy(p.pts[i - 1][1])], [S.sx(p.pts[i][0]), S.sy(p.pts[i][1])]); if (r.d < bd) { bd = r.d; best = { p, i, q: r.q }; } } });
   edMenu(null);
-  if (best && best.p.id === P.sel) return edSegMenu({ p: best.p, i: best.i, q: rp1([S.wx(best.q[0]), S.wy(best.q[1])]), x: px, y: py });      // toucher le sentier choisi : menu du tronçon
-  edSegMenu(null); P.sel = best ? best.p.id : null; pmUpdate(); draw();
+  if (best) { P.sel = best.p.id; pmUpdate(); return edSegMenu({ p: best.p, i: best.i, q: rp1([S.wx(best.q[0]), S.wy(best.q[1])]), x: px, y: py }); }      // un toucher = le seul tronçon touché (entre deux points)
+  edSegMenu(null); P.sel = null; pmUpdate(); draw();
 }
 
 /* Menu d'un tronçon (portion de sentier entre deux points) : ajouter un point, ou supprimer le tronçon */
 function edSegMenu(s) {
   ED.seg = s; const m = $('#edsm'); if (!s) { m.hidden = true; return draw(); }
-  m.hidden = false; const x = Math.max(8, Math.min(cv.clientWidth - m.offsetWidth - 8, s.x - m.offsetWidth / 2)), y = s.y - m.offsetHeight - 22 < 8 ? s.y + 22 : s.y - m.offsetHeight - 22;
+  $('#eslen').textContent = '· ' + fmtDist(rdist(s.p.pts[s.i - 1], s.p.pts[s.i])); m.hidden = false; const x = Math.max(8, Math.min(cv.clientWidth - m.offsetWidth - 8, s.x - m.offsetWidth / 2)), y = s.y - m.offsetHeight - 22 < 8 ? s.y + 22 : s.y - m.offsetHeight - 22;
   m.style.left = x + 'px'; m.style.top = y + 'px'; draw();
 }
 $('#esx').onclick = () => edSegMenu(null);
