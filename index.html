@@ -741,6 +741,9 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
 
 .lpnx{display:flex;align-items:center;gap:10px;margin:4px 0 2px;padding:6px 8px;border:2px solid var(--edge);border-radius:6px;background:#14110e}.lpnx i{font-style:normal;font-size:26px;line-height:1;color:var(--ember2);text-shadow:0 0 8px rgba(234,165,60,.6)}
 .lpnx span{display:flex;flex-direction:column;font-size:12px;color:var(--mut)}.lpnx b{font-size:15px;color:#fff1cf}#lpv{flex:1!important;font-size:18px!important}#lp #lpx{flex:.8!important}
+
+#mapBox:has(#lp:not([hidden])) #zb,#mapBox:has(#shm:not([hidden])) #zb{display:none}
+#mapBox:has(#lp:not([hidden])) #lp{bottom:8px}#mapBox:has(#shm:not([hidden])) #shm{bottom:8px}
 </style></head><body>
 <header class="bar win dg"><button class="emb" id="dogav" aria-label="Profil de mon chien et journal"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></button>
   <div class="brand"><h1>Cartodog</h1><small id="ssn">Carnet de balade</small></div>
@@ -1382,8 +1385,8 @@ $('#panel').addEventListener('click', e => {
     if (g) { const ids = new Set(g.paths.map(p => p.id)); D.paths = D.paths.filter(p => !ids.has(p.id)); NG.sig = ''; } delete D.cells[k]; sel = null; BSEL = null; save(); renderPanel(); draw();
     return toast('Balade supprimée', () => { restoreSnap(snap); D.paths = JSON.parse(pj); NG.sig = ''; sel = k; save(); draw(); renderPanel(); }); }
   if (a === 'go') return goTo(sel);
-  if (a === 'walk') { if (BR.on) return brStop(); BR.k0 = sel; const g = cellGroup(sel); return g ? openBal(g.k) : balOpen(); }
-  if (a === 'bal') { const g = cellGroup(sel); if (g) openBal(g.k); return; }
+  if (a === 'walk') { if (BR.on) return brStop(); BR.k0 = sel; const g = cellGroup(sel); return g ? openBal(g.k, 'panel') : balOpen(); }
+  if (a === 'bal') { const g = cellGroup(sel); if (g) openBal(g.k, 'panel'); return; }
   if (a === 'share') { const g = cellGroup(sel); if (g) balShare(g); return; }
   if (a === 'addtoggle') { const f = $('#addv'); if (editI !== null) { renderPanel(); return $('#addv').classList.add('on'); } f.classList.toggle('on'); if (f.classList.contains('on')) $('#vn').focus(); return; }
   if (a === 'show') { const v = c.v[+b.dataset.i]; if (!v) return; if (BSEL === v.id) { BSEL = null; renderPanel(); return draw(); } BSEL = v.id; ptab = 'hs'; renderPanel();
@@ -1836,7 +1839,7 @@ function balArrive() {      // de retour au départ après une bonne partie de l
   if (!BL.poly || BL.arr || !BR.on || !BR.bal || !me || BR.m < BL.tot * .6) return;
   if (rdist([me.x, me.y], BL.poly[0]) < 40) { BL.arr = true; toast('🏁 De retour au départ : touchez ⏹ pour terminer la balade'); say('Vous êtes de retour au départ. Bravo' + (D.dog ? ' à vous et ' + D.dog : '') + ' !'); try { navigator.vibrate && navigator.vibrate([100, 60, 100]); } catch (e) {} }
 }
-$('#balx').onclick = balClose; $('#balb').onclick = () => balList(); $('#bals').onclick = () => BL.g && balShare(BL.g); $('#balm').onclick = e => { if (e.target.id === 'balm') return balClose();
+$('#balx').onclick = balClose; $('#balb').onclick = () => { const f = BL.from; BL.from = null; if (f === 'lst') { balClose(); $('#lb').click(); } else if (f === 'panel') balClose(); else balList(); }; $('#bals').onclick = () => BL.g && balShare(BL.g); $('#balm').onclick = e => { if (e.target.id === 'balm') return balClose();
   if (e.target.closest('[data-free]')) { balClose(); BL.poly = null; lpUi(); return brStart(); }
   if (e.target.closest('[data-back]')) return balList();
   const m = e.target.closest('[data-m]'); if (m) { BL.min = +m.dataset.m; return BL.upd(); }
@@ -2090,7 +2093,7 @@ function onPos(p) { setTimeout(() => P.on && pmUpdate(), 0); if (samp) { const [
   const [x, y] = toM(p.coords.latitude, p.coords.longitude); const first = !me; me = { x, y, acc: p.coords.accuracy }; trackHd(x, y, p.coords.accuracy, p.coords.heading, p.coords.speed); hereK = nearestSpot(x, y, 15); updNav();
   if (first) { fxRing(x, y, '#ffd27a', 12, 60, 1100, 500, 2.5); fxRing(x, y, '#ffd27a', 12, 60, 1100, 850, 2); }
   if (pending) { pending = false; addLieu(); }
-  recTick(); brTick(); routeTick(); dangerCheck(); balWaitTick(); voxTick();
+  recTick(); brTick(); routeTick(); dangerCheck(); balWaitTick(); voxTick(); balArrive();
   if (CAM.m) camKick();      // la vue ne suit la position que dans les modes « suivi » (touchez la boussole)
   schedule();
 }
@@ -2116,7 +2119,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-18';
+const APP_V = '2026.10.23-20';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2226,7 +2229,7 @@ $('#dgkd').max = today(); $('#dgkd').value = today();
 
 const alLabel = () => $('#alb').innerHTML = sw('Alerte en approchant d\'un danger signalé', alertOn);
 $('#alb').onclick = () => { alertOn = !alertOn; try { localStorage.setItem('cartodog-alert', alertOn ? '1' : '0'); } catch (e) {} alLabel(); toast(alertOn ? '⚠️ Vous serez alerté (vibration) à moins de 45 m d\'un danger signalé' : 'Alertes de danger coupées'); }; alLabel();
-$('#sos').onclick = () => { $('#dogm').classList.remove('open'); encOpen(true); encShow(encById('g-urgences-veterinaires')); };
+$('#sos').onclick = () => { encFrom = 'dogm'; $('#dogm').classList.remove('open'); encOpen(true); encShow(encById('g-urgences-veterinaires')); };
 
 /* ===== Mes lieux de balade ===== */
 let lsort = 'recent';
@@ -2293,14 +2296,15 @@ function renderList() {
   $('#ll').innerHTML = it.map((x, i) => `<li ${x.k ? `data-k="${x.k}"` : ''}${x.g ? ` data-g="${esc(x.g.k)}"` : ''}>${crest(x.rk, 30)}<span class="lt"><b>${esc(x.label)}</b><br><small>${lsort === 'best' && !q && i < 3 && x.n ? `<span class="top">${podium[i]}</span> · ` : ''}${x.g ? '🥾 ' + fmtDist(x.g.len) + ' de sentiers' : '<span class="r' + x.rk + '">' + RANKS[x.rk].n + '</span>'}${x.last ? ' · ' + ago(x.last) : ''}</small></span><span class="bd"><b>${x.n}</b> <small>sortie${x.n > 1 ? 's' : ''}</small><br><small>${fmtDist(x.m)}</small></span></li>`).join('')
     || `<li class="hint" style="cursor:default">${all.length ? 'Aucun résultat.' : 'Aucune balade pour l\'instant : ▶ Balade enregistre une sortie, 🥾 Sentiers trace un parcours.'}</li>`;
 }
-function openBal(k) { $('#lst').classList.remove('open'); if (watch === null) startLoc(); BL.pk = null; balDetail(k); $('#balm').classList.add('open'); }
+function openBal(k, from) { BL.from = from || null; $('#lst').classList.remove('open'); if (watch === null) startLoc(); BL.pk = null; balDetail(k); $('#balm').classList.add('open'); }
 $('#lb').onclick = () => { $('#lq').value = ''; renderList(); $('#lst').classList.add('open'); };
 document.querySelectorAll('#lst .seg button').forEach(b => b.onclick = () => { lsort = b.dataset.s; renderList(); });
 $('#lq').oninput = renderList;
 $('#lc').onclick = () => $('#lst').classList.remove('open'); $('#lst').onclick = e => { if (e.target.id === 'lst') $('#lst').classList.remove('open'); };
-$('#ll').onclick = e => { const bg = e.target.closest('li[data-g]:not([data-k])'); if (bg) return openBal(bg.dataset.g);
+$('#ll').onclick = e => { const bg = e.target.closest('li[data-g]:not([data-k])'); if (bg) return openBal(bg.dataset.g, 'lst');
   const li = e.target.closest('li[data-k]'); if (!li) return; const k = li.dataset.k;
-  $('#lst').classList.remove('open'); [V.cx, V.cy] = ctr(k); V.mpp = Math.min(V.mpp, 1.5); select(k); };
+  $('#lst').classList.remove('open'); [V.cx, V.cy] = ctr(k); V.mpp = Math.min(V.mpp, 1.5); select(k); selFrom = { k, lst: 1 }; };
+var selFrom = null;      // fiche ouverte depuis la liste : le retour y ramène
 
 /* ===== Limites des communes (API Géo gouv.fr, France) : tirets discrets + nom ===== */
 let commOn = (() => { try { return localStorage.getItem('cartodog-comm') !== '0'; } catch (e) { return true; } })();
@@ -2799,7 +2803,8 @@ const badge = g => `<span class="ebd" style="--ec:${GRV[g][1]}">${g === 'u' ? '�
 /* ----- interface ----- */
 let encKind = 'all', encStack = [];
 function encOpen(direct) { $('#encm').classList.add('open'); encList(); if (!direct) setTimeout(() => $('#encq').focus({ preventScroll: true }), 50); }
-function encClose() { $('#encm').classList.remove('open'); $('#encac').hidden = true; }
+let encFrom = null;
+function encClose() { $('#encm').classList.remove('open'); $('#encac').hidden = true; const f = encFrom; encFrom = null; if (f) $('#' + f).classList.add('open'); }      // retour à la fenêtre d'où l'on venait (profil, réglages)
 function encList() {
   encStack = []; $('#encv').hidden = true; $('#encv').dataset.cur = ''; $('#encl').hidden = false; const q = $('#encq').value, m = new Date().getMonth() + 1;
   let it = encSearch(q, encKind); if (!normS(q)) it = it.slice().sort((a, b) => (a.t === 'gl') - (b.t === 'gl') || (b.t === 'dg' && inSeason(b.mo, m)) - (a.t === 'dg' && inSeason(a.mo, m)));      // en saison d'abord
@@ -2862,7 +2867,7 @@ $('#encm').addEventListener('click', e => {
   const mk = e.target.closest('[data-mk]'); if (mk) { const x = encById($('#encv').dataset.cur), h = here(); encClose(); return openMk({ id: null, t: mk.dataset.mk, note: x ? x.nom : '', x: h.x, y: h.y, where: h.where }); }
   const b = e.target.closest('[data-id]'); if (b && b.dataset.id && !b.closest('#encf')) { const x = encById(b.dataset.id); if (x) encShow(x); }
 });
-document.addEventListener('click', e => { const b = e.target.closest('[data-guide]'); if (!b) return; $('#menu').classList.remove('open'); $('#dogm').classList.remove('open'); encOpen(true); encShow(encById(b.dataset.guide)); });
+document.addEventListener('click', e => { const b = e.target.closest('[data-guide]'); if (!b) return; encFrom = $('#dogm').classList.contains('open') ? 'dogm' : $('#menu').classList.contains('open') ? 'menu' : null; $('#menu').classList.remove('open'); $('#dogm').classList.remove('open'); encOpen(true); encShow(encById(b.dataset.guide)); });
 
 /* ===== Démarrage ===== */
 load(); try { if (syncBal()) save(); } catch (e) {}
@@ -2875,14 +2880,24 @@ dzPurge(); setSsn(); dogAvatar().then(dogLabel);
 if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
 
 /* ===== Bouton « retour » du téléphone : ferme la fenêtre ouverte au lieu de quitter l'application ===== */
-{ const MODALS = ['rqm', 'dzq', 'mkm', 'dogm', 'balm', 'encm', 'pls', 'lst', 'dlm', 'menu', 'pv'], CLOSE = { mkm: () => closeMk(), dogm: () => dogClose(), balm: () => balClose(), encm: () => encClose(), pv: () => closePh() };
-  let skip = 0;
-  const mo = new MutationObserver(rs => rs.forEach(r => { const el = r.target, open = el.classList.contains('open');
-    if (open && !el._h) { el._h = 1; try { history.pushState({ cdm: el.id }, ''); } catch (e) {} }
-    else if (!open && el._h) { el._h = 0; if (history.state && history.state.cdm === el.id) { skip++; history.back(); } } }));
-  MODALS.forEach(id => { const el = document.getElementById(id); if (el) mo.observe(el, { attributes: true, attributeFilter: ['class'] }); });
-  addEventListener('popstate', () => { if (skip) { skip--; return; }
-    const el = MODALS.map(id => document.getElementById(id)).find(x => x && x._h && x.classList.contains('open')); if (!el) return; el._h = 0; (CLOSE[el.id] || (() => el.classList.remove('open')))(); }); }
+{ const op = id => () => { const e = document.getElementById(id); return !!e && e.classList.contains('open'); }, vis = id => () => { const e = document.getElementById(id); return !!e && !e.hidden; };
+  /* couches, de la plus haute à la plus basse : [ouverte ?, retour (sous-page, sinon fermeture)] */
+  const LAY = [
+    [op('pv'), () => closePh()], [op('rqm'), () => rqClose()], [op('dzq'), () => $('#dzl').click()], [op('mkm'), () => closeMk()],
+    [op('encm'), () => { const b = !$('#encv').hidden && !(encFrom && !encStack.length) && $('#encv [data-back]'); b ? b.click() : encClose(); }],      // ouvert directement sur une fiche depuis une autre fenêtre : retour = revenir à cette fenêtre
+    [op('dogm'), () => { const p = document.querySelector('#dogm .dgp.on'); p && p.dataset.p !== 'main' ? dogPane('main') : dogClose(); }],
+    [op('balm'), () => { !$('#balb').hidden ? $('#balb').click() : balClose(); }],
+    [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('menu'), () => $('#menu').classList.remove('open')],
+    [vis('shm'), () => shClose()], [() => RM, () => setRM(false)], [() => ED.on, () => edToggle(false)], [() => P.on && !RC.on, () => $('#pt').click()],
+    [() => !!BL.poly && !BR.on, () => { BL.wait = false; BL.poly = null; lpUi(); }], [() => !!sel, () => { const f = selFrom && selFrom.k === sel; selFrom = null; sel = null; collapse(); renderPanel(); draw(); if (f) $('#lb').click(); }]];
+  let pushed = false, skip = 0, q = 0;
+  const any = () => LAY.some(l => { try { return l[0](); } catch (e) { return false; } });
+  const sync = () => { q = 0; const a = any(); if (a && !pushed) { pushed = true; try { history.pushState({ cdm: 1 }, ''); } catch (e) {} } else if (!a && pushed) { pushed = false; if (history.state && history.state.cdm) { skip++; history.back(); } } };
+  window.navSync = () => { if (!q) { q = 1; setTimeout(sync, 60); } };
+  const mo = new MutationObserver(navSync); ['pv', 'rqm', 'dzq', 'mkm', 'encm', 'encv', 'dogm', 'balm', 'pls', 'lst', 'dlm', 'menu', 'shm', 'rm', 'pm', 'lp'].forEach(id => { const el = document.getElementById(id); if (el) mo.observe(el, { attributes: true, attributeFilter: ['class', 'hidden'] }); });
+  mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  addEventListener('popstate', () => { if (skip) { skip--; return; } pushed = false;
+    const l = LAY.find(x => { try { return x[0](); } catch (e) { return false; } }); if (l) l[1](); setTimeout(sync, 80); }); }
 /* ===== Accueil au premier lancement ===== */
 { let seen = false; try { seen = localStorage.getItem('cartodog-wel') === '1'; } catch (e) {}
   if (!seen && !(D.paths || []).length && !(D.marks || []).length && !Object.keys(D.cells).length && !/^#b=/.test(location.hash)) $('#wel').hidden = false;
