@@ -704,11 +704,26 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
 #shm h3{margin:2px 0 6px;font:800 22px/1.15 var(--px);color:#fff1cf;text-shadow:2px 2px 0 #000}
 .shb{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}.shb span{padding:3px 8px;border:1px solid var(--rim);border-radius:12px;background:#14110e;font-size:12.5px;color:var(--txt)}
 .shp{margin:0 0 8px;font-size:12.5px;color:var(--mut)}#shm .pmb button.gold{flex:1;background:linear-gradient(#f4c862,#c6862a)!important;color:#2a1806!important;text-shadow:none!important;font-weight:800}
+
+/* ===== Signaler : bouton rond sur la carte + feuille de choix ===== */
+#rep{position:absolute;right:10px;bottom:70px;z-index:6;width:60px;height:60px;border-radius:50%;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;border:3px solid #0e0b08;background:radial-gradient(circle at 50% 35%,#ffcf6a,#e0861e 70%);box-shadow:0 3px 0 #000,0 0 16px rgba(234,150,40,.55),inset 0 2px 0 rgba(255,255,255,.45);cursor:pointer;transition:bottom .2s ease,transform .12s}
+#rep[hidden]{display:none}#rep:active{transform:translateY(2px)}#rep svg{width:26px;height:26px}#rep small{margin-top:-1px;font:900 9px/1 var(--num);color:#2a1806;letter-spacing:.02em}
+#rep.on{background:radial-gradient(circle at 50% 35%,#fff0b8,#ffb83a 70%);box-shadow:0 3px 0 #000,0 0 0 4px rgba(255,210,122,.45)}
+#rqm{position:fixed;inset:0;background:rgba(6,5,3,.6);display:none;align-items:flex-end;justify-content:center;padding:6px;z-index:22}
+#rqm.open{display:flex;animation:fadeIn .2s ease both}#rqm .win{width:100%;max-width:440px;max-height:88dvh;overflow:auto;padding:12px 12px 10px;animation:rise .3s cubic-bezier(.2,.85,.25,1) both}
+#rqm .lhd{margin-bottom:4px;align-items:center}#rqw{text-transform:none;letter-spacing:0}
+.rqh{margin:8px 2px 5px;font:800 11px/1.3 var(--num);letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}.rqh small{font:600 11px var(--sans);letter-spacing:0;text-transform:none;color:var(--mut);margin-left:4px}
+.rqgr{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.rqi{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px 5px;border:2px solid var(--edge);border-radius:6px;background:var(--slot);color:var(--txt);cursor:pointer;min-width:0}
+.rqi svg{width:30px;height:30px}.rqi span{font-size:11px;font-weight:700;line-height:1.15;text-align:center;max-width:100%;min-height:2.3em;display:flex;align-items:center;justify-content:center}
+.rqi.dz{background:linear-gradient(#2a1d12,#1b1814);border-color:#3a2210}.rqi:active{transform:scale(.96)}
+#rqmap{margin:10px 0 0;font-size:14px}
+#dock #found{flex:1}
 </style></head><body>
 <header class="bar win dg"><button class="emb" id="dogav" aria-label="Profil de mon chien et journal"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></button>
   <div class="brand"><h1>Cartodog</h1><small id="ssn">Carnet de balade</small></div>
   <button class="ib" id="encb" data-ic="aid" aria-label="Guide des dangers et premiers secours"></button><button class="ib" id="loc" data-ic="loc" aria-label="Ma position"></button><button class="ib" id="mn" data-ic="set" aria-label="Réglages"></button></header>
-<div id="mapBox"><canvas id="cv"></canvas><div id="sc"></div><div id="bh" hidden></div>
+<div id="mapBox"><canvas id="cv"></canvas><button id="rep" aria-label="Signaler un danger ou un point utile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3z" fill="#2a1806"/><path d="M12 9v5" stroke="#ffd27a" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="17.2" r="1.4" fill="#ffd27a"/></svg><small>Signaler</small></button><div id="sc"></div><div id="bh" hidden></div>
   <button id="wxw" hidden aria-label="Météo et alertes"></button><div id="wxp" class="dg" hidden></div><button id="nr" aria-label="Mode de vue : libre"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="16.5" fill="rgba(17,24,18,.66)" stroke="rgba(227,192,113,.6)"/><text x="18" y="11.6" text-anchor="middle" font-size="8.5" font-weight="700" fill="#e3c071" font-family="system-ui,sans-serif">N</text><path d="M18 13.5l3.6 9H14.4z" fill="#e3c071"/><path d="M18 31l-3.6-8.5h7.2z" fill="#f1e6c9" opacity=".45"/></svg><i></i></button>
   <div id="pm" class="dg" hidden><div id="pmt"></div><div class="pmb"><button id="pmp">📍 Point</button><button id="pmu" aria-label="Annuler le dernier point">↩</button><button id="pme" aria-label="Terminer le chemin">✔</button><button id="pmsm" hidden aria-label="Lisser le sentier">〰 Lisser</button><button id="pmls" aria-label="Mes sentiers">📋</button><button id="pmd" hidden aria-label="Supprimer le sentier">🗑</button><button id="pmx" aria-label="Quitter le mode chemins">✕</button></div><div class="pmb"><button id="pmrec">⏺ Enregistrer</button><button id="pmn" hidden aria-label="Nommer le chemin">✎ Nom</button><button id="pmdraw" hidden>✏ Tracer</button><button id="pmed">✎ Éditer</button><button id="pmmag" aria-label="Aimantation des points">🧲</button></div></div>
   <div id="edsm" class="dg" hidden><div class="edmh">Ce tronçon <small id="eslen"></small></div><div class="edb"><button id="esdel" class="esdel">✂ Supprimer</button><button id="esadd" aria-label="Ajouter un point sur ce tronçon">➕ Point</button><button id="esx" aria-label="Fermer">✕</button></div></div>
@@ -721,8 +736,9 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
   <div id="lp" class="dg" hidden><div class="eyb" id="lpe">Balade guidée</div><div id="lpt"></div><div class="pmb"><button id="lpgo" aria-label="Partir">▶</button><button id="lpn" aria-label="Proposer une autre boucle">↻</button><button id="lpd" aria-label="Changer la durée ou le départ">⏱</button><button id="lpx" aria-label="Masquer la boucle">✕</button></div></div>
   <div id="rm" class="dg" hidden><div class="eyb">Poser un repère</div><div id="rmt">Touchez la carte pour poser un repère (point d'eau, danger, parking…), ou touchez un repère existant pour le modifier.</div><div class="pmb"><button id="rmg">À ma position</button><button id="rmx" aria-label="Quitter le mode repère">✕</button></div></div>
   <div id="zb"><button class="ib" id="gr" data-ic="grid" aria-label="Afficher ou cacher la grille"></button><button class="ib" id="pt" data-ic="trail" aria-label="Cartographier les sentiers"><small>Sentiers</small></button><button class="ib" id="rtb" data-ic="home" aria-label="Retour au départ ou au parking"><small>Retour</small></button><button class="ib" id="lb" data-ic="book" aria-label="Mes balades"><small>Balades</small></button><i class="sep"></i><button class="ib" id="fit" data-ic="fit" aria-label="Tout voir"><small>Tout voir</small></button><button class="ib" id="zo" data-ic="minus" aria-label="Dézoomer"></button><button class="ib" id="zi" data-ic="plus" aria-label="Zoomer"></button></div></div>
-<div id="dock"><button id="found" aria-label="Lancer ou terminer une balade">▶ Balade</button><button id="visit" data-ic="pin" aria-label="Créer une balade à ma position"><small>Nouvelle</small></button><button id="react" data-ic="flag" aria-label="Poser un repère"><small>Repère</small></button><button id="grab" aria-label="Réduire ou ouvrir la fiche">▾</button></div>
+<div id="dock"><button id="found" aria-label="Lancer ou terminer une balade">▶ Balade</button><button id="grab" aria-label="Réduire ou ouvrir la fiche">▾</button></div>
 <div id="panel" class="win dg"></div>
+<div id="rqm"><div class="win dg"><div class="lhd"><h2>Signaler<small id="rqw"></small></h2><button class="ib" id="rqx" aria-label="Fermer">✕</button></div><div id="rqg"></div><button class="btn" id="rqmap">🗺️ Placer moi-même sur la carte</button></div></div>
 <div id="mkm"><div class="win dg"><h2 id="mkt">Nouveau repère</h2><div class="hint" id="mkw" style="padding:0"></div><button class="btn" id="mkpk" hidden>🅿 Retourner au parking</button>
   <div id="mkg"></div><div class="hint" id="mkx" style="padding:2px 0 4px"></div><button class="btn" id="mkp" hidden></button><textarea id="mkn" placeholder="Note : ce que vous avez vu, à retenir…" maxlength="500" style="min-height:76px"></textarea>
   <button class="btn gold" id="mks">Enregistrer</button><button class="btn" id="mkv" hidden></button><button class="btn" id="mkd" hidden style="background:#8b2d22">Supprimer</button><button class="btn" id="mkc">Annuler</button></div></div>
@@ -1074,6 +1090,11 @@ function countUp() {
 }
 const cosAt = y => Math.cos(toLL(0, y)[0] * Math.PI / 180);
 try { ['cartodog-fog', 'cartodog-fogon', 'cartodog-forest'].forEach(k => localStorage.removeItem(k)); } catch (e) {}      // anciens réglages
+function repPos() {      // le bouton Signaler reste au-dessus de la barre et des cartes posées en bas de la carte
+  const b = $('#rep'); if (!b) return; const box = $('#mapBox').getBoundingClientRect(); let top = box.bottom;
+  ['#zb', '#lp', '#pm', '#rm', '#shm', '#rt', '#wel'].forEach(q => { const el = $(q); if (el && !el.hidden && el.offsetParent) top = Math.min(top, el.getBoundingClientRect().top); });
+  const v = Math.round(box.bottom - top + 10) + 'px'; if (b.style.bottom !== v) b.style.bottom = v; b.hidden = P.on || ED.on;
+}
 function draw() {
   const dpr = devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight; if (!W || !H) return;
   if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
@@ -1106,7 +1127,7 @@ function draw() {
   const ring = (k, col, w) => { const c = D.cells[k]; if (!c || c.x == null) return; const u = UP(sx(c.x), sy(c.y)); g.beginPath(); g.arc(sx(c.x), sy(c.y) - ps / 2, ps * .62 + 3, 0, 7); g.lineWidth = w; g.strokeStyle = col; g.stroke(); if (u) g.restore(); };
   if (hereK && hereK !== sel) { g.setLineDash([5, 4]); ring(hereK, '#0e0b08', 5); ring(hereK, '#ffd27a', 2.5); g.setLineDash([]); } if (sel) { ring(sel, '#2a2018', 5); ring(sel, '#e3c071', 3); }
   if (me) drawMe(sx(me.x), sy(me.y), mpp);
-  drawFX(sx, sy);
+  drawFX(sx, sy); repPos();
   g.setTransform(dpr, 0, 0, dpr, 0, 0); if (CAM.shown !== RT) { CAM.shown = RT; $('#nr svg').style.transform = RT ? `rotate(${RT}rad)` : ''; }
   { const real = mpp * Math.cos(toLL(V.cx, V.cy)[0] * Math.PI / 180), m = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000].filter(v => v / real <= 110).pop() || 1, el = $('#sc'); el.textContent = m >= 1000 ? m / 1000 + ' km' : m + ' m'; el.style.minWidth = Math.max(26, m / real) + 'px'; el.style.borderBottom = '3px solid #fff'; el.style.textAlign = 'center'; } if (commOn) scanSoon();
 }
@@ -2013,7 +2034,7 @@ $('#nr').onclick = () => camSet((CAM.m + 1) % 3);
 $('#loc').onclick = () => watch === null ? startLoc() : (stopLoc(), toast('Localisation arrêtée'));
 const askGps = kind => { pending = kind; if (watch === null) startLoc(); else toast('Position pas encore trouvée…'); };
 $('#found').innerHTML = foundOff(); $('#found').onclick = () => { if (BR.on) return brStop(); BR.k0 = null; balOpen(); };
-$('#visit').onclick = addLieu;
+
 
 /* ===== Menu, import / export, toast ===== */
 const bump = s => { const b = $(s); if (!b || RMO.matches) return; b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); };
@@ -2022,7 +2043,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-7';
+const APP_V = '2026.10.23-8';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2781,7 +2802,7 @@ dzPurge(); setSsn(); dogAvatar().then(dogLabel);
 if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
 
 /* ===== Bouton « retour » du téléphone : ferme la fenêtre ouverte au lieu de quitter l'application ===== */
-{ const MODALS = ['dzq', 'mkm', 'dogm', 'balm', 'encm', 'pls', 'lst', 'dlm', 'menu', 'pv'], CLOSE = { mkm: () => closeMk(), dogm: () => dogClose(), balm: () => balClose(), encm: () => encClose(), pv: () => closePh() };
+{ const MODALS = ['rqm', 'dzq', 'mkm', 'dogm', 'balm', 'encm', 'pls', 'lst', 'dlm', 'menu', 'pv'], CLOSE = { mkm: () => closeMk(), dogm: () => dogClose(), balm: () => balClose(), encm: () => encClose(), pv: () => closePh() };
   let skip = 0;
   const mo = new MutationObserver(rs => rs.forEach(r => { const el = r.target, open = el.classList.contains('open');
     if (open && !el._h) { el._h = 1; try { history.pushState({ cdm: el.id }, ''); } catch (e) {} }
@@ -2880,10 +2901,30 @@ function openMk(e) {
 }
 const closeMk = () => $('#mkm').classList.remove('open');
 function openMark(id) { const m = (D.marks || []).find(x => x.id === id); if (m) openMk({ ...m }); }
-var RM = false;
-function setRM(on) { RM = on; $('#rm').hidden = !on; $('#react').classList.toggle('on', on); if (on && P.on) $('#pt').click(); if (!on) closeMk(); draw(); }
-$('#react').onclick = () => setRM(!RM); $('#rmx').onclick = () => setRM(false);
-$('#rmg').onclick = () => { if (!me) { if (watch === null) startLoc(); return toast('Position en attente : réessayez dans un instant, ou touchez la carte'); } openMk({ id: null, t: mkLast, note: '', x: me.x, y: me.y, where: 'gps' }); };
+var RM = false, RMT = null;
+function setRM(on, t) { RM = on; RMT = on ? t || null : null; $('#rm').hidden = !on; $('#rep').classList.toggle('on', on); if (on) $('#rmt').innerHTML = RMT ? `Touchez la carte à l\u2019endroit exact : <b>${esc(MK[RMT][0])}</b>` : 'Touchez la carte pour poser un repère, ou touchez un repère existant pour le modifier.'; if (on && P.on) $('#pt').click(); if (!on) closeMk(); draw(); }
+$('#rmx').onclick = () => setRM(false);
+/* ===== Bouton « Signaler » (sur la carte) : choisir quoi, c'est posé à votre position ; sans GPS, on touche la carte ===== */
+const RQ_DZ = ['chenille', 'tick', 'viper', 'grass', 'hunt', 'boar', 'dogs', 'toxic', 'algae', 'road', 'cattle', 'danger'], RQ_OK = ['water', 'swim', 'park', 'free', 'leash', 'nodog', 'bin', 'shade', 'view', 'private', 'pin'];
+const gpsOk = () => me && me.acc <= 40;
+function rqOpen() {
+  if (RM) return setRM(false); if (watch === null) startLoc();
+  const SHORT = { toxic: 'Plante toxique', leash: 'Laisse', nodog: 'Chiens interdits', bin: 'Sacs / poubelle', shade: 'Ombre', algae: 'Eau douteuse', dogs: 'Chien hostile' }, it = t => `<button class="rqi${isDz({ t }) ? ' dz' : ''}" data-rq="${t}" aria-label="${esc(MK[t][0])}">${mkSvg(t)}<span>${esc(SHORT[t] || MK[t][0])}</span></button>`;
+  $('#rqw').innerHTML = gpsOk() ? `📍 À votre position <small>(±${Math.round(me.acc)} m)</small>` : '🗺️ Choisissez, puis touchez la carte';
+  $('#rqg').innerHTML = `<div class="rqh">⚠️ Danger pour le chien <small>visible 24 h</small></div><div class="rqgr">${RQ_DZ.map(it).join('')}</div><div class="rqh">✅ Utile</div><div class="rqgr">${RQ_OK.map(it).join('')}</div>`;
+  $('#rqm').classList.add('open');
+}
+const rqClose = () => $('#rqm').classList.remove('open');
+function mkQuick(t, x, y) {      // pose immédiate, sans formulaire ; la note s'ajoute en touchant le repère
+  const snap = JSON.stringify(D.marks || []), psnap = JSON.stringify(D.paths || []), id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6); D.marks ||= [];
+  const m = dzSet({ id, x, y, t, note: '', d: today() }, false); D.marks.push(m); DZ[id] = Date.now(); fxa({ k: 'drop', key: id, dur: 750 });      // pas d'alerte sur le danger qu'on vient soi-même de signaler fxRing(x, y, MK[t][1], 4, 30, 650, 330, 3);
+  let att = 0; if (t === 'park') att = parkAttach(m); mkLast = t; save(); draw(); try { navigator.vibrate && navigator.vibrate(isDz(m) ? [60, 40, 60] : 40); } catch (e) {}
+  toast((isDz(m) ? '⚠️ ' : '✅ ') + MK[t][0] + ' signalé' + (att ? ` · relié à ${att} sentier${att > 1 ? 's' : ''}` : '') + ' · touchez-le pour ajouter une note', () => { D.marks = JSON.parse(snap); D.paths = JSON.parse(psnap); save(); draw(); });
+}
+$('#rep').onclick = rqOpen; $('#rqx').onclick = rqClose; $('#rqm').onclick = e => { if (e.target.id === 'rqm') return rqClose();
+  const b = e.target.closest('[data-rq]'); if (b) { const t = b.dataset.rq; rqClose(); if (gpsOk()) return mkQuick(t, me.x, me.y); setRM(true, t); return; }
+  if (e.target.closest('#rqmap')) { rqClose(); setRM(true); } };
+$('#rmg').hidden = true; $('#rmg').onclick = () => { if (!me) { if (watch === null) startLoc(); return toast('Position en attente : réessayez dans un instant, ou touchez la carte'); } openMk({ id: null, t: mkLast, note: '', x: me.x, y: me.y, where: 'gps' }); };
 { const pt0 = $('#pt').onclick; $('#pt').onclick = e => { if (!P.on) setRM(false); pt0(e); }; }
 $('#mkg').onclick = e => { const b = e.target.closest('.mki'); if (!b) return; MKE.t = b.dataset.t; document.querySelectorAll('.mki').forEach(x => x.classList.toggle('on', x === b)); mkPermUi(); };
 $('#mkp').onclick = () => { MKE.perm = !MKE.perm; mkPermUi(); };
@@ -2893,7 +2934,7 @@ $('#mkpk').onclick = () => { const k = (D.marks || []).find(x => x.id === MKE.id
 $('#mks').onclick = () => {
   const e = MKE, note = $('#mkn').value.trim().slice(0, 500), snap = JSON.stringify(D.marks || []); D.marks ||= [];
   if (e.id) { const m = D.marks.find(x => x.id === e.id); if (m) { m.t = e.t; m.note = note; m.x = e.x; m.y = e.y; dzSet(m, e.perm); } }
-  else { const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6); D.marks.push(dzSet({ id, x: e.x, y: e.y, t: e.t, note, d: today() }, e.perm)); fxa({ k: 'drop', key: id, dur: 750 }); fxRing(e.x, e.y, 'rgba(241,230,201,.8)', 3, 20, 500, 330, 2.5); }
+  else { const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6); D.marks.push(dzSet({ id, x: e.x, y: e.y, t: e.t, note, d: today() }, e.perm)); DZ[id] = Date.now(); fxa({ k: 'drop', key: id, dur: 750 }); fxRing(e.x, e.y, 'rgba(241,230,201,.8)', 3, 20, 500, 330, 2.5); }
   if (e.id) fxRing(e.x, e.y, MK[e.t][1], 4, 26, 600, 0, 3);
   let att = 0; const psnap = JSON.stringify(D.paths || []); if (e.t === 'park') { const k = D.marks.find(x => x.x === e.x && x.y === e.y && x.t === 'park'); if (k) att = parkAttach(k); }
   mkLast = e.t; save(); closeMk(); draw(); toast(MK[e.t][0] + ' : repère enregistré' + (att ? ` · ${att} point${att > 1 ? 's' : ''} de sentier rattaché${att > 1 ? 's' : ''}` : ''), () => { D.marks = JSON.parse(snap); D.paths = JSON.parse(psnap); save(); draw(); });
@@ -2924,7 +2965,7 @@ function navTxt(k) {
 }
 function updNav() { const e = $('#nvt'); if (e && sel && D.cells[sel]) e.innerHTML = navSub(sel); }
 /* ===== Tap : 1 = action, 2 = zoom doux à l'endroit touché, 3 = dézoom doux ===== */
-function onTap(e) { const r = cv.getBoundingClientRect(); const pt = spotAt(e.clientX - r.left, e.clientY - r.top), mk = markAt(e.clientX - r.left, e.clientY - r.top); if (RM) { if (mk) openMark(mk.id); else openMk({ id: null, t: mkLast, note: '', ...(([ux, uy]) => ({ x: V.cx + ux * V.mpp, y: V.cy - uy * V.mpp }))(unr(e.clientX - r.left - r.width / 2, e.clientY - r.top - r.height / 2)), where: 'tap' }); } else if (P.on) (ED.on ? (ED.draw ? edDrawTap : edPick) : pathTap)(e.clientX - r.left, e.clientY - r.top); else if (pt && pt !== sel) { select(pt); flyTo(pt); } else if (mk && !pt) openMark(mk.id); else if (sel) { sel = null; collapse(); renderPanel(); draw(); } }
+function onTap(e) { const r = cv.getBoundingClientRect(); const pt = spotAt(e.clientX - r.left, e.clientY - r.top), mk = markAt(e.clientX - r.left, e.clientY - r.top); if (RM) { const w = (([ux, uy]) => ({ x: V.cx + ux * V.mpp, y: V.cy - uy * V.mpp }))(unr(e.clientX - r.left - r.width / 2, e.clientY - r.top - r.height / 2)); if (RMT) { const t = RMT; setRM(false); mkQuick(t, w.x, w.y); } else if (mk) openMark(mk.id); else openMk({ id: null, t: mkLast, note: '', ...w, where: 'tap' }); } else if (P.on) (ED.on ? (ED.draw ? edDrawTap : edPick) : pathTap)(e.clientX - r.left, e.clientY - r.top); else if (pt && pt !== sel) { select(pt); flyTo(pt); } else if (mk && !pt) openMark(mk.id); else if (sel) { sel = null; collapse(); renderPanel(); draw(); } }
 var TT = { t: 0, n: 0, x: 0, y: 0, timer: 0 };
 function multiTap(e) {
   const now = performance.now(), same = now - TT.t < 330 && Math.hypot(e.clientX - TT.x, e.clientY - TT.y) < 36;
