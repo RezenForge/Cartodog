@@ -838,9 +838,23 @@ input,textarea,[contenteditable]{-webkit-user-select:text;user-select:text;-webk
 
 .hbth{flex:none;width:44px;height:44px;border-radius:50%;object-fit:cover;border:2.5px solid #8b857a;box-shadow:0 0 0 2px #0e0b08}
 .hbth.r1{border-color:#5f7350}.hbth.r2{border-color:#87481f}.hbth.r3{border-color:#466f24}.hbth.r4{border-color:#a87a0e}
+
+/* ===== Bandeau : le profil du chien au premier plan ===== */
+.bar{padding:5px 6px 5px 6px!important;gap:6px!important}
+.hdog{flex:1;min-width:0;display:flex;align-items:center;gap:9px;padding:2px 8px 2px 2px;border:0;background:none;text-align:left;cursor:pointer;border-radius:30px}
+.hdog:active{background:rgba(255,236,190,.06)}
+.hav{position:relative;flex:none;width:48px;height:48px}
+.hring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}.hr0{fill:none;stroke:#0d0b08;stroke-width:4}.hr1{fill:none;stroke:#eaa53c;stroke-width:4;stroke-linecap:round;filter:drop-shadow(0 0 3px rgba(234,165,60,.7));transition:stroke-dasharray .8s ease}
+.hav .emb{position:absolute;inset:5px;width:auto!important;height:auto!important;border-radius:50%;overflow:hidden;background:#1b1814}.hav .emb img{border:0!important;box-shadow:none!important}
+.hlv{position:absolute;right:-5px;bottom:-3px;min-width:20px;height:18px;padding:0 4px;border-radius:9px;background:linear-gradient(#ffd27a,#c6862a);color:#2a1806;border:2px solid #0e0b08;font:900 11px/14px var(--num);text-align:center}.hlv[hidden]{display:none}
+.hinf{min-width:0;display:flex;flex-direction:column;gap:2px}
+.hinf b{font:800 20px/1.05 var(--px);color:#fff1cf;text-shadow:2px 2px 0 #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hinf small{display:flex;align-items:center;gap:5px;white-space:nowrap;overflow:hidden;font:800 10px/1.3 var(--num);letter-spacing:.06em;text-transform:uppercase}
+.hrk{color:var(--ember);}.hst{padding:0 5px;border-radius:7px;background:rgba(255,120,40,.18);color:#ffb070;letter-spacing:0}.hwk{color:var(--mut);letter-spacing:.02em}.hcta{color:var(--ember2);letter-spacing:.02em}
+.bar .ib{flex:none}
 </style></head><body>
-<header class="bar win dg"><button class="emb" id="dogav" aria-label="Profil de mon chien et journal"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></button>
-  <div class="brand"><h1>Cartodog</h1><small id="ssn">Carnet de balade</small></div>
+<header class="bar win dg"><button class="hdog brand" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span><span class="hinf"><b id="hnm">Mon chien</b><small id="hsub">Créer son profil</small></span></button>
+<small id="ssn" hidden></small>
   <button class="ib" id="encb" data-ic="guide" aria-label="Guide du promeneur : dangers et premiers secours"></button><button class="ib" id="loc" data-ic="loc" aria-label="Ma position"></button><button class="ib" id="mn" data-ic="set" aria-label="Réglages"></button></header>
 <div id="mapBox"><canvas id="cv"></canvas><button id="rep" aria-label="Signaler un danger ou un point utile"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="repg" cx="45%" cy="30%" r="75%"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#e0861e"/></radialGradient></defs>
   <g fill="#0e0b08" stroke="#0e0b08" stroke-width="5" stroke-linejoin="round"><ellipse cx="13" cy="27" rx="6" ry="8" transform="rotate(-22 13 27)"/><ellipse cx="24.5" cy="14" rx="6.4" ry="8.4" transform="rotate(-8 24.5 14)"/><ellipse cx="39.5" cy="14" rx="6.4" ry="8.4" transform="rotate(8 39.5 14)"/><ellipse cx="51" cy="27" rx="6" ry="8" transform="rotate(22 51 27)"/><path d="M32 28c8 0 20 11 20 21 0 7-6 10-12 9-4-.5-6-2-8-2s-4 1.5-8 2c-6 1-12-2-12-9 0-10 12-21 20-21z"/></g>
@@ -1614,7 +1628,7 @@ function simplifyPts(pts, tolM = 3) {      // Douglas-Peucker sur un tracé de b
   const st = [[0, n - 1]]; while (st.length) { const [a, b] = st.pop(); let md = 0, mi = -1; for (let i = a + 1; i < b; i++) { const d = segProj(pts[i], pts[a], pts[b]).d; if (d > md) { md = d; mi = i; } } if (md > tol) { keep[mi] = 1; st.push([a, mi], [mi, b]); } }
   return pts.filter((_, i) => keep[i]);
 }
-function brStop() {
+function brStop() { setTimeout(hdrRender, 300);
   if (!BR.on) return; const b = BR, dur = Math.round((Date.now() - b.t0) / 1000); BR = { on: false, pts: [], m: 0 }; wakeSync(); brUi();
   if (dur < 60 && b.m < 50) { draw(); return toast('⏹ Sortie annulée (moins d\'une minute)'); }
   const start = b.pts[0] || (me ? [me.x, me.y] : null), snap = snapC(); let k = b.k && D.cells[b.k] ? b.k : b.bal ? Object.keys(D.cells).find(x => { const g = cellGroup(x); return g && g.k === gkey(b.bal); }) : null; if (!k) k = start ? nearestSpot(start[0], start[1], 400) : sel; let neu = false;
@@ -2305,7 +2319,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-40';
+const APP_V = '2026.10.23-41';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2329,8 +2343,15 @@ const lastW = () => { const w = D.prof.w; return w.length ? w.reduce((a, x) => x
 let avUrl = ''; $('#dogav').dataset.svg = $('#dogav').innerHTML;
 async function dogAvatar() {      // photo du chien : en-tête, journal et fiche profil
   avUrl = ''; if (D.prof.ph) { try { avUrl = await pGet(D.prof.ph) || ''; } catch (e) {} }
-  const e = $('#dogav'); e.classList.toggle('ph', !!avUrl); e.innerHTML = avUrl ? `<img src="${avUrl}" alt="">` : e.dataset.svg;
+  const e = $('#dogav'); e.classList.toggle('ph', !!avUrl); e.innerHTML = avUrl ? `<img src="${avUrl}" alt="">` : e.dataset.svg; hdrRender();
   const g = $('#dgimg'); if (g) g.innerHTML = avUrl ? `<img src="${avUrl}" alt="Photo du chien">` : SLOT.paw;
+}
+function hdrRender() {      // bandeau : le chien est le héros (photo, niveau, rang, série en cours)
+  const p = D.prof, nm = p.name || D.dog, el = $('#hnm'); if (!el) return;
+  if (!nm) { el.textContent = 'Mon chien'; $('#hsub').innerHTML = '<span class="hcta">✚ Créer son profil</span>'; $('#hlv').hidden = true; $('#hring').style.strokeDasharray = '0 200'; return; }
+  const S = dogStats(), a0 = lvNeed(S.L), a1 = lvNeed(S.L + 1), pc = Math.max(0, Math.min(1, (S.xp - a0) / (a1 - a0))), C = 2 * Math.PI * 21.5;
+  el.textContent = nm; $('#hlv').hidden = false; $('#hlv').textContent = S.L; $('#hring').style.strokeDasharray = `${(C * pc).toFixed(1)} ${C.toFixed(1)}`;
+  $('#hsub').innerHTML = `<span class="hrk">${S.rank}</span>${S.st ? `<span class="hst">🔥${S.st}</span>` : ''}`;
 }
 function dogLabel() {
   const p = D.prof, w = lastW(), bits = [p.breed, ageTxt(p.bd), w ? fkg(w.kg) : ''].filter(Boolean).join(' · ');
@@ -2395,8 +2416,8 @@ function dogMain() {
 function dogPane(k) { document.querySelectorAll('#dogm .dgp').forEach(x => x.classList.toggle('on', x.dataset.p === k)); $('#dgb').hidden = k === 'main';
   $('#dgh').firstChild.textContent = { main: 'Profil', id: 'Fiche', w: 'Poids', h: 'Santé' }[k]; $('#dgsub').style.display = k === 'main' ? 'none' : ''; $('#dogm .win').scrollTop = 0; if (k === 'main') dogMain(); }
 function dogOpen() { $('#menu').classList.remove('open'); $('#vgm').innerHTML = vigil(); dogRender(); dogPane('main'); dogAvatar().then(() => dogMain()); $('#dogm').classList.add('open'); }
-const dogClose = () => { $('#dogm').classList.remove('open'); dogLabel(); };
-$('#dogav').onclick = dogOpen; $('.brand').onclick = dogOpen; $('#dgx').onclick = dogClose; $('#dgb').onclick = () => dogPane('main');
+const dogClose = () => { $('#dogm').classList.remove('open'); dogLabel(); hdrRender(); };
+$('#hdog').onclick = dogOpen; $('#dgx').onclick = dogClose; $('#dgb').onclick = () => dogPane('main');
 $('#dogm').onclick = e => { if (e.target.id === 'dogm') return dogClose();
   const go = e.target.closest('[data-go]'); if (go) return dogPane(go.dataset.go);
   const bd = e.target.closest('[data-bd]'); if (bd) return toast((bd.classList.contains('ok') ? '🏅 ' : '🔒 ') + bd.dataset.bd);
@@ -3174,7 +3195,7 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
 /* ===== Accueil au premier lancement ===== */
 { let seen = false; try { seen = localStorage.getItem('cartodog-wel') === '1'; } catch (e) {}
   if (!seen && !(D.paths || []).length && !(D.marks || []).length && !Object.keys(D.cells).length && !/^#b=/.test(location.hash)) $('#wel').hidden = false;
-  setTimeout(shOpen, 400); addEventListener('hashchange', shOpen);
+  setTimeout(shOpen, 400); addEventListener('hashchange', shOpen); setTimeout(() => { hdrRender(); dogAvatar(); }, 50);
   const done = () => { $('#wel').hidden = true; try { localStorage.setItem('cartodog-wel', '1'); } catch (e) {} };
   $('#welx').onclick = done; $('#welloc').onclick = () => { done(); if (watch === null) startLoc(); }; $('#weldog').onclick = () => { done(); dogOpen(); }; }
 
