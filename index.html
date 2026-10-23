@@ -2140,7 +2140,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-23';
+const APP_V = '2026.10.23-24';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2823,7 +2823,7 @@ const badge = g => `<span class="ebd" style="--ec:${GRV[g][1]}">${g === 'u' ? '�
 
 /* ----- interface ----- */
 let encKind = 'all', encStack = [];
-function encOpen(direct) { $('#encm').classList.add('open'); encList(); if (!direct) setTimeout(() => $('#encq').focus({ preventScroll: true }), 50); }
+function encOpen(direct) { $('#encm').classList.add('open'); encList(); }      // pas de focus automatique : le clavier ne s'ouvre que si l'on touche la recherche
 let encFrom = null;
 function encClose() { $('#encm').classList.remove('open'); $('#encac').hidden = true; const f = encFrom; encFrom = null; if (f) $('#' + f).classList.add('open'); }      // retour à la fenêtre d'où l'on venait (profil, réglages)
 function encList() {
