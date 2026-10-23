@@ -1687,10 +1687,35 @@ function recTick() {      // un point tous les ~10 m (plus si le GPS est impréc
   if (!RC.on || !me || me.acc > 30) return;
   if (!RC.f) RC.f = { x: me.x, y: me.y, acc: me.acc };      // lissage : chaque position compte d'autant plus qu'elle est précise (gomme le zigzag du GPS)
   else { const k = Math.max(.3, Math.min(.85, 7 / Math.max(3, me.acc))); RC.f.x += (me.x - RC.f.x) * k; RC.f.y += (me.y - RC.f.y) * k; RC.f.acc = me.acc; }
-  const last = P.cur ? P.cur.pts[P.cur.pts.length - 1] : P.start, gp = { x: RC.f.x, y: RC.f.y, acc: me.acc };
-  if (!last) { placePt(gp, true); return pmUpdate(); }
-  if (rdist(last, [gp.x, gp.y]) < Math.max(10, Math.min(me.acc * .8, 25))) return;
-  placePt(gp, true); pmUpdate();
+  const gp = { x: RC.f.x, y: RC.f.y, acc: me.acc };
+  /* Pas de doublon : sur un chemin déjà tracé, rien n'est posé. Le tronçon en cours s'y raccroche (carrefour),
+     et un nouveau tronçon repart du point où l'on quitte ce chemin. Un simple croisement (< 20 m sur le chemin) est tracé normalement. */
+  const ON = Math.max(8, Math.min(me.acc, 14)), nr = recNear([gp.x, gp.y], ON + 6);
+  if (RC.follow) {
+    if (nr) { RC.skip += rdist([RC.fl.g[0], RC.fl.g[1]], [gp.x, gp.y]); RC.fl = { ...nr, g: [gp.x, gp.y] }; return pmUpdate(); }
+    const l = RC.fl; RC.follow = false; P.cur = null; P.start = rp1(l.q); P.sa = l.p.id; P.adds = [];
+    toast('🥾 Nouveau chemin : enregistrement repris'); placePt(gp, true); return pmUpdate();
+  }
+  if (nr && nr.d < ON) {
+    (RC.buf ||= []).push({ g: [gp.x, gp.y], n: nr });
+    if (rdist(RC.buf[0].g, [gp.x, gp.y]) < 20) return pmUpdate();
+    const a = RC.buf[0].n; RC.buf = [];
+    if (P.cur) { const v = junction(a.p, a.i, rp1(a.q)), e = P.cur.pts[P.cur.pts.length - 1]; if (e[0] !== v[0] || e[1] !== v[1]) { P.cur.pts.push([v[0], v[1]]); P.adds.push(1); } (RC.segs ||= []).push(P.cur); save(); }
+    P.cur = null; P.start = null; P.sa = null; P.adds = []; RC.follow = true; RC.fl = { ...nr, g: [gp.x, gp.y] };
+    try { navigator.vibrate && navigator.vibrate(40); } catch (e) {} toast('🔗 Chemin déjà tracé : rien n’est enregistré par-dessus'); draw(); return pmUpdate();
+  }
+  if (RC.buf && RC.buf.length) { const B = RC.buf; RC.buf = []; B.forEach(b => recPlace({ x: b.g[0], y: b.g[1], acc: me.acc })); }      // simple croisement : on rattrape les points mis de côté
+  recPlace(gp); pmUpdate();
+}
+function recPlace(gp) {
+  const last = P.cur ? P.cur.pts[P.cur.pts.length - 1] : P.start;
+  if (last && rdist(last, [gp.x, gp.y]) < Math.max(10, Math.min(me.acc * .8, 25))) return;
+  placePt(gp, true);
+}
+function recNear(q, R) {      // chemin existant le plus proche (hors tronçon en cours) à moins de R mètres
+  let b = null; const k = cosAt(q[1]);
+  (D.paths || []).forEach(p => { if (p === P.cur || p.pts.length < 2) return; for (let i = 0; i + 1 < p.pts.length; i++) { const r = segProj(q, p.pts[i], p.pts[i + 1]), d = r.d * k; if (d < R && (!b || d < b.d)) b = { p, i, q: r.q, d }; } });
+  return b;
 }
 /* Simplification (Douglas-Peucker) : retire les points inutiles d'un tracé GPS sans toucher aux carrefours ni aux extrémités */
 function simplifyPath(p, tolM = 2.5) {
@@ -1703,13 +1728,16 @@ function simplifyPath(p, tolM = 2.5) {
 }
 setInterval(() => { if (RC.on && P.on) pmUpdate(); }, 1000);      // chronomètre de l'enregistrement
 function recToggle() {
-  if (RC.on) { RC.on = false; const p = P.cur; wakeSync();
-    if (!p) { P.start = null; P.sa = null; pmUpdate(); draw(); return toast('⏹ Enregistrement arrêté : aucun déplacement'); }
-    P.cur = null; P.start = null; P.sa = null; P.adds = []; RC.f = null; const n0 = p.pts.length, rm = simplifyPath(p); save();
+  if (RC.on) { RC.on = false; wakeSync(); const segs = [...(RC.segs || []), ...(P.cur && P.cur.pts.length > 1 ? [P.cur] : [])].filter((p, i, a) => a.indexOf(p) === i && (D.paths || []).includes(p)), skip = RC.skip || 0;
+    RC.segs = []; RC.buf = []; RC.follow = false; RC.skip = 0;
+    if (!segs.length) { P.cur = null; P.start = null; P.sa = null; pmUpdate(); draw(); return toast(skip > 20 ? `⏹ Rien de nouveau : vous avez suivi des chemins déjà tracés (${fmtDist(skip)})` : '⏹ Enregistrement arrêté : aucun déplacement'); }
+    P.cur = null; P.start = null; P.sa = null; P.adds = []; RC.f = null; segs.forEach(p => simplifyPath(p)); save(); const p = segs[segs.length - 1], len = segs.reduce((a, x) => a + pathLen(x), 0);
     NG.sig = ''; const gr = groupOf(p); if (gr && gr.auto) { const nm = prompt('Nom de la balade (facultatif)', ''); if (nm && nm.trim()) renameGroup(groupOf(p), nm); }
-    P.sel = p.id; pmUpdate(); draw(); return toast('⏹ ' + fmtDist(pathLen(p)) + ' enregistrés' + (rm ? ` · tracé lissé (${n0} → ${p.pts.length} points)` : '')); }
+    P.sel = p.id; pmUpdate(); draw(); return toast('⏹ ' + fmtDist(len) + ' de nouveaux chemins' + (segs.length > 1 ? ` (${segs.length} tronçons)` : '') + (skip > 20 ? ` · ${fmtDist(skip)} sur des chemins déjà tracés, non doublés` : '')); }
   if (!me) { if (watch === null) startLoc(); return toast('Position en attente : réessayez dans un instant'); }
-  RC.on = true; RC.t0 = Date.now(); RC.f = null; wakeSync(); if (me.acc > 30) toast('Précision faible (±' + Math.round(me.acc) + ' m) : les points se poseront dès que le signal s\'améliore'); else toast('⏺ Enregistrement : marchez, l\'écran reste allumé');
+  RC.on = true; RC.t0 = Date.now(); RC.f = null; RC.segs = []; RC.buf = []; RC.follow = false; RC.skip = 0;
+  { const nr = recNear([me.x, me.y], Math.max(8, Math.min(me.acc, 14))); if (nr) { RC.follow = true; RC.fl = { ...nr, g: [me.x, me.y] }; } }      // départ sur un chemin connu : on attend de le quitter
+  wakeSync(); if (me.acc > 30) toast('Précision faible (±' + Math.round(me.acc) + ' m) : les points se poseront dès que le signal s\'améliore'); else toast('⏺ Enregistrement : marchez, l\'écran reste allumé');
   recTick(); pmUpdate();
 }
 
@@ -1886,7 +1914,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-3';
+const APP_V = '2026.10.23-4';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2149,7 +2177,7 @@ function pmUpdate() {
   let st, stats, help;
   if (ED.on && ED.draw) { st = '✏ Tracé manuel'; stats = chip(ED.draw.n + ' pt' + (ED.draw.n > 1 ? 's' : '')) + (ED.draw.p ? chip(fmtDist(pathLen(ED.draw.p))) : ''); help = 'Touchez la carte pour poser un point · près d\'un point existant, il s\'y relie · ↩ annule'; }
   else if (ED.on) { st = '✎ Édition'; stats = sp ? chip('« ' + name(sp) + ' »', 'nm') + chip(fmtDist(pathLen(sp)) + ' · ' + sp.pts.length + ' pts') : chip(n + ' sentier' + (n > 1 ? 's' : '')); help = sp ? 'Glissez un point · touchez la ligne (ajouter / supprimer un tronçon) · touchez un point (options)' : 'Touchez un sentier pour le modifier, ou ✏ Tracer pour en dessiner un'; }
-  else if (RC.on) { st = '<i class="recdot"></i>Enregistrement'; stats = chip(clock(Date.now() - (RC.t0 || Date.now())), 'tm') + (P.cur ? chip(fmtDist(pathLen(P.cur))) + chip(P.cur.pts.length + ' pts') : chip('en attente du 1er point')); help = me && me.acc > 30 ? 'Signal trop faible : les points reprendront dès qu\'il s\'améliore' : 'Marchez : un point se pose tous les ~10 m, la carte vous suit'; }
+  else if (RC.on) { st = '<i class="recdot"></i>Enregistrement'; stats = chip(clock(Date.now() - (RC.t0 || Date.now())), 'tm') + (RC.follow ? chip('🔗 sur un chemin connu : rien n\u2019est doublé') : P.cur ? chip(fmtDist(pathLen(P.cur))) + chip(P.cur.pts.length + ' pts') : chip('en attente du 1er point')); help = me && me.acc > 30 ? 'Signal trop faible : les points reprendront dès qu\'il s\'améliore' : 'Marchez : un point se pose tous les ~10 m, la carte vous suit'; }
   else if (P.cur) { st = '🥾 Tracé en cours'; stats = chip(fmtDist(pathLen(P.cur))) + chip(P.cur.pts.length + ' pts'); help = '📍 à chaque virage (3 s immobile), ✔ pour finir, ↩ annule le dernier point'; }
   else if (P.start) { st = '📍 Départ posé'; stats = ''; help = 'Marchez jusqu\'au prochain virage, puis 📍 Point'; }
   else { st = '🥾 Sentiers'; stats = sp ? chip('« ' + name(sp) + ' »', 'nm') + chip(fmtDist(pathLen(sp))) : chip(n + ' sentier' + (n > 1 ? 's' : '')) + chip(fmtDist(totLen)); help = '📍 pose un départ · ⏺ enregistre en marchant · touchez une ligne pour repartir de là'; }
