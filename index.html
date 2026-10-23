@@ -2270,7 +2270,7 @@ function drawMe(x, y, mpp) {
   g.beginPath(); g.arc(x, y, 10, 0, 7); const st = g.createLinearGradient(x, y - 10, x, y + 10); st.addColorStop(0, '#4d453a'); st.addColorStop(1, '#221d18'); g.fillStyle = st; g.fill();
   g.translate(x, y);
   const em = g.createLinearGradient(0, -8, 0, 6); em.addColorStop(0, '#fff0b8'); em.addColorStop(1, '#e8962c');
-  if (HH != null) { g.rotate(HH * Math.PI / 180); g.globalAlpha = fresh ? 1 : .55;
+  if (HH != null) { g.rotate(HH * Math.PI / 180); g.globalAlpha *= fresh ? 1 : .55;
     g.beginPath(); g.moveTo(0, -8.2); g.lineTo(6, 6); g.lineTo(0, 2.6); g.lineTo(-6, 6); g.closePath(); g.fillStyle = em; g.fill(); g.lineWidth = 1.4; g.strokeStyle = '#0e0b08'; g.stroke(); }
   else { g.beginPath(); g.moveTo(0, -5.5); g.lineTo(5, 0); g.lineTo(0, 5.5); g.lineTo(-5, 0); g.closePath(); g.fillStyle = em; g.fill(); g.lineWidth = 1.4; g.strokeStyle = '#0e0b08'; g.stroke(); }      // à l'arrêt, sans direction connue : losange
   g.restore();
