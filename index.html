@@ -1796,7 +1796,8 @@ function drawLoop(sx, sy) {
    Sur la boucle guidée en priorité, sinon sur vos sentiers : collé à moins de 10 m, attiré progressivement jusqu'à 25 m. */
 let MD = { key: '', q: null };
 function meDisp() {
-  if (!me) return null; if (P.on || RC.on) return [me.x, me.y];
+  if (!me) return null; if (RC.on) { const nr = recNear([me.x, me.y], 15); if (!nr) return [me.x, me.y]; const f = nr.d <= 6 ? 1 : 1 - (nr.d - 6) / 9; return [me.x + (nr.q[0] - me.x) * f * .8, me.y + (nr.q[1] - me.y) * f * .8]; }      // enregistrement : légère attirance vers les chemins déjà tracés (y compris celui en cours)
+  if (P.on) return [me.x, me.y];
   const key = me.x + ',' + me.y + ',' + (BL.poly ? BL.poly.length : 0) + ',' + (D.paths || []).length; if (MD.key === key) return MD.q;
   const k = cosAt(me.y), q0 = [me.x, me.y]; let best = null;
   const scan = pts => { for (let i = 1; i < pts.length; i++) { const r = segProj(q0, pts[i - 1], pts[i]), d = r.d * k; if (!best || d < best.d) best = { d, q: r.q }; } };
@@ -1895,7 +1896,8 @@ function recTick() {      // un point tous les ~10 m (plus si le GPS est impréc
   const gp = { x: RC.f.x, y: RC.f.y, acc: me.acc };
   /* Pas de doublon : sur un chemin déjà tracé, rien n'est posé. Le tronçon en cours s'y raccroche (carrefour),
      et un nouveau tronçon repart du point où l'on quitte ce chemin. Un simple croisement (< 20 m sur le chemin) est tracé normalement. */
-  const ON = Math.max(8, Math.min(me.acc, 14)), nr = recNear([gp.x, gp.y], ON + 6);
+  const pv = RC.pg, mv = pv ? [gp.x - pv[0], gp.y - pv[1]] : null, ml = mv ? Math.hypot(...mv) : 0; if (ml > 3 / cosAt(gp.y)) { RC.dir = [mv[0] / ml, mv[1] / ml]; RC.pg = [gp.x, gp.y]; } else if (!pv) RC.pg = [gp.x, gp.y];      // sens de marche
+  const ON = Math.max(8, Math.min(me.acc, 14)), nr = recNear([gp.x, gp.y], ON + 6, RC.dir);
   if (RC.follow) {
     if (nr) { RC.skip += rdist([RC.fl.g[0], RC.fl.g[1]], [gp.x, gp.y]); RC.fl = { ...nr, g: [gp.x, gp.y] }; return pmUpdate(); }
     const l = RC.fl; RC.follow = false; P.cur = null; P.start = rp1(l.q); P.sa = l.p.id; P.adds = [];
@@ -1917,9 +1919,11 @@ function recPlace(gp) {
   if (last && rdist(last, [gp.x, gp.y]) < Math.max(10, Math.min(me.acc * .8, 25))) return;
   placePt(gp, true);
 }
-function recNear(q, R) {      // chemin existant le plus proche (hors tronçon en cours) à moins de R mètres
+function recNear(q, R, dir) {      // chemin existant le plus proche à moins de R mètres — y compris le tronçon en cours : sa partie ancienne (> 40 m), ou sa partie récente si l'on revient sur ses pas (dir opposée)
   let b = null; const k = cosAt(q[1]);
-  (D.paths || []).forEach(p => { if (p === P.cur || p.pts.length < 2) return; for (let i = 0; i + 1 < p.pts.length; i++) { const r = segProj(q, p.pts[i], p.pts[i + 1]), d = r.d * k; if (d < R && (!b || d < b.d)) b = { p, i, q: r.q, d }; } });
+  (D.paths || []).forEach(p => { if (p.pts.length < 2) return; let n = p.pts.length - 1, rec = n;
+    if (p === P.cur) { let acc = 0; while (rec > 0 && acc < 40) { acc += rdist(p.pts[rec - 1], p.pts[rec]); rec--; } n = p.pts.length - 2; if (n < 1) return; }
+    for (let i = 0; i < n; i++) { if (p === P.cur && i >= rec) { if (!dir) continue; const sx = p.pts[i + 1][0] - p.pts[i][0], sy = p.pts[i + 1][1] - p.pts[i][1], L = Math.hypot(sx, sy); if (!L || (sx * dir[0] + sy * dir[1]) / L > -.6) continue; } const r = segProj(q, p.pts[i], p.pts[i + 1]), d = r.d * k; if (d < R && (!b || d < b.d)) b = { p, i, q: r.q, d }; } });
   return b;
 }
 /* Simplification (Douglas-Peucker) : retire les points inutiles d'un tracé GPS sans toucher aux carrefours ni aux extrémités */
@@ -1940,7 +1944,7 @@ function recToggle() {
     NG.sig = ''; const gr = groupOf(p); if (gr && gr.auto) { const nm = prompt('Nom de la balade (facultatif)', ''); if (nm && nm.trim()) renameGroup(groupOf(p), nm); }
     P.sel = p.id; pmUpdate(); draw(); return toast('⏹ ' + fmtDist(len) + ' de nouveaux chemins' + (segs.length > 1 ? ` (${segs.length} tronçons)` : '') + (skip > 20 ? ` · ${fmtDist(skip)} sur des chemins déjà tracés, non doublés` : '')); }
   if (!me) { if (watch === null) startLoc(); return toast('Position en attente : réessayez dans un instant'); }
-  RC.on = true; RC.t0 = Date.now(); RC.f = null; RC.segs = []; RC.buf = []; RC.follow = false; RC.skip = 0;
+  RC.on = true; RC.t0 = Date.now(); RC.f = null; RC.segs = []; RC.buf = []; RC.follow = false; RC.skip = 0; RC.pg = null; RC.dir = null;
   { const nr = recNear([me.x, me.y], Math.max(8, Math.min(me.acc, 14))); if (nr) { RC.follow = true; RC.fl = { ...nr, g: [me.x, me.y] }; } }      // départ sur un chemin connu : on attend de le quitter
   wakeSync(); if (me.acc > 30) toast('Précision faible (±' + Math.round(me.acc) + ' m) : les points se poseront dès que le signal s\'améliore'); else toast('⏺ Enregistrement : marchez, l\'écran reste allumé');
   recTick(); pmUpdate();
@@ -2119,7 +2123,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-20';
+const APP_V = '2026.10.23-21';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
