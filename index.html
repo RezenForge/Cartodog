@@ -699,6 +699,11 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
 @media (max-height:700px){.dgav{width:88px;height:88px}.dgst{margin:10px 0 8px}.dgst div{padding:5px 3px}.dgst b{font-size:17px}.dgbars{height:48px}.dgbg button{font-size:18px}.dgnav button{padding:6px 4px}}
 
 #edsm .edmh small{font-weight:600;color:var(--mut);text-transform:none;letter-spacing:0}#edsm .esdel{background:linear-gradient(#a8322a,#7a1f19)!important;color:#fff!important;border-color:#3a0d0a!important;flex:1.4}
+
+#shm{position:absolute;left:8px;right:8px;bottom:68px;z-index:6;padding:12px 14px;font-size:14px;line-height:1.4;animation:rise .35s cubic-bezier(.2,.85,.25,1) both}#shm[hidden]{display:none}
+#shm h3{margin:2px 0 6px;font:800 22px/1.15 var(--px);color:#fff1cf;text-shadow:2px 2px 0 #000}
+.shb{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}.shb span{padding:3px 8px;border:1px solid var(--rim);border-radius:12px;background:#14110e;font-size:12.5px;color:var(--txt)}
+.shp{margin:0 0 8px;font-size:12.5px;color:var(--mut)}#shm .pmb button.gold{flex:1;background:linear-gradient(#f4c862,#c6862a)!important;color:#2a1806!important;text-shadow:none!important;font-weight:800}
 </style></head><body>
 <header class="bar win dg"><button class="emb" id="dogav" aria-label="Profil de mon chien et journal"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></button>
   <div class="brand"><h1>Cartodog</h1><small id="ssn">Carnet de balade</small></div>
@@ -709,6 +714,7 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
   <div id="edsm" class="dg" hidden><div class="edmh">Ce tronçon <small id="eslen"></small></div><div class="edb"><button id="esdel" class="esdel">✂ Supprimer</button><button id="esadd" aria-label="Ajouter un point sur ce tronçon">➕ Point</button><button id="esx" aria-label="Fermer">✕</button></div></div>
   <div id="edm" class="dg" hidden><div id="edmt"></div><div class="edb"><button id="eddl">🗑 Supprimer</button><button id="eddt" hidden>✂ Détacher</button><button id="edsp">✂ Couper ici</button><button id="edx" aria-label="Fermer">✕</button></div></div>
   <div id="rt" class="dg" hidden><div class="eyb">Itinéraire</div><div id="rtt"></div><div id="rts"></div><div class="pmb"><button id="rtn" aria-label="Point suivant">Suivant ›</button><button id="rtg" aria-label="Ouvrir dans Maps">Ouvrir dans Maps</button><button id="rtx" aria-label="Fermer l'itinéraire" style="margin-left:auto">✕</button></div></div>
+  <div id="shm" class="dg" hidden></div>
   <div id="wel" class="dg" hidden><div class="eyb">Bienvenue sur Cartodog</div><h3>Cartographiez vos forêts et promenez votre chien en sécurité</h3>
     <ol><li><b>🐕 Créez le profil</b> de votre chien : photo, poids, vétérinaire</li><li><b>🥾 Tracez vos sentiers</b> en marchant ; ceux qui se touchent forment une balade</li><li><b>▶ Partez en balade</b> : choisissez une durée, l'appli propose une boucle</li><li><b>🚩 Signalez les dangers</b> : ils restent 24 h, confirmés sur place</li></ol>
     <div class="pmb"><button id="welloc">📍 Me localiser</button><button id="weldog">🐕 Mon chien</button><button id="welx" aria-label="Fermer l'accueil">✕</button></div></div>
@@ -1083,7 +1089,7 @@ function draw() {
       drawTile(Z, tx, ty, sx(tx * span - O), sy(O - ty * span), ts);
     }
   if (commOn) drawComm(0, sx, sy, W, x0, x1, y0, y1, mpp);
-  drawRoads(sx, sy, x0, x1, y0, y1, mpp); drawPaths(sx, sy); drawLoop(sx, sy); drawWalks(sx, sy); drawRoute(sx, sy); const ps = spotSz();
+  drawRoads(sx, sy, x0, x1, y0, y1, mpp); drawPaths(sx, sy); drawLoop(sx, sy); drawShared(sx, sy); drawWalks(sx, sy); drawRoute(sx, sy); const ps = spotSz();
   g.textAlign = 'center'; g.textBaseline = 'middle';
   Object.entries(D.cells).forEach(([k, c]) => {      // un point = ses coordonnées exactes ; le centre du rond EST la position
     if (!rec(c) || c.x == null) return; const x = sx(c.x), y = sy(c.y); if (x < -40 - pad || x > W + 40 + pad || y < -40 - pad || y > H + 60 + pad) return; const upr = UP(x, y);
@@ -1203,7 +1209,7 @@ function renderPanel() {
     <div class="tp" data-pane="wx"><div id="wx"><div class="hint">Chargement…</div></div></div>
     <div class="tp" data-pane="ph"><label class="btn">${ICO.photo}Ajouter une photo<input type="file" accept="image/*" id="phf" multiple hidden></label><div class="gal" id="gal"></div></div>
     <div class="tp" data-pane="nt"><div class="esec">Notes</div><textarea data-f="note" placeholder="Accès, parking, ombre, points d'eau, chemins boueux…">${esc(c.note)}</textarea>
-      ${g ? `<div class="esec">Sentiers</div><button class="ftr" data-act="bal"><span class="pli">${ICO.trail}</span><span><b>${esc(g.name)}</b><br><small>${fmtDist(g.len)}${g.paths.length > 1 ? ' · ' + g.paths.length + ' tronçons' : ''} · 🧭 proposer une boucle</small></span></button>` : ''}
+      ${g ? `<div class="esec">Sentiers</div><button class="ftr" data-act="bal"><span class="pli">${ICO.trail}</span><span><b>${esc(g.name)}</b><br><small>${fmtDist(g.len)}${g.paths.length > 1 ? ' · ' + g.paths.length + ' tronçons' : ''} · 🧭 proposer une boucle</small></span></button><button class="btn" data-act="share">📤 Partager cette balade (lien)</button>` : ''}
       <div class="esec">Autour</div><div id="pdz" class="wxb"></div><div id="fty" class="wxb">Type de forêt…</div><div id="rel" class="wxb">Relief…</div>
       <div class="fco">📍 ${la.toFixed(5)}, ${lo.toFixed(5)}</div>
       ${rec(c) ? `<button class="fdel" data-act="delcell">${ICO.trash} Supprimer la balade</button>` : ''}</div></div>`;
@@ -1330,6 +1336,7 @@ $('#panel').addEventListener('click', e => {
   if (a === 'go') return goTo(sel);
   if (a === 'walk') { if (BR.on) return brStop(); BR.k0 = sel; const g = cellGroup(sel); return g ? openBal(g.k) : balOpen(); }
   if (a === 'bal') { const g = cellGroup(sel); if (g) openBal(g.k); return; }
+  if (a === 'share') { const g = cellGroup(sel); if (g) balShare(g); return; }
   if (a === 'addtoggle') { const f = $('#addv'); if (editI !== null) { renderPanel(); return $('#addv').classList.add('on'); } f.classList.toggle('on'); if (f.classList.contains('on')) $('#vn').focus(); return; }
   if (a === 'show') { const v = c.v[+b.dataset.i]; if (!v) return; if (BSEL === v.id) { BSEL = null; renderPanel(); return draw(); } BSEL = v.id; ptab = 'hs'; renderPanel();
     if (v.pts.length < 2) { draw(); return toast('Pas de tracé GPS pour cette sortie (notée à la main)'); }
@@ -1542,15 +1549,74 @@ function balLoops(net, L, avoid = true, K = 3) {
     b.steps.forEach(([e, to]) => { const seg = (e.a === cur && e.b === to) || e.a === e.b ? e.poly : e.poly.slice().reverse(); for (let i = 1; i < seg.length; i++) pts.push(seg[i]); cur = to; });
     return { pts, tot: b.tot, rep: b.rep, dz: b.dz, sc: b.sc, sig: b.sig }; });
 }
-/* ----- partage d'une balade : ses sentiers, ses parkings (≤ 500 m), points utiles et dangers à moins de 300 m (fichier à importer, ou partage du téléphone) ----- */
+/* ----- Partage d'une balade par LIEN : sentiers, parkings, points utiles et dangers proches, encodés dans l'adresse (#b=…).
+   Rien ne passe par un serveur ; celui qui ouvre le lien voit un aperçu et ajoute la balade en un toucher, même sans avoir jamais utilisé Cartodog. */
+const b64u = u8 => { let s = ''; for (let i = 0; i < u8.length; i += 8192) s += String.fromCharCode(...u8.subarray(i, i + 8192)); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); };
+const ub64 = t => { const s = atob(t.replace(/-/g, '+').replace(/_/g, '/')); const u = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; };
+async function zip(str, inflate) {      // deflate-raw si le navigateur sait le faire ; sinon texte brut (préfixe « j »)
+  if (!inflate) { if (!window.CompressionStream) return 'j' + b64u(new TextEncoder().encode(str)); const b = await new Response(new Blob([str]).stream().pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer(); return 'z' + b64u(new Uint8Array(b)); }
+  const u = ub64(str.slice(1)); if (str[0] === 'j') return new TextDecoder().decode(u); return await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text();
+}
+function polyEnc(pts) {      // algorithme « polyline » (précision 1e-5°, ≈ 1 m)
+  let o = '', pl = 0, pn = 0; const e = v => { v = v < 0 ? ~(v << 1) : v << 1; while (v >= 32) { o += String.fromCharCode((32 | (v & 31)) + 63); v >>= 5; } o += String.fromCharCode(v + 63); };
+  pts.forEach(q => { const [la, lo] = toLL(q[0], q[1]), a = Math.round(la * 1e5), b = Math.round(lo * 1e5); e(a - pl); e(b - pn); pl = a; pn = b; }); return o;
+}
+function polyDec(s) {
+  const out = []; let i = 0, la = 0, lo = 0; const d = () => { let r = 0, sh = 0, b; do { b = s.charCodeAt(i++) - 63; r |= (b & 31) << sh; sh += 5; } while (b >= 32 && i <= s.length); return r & 1 ? ~(r >> 1) : r >> 1; };
+  while (i < s.length) { la += d(); lo += d(); out.push(toM(la / 1e5, lo / 1e5).map(v => +v.toFixed(1))); } return out;
+}
+const hid = s => { let h = 2166136261; for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619); return (h >>> 0).toString(36); };
+function simpKeep(p, ps, tolM = 2) {      // allège le tracé (≈ 2 m) sans toucher aux carrefours partagés avec les autres sentiers
+  const n = p.pts.length; if (n < 3) return p.pts; const tol = tolM / cosAt(p.pts[0][1]), keep = new Uint8Array(n); keep[0] = keep[n - 1] = 1;
+  const sh = new Set(); ps.forEach(o => { if (o !== p) o.pts.forEach(v => sh.add(v[0] + ',' + v[1])); }); p.pts.forEach((v, i) => { if (sh.has(v[0] + ',' + v[1])) keep[i] = 1; });
+  const dp = (a, b) => { let md = 0, mi = -1; for (let i = a + 1; i < b; i++) { const d = segProj(p.pts[i], p.pts[a], p.pts[b]).d; if (d > md) { md = d; mi = i; } } if (md > tol) { keep[mi] = 1; dp(a, mi); dp(mi, b); } };
+  let a = 0; for (let i = 1; i < n; i++) if (keep[i]) { dp(a, i); a = i; } return p.pts.filter((_, i) => keep[i]);
+}
+async function balLink(g) {
+  const pts = g.paths.flatMap(p => p.pts), near = m => Math.min(...pts.map(v => rdist(v, [m.x, m.y]))) < (m.t === 'park' ? 500 : 300);
+  const marks = (D.marks || []).filter(m => m.t !== 'private' && m.t !== 'pin' && near(m) && (!m.exp || m.perm || m.exp > Date.now()));
+  const data = { v: 1, n: g.name, f: D.dog || '', d: today(), p: g.paths.map(p => polyEnc(simpKeep(p, g.paths))), m: marks.map(m => { const [la, lo] = toLL(m.x, m.y); return [m.t, Math.round(la * 1e5), Math.round(lo * 1e5), (m.note || '').slice(0, 120), m.perm ? 1 : 0, m.exp || 0]; }) };
+  return location.origin + location.pathname + '#b=' + await zip(JSON.stringify(data));
+}
 async function balShare(g) {
-  const pts = g.paths.flatMap(p => p.pts), near = m => Math.min(...pts.map(v => rdist(v, [m.x, m.y]))) < (m.t === 'park' ? 500 : 300);      // parkings jusqu'à 500 m (ceux proposés au départ des boucles)
-  const marks = (D.marks || []).filter(m => m.t !== 'private' && m.t !== 'pin' && near(m));
-  const data = { app: 'cartodog', kind: 'balade', version: 1, name: g.name, from: D.dog || '', d: today(), paths: g.paths.map(p => ({ id: p.id, name: g.name, d: p.d, pts: p.pts })), marks };
-  const fn = 'balade-' + (normS(g.name).replace(/\W+/g, '-') || 'cartodog') + '.json', blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-  try { const file = new File([blob], fn, { type: 'application/json' }); if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: 'Balade ' + g.name, text: `Balade « ${g.name} » (${fmtDist(g.len)}) partagée depuis Cartodog. Pour l'ajouter : Cartodog ▸ menu ▸ Importer.` }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = fn; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1e4);
-  toast('📤 Fichier de la balade enregistré : envoyez-le, il s\'importe depuis le menu');
+  let url; try { url = await balLink(g); } catch (e) { return toast('Partage impossible sur ce navigateur'); }
+  const txt = `${D.dog ? D.dog + ' et moi, on adore' : 'Je te partage'} la balade « ${g.name} » (${fmtDist(g.len)} de sentiers). Ouvre le lien pour la voir et l'ajouter dans Cartodog 🐾`;
+  try { if (navigator.share) { await navigator.share({ title: 'Balade ' + g.name, text: txt, url }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
+  try { await navigator.clipboard.writeText(txt + '\n' + url); toast('🔗 Lien de la balade copié : collez-le dans un message'); } catch (e) { prompt('Copiez ce lien :', url); }
+}
+/* ----- Ouverture d'un lien partagé : aperçu sur la carte, puis « Ajouter à mes balades » ----- */
+let SH = null;
+async function shOpen() {
+  const m = location.hash.match(/^#b=([\w-]+)$/); if (!m) return; history.replaceState(null, '', location.pathname + location.search);
+  let d; try { d = JSON.parse(await zip(m[1], true)); } catch (e) { return toast('Lien de balade illisible ou incomplet'); }
+  const paths = (d.p || []).map(polyDec).filter(p => p.length >= 2); if (!paths.length) return toast('Lien de balade vide');
+  const key = hid(m[1]), name = String(d.n || 'Balade partagée').slice(0, 60);
+  SH = { name, from: String(d.f || '').slice(0, 30), paths: paths.map((pts, i) => ({ id: 'sh' + key + i, name, d: today(), pts })),
+    marks: (d.m || []).filter(x => Array.isArray(x) && MK[x[0]]).map((x, i) => { const [mx, my] = toM(x[1] / 1e5, x[2] / 1e5); return { id: 'sh' + key + 'm' + i, t: x[0], x: +mx.toFixed(1), y: +my.toFixed(1), note: String(x[3] || ''), perm: !!x[4], exp: +x[5] || 0, d: d.d || today() }; }) };
+  SH.len = SH.paths.reduce((a, p) => a + pathLen(p), 0); SH.have = SH.paths.every(p => (D.paths || []).some(q => q.id === p.id));
+  $('#wel').hidden = true; const c = n => SH.marks.filter(x => x.t === n).length, dz = SH.marks.filter(x => MK[x.t][2] && (x.perm || x.exp > Date.now())).length;
+  const bits = [`🥾 ${fmtDist(SH.len)} de sentiers`, c('park') && `🅿 ${c('park')}`, c('water') && `💧 ${c('water')}`, c('swim') && '🏊 baignade', c('free') && '🐕 liberté OK', dz && `⚠️ ${dz} danger${dz > 1 ? 's' : ''} signalé${dz > 1 ? 's' : ''}`].filter(Boolean);
+  $('#shm').innerHTML = `<div class="eyb">Balade partagée${SH.from ? ' par ' + esc(SH.from) + ' 🐾' : ''}</div><h3>${esc(name)}</h3><div class="shb">${bits.map(b => `<span>${b}</span>`).join('')}</div>
+    ${(D.paths || []).length ? '' : '<div class="shp">Cartodog : des balades sûres pour votre chien, avec les dangers signalés (chenilles, tiques…) et les points d’eau.</div>'}
+    <div class="pmb"><button id="shok" class="gold">${SH.have ? '✔ Déjà dans vos balades' : '➕ Ajouter à mes balades'}</button><button id="shx" aria-label="Ignorer">✕</button></div>`;
+  $('#shm').hidden = false; $('#shok').onclick = shAdd; $('#shx').onclick = shClose;
+  const P0 = [...SH.paths.flatMap(p => p.pts), ...SH.marks.map(m => [m.x, m.y])]; requestAnimationFrame(() => requestAnimationFrame(() => sheetFit(P0, $('#shm'))));
+  fxa({ k: 'shp', key: 0, dur: 2600, delay: 900 });
+}
+function shClose() { SH = null; $('#shm').hidden = true; draw(); }
+function shAdd() {
+  const S = SH; if (!S) return; if (!S.have) { mergePaths(S.paths); mergeMarks(S.marks); NG.sig = ''; save(); }
+  shClose(); try { localStorage.setItem('cartodog-wel', '1'); } catch (e) {}
+  const g = balGroups().find(x => x.paths.some(p => p.id === S.paths[0].id)); toast(S.have ? '✔ Cette balade est déjà dans votre carnet' : '🐾 Balade « ' + S.name + ' » ajoutée' + (S.from ? ' · merci ' + S.from + ' !' : ''));
+  if (g) setTimeout(() => openBal(g.k), 500);
+}
+function drawShared(sx, sy) {      // aperçu de la balade partagée (avant ajout) : tracé bleu qui se dessine, repères en pastilles
+  if (!SH) return; const f = FX.length && fxOf('shp', 0), rp = f ? Math.min(1, Math.max(0, fxP(f))) : 1;
+  g.save(); g.lineCap = 'round'; g.lineJoin = 'round';
+  SH.paths.forEach(p => { g.beginPath(); p.pts.forEach((q, i) => i ? g.lineTo(sx(q[0]), sy(q[1])) : g.moveTo(sx(q[0]), sy(q[1]))); let L = 0; for (let i = 1; i < p.pts.length; i++) L += Math.hypot(sx(p.pts[i][0]) - sx(p.pts[i - 1][0]), sy(p.pts[i][1]) - sy(p.pts[i - 1][1]));
+    g.setLineDash(rp < 1 ? [L * rp, L + 20] : []); g.lineWidth = 10; g.strokeStyle = 'rgba(14,11,8,.65)'; g.stroke(); g.lineWidth = 5; g.strokeStyle = '#7fd0ff'; g.stroke(); });
+  g.setLineDash([]); SH.marks.forEach(m => { const x = sx(m.x), y = sy(m.y); g.beginPath(); g.arc(x, y, 7, 0, 7); g.fillStyle = MK[m.t][1]; g.fill(); g.lineWidth = 2.5; g.strokeStyle = '#0e0b08'; g.stroke(); });
+  g.restore();
 }
 /* ----- fenêtre « Partir en balade » ----- */
 let BL = { g: null, loops: [], i: 0, poly: null, tot: 0, min: (() => { try { return +localStorage.getItem('cartodog-dur') || 60; } catch (e) { return 60; } })(), park: null, arr: false, dzAll: [], avoid: (() => { try { return localStorage.getItem('cartodog-avoid') !== '0'; } catch (e) { return true; } })() };
@@ -1605,8 +1671,8 @@ function balDetail(k) {      // petit panneau en bas : la carte reste visible et
   BL.hl = pk ? [pk.m.x, pk.m.y] : null;
   requestAnimationFrame(() => requestAnimationFrame(() => { if (BL.hl) { const [x, y] = BL.hl; sheetFit([[x - 250, y - 250], [x + 250, y + 250]]); } else sheetFit(g.paths.flatMap(p => p.pts)); }));      // la vue va sur le parking choisi (sinon sur la balade)
 }
-function sheetFit(pts) {      // cadre ces points dans la partie de carte que le panneau laisse visible
-  const cr = cv.getBoundingClientRect(), wt = $('#balm .win').getBoundingClientRect().top, visH = Math.max(140, Math.min(cr.bottom, wt - 8) - cr.top);
+function sheetFit(pts, el = $('#balm .win')) {      // cadre ces points dans la partie de carte que le panneau laisse visible
+  const cr = cv.getBoundingClientRect(), wt = el.getBoundingClientRect().top, visH = Math.max(140, Math.min(cr.bottom, wt - 8) - cr.top);
   const xs = pts.map(q => q[0]), ys = pts.map(q => q[1]), x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
   const m = Math.max(.6, (x1 - x0) / (cr.width * .82), (y1 - y0) / (visH * .78)); flyXY((x0 + x1) / 2, (y0 + y1) / 2 - (cr.height / 2 - visH / 2) * m, m, 550);
 }
@@ -1956,7 +2022,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-6';
+const APP_V = '2026.10.23-7';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2725,7 +2791,8 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
     const el = MODALS.map(id => document.getElementById(id)).find(x => x && x._h && x.classList.contains('open')); if (!el) return; el._h = 0; (CLOSE[el.id] || (() => el.classList.remove('open')))(); }); }
 /* ===== Accueil au premier lancement ===== */
 { let seen = false; try { seen = localStorage.getItem('cartodog-wel') === '1'; } catch (e) {}
-  if (!seen && !(D.paths || []).length && !(D.marks || []).length && !Object.keys(D.cells).length) $('#wel').hidden = false;
+  if (!seen && !(D.paths || []).length && !(D.marks || []).length && !Object.keys(D.cells).length && !/^#b=/.test(location.hash)) $('#wel').hidden = false;
+  setTimeout(shOpen, 400); addEventListener('hashchange', shOpen);
   const done = () => { $('#wel').hidden = true; try { localStorage.setItem('cartodog-wel', '1'); } catch (e) {} };
   $('#welx').onclick = done; $('#welloc').onclick = () => { done(); if (watch === null) startLoc(); }; $('#weldog').onclick = () => { done(); dogOpen(); }; }
 
