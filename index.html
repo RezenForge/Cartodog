@@ -1903,9 +1903,10 @@ function recTick() {      // un point tous les ~10 m (plus si le GPS est impréc
     const l = RC.fl; RC.follow = false; P.cur = null; P.start = rp1(l.q); P.sa = l.p.id; P.adds = [];
     toast('🥾 Nouveau chemin : enregistrement repris'); placePt(gp, true); return pmUpdate();
   }
-  if (nr && nr.d < ON) {
+  const par = nr && RC.dir && (() => { const a = nr.p.pts[nr.i], b = nr.p.pts[nr.i + 1], sx = b[0] - a[0], sy = b[1] - a[1], L = Math.hypot(sx, sy); return L > 0 && Math.abs(sx * RC.dir[0] + sy * RC.dir[1]) / L > .7; })();      // on longe le chemin (et non on le traverse)
+  if (nr && nr.d < ON && par) {
     (RC.buf ||= []).push({ g: [gp.x, gp.y], n: nr });
-    if (rdist(RC.buf[0].g, [gp.x, gp.y]) < 20) return pmUpdate();
+    if (rdist(RC.buf[0].g, [gp.x, gp.y]) < 8) return pmUpdate();      // 8 m le long du chemin suffisent ; on se raccroche au point d'arrivée, donc sans retard ni déformation
     const a = RC.buf[0].n; RC.buf = [];
     if (P.cur) { const v = junction(a.p, a.i, rp1(a.q)), e = P.cur.pts[P.cur.pts.length - 1]; if (e[0] !== v[0] || e[1] !== v[1]) { P.cur.pts.push([v[0], v[1]]); P.adds.push(1); } (RC.segs ||= []).push(P.cur); save(); }
     P.cur = null; P.start = null; P.sa = null; P.adds = []; RC.follow = true; RC.fl = { ...nr, g: [gp.x, gp.y] };
@@ -2123,7 +2124,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.23-21';
+const APP_V = '2026.10.23-22';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
