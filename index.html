@@ -909,8 +909,34 @@ body{padding-top:0!important}header.bar{margin-top:6px!important}
 #wxw.l3{border-color:#ff6a4a!important;animation:wxpul 1.6s ease-in-out infinite}
 @keyframes wxpul{0%,100%{box-shadow:0 0 0 2px rgba(255,90,60,.25),0 0 6px rgba(255,90,60,.35)}50%{box-shadow:0 0 0 3px rgba(255,90,60,.45),0 0 14px rgba(255,90,60,.7)}}
 #wxp{top:152px!important}
+
+/* ===== Mon compte : tiroir qui glisse depuis la droite ===== */
+#menu{justify-content:flex-end!important;align-items:stretch!important;padding:0!important}
+#menu .win.acw{position:relative;width:min(380px,88vw);max-width:none;height:100dvh;max-height:none;margin:0;padding:calc(12px + env(safe-area-inset-top)) 14px calc(16px + env(safe-area-inset-bottom));border-radius:14px 0 0 14px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;display:block}
+#menu.open .win.acw{animation:accIn .32s cubic-bezier(.2,.85,.25,1) both}
+@keyframes accIn{from{transform:translateX(100%)}to{transform:none}}
+#menu .acp{display:none}#menu .acp.on{display:block;animation:accPg .26s cubic-bezier(.2,.85,.25,1) both}#menu .acp.on.back{animation-name:accPgB}
+@keyframes accPg{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}@keyframes accPgB{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+#menu .ach{display:flex;align-items:center;gap:8px;margin-bottom:12px}#menu .ach h2{flex:1;margin:0}#menu .acb{flex:none;font-size:24px;line-height:1}
+.acu{display:flex;align-items:center;gap:12px;width:100%;padding:12px;border:2px solid var(--edge);border-radius:8px;background:linear-gradient(#3a3024,#211b14);box-shadow:inset 0 0 0 1px #6b5333;color:var(--txt);text-align:left;cursor:pointer}
+.acav{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:#2c2c2a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='12.4' r='5.4' fill='%23bdbdb8'/%3E%3Cpath d='M6.6 26.2c1.3-5.2 5-8 9.4-8s8.1 2.8 9.4 8a14.4 14.4 0 0 1-18.8 0z' fill='%23bdbdb8'/%3E%3C/svg%3E") center/86% no-repeat;border:2px solid #0e0c09;box-shadow:0 0 0 2px #8a6a3a;font:900 22px/1 var(--px);color:#fff1cf}
+.acav.ini{background:radial-gradient(circle at 50% 30%,#6b5333,#2a2119)}
+.act{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.act b{font:800 15px/1.2 var(--num);color:#fff1cf;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.act small{font:600 12px/1.25 var(--num);color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acu .act b{font:800 18px/1.15 var(--px)}
+.acu>i,.acr>i{flex:none;font-style:normal;font-size:22px;color:var(--ember2)}
+.acon{display:flex;gap:10px;align-items:flex-start;margin-top:8px;padding:9px 11px;border-radius:6px;border:1.5px dashed #5a4f40;color:var(--txt)}.acon>span:first-child{font-size:18px}.acon b{display:block;font:800 13px var(--num)}.acon small{display:block;font:600 11.5px/1.35 var(--num);color:var(--mut)}
+.acg{border:2px solid var(--edge);border-radius:8px;background:var(--slot);box-shadow:inset 0 0 0 1px var(--rim);overflow:hidden}
+.acr{display:flex;align-items:center;gap:11px;width:100%;padding:10px 11px;border:0;border-top:1px solid #2e2820;background:none;color:var(--txt);text-align:left;cursor:pointer}.acr:first-child{border-top:0}.acr:active,.acu:active{background:rgba(255,236,190,.07)}
+.aci{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:#14110e;border:1.5px solid var(--edge);box-shadow:inset 0 0 0 1px #3a332a;font-size:17px}
+.acf{display:block;margin:0 0 10px}.acf>span{display:block;margin:0 2px 5px;font:800 11px/1 var(--num);letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}.acf em{font-style:normal;color:var(--mut);letter-spacing:0;text-transform:none;font-weight:700}
+.acf input{width:100%;box-sizing:border-box;padding:11px 12px;font:600 15px var(--num);user-select:text;-webkit-user-select:text}.acf.off{opacity:.5}
+.acvis{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.acvis button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px;border:2px solid var(--edge);border-radius:8px;background:var(--slot);box-shadow:inset 0 0 0 1px var(--rim);color:var(--txt);cursor:pointer}
+.acvis span{font-size:22px}.acvis b{font:800 13px var(--num)}.acvis small{font:600 10.5px/1.2 var(--num);color:var(--mut);text-align:center}
+.acvis button.on{border-color:var(--ember);box-shadow:inset 0 0 0 1px var(--ember),0 0 10px rgba(234,165,60,.3);background:linear-gradient(#3a3024,#211b14)}.acvis button.on b{color:var(--ember2)}
+.acnote{margin-top:12px;padding:10px 11px;border-radius:6px;background:rgba(95,115,80,.16);border:1.5px solid #3f5233;font:600 12px/1.4 var(--num);color:#cfdcbf}
+@media (max-height:720px){#menu .acr{padding:5px 10px}#menu .win.acw{padding-top:calc(8px + env(safe-area-inset-top))}#menu .aci{width:30px;height:30px;font-size:15px}#menu .acu{padding:9px}#menu .acav{width:44px;height:44px}#menu .mh{margin:9px 2px 5px}#menu .ach{margin-bottom:8px}#menu .acon{padding:6px 10px}}
 </style></head><body>
-<header class="bar win dg"><button class="hdog" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span></button><button class="hbr brand" id="hbr" aria-label="Cartodog : profil de mon chien"><span class="hinf"><b>Cartodog</b><small id="hsub">Carnet de balade</small></span></button><button class="hset" id="mn" aria-label="Réglages"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4d4d0"/><stop offset="1" stop-color="#8a8a86"/></linearGradient></defs><path d="M26.1 13.4 L29.0 13.9 L29.0 18.1 L26.1 18.6 L25.0 21.3 L26.7 23.7 L23.7 26.7 L21.3 25.0 L18.6 26.1 L18.1 29.0 L13.9 29.0 L13.4 26.1 L10.7 25.0 L8.3 26.7 L5.3 23.7 L7.0 21.3 L5.9 18.6 L3.0 18.1 L3.0 13.9 L5.9 13.4 L7.0 10.7 L5.3 8.3 L8.3 5.3 L10.7 7.0 L13.4 5.9 L13.9 3.0 L18.1 3.0 L18.6 5.9 L21.3 7.0 L23.7 5.3 L26.7 8.3 L25.0 10.7Z" fill="url(#hsg)" stroke="#2a2a28" stroke-width="1.4" stroke-linejoin="round"/><circle cx="16" cy="16" r="7" fill="#e6e6e2" stroke="#2a2a28" stroke-width="1.2"/><g transform="translate(10.4 10.2) scale(.35)" fill="#3a3a38"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)"/></g></svg></button><b id="hnm" hidden></b>
+<header class="bar win dg"><button class="hdog" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span></button><button class="hbr brand" id="hbr" aria-label="Cartodog : profil de mon chien"><span class="hinf"><b>Cartodog</b><small id="hsub">Carnet de balade</small></span></button><button class="hset" id="mn" aria-label="Mon compte"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e2e2de"/><stop offset="1" stop-color="#9a9a96"/></linearGradient></defs><circle cx="16" cy="16" r="14.5" fill="#2c2c2a" stroke="#6e6e6a" stroke-width="1"/><circle cx="16" cy="12.4" r="5.4" fill="url(#hsg)" stroke="#1e1e1c" stroke-width="1.2"/><path d="M6.6 26.2c1.3-5.2 5-8 9.4-8s8.1 2.8 9.4 8a14.4 14.4 0 0 1-18.8 0z" fill="url(#hsg)" stroke="#1e1e1c" stroke-width="1.2" stroke-linejoin="round"/></svg></button><b id="hnm" hidden></b>
 <small id="ssn" hidden></small>
 </header>
 <div id="mapBox"><canvas id="cv"></canvas><button id="loc" data-ic="loc" aria-label="Ma position (GPS)"></button><button id="rep" aria-label="Signaler un danger ou un point utile"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="repg" cx="45%" cy="30%" r="75%"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#e0861e"/></radialGradient></defs>
@@ -962,23 +988,56 @@ body{padding-top:0!important}header.bar{margin-top:6px!important}
     <button class="btn" id="sos">🚑 Urgences vétérinaires et antipoison</button>
     <div class="mh">Vigilance du moment</div><div class="echips" id="vgm"></div></div>
 </div></div>
-<div id="menu"><div class="win dg"><div class="lhd"><h2>Réglages<small>Carte, alertes, carnet, hors connexion</small></h2><button class="ib" id="mx" aria-label="Fermer">✕</button></div>
-  <div class="mh">Carnet</div>
-  <button class="btn" id="imp">Importer un carnet (JSON)</button>
-  <button class="btn" id="exp">Exporter le carnet (JSON)</button>
-  <div class="mh">Carte</div>
-  <button class="btn" id="alb"></button>
-  <button class="btn" id="rdb"></button>
-  <button class="btn" id="cmb"></button>
-  <button class="btn" id="compb"></button>
-  <button class="btn" id="fs" hidden></button>
-  <button class="btn" id="wk"></button>
-  <div class="mh">Hors connexion</div>
-  <button class="btn" id="dl">Enregistrer la zone affichée</button>
-  <button class="btn" id="dl20">Zone de 20 km autour du centre</button>
-  <div class="hint" id="info"></div>
-  <button class="btn" id="rf">Actualiser l'application</button>
-  <button class="btn gold" id="mc">Fermer</button><input type="file" id="fi" accept=".json,application/json" hidden></div></div>
+<div id="menu"><div class="win dg acw" role="dialog" aria-label="Mon compte">
+  <div class="acp on" data-pg="main">
+    <div class="ach"><h2>Mon compte<small>Profil et réglages</small></h2><button class="ib" id="mx" aria-label="Fermer">✕</button></div>
+    <button class="acu" data-acp="me"><span class="acav" id="acav"></span><span class="act"><b id="acnm">Promeneur</b><small id="acsb">Compte local · sur ce téléphone</small></span><i>›</i></button>
+    <div class="acon"><span>☁️</span><span><b>Compte en ligne</b><small>Bientôt : copains et sorties. Tout reste sur ce téléphone.</small></span></div>
+    <div class="mh">Mon compte</div>
+    <div class="acg"><button class="acr" data-acp="me"><span class="aci">👤</span><span class="act"><b>Mes infos</b><small id="acme">Pseudo, commune</small></span><i>›</i></button><button class="acr" id="acdog"><span class="aci">🐕</span><span class="act"><b>Mon chien</b><small id="acdgs">Profil, santé, niveau</small></span><i>›</i></button></div>
+    <div class="mh">Confidentialité</div>
+    <div class="acg"><button class="acr" data-acp="priv"><span class="aci">🔒</span><span class="act"><b>Visibilité et partage</b><small id="acpv">Copains</small></span><i>›</i></button></div>
+    <div class="mh">Application</div>
+    <div class="acg"><button class="acr" data-acp="map"><span class="aci">🗺️</span><span class="act"><b>Carte et alertes</b><small>Routes, communes, boussole, écran</small></span><i>›</i></button><button class="acr" data-acp="off"><span class="aci">📶</span><span class="act"><b>Hors connexion</b><small>Enregistrer une zone de carte</small></span><i>›</i></button><button class="acr" data-acp="data"><span class="aci">💾</span><span class="act"><b>Mes données</b><small>Exporter, importer le carnet</small></span><i>›</i></button><button class="acr" data-acp="about"><span class="aci">ℹ️</span><span class="act"><b>À propos</b><small id="acver">Version, mise à jour</small></span><i>›</i></button></div>
+  </div>
+  <div class="acp" data-pg="me"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Mes infos<small>Comment les autres vous verront</small></h2></div>
+    <label class="acf"><span>Pseudo</span><input id="acpn" maxlength="24" placeholder="Ex. Dylan" autocomplete="nickname" enterkeyhint="done"></label>
+    <label class="acf"><span>Commune</span><input id="acpc" maxlength="40" placeholder="Ex. Le Taillan-Médoc" autocomplete="address-level2" enterkeyhint="done"></label>
+    <label class="acf off"><span>E-mail <em>bientôt</em></span><input disabled placeholder="Avec le compte en ligne"></label>
+    <div class="hint">Le pseudo s'affichera à côté de votre chien quand Cartodog sera en ligne.</div>
+  </div>
+  <div class="acp" data-pg="priv"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Visibilité et partage<small>Ce que les autres promeneurs voient</small></h2></div>
+    <div class="mh">Qui peut me voir</div>
+    <div class="acvis" id="acvis"><button data-v="none"><span>🙈</span><b>Personne</b><small>Mode fantôme</small></button><button data-v="friends"><span>🤝</span><b>Copains</b><small>Mes amis seulement</small></button><button data-v="all"><span>🌍</span><b>Tout le monde</b><small>Promeneurs du coin</small></button></div>
+    <div class="mh">Partage</div>
+    <button class="btn" id="acpres"></button>
+    <button class="btn" id="acstat"></button>
+    <div class="acnote">🔐 Jamais votre position exacte : seulement « présent sur cette balade ». Ces choix s'appliqueront dès que Cartodog sera en ligne ; aujourd'hui, rien ne quitte ce téléphone.</div>
+  </div>
+  <div class="acp" data-pg="map"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Carte et alertes<small>Affichage et comportement</small></h2></div>
+    <button class="btn" id="alb"></button>
+    <button class="btn" id="rdb"></button>
+    <button class="btn" id="cmb"></button>
+    <button class="btn" id="compb"></button>
+    <button class="btn" id="fs" hidden></button>
+    <button class="btn" id="wk"></button>
+  </div>
+  <div class="acp" data-pg="off"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Hors connexion<small>Pour les bois sans réseau</small></h2></div>
+    <button class="btn" id="dl">Enregistrer la zone affichée</button>
+    <button class="btn" id="dl20">Zone de 20 km autour du centre</button>
+    <div class="hint">La carte enregistrée reste disponible sans réseau.</div>
+  </div>
+  <div class="acp" data-pg="data"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Mes données<small>Votre carnet vous appartient</small></h2></div>
+    <button class="btn" id="exp">Exporter le carnet (JSON)</button>
+    <button class="btn" id="imp">Importer un carnet (JSON)</button>
+    <div class="hint">Exportez régulièrement : c'est votre sauvegarde (balades, sentiers, repères, photos, profil).</div>
+    <input type="file" id="fi" accept=".json,application/json" hidden>
+  </div>
+  <div class="acp" data-pg="about"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>À propos<small>Cartodog</small></h2></div>
+    <div class="hint" id="info"></div>
+    <button class="btn" id="rf">Actualiser l'application</button>
+  </div>
+</div></div>
 <div id="lst"><div class="win dg">
   <div class="lhd"><h2 id="lh">Mes balades</h2><button class="ib" id="lc" aria-label="Fermer">✕</button></div>
   <div class="seg"><button data-s="recent" class="on">Récents</button><button data-s="best">Les plus fréquentés</button></div>
@@ -1185,13 +1244,14 @@ const cleanProf = (p, nm) => { p = p && typeof p === 'object' ? p : {}; const st
     ph: /^[\w-]+$/.test(String(p.ph || '')) ? String(p.ph) : '', w: (Array.isArray(p.w) ? p.w : []).filter(x => x && /^\d{4}-\d\d-\d\d$/.test(x.d) && +x.kg > 0 && +x.kg < 150).map(x => ({ d: x.d, kg: Math.round(+x.kg * 10) / 10 })) }; };
 D.prof = cleanProf(null);
 function load() {
-  try { const d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && d.cells) { D = { cells: {}, paths: cleanPaths(d.paths), marks: cleanMarks(d.marks), dog: String(d.dog || '').slice(0, 30), prof: cleanProf(d.prof, d.dog) }; D.dog = D.prof.name || D.dog; Object.entries(d.cells).forEach(([k, c]) => { if (/^[\w,-]+$/.test(k)) { const x = clean(c); if (x.x != null) D.cells[k] = x; } }); } } catch (e) {}
+  try { const d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && d.cells) { D = { cells: {}, paths: cleanPaths(d.paths), marks: cleanMarks(d.marks), dog: String(d.dog || '').slice(0, 30), prof: cleanProf(d.prof, d.dog), user: cleanUser(d.user) }; D.dog = D.prof.name || D.dog; Object.entries(d.cells).forEach(([k, c]) => { if (/^[\w,-]+$/.test(k)) { const x = clean(c); if (x.x != null) D.cells[k] = x; } }); } } catch (e) {}
 }
+function cleanUser(u) { u = u && typeof u === 'object' ? u : {}; return { name: String(u.name || '').slice(0, 24), city: String(u.city || '').slice(0, 40), vis: ['none', 'friends', 'all'].includes(u.vis) ? u.vis : 'friends', pres: u.pres !== false, stats: u.stats !== false }; }
 function importData(d) {
   let msg;
   if (d && d.app === 'cartodog' && d.kind === 'balade' && Array.isArray(d.paths)) { mergePaths(d.paths); mergeMarks(d.marks); NG.sig = ''; msg = 'Balade « ' + String(d.name || '').slice(0, 60) + ' » importée' + (d.from ? ' (partagée par ' + String(d.from).slice(0, 30) + ')' : '');
     save(); const P0 = cleanPaths(d.paths).flatMap(p => p.pts); if (P0.length) { const xs = P0.map(q => q[0]), ys = P0.map(q => q[1]); V.cx = (Math.min(...xs) + Math.max(...xs)) / 2; V.cy = (Math.min(...ys) + Math.max(...ys)) / 2; V.mpp = Math.max(1, (Math.max(...xs) - Math.min(...xs)) / 300, (Math.max(...ys) - Math.min(...ys)) / 400); } draw(); return toast('📥 ' + msg); }
-  if (d && d.app === 'cartodog' && d.cells) { Object.entries(d.cells).forEach(([k, c]) => /^[\w-]+$/.test(k) && mergeCell(k, c)); mergePaths(d.paths); mergeMarks(d.marks); if (!D.prof.name && !D.prof.w.length && (d.prof || d.dog)) { D.prof = cleanProf(d.prof, d.dog); D.dog = D.prof.name; } msg = 'Carnet importé';
+  if (d && d.app === 'cartodog' && d.cells) { Object.entries(d.cells).forEach(([k, c]) => /^[\w-]+$/.test(k) && mergeCell(k, c)); mergePaths(d.paths); mergeMarks(d.marks); if (d.user && !(D.user && D.user.name)) D.user = cleanUser(d.user); if (!D.prof.name && !D.prof.w.length && (d.prof || d.dog)) { D.prof = cleanProf(d.prof, d.dog); D.dog = D.prof.name; } msg = 'Carnet importé';
     if (d.photos && typeof d.photos === 'object') Promise.all(Object.entries(d.photos).filter(([id, u]) => /^[\w-]+$/.test(id) && typeof u === 'string' && u.startsWith('data:image/')).map(([id, u]) => pPut(id, u).catch(() => {}))).then(() => renderPanel()); }
   else if (d && d.cells && d.grid === 50) { mergePaths(d.paths); mergeMarks(d.marks); msg = 'Sentiers et repères de Cartocèpe récupérés (les coins à cèpes sont ignorés)'; }
   else return toast('Fichier non reconnu');
@@ -2372,11 +2432,11 @@ $('#found').innerHTML = foundOff(); $('#found').onclick = () => { if (BR.on) ret
 /* ===== Menu, import / export, toast ===== */
 const bump = s => { const b = $(s); if (!b || RMO.matches) return; b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); };
 let tt; function toast(m, undo) { $('#tm').textContent = m; $('#tu').hidden = !undo; $('#tu').onclick = () => { undo && undo(); $('#toast').classList.remove('show'); }; { const el = $('#toast'); el.classList.remove('show'); void el.offsetWidth; el.classList.add('show'); } clearTimeout(tt); tt = setTimeout(() => $('#toast').classList.remove('show'), undo ? 7000 : 3500); }
-$('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(rec).length, nm = (D.marks || []).length, np = (D.paths || []).length; $('#info').textContent = `Version ${APP_V} · ${nl} balade${nl > 1 ? 's' : ''} · ${nm} repère${nm > 1 ? 's' : ''} · ${np} sentier${np > 1 ? 's' : ''} dans le carnet`; $('#menu').classList.add('open'); };
+$('#mn').onclick = () => { alLabel(); accPage('main', true); accRender(); const nl = Object.values(D.cells).filter(rec).length, nm = (D.marks || []).length, np = (D.paths || []).length; $('#info').textContent = `Version ${APP_V} · ${nl} balade${nl > 1 ? 's' : ''} · ${nm} repère${nm > 1 ? 's' : ''} · ${np} sentier${np > 1 ? 's' : ''} dans le carnet`; $('#menu').classList.add('open'); };
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-60';
+const APP_V = '2026.10.24-61';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2387,10 +2447,39 @@ async function checkUpdate(manual) {
   } catch (e) { if (manual) toast('Impossible de vérifier les mises à jour (connexion ?)'); }
 }
 setTimeout(checkUpdate, 2500); document.addEventListener('visibilitychange', () => { if (!document.hidden) checkUpdate(); });
-$('#mc').onclick = $('#mx').onclick = () => $('#menu').classList.remove('open'); $('#menu').onclick = e => { if (e.target.id === 'menu') $('#menu').classList.remove('open'); };
+$('#mx').onclick = () => $('#menu').classList.remove('open'); $('#menu').onclick = e => { if (e.target.id === 'menu') $('#menu').classList.remove('open'); };
 $('#imp').onclick = () => $('#fi').click();
+/* ===== Mon compte : tiroir à droite, pages qui glissent ===== */
+const ACV = { none: 'Personne · mode fantôme', friends: 'Copains', all: 'Tout le monde' };
+const accU = () => (D.user = Object.assign({ name: '', city: '', vis: 'friends', pres: true, stats: true }, D.user || {}));
+function accPage(pg, instant) {      // renvoie true si on a changé de page (sert au bouton retour)
+  const cur = document.querySelector('#menu .acp.on'); if (cur && cur.dataset.pg === pg) return false;
+  document.querySelectorAll('#menu .acp').forEach(x => { const on = x.dataset.pg === pg; x.classList.toggle('on', on); x.classList.toggle('back', on && pg === 'main' && !instant); });
+  const w = document.querySelector('#menu .acw'); if (w) w.scrollTop = 0; return true;
+}
+function accRender() {
+  const u = accU(), nm = u.name.trim(), dog = D.prof && D.prof.name ? D.prof.name : '';
+  $('#acnm').textContent = nm || 'Promeneur';
+  $('#acsb').textContent = [u.city.trim(), dog && 'avec ' + dog].filter(Boolean).join(' · ') || 'Compte local · sur ce téléphone';
+  $('#acav').textContent = nm ? nm[0].toUpperCase() : ''; $('#acav').classList.toggle('ini', !!nm);
+  $('#acme').textContent = nm ? nm + (u.city ? ' · ' + u.city : '') : 'Pseudo, commune';
+  $('#acdgs').textContent = dog ? dog + ' · niveau ' + ($('#hlv').textContent || 1) : 'Créer son profil';
+  $('#acpv').textContent = ACV[u.vis] || ACV.friends;
+  $('#acpn').value = u.name; $('#acpc').value = u.city;
+  document.querySelectorAll('#acvis [data-v]').forEach(b => b.classList.toggle('on', b.dataset.v === u.vis));
+  $('#acpres').innerHTML = sw('Montrer ma présence sur les balades', u.pres); $('#acstat').innerHTML = sw('Partager mes stats (km, niveau) avec mes copains', u.stats);
+  $('#acver').textContent = 'Version ' + APP_V;
+}
+document.querySelectorAll('#menu [data-acp]').forEach(b => b.onclick = () => accPage(b.dataset.acp));
+document.querySelectorAll('#menu [data-acb]').forEach(b => b.onclick = () => { accPage('main'); accRender(); });
+$('#acdog').onclick = () => dogOpen();
+[['#acpn', 'name'], ['#acpc', 'city']].forEach(([id, k]) => { const el = $(id); el.oninput = () => { accU()[k] = el.value; saveSoon(); }; el.onchange = () => { accU()[k] = el.value.trim(); save(); accRender(); }; el.onkeydown = e => { if (e.key === 'Enter') el.blur(); }; });
+document.querySelectorAll('#acvis [data-v]').forEach(b => b.onclick = () => { accU().vis = b.dataset.v; save(); accRender(); });
+$('#acpres').onclick = () => { const u = accU(); u.pres = !u.pres; save(); accRender(); };
+$('#acstat').onclick = () => { const u = accU(); u.stats = !u.stats; save(); accRender(); };
+
 $('#fi').onchange = e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { importData(JSON.parse(r.result)); $('#menu').classList.remove('open'); } catch (x) { toast('Fichier illisible'); } }; r.readAsText(f); e.target.value = ''; };
-$('#exp').onclick = async () => { const photos = {}; if (D.prof.ph) { try { const u = await pGet(D.prof.ph); if (u) photos[D.prof.ph] = u; } catch (e) {} } for (const c of Object.values(D.cells)) for (const p of c.ph) { try { const u = await pGet(p.id); if (u) photos[p.id] = u; } catch (e) {} } const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify({ app: 'cartodog', version: 1, dog: D.dog, prof: D.prof, cells: D.cells, paths: D.paths || [], marks: D.marks || [], photos })], { type: 'application/json' })); a.download = 'cartodog-' + today() + '.json'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 10000); toast('💾 Exporté'); };
+$('#exp').onclick = async () => { const photos = {}; if (D.prof.ph) { try { const u = await pGet(D.prof.ph); if (u) photos[D.prof.ph] = u; } catch (e) {} } for (const c of Object.values(D.cells)) for (const p of c.ph) { try { const u = await pGet(p.id); if (u) photos[p.id] = u; } catch (e) {} } const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify({ app: 'cartodog', version: 1, dog: D.dog, prof: D.prof, user: D.user, cells: D.cells, paths: D.paths || [], marks: D.marks || [], photos })], { type: 'application/json' })); a.download = 'cartodog-' + today() + '.json'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 10000); toast('💾 Exporté'); };
 /* ===== Profil du chien : photo, identité, âge, suivi du poids, vétérinaire ===== */
 const SXL = { m: 'Mâle', f: 'Femelle' };
 const ageTxt = bd => { if (!bd) return ''; const b = new Date(bd + 'T00:00'), n = new Date(); let m = (n.getFullYear() - b.getFullYear()) * 12 + n.getMonth() - b.getMonth() - (n.getDate() < b.getDate() ? 1 : 0); if (m < 0) return '';
@@ -3238,7 +3327,7 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
     [op('encm'), () => { const b = !$('#encv').hidden && !(encFrom && !encStack.length) && $('#encbk'); b ? b.click() : encClose(); }],      // ouvert directement sur une fiche depuis une autre fenêtre : retour = revenir à cette fenêtre
     [op('dogm'), () => { const p = document.querySelector('#dogm .dgp.on'); p && p.dataset.p !== 'main' ? dogPane('main') : dogClose(); }],
     [op('balm'), () => { !$('#balb').hidden ? $('#balb').click() : balClose(); }],
-    [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('menu'), () => $('#menu').classList.remove('open')],
+    [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
     [vis('shm'), () => shClose()], [() => RM, () => setRM(false)], [() => ED.on, () => edToggle(false)], [() => P.on && !RC.on, () => $('#pt').click()],
     [() => !!BL.poly && !BR.on, () => { BL.wait = false; BL.poly = null; lpUi(); }], [() => !!sel, () => { const f = selFrom && selFrom.k === sel; const hub = f && selFrom.hub; selFrom = null; sel = null; collapse(); renderPanel(); draw(); if (f) hub ? balOpen() : $('#lb').click(); }]];
   let pushed = false, skip = 0, q = 0;
