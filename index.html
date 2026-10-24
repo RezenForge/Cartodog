@@ -1099,11 +1099,24 @@ body:has(#menu.open) header.bar{z-index:23}
 .scgname{flex:1;min-width:0;font:800 19px/1.2 var(--px);color:#fff1cf;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}span.scgic{display:grid;place-items:center;cursor:default}
 .scgedit,.scgok{flex:none;padding:7px 10px;border:2px solid var(--edge);border-radius:14px;background:#14110e;box-shadow:inset 0 0 0 1px #3a332a;color:var(--ember2);font:800 12px var(--num);cursor:pointer}.scgok{background:linear-gradient(#f4c862,#c6862a);color:#2a1806}
 .scga .btn:disabled{opacity:.45}
+
+/* ===== Loupe : recherche de balade ===== */
+#srb{position:absolute;left:12px;top:48px;z-index:4;width:40px;height:40px;padding:7px;border-radius:50%;border:2px solid #d6ab55;background:rgba(14,12,9,.82);cursor:pointer;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}#srb svg{width:100%;height:100%;display:block}#srb:active{transform:scale(.92)}
+#srp{position:absolute;left:8px;right:8px;top:44px;z-index:8;display:none;flex-direction:column;max-height:calc(100% - 56px);border:2px solid var(--edge);border-radius:12px;background:linear-gradient(#2a2119,#1e1812);box-shadow:0 0 0 1.5px #8a6a3a,0 10px 28px rgba(0,0,0,.65);overflow:hidden;animation:pop .25s cubic-bezier(.2,.9,.3,1.15) both}#srp.open{display:flex}
+.srh{flex:none;display:flex;align-items:center;gap:8px;padding:8px 8px 8px 12px;border-bottom:1px solid #2e2820}.srh svg{flex:none;width:22px;height:22px}
+#srq{flex:1;min-width:0;padding:9px 10px;border:2px solid var(--edge);border-radius:8px;background:#14110e;box-shadow:inset 0 0 0 1px #3a332a;color:#fff1cf;font:700 16px var(--num);user-select:text;-webkit-user-select:text;color-scheme:dark}#srq::placeholder{color:#7d735f}
+#srx{flex:none;width:36px;height:36px;border:2px solid var(--edge);border-radius:50%;background:var(--stone);color:var(--txt);font:800 15px var(--num);cursor:pointer}
+#srl{flex:1 1 auto;min-height:0;margin:0;padding:4px 0;list-style:none;overflow-y:auto;overscroll-behavior:contain}
+#srl li[data-srk]{display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer;border-top:1px solid #241f19}#srl li[data-srk]:first-of-type{border-top:0}#srl li.on,#srl li[data-srk]:active{background:rgba(234,165,60,.12)}
+#srl img,#srl .crest{flex:none;width:36px;height:36px;border-radius:9px;object-fit:cover;border:2px solid #0e0c09}
+#srl .act b{font:800 15px var(--num);color:#fff1cf}#srl mark{background:none;color:var(--ember2);text-decoration:underline;text-underline-offset:3px}#srl .act small{font:600 11.5px var(--num);color:var(--mut)}
+#srl em{flex:none;font:800 12px var(--num);font-style:normal;color:var(--ember2)}
+#srl .srt{padding:8px 12px 4px;font:800 10.5px var(--num);letter-spacing:.12em;text-transform:uppercase;color:var(--ember)}
 </style></head><body>
 <header class="bar win dg"><button class="hdog" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span></button><button class="hbr brand" id="hbr" aria-label="Cartodog : profil de mon chien"><span class="hinf"><b>Cartodog</b><small id="hsub">Carnet de balade</small></span></button><button class="hset" id="mn" aria-label="Mon compte"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><circle cx="16" cy="16" r="14.5" fill="#2a2018" stroke="#8a6a3a" stroke-width="1"/><circle cx="16" cy="12.4" r="5.4" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2"/><path d="M6.6 26.2c1.3-5.2 5-8 9.4-8s8.1 2.8 9.4 8a14.4 14.4 0 0 1-18.8 0z" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2" stroke-linejoin="round"/></svg></button><b id="hnm" hidden></b>
 <small id="ssn" hidden></small>
 </header>
-<div id="mapBox"><canvas id="cv"></canvas><button id="loc" data-ic="loc" aria-label="Ma position (GPS)"></button><button id="rep" aria-label="Signaler un danger ou un point utile"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="repg" cx="45%" cy="30%" r="75%"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#e0861e"/></radialGradient></defs>
+<div id="mapBox"><canvas id="cv"></canvas><button id="srb" aria-label="Chercher une balade"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="srg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><circle cx="10.2" cy="10.2" r="6" fill="rgba(255,210,122,.12)" stroke="url(#srg)" stroke-width="2.6"/><path d="M14.6 14.6l5.6 5.6" stroke="url(#srg)" stroke-width="3.4" stroke-linecap="round"/><path d="M7.6 8.6a3 3 0 0 1 2.4-1.8" stroke="#fff1cf" stroke-width="1.3" stroke-linecap="round" fill="none" opacity=".7"/></svg></button><div id="srp" role="search"><div class="srh"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="srg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><circle cx="10.2" cy="10.2" r="6" fill="rgba(255,210,122,.12)" stroke="url(#srg)" stroke-width="2.6"/><path d="M14.6 14.6l5.6 5.6" stroke="url(#srg)" stroke-width="3.4" stroke-linecap="round"/><path d="M7.6 8.6a3 3 0 0 1 2.4-1.8" stroke="#fff1cf" stroke-width="1.3" stroke-linecap="round" fill="none" opacity=".7"/></svg><input id="srq" type="search" placeholder="Chercher une balade…" autocomplete="off" enterkeyhint="search" aria-label="Nom de la balade"><button id="srx" aria-label="Fermer la recherche">✕</button></div><ul id="srl" role="listbox"></ul></div><button id="loc" data-ic="loc" aria-label="Ma position (GPS)"></button><button id="rep" aria-label="Signaler un danger ou un point utile"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="repg" cx="45%" cy="30%" r="75%"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#e0861e"/></radialGradient></defs>
   <g fill="#0e0b08" stroke="#0e0b08" stroke-width="5" stroke-linejoin="round"><ellipse cx="13" cy="27" rx="6" ry="8" transform="rotate(-22 13 27)"/><ellipse cx="24.5" cy="14" rx="6.4" ry="8.4" transform="rotate(-8 24.5 14)"/><ellipse cx="39.5" cy="14" rx="6.4" ry="8.4" transform="rotate(8 39.5 14)"/><ellipse cx="51" cy="27" rx="6" ry="8" transform="rotate(22 51 27)"/><path d="M32 28c8 0 20 11 20 21 0 7-6 10-12 9-4-.5-6-2-8-2s-4 1.5-8 2c-6 1-12-2-12-9 0-10 12-21 20-21z"/></g>
   <g fill="url(#repg)"><ellipse cx="13" cy="27" rx="6" ry="8" transform="rotate(-22 13 27)"/><ellipse cx="24.5" cy="14" rx="6.4" ry="8.4" transform="rotate(-8 24.5 14)"/><ellipse cx="39.5" cy="14" rx="6.4" ry="8.4" transform="rotate(8 39.5 14)"/><ellipse cx="51" cy="27" rx="6" ry="8" transform="rotate(22 51 27)"/><path d="M32 28c8 0 20 11 20 21 0 7-6 10-12 9-4-.5-6-2-8-2s-4 1.5-8 2c-6 1-12-2-12-9 0-10 12-21 20-21z"/></g>
   <path d="M32 32.5 19.5 53h25z" fill="#2a1806" stroke="#2a1806" stroke-width="2.4" stroke-linejoin="round"/><path d="M32 39.5v7" stroke="#ffd27a" stroke-width="3.2" stroke-linecap="round"/><circle cx="32" cy="50" r="1.9" fill="#ffd27a"/></svg></button><div id="sc"></div><div id="bh" hidden></div>
@@ -2672,7 +2685,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-87';
+const APP_V = '2026.10.25-88';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2847,6 +2860,28 @@ $('#soc').addEventListener('click', e => {
   const em = e.target.closest('[data-emap]'); if (em) return socShow(em.dataset.emap);
   if (e.target.closest('[data-sx]')) return socSoon();
 });
+
+/* ===== Recherche de balade par nom (loupe en haut à gauche) : suggestions au fil de la frappe, sans accents ni majuscules ===== */
+const nrm = t => String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+function srRender() {
+  const q = nrm($('#srq').value.trim()), ref = me ? [me.x, me.y] : [V.cx, V.cy], L = walkPlaces().filter(x => x.label);
+  L.forEach(x => { const pts = x.g ? x.g.paths.flatMap(p => p.pts) : [ctr(x.k)]; x.dm = Math.min(...pts.map(p => rdist(p, ref))); const n = nrm(x.label);
+    x.sc = !q ? 0 : n.startsWith(q) ? 1 : n.split(/[\s'’-]+/).some(w => w.startsWith(q)) ? 2 : n.includes(q) ? 3 : q.split(/\s+/).every(w => n.includes(w)) ? 4 : 9; });
+  const R = L.filter(x => x.sc < 9).sort((a, b) => a.sc - b.sc || a.dm - b.dm).slice(0, 7);
+  const hl = t => { if (!q) return esc(t); const n = nrm(t), i = n.indexOf(q); return i < 0 ? esc(t) : esc(t.slice(0, i)) + '<mark>' + esc(t.slice(i, i + q.length)) + '</mark>' + esc(t.slice(i + q.length)); };
+  $('#srl').innerHTML = (!q && R.length ? '<li class="srt">📍 Les plus proches</li>' : '') + (R.map((x, i) => { const th = x.k && D.cells[x.k] && D.cells[x.k].th, tg = (x.k && D.cells[x.k] && D.cells[x.k].tags) || [];
+    return `<li role="option" data-srk="${x.k || ''}" data-srg="${x.g ? esc(x.g.k) : ''}" class="${i === SRI ? 'on' : ''}">${th ? `<img src="${th}" alt="">` : crest(x.rk, 30)}<span class="act"><b>${hl(x.label)}</b><small>${x.g ? '🥾 ' + fmtDist(x.g.len) : '📍 lieu'}${tg.length ? ' · ' + tg.map(t => TAGS[t][0]).join('') : ''}</small></span><em>${fmtDist(x.dm)}</em></li>`; }).join('')
+    || `<li class="srt">Aucune balade ne correspond à « ${esc($('#srq').value.trim())} »</li>`);
+}
+let SRI = 0;
+function srOpen() { SRI = 0; $('#srq').value = ''; $('#srp').classList.add('open'); srRender(); setTimeout(() => $('#srq').focus(), 30); }
+const srClose = () => { $('#srp').classList.remove('open'); $('#srq').blur(); };
+function srGo(li) { if (!li) return; const k = li.dataset.srk, gk = li.dataset.srg; srClose(); if (k && D.cells[k]) { select(k); try { fitBal(k); } catch (e) {} } else if (gk) openBal(gk); }
+$('#srb').onclick = srOpen; $('#srx').onclick = srClose;
+$('#srq').oninput = () => { SRI = 0; srRender(); };
+$('#srq').onkeydown = e => { const L = [...document.querySelectorAll('#srl li[data-srk]')]; if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); SRI = (SRI + (e.key === 'ArrowDown' ? 1 : -1) + L.length) % Math.max(1, L.length); L.forEach((li, i) => li.classList.toggle('on', i === SRI)); }
+  else if (e.key === 'Enter') { e.preventDefault(); srGo(L[SRI] || L[0]); } else if (e.key === 'Escape') srClose(); };
+$('#srl').onclick = e => srGo(e.target.closest('li[data-srk]'));
 $('#imp').onclick = () => $('#fi').click();
 const sdLabel = () => $('#socdm').innerHTML = sw('Aperçu social : exemples de promeneurs et copains sur les balades', socPrev); sdLabel();
 $('#socdm').onclick = () => { socPrev = !socPrev; try { localStorage.setItem('cartodog-socdemo', socPrev ? '1' : '0'); } catch (e) {} SLV.t = 0; sdLabel(); schedule(); };
@@ -3752,14 +3787,14 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
     [op('encm'), () => { const b = !$('#encv').hidden && !(encFrom && !encStack.length) && $('#encbk'); b ? b.click() : encClose(); }],      // ouvert directement sur une fiche depuis une autre fenêtre : retour = revenir à cette fenêtre
     [op('dogm'), () => { const p = document.querySelector('#dogm .dgp.on'); p && p.dataset.p !== 'main' ? dogPane('main') : dogClose(); }],
     [op('balm'), () => { !$('#balb').hidden ? $('#balb').click() : balClose(); }],
-    [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('soc'), () => { !$('#scgr').hidden ? grpBack() : !$('#scch').hidden ? chatClose() : !$('#scst').hidden ? ($('#scst').hidden = true) : !$('#scsh').hidden ? ($('#scsh').hidden = true) : socClose(); }], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
+    [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('srp'), () => srClose()], [op('soc'), () => { !$('#scgr').hidden ? grpBack() : !$('#scch').hidden ? chatClose() : !$('#scst').hidden ? ($('#scst').hidden = true) : !$('#scsh').hidden ? ($('#scsh').hidden = true) : socClose(); }], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
     [vis('shm'), () => shClose()], [() => RM, () => setRM(false)], [() => ED.on, () => edToggle(false)], [() => P.on && !RC.on, () => $('#pt').click()],
     [() => !!BL.poly && !BR.on, () => { BL.wait = false; BL.poly = null; lpUi(); }], [() => !!sel, () => { const f = selFrom && selFrom.k === sel; const hub = f && selFrom.hub; selFrom = null; sel = null; collapse(); renderPanel(); draw(); if (f) hub ? balOpen() : $('#lb').click(); }]];
   let pushed = false, skip = 0, q = 0;
   const any = () => LAY.some(l => { try { return l[0](); } catch (e) { return false; } });
   const sync = () => { q = 0; const a = any(); if (a && !pushed) { pushed = true; try { history.pushState({ cdm: 1 }, ''); } catch (e) {} } else if (!a && pushed) { pushed = false; if (history.state && history.state.cdm) { skip++; history.back(); } } };
   window.navSync = () => { if (!q) { q = 1; setTimeout(sync, 60); } };
-  const mo = new MutationObserver(navSync); ['soc', 'pv', 'rqm', 'dzq', 'mkm', 'encm', 'encv', 'dogm', 'balm', 'pls', 'lst', 'dlm', 'menu', 'shm', 'rm', 'pm', 'lp'].forEach(id => { const el = document.getElementById(id); if (el) mo.observe(el, { attributes: true, attributeFilter: ['class', 'hidden'] }); });
+  const mo = new MutationObserver(navSync); ['srp', 'soc', 'pv', 'rqm', 'dzq', 'mkm', 'encm', 'encv', 'dogm', 'balm', 'pls', 'lst', 'dlm', 'menu', 'shm', 'rm', 'pm', 'lp'].forEach(id => { const el = document.getElementById(id); if (el) mo.observe(el, { attributes: true, attributeFilter: ['class', 'hidden'] }); });
   mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
   addEventListener('popstate', () => { if (skip) { skip--; return; } pushed = false;
     const l = LAY.find(x => { try { return x[0](); } catch (e) { return false; } }); if (l) l[1](); setTimeout(sync, 80); }); }
