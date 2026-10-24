@@ -2338,7 +2338,7 @@ function lpUi() {
     let dir = ''; if (me && isFinite(d)) { const bz = (Math.atan2(q[0] - me.x, q[1] - me.y) * 180 / Math.PI + 360) % 360, i = Math.round(bz / 45) % 8; dir = ' ' + ['↑', '↗', '→', '↘', '↓', '↙', '←', '↖'][i] + ' ' + ['nord', 'nord-est', 'est', 'sud-est', 'sud', 'sud-ouest', 'ouest', 'nord-ouest'][i]; }
     const apl = AP.on && AP.poly && AP.tag === 'loop' ? apLeft() : null;
     $('#lpt').innerHTML = `<div class="lpk"><b>${me ? fmtDist(apl != null ? apl : d) : '…'}</b><small>${me ? (apl != null ? '🚶 ≈ ' + Math.max(1, Math.round(apl / 75)) + ' min à pied' : dir) : 'recherche du GPS'}</small></div>
-      <div class="lps">En route vers ${BL.park ? '🅿 <b>' + esc(BL.pname) + '</b>' : 'le départ de la boucle'}${AP.on && AP.poly && AP.tag === 'loop' ? ' · <b class="apon">par les rues</b>' : ''} · la sortie démarrera toute seule à l'arrivée</div>${AP.on && AP.car && AP.tag === 'loop' && me ? apCarLinks() : ''}`;
+      <div class="lps">En route vers ${BL.park ? '🅿 <b>' + esc(BL.pname) + '</b>' : 'le départ de la boucle'}${AP.on && AP.poly && AP.tag === 'loop' ? ' · <b class="apon">par les rues</b>' : AP.busy && AP.tag === 'loop' ? ' · <span class="apon">🚶 calcul de l\'itinéraire par les rues…</span>' : AP.err && AP.tag === 'loop' ? ' · itinéraire par les rues indisponible (réseau ?)' : ''} · la sortie démarrera toute seule à l'arrivée</div>${AP.on && AP.car && AP.tag === 'loop' && me ? apCarLinks() : ''}`;
     $('#lpgo').textContent = '▶'; $('#lpgo').setAttribute('aria-label', 'Démarrer ici sans attendre'); $('#lpgo').classList.add('lpw'); $('#lpn').hidden = true; $('#lpd').hidden = false; return draw(); }
   $('#lpgo').textContent = '▶'; $('#lpgo').setAttribute('aria-label', 'Partir'); $('#lpgo').classList.remove('lpw');
   $('#lpd').hidden = !!BR.on;
@@ -2451,11 +2451,14 @@ async function apFetch(to, tag, name) {
   if (d < 120) { apClear(); return; }
   if (d > AP_FOOT) { Object.assign(AP, { on: true, car: true, poly: null, turns: [] }); schedule(); if (tag === 'loop') lpUi(); if (tag === 'rt') { try { rtUi(); } catch (x) {} } return; }
   if (AP.busy) return; AP.busy = true; const [la0, lo0] = apLL([me.x, me.y]), [la1, lo1] = apLL(to);
-  try { const r = await fetchT(`https://data.geopf.fr/navigation/itineraire?resource=bdtopo-osrm&profile=pedestrian&optimization=shortest&start=${lo0},${la0}&end=${lo1},${la1}&geometryFormat=geojson&getSteps=false`, 12000);
-    if (!r.ok) throw new Error('ign'); const j = await r.json(), c = j && j.geometry && j.geometry.coordinates; if (!c || c.length < 2 || AP.tag !== tag) throw new Error('geo');
+  AP.err = false; if (tag === 'loop') lpUi();
+  try { let j = null;
+    for (const res of ['bdtopo-valhalla', 'bdtopo-pgr']) {      // la ressource « osrm » a été retirée par l'IGN : valhalla, sinon pgRouting
+      try { const r = await fetchT(`https://data.geopf.fr/navigation/itineraire?resource=${res}&profile=pedestrian&optimization=shortest&start=${lo0},${la0}&end=${lo1},${la1}&geometryFormat=geojson&getSteps=false`, 12000); if (r.ok) { j = await r.json(); if (j && j.geometry && j.geometry.coordinates && j.geometry.coordinates.length > 1) break; } j = null; } catch (x) { j = null; } }
+    const c = j && j.geometry && j.geometry.coordinates; if (!c || c.length < 2 || AP.tag !== tag) throw new Error('geo');
     const P = c.map(([lo, la]) => toM(la, lo)); P.push(to); Object.assign(AP, { on: true, car: false, poly: P, turns: apTurns(P), dist: j.distance || P.reduce((a, q, i) => i ? a + rdist(P[i - 1], q) : 0, 0) }); AP.said = new Set();
     say(`Itinéraire par les rues : ${fmtDist(AP.dist).replace(' km', ' kilomètres').replace(' m', ' mètres')} jusqu'${AP.name ? 'à ' + AP.name : 'au départ'}.`);
-  } catch (e) { if (AP.tag === tag) { AP.on = false; AP.poly = null; } } finally { AP.busy = false; schedule(); if (tag === 'loop') lpUi(); if (tag === 'rt') { try { rtUi(); } catch (x) {} } }
+  } catch (e) { if (AP.tag === tag) { AP.on = false; AP.poly = null; AP.err = true; } } finally { AP.busy = false; schedule(); if (tag === 'loop') lpUi(); if (tag === 'rt') { try { rtUi(); } catch (x) {} } }
 }
 function apLeft() {      // distance restante par les rues
   if (!AP.poly || !me) return null; const here = [me.x, me.y]; let bi = 1, bd = Infinity, bq = AP.poly[0];
@@ -2747,7 +2750,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-101';
+const APP_V = '2026.10.25-102';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
