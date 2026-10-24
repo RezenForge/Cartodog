@@ -911,8 +911,8 @@ body{padding-top:0!important}header.bar{margin-top:6px!important}
 #wxp{top:152px!important}
 
 /* ===== Mon compte : tiroir qui glisse depuis la droite ===== */
-#menu{justify-content:flex-end!important;align-items:stretch!important;padding:0!important}
-#menu .win.acw{position:relative;width:min(380px,88vw);max-width:none;height:100dvh;max-height:none;margin:0;padding:calc(12px + env(safe-area-inset-top)) 14px calc(16px + env(safe-area-inset-bottom));border-radius:14px 0 0 14px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;display:block}
+#menu{justify-content:flex-end!important;align-items:stretch!important;padding:0!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}#menu .acw>.acp{max-width:520px;margin:0 auto}
+#menu .win.acw{position:relative;width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;padding:calc(12px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));border-radius:0;border:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;display:block}
 #menu.open .win.acw{animation:accIn .32s cubic-bezier(.2,.85,.25,1) both}
 @keyframes accIn{from{transform:translateX(100%)}to{transform:none}}
 #menu .acp{display:none}#menu .acp.on{display:block;animation:accPg .26s cubic-bezier(.2,.85,.25,1) both}#menu .acp.on.back{animation-name:accPgB}
@@ -2436,7 +2436,7 @@ $('#mn').onclick = () => { alLabel(); accPage('main', true); accRender(); const 
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-62';
+const APP_V = '2026.10.24-63';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
