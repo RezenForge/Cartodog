@@ -595,7 +595,7 @@ body.nosel #grab{display:none}
 .slots{grid-template-columns:1fr 1.15fr 1fr!important;gap:5px!important}.slot{padding:5px 6px!important;gap:5px!important}.slot svg{width:22px!important;height:22px!important}.slot b{font-size:15px!important}.slot small{white-space:nowrap}
 #wel .pmb button{font-size:13px;padding:0 8px;white-space:nowrap}body.nosel #found{flex:1}#found{min-width:130px}
 .mki{font-size:11px}.slot small{font-size:10.5px}.wxd small{font-size:10.5px}.jrg small{font-size:11px}.ptab button small{font-size:11px}.eye{font-size:10.5px}
-body:has(#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#pls.open,#mkm.open,#dlm.open) #toast{top:auto;bottom:calc(18px + env(safe-area-inset-bottom))}
+body:has(#soc.open,#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#pls.open,#mkm.open,#dlm.open) #toast{top:auto;bottom:calc(18px + env(safe-area-inset-bottom))}
 #wel{position:absolute;left:10px;right:10px;top:56px;z-index:6;padding:14px 14px 10px;animation:pop .45s cubic-bezier(.2,.9,.3,1.15) both}
 #wel h3{margin:4px 0 8px;font:800 19px/1.2 var(--px);color:#fff1cf;text-shadow:2px 2px 0 #000}#wel ol{margin:0 0 4px;padding-left:20px;font-size:13.5px;line-height:1.45;color:var(--txt)}#wel li{display:list-item;border:0;padding:3px 0}#wel li b{color:var(--ember2)}
 #wel #welloc,#wel #weldog{flex:1}#wel #welloc{background:linear-gradient(#f4c862,#c6862a);color:#2a1806;text-shadow:none}
@@ -957,6 +957,42 @@ body{padding-top:0!important}header.bar{margin-top:6px!important}
 @media (max-height:700px){.f4h{margin-bottom:6px}.f4cv{width:46px;height:46px}.f4soc{padding:5px 8px;margin-bottom:6px}#panel .f4a .btn{padding:9px 6px}}
 
 .shb{flex:none;display:inline-flex;align-items:center;gap:6px;padding:7px 11px 7px 9px;border:2px solid var(--edge);border-radius:18px;background:linear-gradient(#3a3024,#211b14);box-shadow:inset 0 0 0 1px #6b5333;color:var(--ember2);font:800 12.5px var(--num);cursor:pointer;white-space:nowrap}.shb svg{width:17px;height:17px;flex:none}.shb:active{transform:scale(.95)}.shb[hidden]{display:none}.shb>span{all:unset;font:800 12.5px var(--num);color:var(--ember2)}.f4h .shb{padding:7px 10px 7px 8px}
+
+/* ===== Dock : bouton Copains à droite de Balade ===== */
+#dock #socb{flex:none;width:68px;position:relative;flex-direction:column;gap:0;padding:4px 0 3px;background:var(--stone);color:var(--ember2);font:800 10.5px/1 var(--num);text-shadow:none}
+#socb svg{width:26px;height:24px}#socb small{font:800 10.5px/1.1 var(--num);color:#e8dcc0;letter-spacing:.02em}
+#socn{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:#5f9a4a;border:2px solid #0e0c09;color:#fff;font:900 10px/14px var(--num)}#socn[hidden]{display:none}
+#dock #grab{flex:none!important;width:46px}
+/* ===== Copains : plein écran qui glisse depuis la droite ===== */
+#soc{position:fixed;inset:0;z-index:21;display:none;background:rgba(6,5,3,.72)}#soc.open{display:block}
+#soc .scw{position:absolute;inset:0;max-width:none;max-height:none;margin:0;border:0;border-radius:0;padding:calc(12px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;animation:accIn .32s cubic-bezier(.2,.85,.25,1) both}
+#soc .scw>*{max-width:520px;margin-left:auto;margin-right:auto}
+#soc .ach{display:flex;align-items:center;gap:8px;margin-bottom:10px}#soc .ach h2{flex:1;margin:0}
+.sct{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:3px;border:2px solid var(--edge);border-radius:6px;background:#14110e;box-shadow:inset 0 0 0 1px #362f27}
+.sct button{padding:10px 4px;border:0;border-radius:4px;background:none;color:var(--mut);font:800 15px var(--num);cursor:pointer}.sct button.on{background:linear-gradient(#4d453a,#3a332b);color:var(--ember2);box-shadow:inset 0 -2px 0 var(--ember),inset 0 1px 0 rgba(255,255,255,.12)}
+.scdemo{margin:8px 0 2px;padding:7px 10px;border-radius:6px;border:1.5px dashed #5a4f40;font:600 11.5px/1.35 var(--num);color:var(--mut)}.scdemo b{color:var(--ember2)}
+.scp{display:none}.scp.on{display:block;animation:accPg .26s cubic-bezier(.2,.85,.25,1) both}
+.scbar{display:flex;gap:6px;margin:10px 0 0}.scadd{flex:1;padding:10px;border:2px dashed #6b5333;border-radius:8px;background:none;color:var(--ember2);font:800 14px var(--num);cursor:pointer}
+.screq{flex:none;padding:10px 12px;border:2px solid var(--edge);border-radius:8px;background:var(--slot);box-shadow:inset 0 0 0 1px var(--rim);color:var(--txt);font:700 13px var(--num);cursor:pointer}.screq b{display:inline-block;min-width:18px;margin-left:4px;padding:0 5px;border-radius:9px;background:#c9472c;color:#fff;font:900 11px/18px var(--num)}
+.scr{display:flex;align-items:center;gap:11px;padding:9px 10px;border-top:1px solid #2e2820}.scr:first-child{border-top:0}
+.scaw{position:relative;flex:none}.scav{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 50% 30%,color-mix(in srgb,var(--c) 75%,#fff),var(--c));border:2px solid #0e0c09;box-shadow:0 0 0 1.5px #8a6a3a;color:#1a1208;font:900 18px/1 var(--px)}
+.scav.sm{width:26px;height:26px;font-size:12px;margin-left:-8px;box-shadow:0 0 0 1.5px #1b1814}.scav.sm:first-child{margin-left:0}.scav.me{--c:#eaa53c;box-shadow:0 0 0 2px var(--ember2)}
+.scdot{position:absolute;right:-1px;bottom:-1px;width:13px;height:13px;border-radius:50%;border:2.5px solid #1b1814;background:#6b6b66}.scdot.on{background:#5fc24a}.scdot.walk{background:#ffb43a;animation:scpul 1.4s ease-in-out infinite}
+@keyframes scpul{0%,100%{box-shadow:0 0 0 0 rgba(255,180,58,.6)}50%{box-shadow:0 0 0 5px rgba(255,180,58,0)}}
+.scr .act b em{font-style:normal;font-weight:600;color:var(--mut)}.scr .act small u{text-decoration:none;color:#ffc56b;font-weight:800}
+.scmap,.scmore{flex:none;width:38px;height:38px;border:2px solid var(--edge);border-radius:50%;background:#14110e;box-shadow:inset 0 0 0 1px #3a332a;color:var(--txt);font:900 17px/1 var(--num);cursor:pointer}.scmap{border-color:#8a6a3a}
+.scorg{width:100%;margin:12px 0 4px!important;padding:12px!important;font-size:15px!important}
+.sce{display:flex;gap:12px;margin-top:10px;padding:11px;border:2px solid var(--edge);border-radius:10px;background:var(--slot);box-shadow:inset 0 0 0 1px var(--rim)}
+.scd{flex:none;width:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 0;border-radius:8px;background:linear-gradient(#f4c862,#c6862a);border:2px solid #0e0c09;color:#2a1806;text-transform:uppercase}.scd small{font:800 10px/1.1 var(--num)}.scd b{font:900 22px/1.05 var(--num)}
+.sce .act{gap:3px}.sce .act>b{font-size:15.5px}.sce .act small{white-space:normal}.sce .act small em{font-style:normal;color:var(--txt);font-weight:700}
+.scps{display:flex;margin:4px 0 2px}
+.scea{display:flex;gap:6px;margin-top:6px}.scea button{padding:7px 11px;border:2px solid var(--edge);border-radius:16px;background:#14110e;box-shadow:inset 0 0 0 1px #3a332a;color:var(--txt);font:800 12.5px var(--num);cursor:pointer}
+.scea button.on{background:linear-gradient(#f4c862,#c6862a);color:#2a1806;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}.scea button:last-child:not([data-eg]){margin-left:auto;width:36px;padding:7px 0}
+.scsh{position:fixed;inset:0;z-index:2;display:flex;align-items:flex-end;justify-content:center;max-width:none!important;background:rgba(6,5,3,.6);padding:8px}.scsh[hidden]{display:none}
+.scshw{width:100%;max-width:440px;padding:12px;border:2px solid var(--edge);border-radius:12px;background:linear-gradient(#2a2119,#1e1812);box-shadow:0 -10px 30px rgba(0,0,0,.6);animation:rise .3s cubic-bezier(.2,.85,.25,1) both}
+.scshh{display:flex;align-items:center;gap:10px;margin:0 0 8px;font:800 15px var(--num);color:#fff1cf}
+.scshw button{display:block;width:100%;margin-top:6px;padding:12px;border:2px solid var(--edge);border-radius:8px;background:var(--slot);box-shadow:inset 0 0 0 1px var(--rim);color:var(--txt);font:700 14px var(--num);text-align:left;cursor:pointer}.scshw button[hidden]{display:none}
+.scshw button.dgr{color:#ff8a6e}.scshw button.cx{text-align:center;color:var(--mut)}
 </style></head><body>
 <header class="bar win dg"><button class="hdog" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span></button><button class="hbr brand" id="hbr" aria-label="Cartodog : profil de mon chien"><span class="hinf"><b>Cartodog</b><small id="hsub">Carnet de balade</small></span></button><button class="hset" id="mn" aria-label="Mon compte"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e2e2de"/><stop offset="1" stop-color="#9a9a96"/></linearGradient></defs><circle cx="16" cy="16" r="14.5" fill="#2c2c2a" stroke="#6e6e6a" stroke-width="1"/><circle cx="16" cy="12.4" r="5.4" fill="url(#hsg)" stroke="#1e1e1c" stroke-width="1.2"/><path d="M6.6 26.2c1.3-5.2 5-8 9.4-8s8.1 2.8 9.4 8a14.4 14.4 0 0 1-18.8 0z" fill="url(#hsg)" stroke="#1e1e1c" stroke-width="1.2" stroke-linejoin="round"/></svg></button><b id="hnm" hidden></b>
 <small id="ssn" hidden></small>
@@ -981,7 +1017,7 @@ body{padding-top:0!important}header.bar{margin-top:6px!important}
   <div id="lp" class="dg" hidden><div class="eyb" id="lpe">Balade guidée</div><div id="lpt"></div><div class="pmb"><button id="lpgo" aria-label="Partir">▶</button><button id="lpn" aria-label="Proposer une autre boucle">↻</button><button id="lpd" aria-label="Changer la durée ou le départ">⏱</button><button id="lpv" aria-label="Guidage vocal"></button><button id="lpx" aria-label="Masquer la boucle">✕</button></div></div>
   <div id="rm" class="dg" hidden><div class="eyb">Poser un repère</div><div id="rmt">Touchez la carte pour poser un repère (point d'eau, danger, parking…), ou touchez un repère existant pour le modifier.</div><div class="pmb"><button id="rmg">À ma position</button><button id="rmx" aria-label="Quitter le mode repère">✕</button></div></div>
   <div id="zb"><button class="ib" id="gr" data-ic="grid" aria-label="Afficher ou cacher la grille"></button><button class="ib" id="pt" data-ic="trail" aria-label="Cartographier les sentiers"><small>Sentiers</small></button><button class="ib" id="rtb" data-ic="home" aria-label="Retour au départ ou au parking"><small>Retour</small></button><button class="ib" id="lb" data-ic="book" aria-label="Mes balades"><small>Balades</small></button><i class="sep"></i><button class="ib" id="fit" data-ic="fit" aria-label="Tout voir"><small>Tout voir</small></button><span class="zst"><button class="ib" id="zi" data-ic="plus" aria-label="Zoomer"></button><button class="ib" id="zo" data-ic="minus" aria-label="Dézoomer"></button></span></div></div>
-<div id="dock"><button id="found" aria-label="Lancer ou terminer une balade">▶ Balade</button><button id="homeb" hidden aria-label="Me ramener au départ ou au parking">🏠<small>Retour</small></button><button id="grab" aria-label="Réduire ou ouvrir la fiche">▾</button></div>
+<div id="dock"><button id="found" aria-label="Lancer ou terminer une balade">▶ Balade</button><button id="homeb" hidden aria-label="Me ramener au départ ou au parking">🏠<small>Retour</small></button><button id="socb" aria-label="Copains et sorties"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="11.5" cy="11" r="4.6" fill="currentColor"/><path d="M3.5 25c.9-4.6 4-7 8-7s7.1 2.4 8 7z" fill="currentColor"/><circle cx="22" cy="12.5" r="3.8" fill="currentColor" opacity=".7"/><path d="M17.6 18.8c1.3-.9 2.8-1.3 4.4-1.3 3.4 0 6 2 6.8 6h-8.5" fill="currentColor" opacity=".7"/></svg><small>Copains</small><b id="socn" hidden></b></button><button id="grab" aria-label="Réduire ou ouvrir la fiche">▾</button></div>
 <div id="panel" class="win dg"></div>
 <div id="rqm"><div class="win dg"><div class="lhd"><h2>Signaler</h2><button class="ib" id="rqx" aria-label="Fermer">✕</button></div><div class="rqt" role="tablist"><button data-rqt="dz" role="tab">⚠️ Danger</button><button data-rqt="ok" role="tab">✅ Utile</button></div><div id="rqg"></div><button class="rqg" id="rqguide">📖 Dangers &amp; secours <small>reconnaître, réagir, numéros d’urgence</small><i>›</i></button><div class="rqhint" id="rqhint"></div><div class="rqw" id="rqw"><button data-rqw="gps"></button><button data-rqw="map">🗺️ Sur la carte</button></div></div></div>
 <div id="mkm"><div class="win dg"><h2 id="mkt">Nouveau repère</h2><div class="hint" id="mkw" style="padding:0"></div><button class="btn" id="mkpk" hidden>🅿 Retourner au parking</button>
@@ -1059,6 +1095,14 @@ body{padding-top:0!important}header.bar{margin-top:6px!important}
     <div class="hint" id="info"></div>
     <button class="btn" id="rf">Actualiser l'application</button>
   </div>
+</div></div>
+<div id="soc"><div class="win dg scw" role="dialog" aria-label="Copains et sorties">
+  <div class="ach"><h2>Copains<small>Qui se balade, et les sorties à venir</small></h2><button class="ib" id="socx" aria-label="Fermer">✕</button></div>
+  <div class="sct" role="tablist"><button data-st="fr" role="tab">👥 Copains</button><button data-st="ev" role="tab">📅 Sorties</button></div>
+  <div class="scdemo">👀 <b>Aperçu</b> avec des exemples : les vrais copains arriveront avec le compte en ligne.</div>
+  <div class="scp" data-sp="fr" id="scfr"></div>
+  <div class="scp" data-sp="ev" id="scev"></div>
+  <div class="scsh" id="scsh" hidden><div class="scshw"><div class="scshh" id="scshh"></div><button data-sa="map">📍 Voir où il se balade</button><button data-sa="prof">🐕 Voir son profil</button><button data-sa="rm">➖ Retirer de mes copains</button><button data-sa="blk" class="dgr">🚫 Bloquer</button><button data-sa="x" class="cx">Annuler</button></div></div>
 </div></div>
 <div id="lst"><div class="win dg">
   <div class="lhd"><h2 id="lh">Mes balades</h2><button class="ib" id="lc" aria-label="Fermer">✕</button></div>
@@ -2459,7 +2503,7 @@ $('#mn').onclick = () => { alLabel(); accPage('main', true); accRender(); const 
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-66';
+const APP_V = '2026.10.24-67';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2471,6 +2515,49 @@ async function checkUpdate(manual) {
 }
 setTimeout(checkUpdate, 2500); document.addEventListener('visibilitychange', () => { if (!document.hidden) checkUpdate(); });
 $('#mx').onclick = () => $('#menu').classList.remove('open'); $('#menu').onclick = e => { if (e.target.id === 'menu') $('#menu').classList.remove('open'); };
+
+/* ===== Copains et sorties (aperçu avant le compte en ligne) : qui se balade et où, gestion des copains, sorties organisées ===== */
+const SOC = { tab: 'fr', go: {}, who: null };
+function socDemo() {
+  const bals = Object.keys(D.cells).filter(k => rec(D.cells[k]) && cellGroup(k)).map(k => ({ k, n: balName(k) })).filter(b => b.n);
+  const B = i => bals.length ? bals[i % bals.length] : { k: null, n: ['Bois du Taillan', 'Parc de Majolan', 'Forêt du Bourgailh'][i % 3] };
+  const F = [{ id: 'f1', n: 'Oslo', d: 'Ulysse', c: '#c6862a', st: 'walk', at: B(0), t: 25 }, { id: 'f2', n: 'Léa', d: 'Max', c: '#5f7350', st: 'walk', at: B(1), t: 8 },
+    { id: 'f3', n: 'Tom', d: 'Pepsi', c: '#466f9a', st: 'on' }, { id: 'f4', n: 'Inès', d: 'Gaïa', c: '#8a4f7d', st: 'on' }, { id: 'f5', n: 'Hugo', d: 'Rox', c: '#6b5b44', st: 'off', last: 'hier' }];
+  const day = (n, h) => { const t = new Date(); t.setDate(t.getDate() + n); t.setHours(h, 0, 0, 0); return t; };
+  const sat = (6 - new Date().getDay() + 7) % 7 || 7;
+  const E = [{ id: 'e1', by: F[0], at: B(0), t: day(sat, 10), dur: '≈ 1 h', n: 4, who: [F[0], F[2], F[3]] }, { id: 'e2', by: F[1], at: B(1), t: day(sat + 1, 17), dur: '≈ 45 min', n: 2, who: [F[1]] }, { id: 'e3', by: F[3], at: B(2), t: day(sat + 4, 18), dur: '≈ 1 h 30', n: 6, who: [F[3], F[4], F[0]] }];
+  return { F, E };
+}
+const socAv = (f, cls = '') => `<span class="scav ${cls}" style="--c:${f.c}">${esc(f.d[0])}</span>`;
+function socRender() {
+  const { F, E } = socDemo(); SOC.F = F; SOC.E = E;
+  document.querySelectorAll('#soc [data-st]').forEach(b => { b.classList.toggle('on', b.dataset.st === SOC.tab); b.setAttribute('aria-selected', b.dataset.st === SOC.tab); });
+  document.querySelectorAll('#soc [data-sp]').forEach(x => x.classList.toggle('on', x.dataset.sp === SOC.tab));
+  const row = f => `<div class="scr"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${f.st === 'walk' ? `<u>🐾 En balade</u> · ${esc(f.at.n)} · ${f.t} min` : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last)}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
+  const grp = (t, L) => L.length ? `<div class="mh">${t} · ${L.length}</div><div class="acg">${L.map(row).join('')}</div>` : '';
+  $('#scfr').innerHTML = `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes <b>1</b></button></div>` +
+    grp('🐾 En balade', F.filter(f => f.st === 'walk')) + grp('🟢 En ligne', F.filter(f => f.st === 'on')) + grp('Hors ligne', F.filter(f => f.st === 'off'));
+  const fmt = (t, o) => t.toLocaleDateString('fr-FR', o).replace('.', '');
+  $('#scev').innerHTML = `<button class="btn gold scorg" data-sx="org">＋ Organiser une sortie</button>` + E.map(e => { const g = SOC.go[e.id];
+    return `<div class="sce"><div class="scd"><small>${fmt(e.t, { weekday: 'short' })}</small><b>${e.t.getDate()}</b><small>${fmt(e.t, { month: 'short' })}</small></div><div class="act"><b>${esc(e.at.n)}</b><small>Organisée par <em>${esc(e.by.n)} & ${esc(e.by.d)}</em></small><small>🕙 ${e.t.getHours()} h 00 · ${e.dur} · ${e.n + (g === 'y' ? 1 : 0)} chiens</small>
+      <span class="scps">${e.who.map(f => socAv(f, 'sm')).join('')}${g === 'y' ? `<span class="scav sm me">${esc((D.prof && D.prof.name || 'M')[0])}</span>` : ''}</span>
+      <span class="scea"><button data-eg="${e.id}:y" class="${g === 'y' ? 'on' : ''}">${g === 'y' ? '✓ J\'y vais' : 'J\'y vais'}</button><button data-eg="${e.id}:m" class="${g === 'm' ? 'on' : ''}">Peut-être</button>${e.at.k ? `<button data-emap="${e.at.k}" aria-label="Voir sur la carte">📍</button>` : ''}</span></div></div>`; }).join('');
+}
+function socOpen() { socRender(); $('#scsh').hidden = true; $('#soc').classList.add('open'); }
+const socClose = () => $('#soc').classList.remove('open');
+const socSoon = () => toast('👀 Aperçu : disponible avec le compte en ligne');
+function socShow(k) { if (!k || !D.cells[k]) return socSoon(); socClose(); select(k); try { fitBal(k); } catch (e) {} }
+$('#socb').onclick = socOpen; $('#socx').onclick = socClose;
+$('#soc').addEventListener('click', e => {
+  const t = e.target.closest('[data-st]'); if (t) { SOC.tab = t.dataset.st; return socRender(); }
+  const fm = e.target.closest('[data-fmap]'); if (fm) { const f = SOC.F.find(x => x.id === fm.dataset.fmap); return socShow(f && f.at.k); }
+  const mo = e.target.closest('[data-fmore]'); if (mo) { const f = SOC.F.find(x => x.id === mo.dataset.fmore); SOC.who = f; $('#scshh').innerHTML = `${socAv(f)}<b>${esc(f.d)} & ${esc(f.n)}</b>`; $('#scsh [data-sa="map"]').hidden = f.st !== 'walk'; $('#scsh').hidden = false; return; }
+  const sa = e.target.closest('[data-sa]'); if (sa) { const a = sa.dataset.sa, f = SOC.who; $('#scsh').hidden = true; if (a === 'x') return; if (a === 'map') return socShow(f && f.at && f.at.k); return socSoon(); }
+  if (e.target.id === 'scsh') { $('#scsh').hidden = true; return; }
+  const eg = e.target.closest('[data-eg]'); if (eg) { const [id, v] = eg.dataset.eg.split(':'); SOC.go[id] = SOC.go[id] === v ? null : v; if (SOC.go[id] === 'y') try { navigator.vibrate && navigator.vibrate(30); } catch (x) {} return socRender(); }
+  const em = e.target.closest('[data-emap]'); if (em) return socShow(em.dataset.emap);
+  if (e.target.closest('[data-sx]')) return socSoon();
+});
 $('#imp').onclick = () => $('#fi').click();
 /* ===== Mon compte : tiroir à droite, pages qui glissent ===== */
 const ACV = { none: 'Personne · mode fantôme', friends: 'Copains', all: 'Tout le monde' };
@@ -3350,14 +3437,14 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
     [op('encm'), () => { const b = !$('#encv').hidden && !(encFrom && !encStack.length) && $('#encbk'); b ? b.click() : encClose(); }],      // ouvert directement sur une fiche depuis une autre fenêtre : retour = revenir à cette fenêtre
     [op('dogm'), () => { const p = document.querySelector('#dogm .dgp.on'); p && p.dataset.p !== 'main' ? dogPane('main') : dogClose(); }],
     [op('balm'), () => { !$('#balb').hidden ? $('#balb').click() : balClose(); }],
-    [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
+    [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('soc'), () => { !$('#scsh').hidden ? ($('#scsh').hidden = true) : socClose(); }], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
     [vis('shm'), () => shClose()], [() => RM, () => setRM(false)], [() => ED.on, () => edToggle(false)], [() => P.on && !RC.on, () => $('#pt').click()],
     [() => !!BL.poly && !BR.on, () => { BL.wait = false; BL.poly = null; lpUi(); }], [() => !!sel, () => { const f = selFrom && selFrom.k === sel; const hub = f && selFrom.hub; selFrom = null; sel = null; collapse(); renderPanel(); draw(); if (f) hub ? balOpen() : $('#lb').click(); }]];
   let pushed = false, skip = 0, q = 0;
   const any = () => LAY.some(l => { try { return l[0](); } catch (e) { return false; } });
   const sync = () => { q = 0; const a = any(); if (a && !pushed) { pushed = true; try { history.pushState({ cdm: 1 }, ''); } catch (e) {} } else if (!a && pushed) { pushed = false; if (history.state && history.state.cdm) { skip++; history.back(); } } };
   window.navSync = () => { if (!q) { q = 1; setTimeout(sync, 60); } };
-  const mo = new MutationObserver(navSync); ['pv', 'rqm', 'dzq', 'mkm', 'encm', 'encv', 'dogm', 'balm', 'pls', 'lst', 'dlm', 'menu', 'shm', 'rm', 'pm', 'lp'].forEach(id => { const el = document.getElementById(id); if (el) mo.observe(el, { attributes: true, attributeFilter: ['class', 'hidden'] }); });
+  const mo = new MutationObserver(navSync); ['soc', 'pv', 'rqm', 'dzq', 'mkm', 'encm', 'encv', 'dogm', 'balm', 'pls', 'lst', 'dlm', 'menu', 'shm', 'rm', 'pm', 'lp'].forEach(id => { const el = document.getElementById(id); if (el) mo.observe(el, { attributes: true, attributeFilter: ['class', 'hidden'] }); });
   mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
   addEventListener('popstate', () => { if (skip) { skip--; return; } pushed = false;
     const l = LAY.find(x => { try { return x[0](); } catch (e) { return false; } }); if (l) l[1](); setTimeout(sync, 80); }); }
