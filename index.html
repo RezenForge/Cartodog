@@ -1113,9 +1113,10 @@ body:has(#menu.open) header.bar{z-index:23}
 #srl em{flex:none;font:800 12px var(--num);font-style:normal;color:var(--ember2)}
 #srl .srt{padding:8px 12px 4px;font:800 10.5px var(--num);letter-spacing:.12em;text-transform:uppercase;color:var(--ember)}
 
-.scr .act small.mq{text-overflow:clip!important;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 16px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 16px),transparent)}
-.scr .act small.mq>.mqi{display:inline-block;white-space:nowrap;animation:pnmq 8s ease-in-out infinite}
-@media (prefers-reduced-motion:reduce){.scr .act small.mq>.mqi{animation:none}}
+.scr .act small:has(.mqn){display:flex;align-items:center;gap:4px;text-overflow:clip}.scr .act small:has(.mqn)>*{flex:none}.mqs{font-style:normal}
+.scr .act small .mqn{flex:0 1 auto!important;min-width:40px;color:#ffc56b;font-weight:800;overflow:hidden;white-space:nowrap}.mqn>.mqi{display:inline-block;white-space:nowrap}
+.mqn.mq{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 6px,#000 calc(100% - 10px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 6px,#000 calc(100% - 10px),transparent)}.mqn.mq>.mqi{animation:pnmq 8s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.mqn.mq>.mqi{animation:none}}
 </style></head><body>
 <header class="bar win dg"><button class="hdog" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span></button><button class="hbr brand" id="hbr" aria-label="Cartodog : profil de mon chien"><span class="hinf"><b>Cartodog</b><small id="hsub">Carnet de balade</small></span></button><button class="hset" id="mn" aria-label="Mon compte"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><circle cx="16" cy="16" r="14.5" fill="#2a2018" stroke="#8a6a3a" stroke-width="1"/><circle cx="16" cy="12.4" r="5.4" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2"/><path d="M6.6 26.2c1.3-5.2 5-8 9.4-8s8.1 2.8 9.4 8a14.4 14.4 0 0 1-18.8 0z" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2" stroke-linejoin="round"/></svg></button><b id="hnm" hidden></b>
 <small id="ssn" hidden></small>
@@ -2689,7 +2690,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-92';
+const APP_V = '2026.10.25-93';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2720,7 +2721,7 @@ function socRender() {
   const { F, E } = socDemo(); SOC.F = F; SOC.E = E;
   document.querySelectorAll('#soc [data-st]').forEach(b => { b.classList.toggle('on', b.dataset.st === SOC.tab); b.setAttribute('aria-selected', b.dataset.st === SOC.tab); });
   document.querySelectorAll('#soc [data-sp]').forEach(x => x.classList.toggle('on', x.dataset.sp === SOC.tab));
-  const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${spTag(f.sp)}${f.st === 'walk' ? `<u>🐾 En balade</u> · ${esc(f.at.n)} · ${f.t} min` : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last)}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
+  const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${f.st === 'walk' ? spTag(f.sp, 1) : spTag(f.sp)}${f.st === 'walk' ? `<u title="En balade">🐾 ${f.t} min</u><i class="mqs">·</i><span class="mqn"><span class="mqi">${esc(f.at.n)}</span></span>` : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last)}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
   const grp = (t, L) => L.length ? `<div class="mh">${t} · ${L.length}</div><div class="acg">${L.map(row).join('')}</div>` : '';
   $('#scfr').innerHTML = `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes <b>1</b></button></div><div class="scls">` + grpRows() +
     grp('🐾 En balade', F.filter(f => f.st === 'walk')) + grp('🟢 En ligne', F.filter(f => f.st === 'on')) + grp('Hors ligne', F.filter(f => f.st === 'off')) + '</div>';
@@ -2734,7 +2735,7 @@ function socRender() {
 
 /* ===== Mon état et ma description (visibles par les copains) ===== */
 const SPC = { '': ['🐕', 'Pas précisé', 'Rien de particulier à signaler'], ok: ['👍', 'Sociable', 'Aime jouer avec les autres chiens'], space: ['🟡', 'Besoin d\'espace', 'Réactif : gardez vos distances, merci'], shy: ['🟠', 'Craintif', 'Approchez doucement, sans insister'], heat: ['🔴', 'En chaleur', 'Tenez les mâles à l\'écart'] };
-const spTag = sp => sp && SPC[sp] ? `<span class="sptg ${sp}">${SPC[sp][0]} ${SPC[sp][1]}</span>` : '';
+const spTag = (sp, mini) => sp && SPC[sp] ? `<span class="sptg ${sp}${mini ? ' mini' : ''}" title="${SPC[sp][1]}">${SPC[sp][0]}${mini ? '' : ' ' + SPC[sp][1]}</span>` : '';
 const STS = { on: ['🟢', 'Disponible', 'En ligne, joignable'], look: ['👋', 'Cherche une balade', 'Partant pour marcher avec d\'autres chiens'], dnd: ['🌙', 'Ne pas déranger', 'En ligne, sans invitations'], hid: ['🙈', 'Invisible', 'Personne ne me voit en ligne'] };
 function socMe() {
   const u = accU(), st = STS[u.st] ? u.st : 'on', walk = !!BR.on, ic = walk ? '🐾' : STS[st][0], lb = walk ? 'En balade' : STS[st][1], dn = D.prof && D.prof.name || '';
@@ -2838,9 +2839,8 @@ $('#scgr').addEventListener('click', e => { if (e.target.id === 'scgr') return g
 /* Clavier ouvert : les fenêtres du bas remontent au-dessus (navigateurs qui ne redimensionnent pas la page) */
 if (window.visualViewport) { const kb = () => { const v = visualViewport, h = Math.max(0, Math.round(innerHeight - v.height - v.offsetTop)); document.documentElement.style.setProperty('--kb', h + 'px'); const a = document.activeElement; if (h > 80 && a && a.matches && a.matches('#soc input,#menu input')) setTimeout(() => a.scrollIntoView({ block: 'nearest' }), 60); };
   visualViewport.addEventListener('resize', kb); visualViewport.addEventListener('scroll', kb); }
-function mqFit(root) {      // lignes d'état trop longues : elles défilent doucement (aller-retour), comme le nom des balades
-  requestAnimationFrame(() => root.querySelectorAll('.scr .act small').forEach(el => { if (el.dataset.mq) return; const d = el.scrollWidth - el.clientWidth; if (d <= 4) return; el.dataset.mq = 1;
-    const sp = document.createElement('span'); sp.className = 'mqi'; while (el.firstChild) sp.appendChild(el.firstChild); el.appendChild(sp); el.classList.add('mq'); sp.style.setProperty('--d', -(d + 12) + 'px'); sp.style.animationDuration = Math.max(6, (d + 12) / 22 + 4) + 's'; })); }
+function mqFit(root) {      // seul le nom de la balade défile (aller-retour) quand il ne tient pas en entier
+  requestAnimationFrame(() => root.querySelectorAll('.mqn').forEach(el => { const sp = el.firstElementChild, d = sp.scrollWidth - el.clientWidth; el.classList.toggle('mq', d > 2); if (d > 2) { sp.style.setProperty('--d', -(d + 10) + 'px'); sp.style.animationDuration = Math.max(6, (d + 10) / 22 + 4) + 's'; } })); }
 function socOpen() { const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); socMe(); socRender(); $('#scsh').hidden = true; $('#soc').classList.add('open'); }
 const socClose = () => { SOC.ed = false; $('#soc').classList.remove('open'); };
 const socSoon = () => toast('👀 Aperçu : disponible avec le compte en ligne');
