@@ -2685,7 +2685,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-90';
+const APP_V = '2026.10.25-91';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2910,7 +2910,7 @@ document.querySelectorAll('#menu [data-acp]').forEach(b => b.onclick = () => { a
 $('#bksh').onclick = () => bkShare();
 document.querySelectorAll('#menu [data-acb]').forEach(b => b.onclick = () => { accPage('main'); accRender(); });
 $('#acdog').onclick = () => dogOpen();
-[['#acpn', 'name'], ['#acpc', 'city']].forEach(([id, k]) => { const el = $(id); el.oninput = () => { accU()[k] = el.value; saveSoon(); }; el.onchange = () => { accU()[k] = el.value.trim(); save(); accRender(); }; el.onkeydown = e => { if (e.key === 'Enter') el.blur(); }; });
+[['#acpn', 'name'], ['#acpc', 'city']].forEach(([id, k]) => { const el = $(id); el.oninput = () => { accU()[k] = el.value; saveSoon(); }; el.onchange = () => { accU()[k] = el.value.trim(); save(); accRender(); try { hdrRender(); } catch (x) {} }; el.onkeydown = e => { if (e.key === 'Enter') el.blur(); }; });
 document.querySelectorAll('#acvis [data-v]').forEach(b => b.onclick = () => { accU().vis = b.dataset.v; save(); accRender(); });
 $('#acpres').onclick = () => { const u = accU(); u.pres = !u.pres; save(); accRender(); };
 $('#acstat').onclick = () => { const u = accU(); u.stats = !u.stats; save(); accRender(); };
@@ -2946,7 +2946,7 @@ function hdrRender() {      // bandeau : le chien est le héros (photo, niveau, 
   if (!nm) { el.textContent = 'Mon chien'; $('#hsub').innerHTML = '<span class="hcta">Carnet de balade</span>'; $('#hdog').classList.add('new'); $('#hlv').hidden = true; $('#hring').style.strokeDasharray = '0 200'; return; }
   const S = dogStats(), a0 = lvNeed(S.L), a1 = lvNeed(S.L + 1), pc = Math.max(0, Math.min(1, (S.xp - a0) / (a1 - a0))), C = 2 * Math.PI * 21.5;
   el.textContent = nm; $('#hlv').hidden = false; $('#hlv').textContent = S.L; $('#hring').style.strokeDasharray = `${(C * pc).toFixed(1)} ${C.toFixed(1)}`;
-  $('#hdog').classList.remove('new'); $('#hsub').innerHTML = `<span class="hwk">Avec ${esc(nm)}</span>${S.st ? `<span class="hst">🔥${S.st}</span>` : ''}`;
+  $('#hdog').classList.remove('new'); const hu = (D.user && D.user.name || '').trim(); $('#hsub').innerHTML = `<span class="hwk">${esc(nm)}${hu ? ' & ' + esc(hu) : ''}</span>${S.st ? `<span class="hst">🔥${S.st}</span>` : ''}`;
 }
 function dogLabel() {
   const p = D.prof, w = lastW(), bits = [p.breed, ageTxt(p.bd), w ? fkg(w.kg) : ''].filter(Boolean).join(' · ');
