@@ -1290,8 +1290,10 @@ function markLinks() { const sig = (D.marks || []).length + '|' + (NG.sig || '')
       if (!near && g) { const k2 = 60 / cosAt(m.y); near = g.paths.some(p => { const b = pathBB(p); if (m.x < b[0] - k2 || m.x > b[2] + k2 || m.y < b[1] - k2 || m.y > b[3] + k2) return false; for (let i = 1; i < p.pts.length; i++) if (segProj(q, p.pts[i - 1], p.pts[i]).d < k2) return true; return false; }); }
       if (near) (m2.get(m.id) || m2.set(m.id, new Set()).get(m.id)).add(k); }); });
   MLK = { sig, m: m2 }; return m2; }
+const balFocus = () => { const bm = document.getElementById('balm'); if (!(bm && bm.classList.contains('open') && bm.classList.contains('sheet') && BL.g)) return null;      // balade ouverte dans « Partir en balade » : son tracé et ses repères restent visibles
+  if (BL.fk && BL.fk[0] === BL.g.k && D.cells[BL.fk[1]]) return BL.fk[1]; const k = Object.keys(D.cells).find(kk => { const gg = cellGroup(kk); return gg && gg.k === BL.g.k; }) || null; BL.fk = [BL.g.k, k]; return k; };
 function markShown(m) {      // affiché : en mode repère / Sentiers, s'il n'est lié à aucune balade, si sa balade est choisie, ou pendant une sortie à moins de 500 m
-  if (RM || P.on) return true; const L = markLinks().get(m.id); if (!L) return true; if (sel && L.has(sel)) return true;
+  if (RM || P.on) return true; const L = markLinks().get(m.id); if (!L) return true; if (sel && L.has(sel)) return true; const bf = balFocus(); if (bf && L.has(bf)) return true;
   return !!(BR.on && me && rdist([me.x, me.y], [m.x, m.y]) < 500);
 }
 function balInd(k) { const sig = (D.marks || []).length + '|' + (NG.sig || '') + '|' + Math.floor(Date.now() / 6e4); if (BIC.sig !== sig) BIC = { sig, m: new Map() }; if (BIC.m.has(k)) return BIC.m.get(k);
@@ -2503,7 +2505,7 @@ $('#mn').onclick = () => { alLabel(); accPage('main', true); accRender(); const 
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-67';
+const APP_V = '2026.10.24-68';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2851,7 +2853,7 @@ function drawPaths(sx, sy) {
   const inView = p => { const b = pathBB(p); return b[2] >= vx0 && b[0] <= vx1 && b[3] >= vy0 && b[1] <= vy1; };
   let ps, fa = 1;
   if (P.on) ps = (D.paths || []).filter(inView);
-  else { const want = new Set(), sg = sel && cellGroup(sel); if (sg) sg.paths.forEach(p => want.add(p));
+  else { const want = new Set(), sg = sel && cellGroup(sel); if (sg) sg.paths.forEach(p => want.add(p)); const bf = balFocus(); if (bf && cellGroup(bf)) cellGroup(bf).paths.forEach(p => want.add(p)); else if (BL.g && document.getElementById('balm').classList.contains('sheet') && document.getElementById('balm').classList.contains('open')) BL.g.paths.forEach(p => want.add(p));
     if (BR.on && me) { const m = 500 / cosAt(me.y); (D.paths || []).forEach(p => { const b = pathBB(p); if (me.x >= b[0] - m && me.x <= b[2] + m && me.y >= b[1] - m && me.y <= b[3] + m) want.add(p); }); }
     const close = V.mpp < 1.6; ps = (D.paths || []).filter(p => (want.has(p) || close) && inView(p)); fa = want.size ? 1 : .6; if (V.mpp > 80) ps = ps.filter(p => want.has(p)); }
   if (!ps.length && !P.start) return;
