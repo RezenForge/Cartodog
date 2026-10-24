@@ -894,7 +894,7 @@ header.bar .hdog.new .hav .emb::after{font-size:30px}
 header.bar .hset{width:40px;height:40px}
 #sc{top:auto!important;bottom:14px!important;left:10px!important}header.bar .hbr{padding-left:2px}#bh{top:8px!important;left:100px!important;max-width:calc(100% - 160px)!important}
 
-header.bar.dg::before{background:radial-gradient(circle,#d6ab55 0 1.7px,#4a3a22 2.2px 3px,transparent 3.4px) 100% 0/8px 8px no-repeat,radial-gradient(circle,#d6ab55 0 1.7px,#4a3a22 2.2px 3px,transparent 3.4px) 100% 100%/8px 8px no-repeat}
+header.bar.dg::before{background:none}
 body{padding-top:0!important}header.bar{margin-top:6px!important}
 
 /* ===== Météo : bouton rond dans la colonne de droite, comme la boussole et le GPS ===== */
@@ -2436,7 +2436,7 @@ $('#mn').onclick = () => { alLabel(); accPage('main', true); accRender(); const 
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-61';
+const APP_V = '2026.10.24-62';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
