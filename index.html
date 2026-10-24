@@ -993,6 +993,21 @@ body{padding-top:0!important}header.bar{margin-top:6px!important}
 .scshh{display:flex;align-items:center;gap:10px;margin:0 0 8px;font:800 15px var(--num);color:#fff1cf}
 .scshw button{display:block;width:100%;margin-top:6px;padding:12px;border:2px solid var(--edge);border-radius:8px;background:var(--slot);box-shadow:inset 0 0 0 1px var(--rim);color:var(--txt);font:700 14px var(--num);text-align:left;cursor:pointer}.scshw button[hidden]{display:none}
 .scshw button.dgr{color:#ff8a6e}.scshw button.cx{text-align:center;color:var(--mut)}
+
+/* ===== Copains : dans le cadre de la carte (le bandeau reste visible) ===== */
+#soc{top:var(--soct,0px)!important;background:none!important}
+body:has(#soc.open) header.bar{z-index:23}
+#soc .scw{inset:0 8px calc(6px + env(safe-area-inset-bottom)) 8px!important;padding:34px 14px 14px!important;border:3px solid var(--edge)!important;border-radius:6px!important;box-shadow:0 0 0 2px #574c3d,0 0 0 4px var(--edge),0 6px 18px rgba(0,0,0,.5)!important;animation:socUp .3s cubic-bezier(.2,.85,.25,1) both!important}
+@keyframes socUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.scme{display:flex;align-items:center;gap:12px;margin:0 0 10px;padding:10px;border:2px solid var(--edge);border-radius:10px;background:linear-gradient(#3a3024,#211b14);box-shadow:inset 0 0 0 1px #6b5333}
+.scmav{display:block;width:50px;height:50px;border-radius:50%;overflow:hidden;border:2px solid #0e0c09;box-shadow:0 0 0 2px var(--ember)}.scmav>*{width:100%!important;height:100%!important;display:block;object-fit:cover}
+.scme .scdot{width:15px;height:15px}.scdot.look{background:#4fb3ff;animation:scpul2 1.6s ease-in-out infinite}.scdot.dnd{background:#c9472c}.scdot.hid{background:#6b6b66;box-shadow:inset 0 0 0 2px #1b1814}
+@keyframes scpul2{0%,100%{box-shadow:0 0 0 0 rgba(79,179,255,.6)}50%{box-shadow:0 0 0 5px rgba(79,179,255,0)}}
+.scme .act{gap:4px}.scme .act>b{font:800 16px/1.2 var(--px);color:#fff1cf}.scme .act>b em{font-style:normal;color:var(--mut);font-family:var(--num);font-size:13px}
+.scst{align-self:flex-start;padding:4px 10px;border:2px solid var(--edge);border-radius:14px;background:#14110e;box-shadow:inset 0 0 0 1px #3a332a;color:#fff1cf;font:800 12.5px var(--num);cursor:pointer}.scst i{font-style:normal;color:var(--ember2)}.scst small{color:var(--mut);font-weight:700}
+.scbio{align-self:stretch;padding:2px 0;border:0;background:none;color:#e8dcc0;font:600 italic 12.5px/1.3 var(--num);text-align:left;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.scbio.ph{color:var(--ember2);font-style:normal}
+#scbio{width:100%;box-sizing:border-box;padding:7px 9px;font:600 13px var(--num);user-select:text;-webkit-user-select:text}
+#scstl button{display:flex;align-items:center;gap:10px}#scstl button>span:first-child{font-size:20px}#scstl button.on{border-color:var(--ember);box-shadow:inset 0 0 0 1px var(--ember)}#scstl .act b{font:800 14px var(--num);color:#fff1cf}#scstl .act small{font:600 11.5px var(--num);color:var(--mut);white-space:normal}
 </style></head><body>
 <header class="bar win dg"><button class="hdog" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span></button><button class="hbr brand" id="hbr" aria-label="Cartodog : profil de mon chien"><span class="hinf"><b>Cartodog</b><small id="hsub">Carnet de balade</small></span></button><button class="hset" id="mn" aria-label="Mon compte"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e2e2de"/><stop offset="1" stop-color="#9a9a96"/></linearGradient></defs><circle cx="16" cy="16" r="14.5" fill="#2c2c2a" stroke="#6e6e6a" stroke-width="1"/><circle cx="16" cy="12.4" r="5.4" fill="url(#hsg)" stroke="#1e1e1c" stroke-width="1.2"/><path d="M6.6 26.2c1.3-5.2 5-8 9.4-8s8.1 2.8 9.4 8a14.4 14.4 0 0 1-18.8 0z" fill="url(#hsg)" stroke="#1e1e1c" stroke-width="1.2" stroke-linejoin="round"/></svg></button><b id="hnm" hidden></b>
 <small id="ssn" hidden></small>
@@ -1099,11 +1114,13 @@ body{padding-top:0!important}header.bar{margin-top:6px!important}
 </div></div>
 <div id="soc"><div class="win dg scw" role="dialog" aria-label="Copains et sorties">
   <div class="ach"><h2>Copains<small>Qui se balade, et les sorties à venir</small></h2><button class="ib" id="socx" aria-label="Fermer">✕</button></div>
+  <div class="scme" id="scme"></div>
   <div class="sct" role="tablist"><button data-st="fr" role="tab">👥 Copains</button><button data-st="ev" role="tab">📅 Sorties</button></div>
   <div class="scdemo">👀 <b>Aperçu</b> avec des exemples : les vrais copains arriveront avec le compte en ligne.</div>
   <div class="scp" data-sp="fr" id="scfr"></div>
   <div class="scp" data-sp="ev" id="scev"></div>
   <div class="scsh" id="scsh" hidden><div class="scshw"><div class="scshh" id="scshh"></div><button data-sa="map">📍 Voir où il se balade</button><button data-sa="prof">🐕 Voir son profil</button><button data-sa="rm">➖ Retirer de mes copains</button><button data-sa="blk" class="dgr">🚫 Bloquer</button><button data-sa="x" class="cx">Annuler</button></div></div>
+  <div class="scsh" id="scst" hidden><div class="scshw"><div class="scshh">Mon état</div><div id="scstl"></div><button data-ss="x" class="cx">Annuler</button></div></div>
 </div></div>
 <div id="lst"><div class="win dg">
   <div class="lhd"><h2 id="lh">Mes balades</h2><button class="ib" id="lc" aria-label="Fermer">✕</button></div>
@@ -1315,7 +1332,7 @@ D.prof = cleanProf(null);
 function load() {
   try { const d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && d.cells) { D = { cells: {}, paths: cleanPaths(d.paths), marks: cleanMarks(d.marks), dog: String(d.dog || '').slice(0, 30), prof: cleanProf(d.prof, d.dog), user: cleanUser(d.user) }; D.dog = D.prof.name || D.dog; Object.entries(d.cells).forEach(([k, c]) => { if (/^[\w,-]+$/.test(k)) { const x = clean(c); if (x.x != null) D.cells[k] = x; } }); } } catch (e) {}
 }
-function cleanUser(u) { u = u && typeof u === 'object' ? u : {}; return { name: String(u.name || '').slice(0, 24), city: String(u.city || '').slice(0, 40), vis: ['none', 'friends', 'all'].includes(u.vis) ? u.vis : 'friends', pres: u.pres !== false, stats: u.stats !== false }; }
+function cleanUser(u) { u = u && typeof u === 'object' ? u : {}; return { name: String(u.name || '').slice(0, 24), city: String(u.city || '').slice(0, 40), vis: ['none', 'friends', 'all'].includes(u.vis) ? u.vis : 'friends', pres: u.pres !== false, stats: u.stats !== false, st: ['on', 'look', 'dnd', 'hid'].includes(u.st) ? u.st : 'on', bio: String(u.bio || '').slice(0, 80) }; }
 function importData(d) {
   let msg;
   if (d && d.app === 'cartodog' && d.kind === 'balade' && Array.isArray(d.paths)) { mergePaths(d.paths); mergeMarks(d.marks); NG.sig = ''; msg = 'Balade « ' + String(d.name || '').slice(0, 60) + ' » importée' + (d.from ? ' (partagée par ' + String(d.from).slice(0, 30) + ')' : '');
@@ -2536,7 +2553,7 @@ $('#mn').onclick = () => { alLabel(); accPage('main', true); accRender(); const 
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-70';
+const APP_V = '2026.10.24-71';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2576,12 +2593,27 @@ function socRender() {
       <span class="scps">${e.who.map(f => socAv(f, 'sm')).join('')}${g === 'y' ? `<span class="scav sm me">${esc((D.prof && D.prof.name || 'M')[0])}</span>` : ''}</span>
       <span class="scea"><button data-eg="${e.id}:y" class="${g === 'y' ? 'on' : ''}">${g === 'y' ? '✓ J\'y vais' : 'J\'y vais'}</button><button data-eg="${e.id}:m" class="${g === 'm' ? 'on' : ''}">Peut-être</button>${e.at.k ? `<button data-emap="${e.at.k}" aria-label="Voir sur la carte">📍</button>` : ''}</span></div></div>`; }).join('');
 }
-function socOpen() { socRender(); $('#scsh').hidden = true; $('#soc').classList.add('open'); }
-const socClose = () => $('#soc').classList.remove('open');
+
+/* ===== Mon état et ma description (visibles par les copains) ===== */
+const STS = { on: ['🟢', 'Disponible', 'En ligne, joignable'], look: ['👋', 'Cherche une balade', 'Partant pour marcher avec d\'autres chiens'], dnd: ['🌙', 'Ne pas déranger', 'En ligne, sans invitations'], hid: ['🙈', 'Invisible', 'Personne ne me voit en ligne'] };
+function socMe() {
+  const u = accU(), st = STS[u.st] ? u.st : 'on', walk = !!BR.on, ic = walk ? '🐾' : STS[st][0], lb = walk ? 'En balade' : STS[st][1], dn = D.prof && D.prof.name || '';
+  $('#scme').innerHTML = `<span class="scaw"><span class="scmav">${$('#dogav') ? $('#dogav').innerHTML : ''}</span><i class="scdot ${walk ? 'walk' : st}"></i></span>
+    <span class="act"><b>${esc(u.name.trim() || 'Moi')}${dn ? ` <em>& ${esc(dn)}</em>` : ''}</b>
+    <button class="scst" data-sme="st">${ic} ${lb}${walk ? ' <small>auto</small>' : ''} <i>▾</i></button>
+    ${SOC.ed ? `<input id="scbio" maxlength="80" enterkeyhint="done" placeholder="Ex. Balade tous les soirs vers 18 h au Taillan" value="${esc(u.bio || '')}">` : `<button class="scbio${u.bio ? '' : ' ph'}" data-sme="bio">${u.bio ? '« ' + esc(u.bio) + ' »' : '✏️ Ajouter une description…'}</button>`}</span>`;
+  if (SOC.ed) { const el = $('#scbio'); el.focus(); const done = () => { if (!SOC.ed) return; SOC.ed = false; accU().bio = el.value.trim().slice(0, 80); save(); socMe(); }; el.onblur = done; el.onkeydown = e => { if (e.key === 'Enter') el.blur(); }; }
+}
+function socOpen() { const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#scst').hidden = true; socMe(); socRender(); $('#scsh').hidden = true; $('#soc').classList.add('open'); }
+const socClose = () => { SOC.ed = false; $('#soc').classList.remove('open'); };
 const socSoon = () => toast('👀 Aperçu : disponible avec le compte en ligne');
 function socShow(k) { if (!k || !D.cells[k]) return socSoon(); socClose(); select(k); try { fitBal(k); } catch (e) {} }
 $('#socb').onclick = socOpen; $('#socx').onclick = socClose;
 $('#soc').addEventListener('click', e => {
+  const me = e.target.closest('[data-sme]'); if (me) { if (me.dataset.sme === 'bio') { SOC.ed = true; return socMe(); } if (BR.on) return toast('🐾 « En balade » s\'affiche tout seul pendant une sortie'); const cur = STS[accU().st] ? accU().st : 'on';
+    $('#scstl').innerHTML = Object.entries(STS).map(([k, [ic, t, d]]) => `<button data-ss="${k}"${k === cur ? ' class="on"' : ''}><span>${ic}</span><span class="act"><b>${t}</b><small>${d}</small></span></button>`).join(''); $('#scst').hidden = false; return; }
+  const ss = e.target.closest('[data-ss]'); if (ss) { $('#scst').hidden = true; if (ss.dataset.ss !== 'x') { accU().st = ss.dataset.ss; save(); socMe(); } return; }
+  if (e.target.id === 'scst') { $('#scst').hidden = true; return; }
   const t = e.target.closest('[data-st]'); if (t) { SOC.tab = t.dataset.st; return socRender(); }
   const fm = e.target.closest('[data-fmap]'); if (fm) { const f = SOC.F.find(x => x.id === fm.dataset.fmap); return socShow(f && f.at.k); }
   const mo = e.target.closest('[data-fmore]'); if (mo) { const f = SOC.F.find(x => x.id === mo.dataset.fmore); SOC.who = f; $('#scshh').innerHTML = `${socAv(f)}<b>${esc(f.d)} & ${esc(f.n)}</b>`; $('#scsh [data-sa="map"]').hidden = f.st !== 'walk'; $('#scsh').hidden = false; return; }
@@ -2596,7 +2628,7 @@ const sdLabel = () => $('#socdm').innerHTML = sw('Aperçu social : exemples de p
 $('#socdm').onclick = () => { socPrev = !socPrev; try { localStorage.setItem('cartodog-socdemo', socPrev ? '1' : '0'); } catch (e) {} SLV.t = 0; sdLabel(); schedule(); };
 /* ===== Mon compte : tiroir à droite, pages qui glissent ===== */
 const ACV = { none: 'Personne · mode fantôme', friends: 'Copains', all: 'Tout le monde' };
-const accU = () => (D.user = Object.assign({ name: '', city: '', vis: 'friends', pres: true, stats: true }, D.user || {}));
+const accU = () => (D.user = Object.assign({ name: '', city: '', vis: 'friends', pres: true, stats: true, st: 'on', bio: '' }, D.user || {}));
 function accPage(pg, instant) {      // renvoie true si on a changé de page (sert au bouton retour)
   const cur = document.querySelector('#menu .acp.on'); if (cur && cur.dataset.pg === pg) return false;
   document.querySelectorAll('#menu .acp').forEach(x => { const on = x.dataset.pg === pg; x.classList.toggle('on', on); x.classList.toggle('back', on && pg === 'main' && !instant); });
@@ -3472,7 +3504,7 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
     [op('encm'), () => { const b = !$('#encv').hidden && !(encFrom && !encStack.length) && $('#encbk'); b ? b.click() : encClose(); }],      // ouvert directement sur une fiche depuis une autre fenêtre : retour = revenir à cette fenêtre
     [op('dogm'), () => { const p = document.querySelector('#dogm .dgp.on'); p && p.dataset.p !== 'main' ? dogPane('main') : dogClose(); }],
     [op('balm'), () => { !$('#balb').hidden ? $('#balb').click() : balClose(); }],
-    [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('soc'), () => { !$('#scsh').hidden ? ($('#scsh').hidden = true) : socClose(); }], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
+    [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('soc'), () => { !$('#scst').hidden ? ($('#scst').hidden = true) : !$('#scsh').hidden ? ($('#scsh').hidden = true) : socClose(); }], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
     [vis('shm'), () => shClose()], [() => RM, () => setRM(false)], [() => ED.on, () => edToggle(false)], [() => P.on && !RC.on, () => $('#pt').click()],
     [() => !!BL.poly && !BR.on, () => { BL.wait = false; BL.poly = null; lpUi(); }], [() => !!sel, () => { const f = selFrom && selFrom.k === sel; const hub = f && selFrom.hub; selFrom = null; sel = null; collapse(); renderPanel(); draw(); if (f) hub ? balOpen() : $('#lb').click(); }]];
   let pushed = false, skip = 0, q = 0;
