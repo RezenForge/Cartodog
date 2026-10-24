@@ -1350,6 +1350,7 @@ function draw() {
     }
   if (commOn) drawComm(0, sx, sy, W, x0, x1, y0, y1, mpp);
   drawRoads(sx, sy, x0, x1, y0, y1, mpp); drawPaths(sx, sy); drawLoop(sx, sy); drawShared(sx, sy); drawWalks(sx, sy); drawRoute(sx, sy); const ps = spotSz();
+  if (commOn) drawComm(1, sx, sy, W, x0, x1, y0, y1, mpp);      // noms des communes sous les repères : balades et groupes passent devant
   g.textAlign = 'center'; g.textBaseline = 'middle';
   /* Repères de balade : pastille ronde (photo de couverture, contour couleur du rang), pointe sur la position ; regroupés quand ils se chevauchent */
   const PR = pinR(), vis = [];
@@ -1391,7 +1392,6 @@ function draw() {
         if (o.dz) { const pl = .5 + .5 * Math.sin(performance.now() / 300); g.beginPath(); g.arc(x - tw / 2 + s0 / 2, iy, s0 / 2 + 3 + pl * 2, 0, 7); g.strokeStyle = `rgba(255,95,74,${.5 - pl * .3})`; g.lineWidth = 2; g.stroke(); } } }
     g.restore(); if (upr) g.restore(); });
   drawMarks(sx, sy, UP);
-  if (commOn) drawComm(1, sx, sy, W, x0, x1, y0, y1, mpp);
   const ring = (k, col, w) => { const c = D.cells[k]; if (!c || c.x == null) return; const u = UP(sx(c.x), sy(c.y)); g.beginPath(); g.arc(sx(c.x), sy(c.y) - ps / 2, ps * .62 + 3, 0, 7); g.lineWidth = w; g.strokeStyle = col; g.stroke(); if (u) g.restore(); };
   
   if (me && mpp < 30) { const q = meDisp(), fa = Math.min(1, (30 - mpp) / 12); g.save(); g.globalAlpha = fa; drawMe(sx(q[0]), sy(q[1]), mpp); g.restore(); }      // s'efface au dézoom (au-delà d'≈ 1 km d'échelle) pour ne pas cacher les repères
@@ -2376,7 +2376,7 @@ $('#mn').onclick = () => { alLabel(); const nl = Object.values(D.cells).filter(r
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-59';
+const APP_V = '2026.10.24-60';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
