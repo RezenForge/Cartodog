@@ -666,7 +666,7 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
 .bdi{flex:none;width:24px;text-align:center;font-size:17px}.bdt{flex:1;min-width:0;font-size:14px;line-height:1.3}.bdt>small:first-child{display:block;font-size:11px;color:var(--mut);letter-spacing:.03em}.bdt b{color:#fff1cf}.bdt small{color:var(--mut)}
 .bdpk{display:flex;gap:6px;overflow-x:auto;padding:0 12px 10px 46px;scrollbar-width:none;border-top:0!important}.bdpk::-webkit-scrollbar{display:none}
 .bdpk button{flex:none;padding:6px 10px;border:2px solid var(--edge);border-radius:20px;background:#14110e;color:var(--txt);font-size:13px;white-space:nowrap;cursor:pointer}.bdpk button small{color:var(--mut);margin-left:3px}
-.bdpk button.on{border-color:var(--ember);color:var(--ember2)}
+.bdpk button.on{border-color:var(--ember);color:var(--ember2)}.bdpk button:disabled{opacity:.45}
 .bdgo{margin:0;padding:15px 10px;font-size:17px}
 .bdsh{display:block;margin:10px auto 0;padding:8px 12px;border:0;background:none;color:var(--mut);font-size:13.5px;cursor:pointer}.bdsh:active{color:var(--ember2)}
 
@@ -2248,6 +2248,7 @@ function balParks(g) {      // parkings à moins de 500 m du réseau de la balad
 function balStart(g, pkId) {      // départ : le parking choisi (ou le plus proche de vous), sinon le point du réseau le plus proche de vous
   const pts = g.paths.flatMap(p => p.pts), dn = q => Math.min(...pts.map(v => rdist(v, q))), L = balParks(g);
   let lastId = ''; try { lastId = localStorage.getItem('cartodog-pk-' + g.k) || ''; } catch (e) {}
+  if (me && (pkId === 'me' || (!pkId && lastId === 'me')) && dn([me.x, me.y]) < 5000) return { q: [me.x, me.y], park: null, here: true, parks: L, dme: dn([me.x, me.y]), txt: '📍 Départ et retour : votre position' };      // partir d'où l'on est (garé hors parking…)
   const pk = L.find(o => o.m.id === pkId) || L.find(o => o.fav) || (me ? L[0] : L.find(o => o.m.id === lastId) || L[0]);
   if (pk) return { q: [pk.m.x, pk.m.y], park: pk.m, pname: pk.name, parks: L, txt: `🅿 Départ et retour : <b>${esc(pk.name)}</b>${pk.d > 15 ? ` (à ${fmtDist(pk.d)} du sentier)` : ''}` };
   if (me && dn([me.x, me.y]) < 3000) return { q: [me.x, me.y], park: null, parks: L, txt: '⚠️ Aucun parking (repère 🅿) près de ces sentiers : départ depuis votre position' };
@@ -2273,21 +2274,25 @@ function balList() {      // le hub Balades : partir (libre ou en boucle), ouvri
 }
 const DURS = [30, 45, 60, 90, 120];
 const pkShort = n => n.replace(/^(parking|aire|place|parc)\s+(de\s+la\s+|de\s+l['’]\s*|du\s+|des\s+|de\s+|d['’]\s*)?/i, '').replace(/^./, c => c.toUpperCase()) || n;
+function hereChip(g, st) {      // « 📍 Ici » : boucle et guidage depuis votre position (si vous n'êtes pas garé au parking)
+  if (!me) return '<button data-pk="me" disabled aria-label="Partir d\'ici : en attente du GPS"><b>📍 Ici</b><small>GPS…</small></button>';
+  const pts = g.paths.flatMap(p => p.pts), d = Math.min(...pts.map(v => rdist(v, [me.x, me.y])));
+  return `<button data-pk="me"${st.here ? ' class="on"' : ''}${d > 5000 ? ' disabled' : ''} aria-label="Partir d'ici, depuis votre position"><b>📍 Ici</b><small>${d > 5000 ? 'trop loin' : d < 25 ? 'sur le sentier' : 'à ' + fmtDist(d)}</small></button>`; }
 function balDetail(k) {      // petit panneau en bas : la carte reste visible et suit le parking choisi
-  const g = balGroups().find(x => x.k === k); if (!g) return balList(); BL.g = g; const st = balStart(g, BL.pk), sp = speedOf(k); BL.pk = st.park ? st.park.id : null;
+  const g = balGroups().find(x => x.k === k); if (!g) return balList(); BL.g = g; const st = balStart(g, BL.pk), sp = speedOf(k); BL.pk = st.here ? 'me' : st.park ? st.park.id : null;
   const ndz = balNet(g, st.q).dzAll.length, pk = st.parks.find(o => o.m.id === BL.pk);
   $('#balm').classList.add('sheet'); $('#balb').hidden = $('#bals').hidden = false;
   $('#balh').innerHTML = `${esc(g.name)}<small>${fmtDist(g.len)} de sentiers</small>`;
   $('#balc').innerHTML = `<div class="bdur"><button class="bdst" data-step="-5" aria-label="5 minutes de moins">−</button><div class="bdv"><b id="bldv"></b><small id="blsp"></small></div><button class="bdst" data-step="5" aria-label="5 minutes de plus">+</button></div>
     <div class="bdch" id="bldc">${DURS.map(m => `<button data-m="${m}">${fmtMin(m)}</button>`).join('')}</div>
-    ${st.parks.length > 1 ? `<div class="bdpk" id="blpk">${st.parks.slice(0, 4).map(o => `<button data-pk="${o.m.id}"${o.m.id === BL.pk ? ' class="on"' : ''} aria-label="${esc(o.name)}${o.fav ? ' (votre parking habituel)' : ''}"><b>${o.fav ? '<span class="pkf">♥</span>' : '🅿'} ${esc(pkShort(o.name))}</b>${o.me != null ? `<small>${fmtDist(o.me)}</small>` : ''}</button>`).join('')}</div>`
+    ${st.parks.length > 1 || me ? `<div class="bdpk" id="blpk">${hereChip(g, st)}${st.parks.slice(0, me ? 3 : 4).map(o => `<button data-pk="${o.m.id}"${o.m.id === BL.pk ? ' class="on"' : ''} aria-label="${esc(o.name)}${o.fav ? ' (votre parking habituel)' : ''}"><b>${o.fav ? '<span class="pkf">♥</span>' : '🅿'} ${esc(pkShort(o.name))}</b>${o.me != null ? `<small>${fmtDist(o.me)}</small>` : ''}</button>`).join('')}</div>`
       : `<div class="bdln">${pk ? `🅿 <b>${esc(pk.name)}</b>${pk.d > 15 ? ` <small>à ${fmtDist(pk.d)} du sentier</small>` : ''}` : `📍 Départ : <b>${me ? 'votre position' : 'début du sentier'}</b>`}</div>`}
     ${ndz ? `<button class="bdln bdav" data-avoid>⚠️ <span>Éviter ${ndz > 1 ? 'les ' + ndz + ' dangers signalés' : 'le danger signalé'}</span><em class="sw${BL.avoid ? ' on' : ''}" aria-hidden="true"></em></button>` : ''}
     <button class="btn gold bdgo" data-go>🧭 <span id="blgo"></span></button>`;
   const upd = () => { $('#bldv').textContent = fmtMin(BL.min); $('#blsp').textContent = `≈ ${fmtDist(BL.min / 60 * sp.kmh * 1000)} · ${sp.kmh.toFixed(1).replace('.', ',')} km/h`;
     $('#blgo').textContent = 'Proposer une boucle de ' + fmtMin(BL.min); document.querySelectorAll('#bldc button').forEach(b => b.classList.toggle('on', +b.dataset.m === BL.min)); };
   BL.upd = upd; upd();
-  BL.hl = pk ? [pk.m.x, pk.m.y] : null;
+  BL.hl = st.here ? [me.x, me.y] : pk ? [pk.m.x, pk.m.y] : null;
   requestAnimationFrame(() => requestAnimationFrame(() => { if (BL.hl) { const [x, y] = BL.hl; sheetFit([[x - 250, y - 250], [x + 250, y + 250]]); } else sheetFit(g.paths.flatMap(p => p.pts)); }));      // la vue va sur le parking choisi (sinon sur la balade)
 }
 function sheetFit(pts, el = $('#balm .win')) {      // cadre ces points dans la partie de carte que le panneau laisse visible
@@ -2297,7 +2302,7 @@ function sheetFit(pts, el = $('#balm .win')) {      // cadre ces points dans la 
 }
 function balPropose() {
   const g = BL.g, st = balStart(g, BL.pk), sp = speedOf(g.k), L = BL.min / 60 * sp.kmh * 1000, net = balNet(g, st.q), con = net.off > 3 ? net.off : 0;
-  try { localStorage.setItem('cartodog-dur', BL.min); if (st.park) localStorage.setItem('cartodog-pk-' + g.k, st.park.id); } catch (e) {}
+  try { localStorage.setItem('cartodog-dur', BL.min); if (st.park || st.here) localStorage.setItem('cartodog-pk-' + g.k, st.here ? 'me' : st.park.id); } catch (e) {}
   BL.net = net; BL.st = st; BL.con = con; BL.Lt = Math.max(150, L - 2 * con); BL.seen = new Set();
   const lp = balPick(balLoops(net, BL.Lt, BL.avoid, 12), true); BL.dzAll = net.dzAll; if (!lp) return toast('Impossible de calculer une boucle sur ces sentiers');
   BL.loops = [lp]; BL.i = 0; BL.park = st.park; BL.pname = st.pname; BL.sp = sp; BL.L = L; BL.arr = false; BL.wait = false; balClose(); balShow();
@@ -2694,7 +2699,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-99';
+const APP_V = '2026.10.25-100';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
