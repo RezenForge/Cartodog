@@ -1475,11 +1475,14 @@ function socLive() {
   const ks = Object.keys(D.cells).filter(k => rec(D.cells[k]) && cellGroup(k)); if (ks[2]) { const o = m.get(ks[2]) || { cnt: 0, fr: [] }; m.set(ks[2], o); ['f3', 'f4', 'f5', 'f1'].forEach((id, i) => o.fr.push({ id: id + 'x', d: 'TPGR'[i], c: ['#466f9a', '#8a4f7d', '#6b5b44', '#c6862a'][i] })); o.cnt = Math.max(o.cnt, o.fr.length + 2); }      // un exemple « plus de 3 copains »
   SLV = { t: sig, m }; return m;
 }
-function drawPaw(x, y, s, n) {      // petite patte crème avec le nombre de promeneurs sur le coussinet
-  g.save(); g.fillStyle = '#fff1cf'; g.strokeStyle = '#1a1208'; g.lineWidth = Math.max(1.5, s * .16);
-  [[-.78, -.62, .3], [-.3, -1.02, .32], [.3, -1.02, .32], [.78, -.62, .3]].forEach(([dx, dy, r]) => { g.beginPath(); g.ellipse(x + dx * s, y + dy * s, r * s, r * s * 1.2, dx * .5, 0, 7); g.stroke(); g.fill(); });
-  g.beginPath(); g.ellipse(x, y + s * .08, s * .78, s * .66, 0, 0, 7); g.stroke(); g.fill();
-  g.fillStyle = '#2a1806'; g.font = '900 ' + Math.round(s * (n > 9 ? .78 : .95)) + 'px system-ui,sans-serif'; g.fillText(n > 99 ? '99' : n, x, y + s * .12); g.restore();
+const PADP = typeof Path2D !== 'undefined' ? new Path2D('M32 28c8 0 20 11 20 21 0 7-6 10-12 9-4-.5-6-2-8-2s-4 1.5-8 2c-6 1-12-2-12-9 0-10 12-21 20-21z') : null;
+function drawPaw(x, y, s, n) {      // la patte du bouton Signaler (sans le panneau) avec le nombre de promeneurs sur le coussinet
+  if (!PADP) return; const k = s * 2.5 / 64; g.save(); g.translate(x - 32 * k, y - 38 * k); g.scale(k, k);
+  const toes = [[13, 27, 6, 8, -22], [24.5, 14, 6.4, 8.4, -8], [39.5, 14, 6.4, 8.4, 8], [51, 27, 6, 8, 22]];
+  const shape = () => { g.beginPath(); toes.forEach(([cx, cy, rx, ry, a]) => { g.moveTo(cx + rx, cy); g.ellipse(cx, cy, rx, ry, a * Math.PI / 180, 0, 7); }); };
+  g.lineJoin = 'round'; g.lineWidth = 6; g.strokeStyle = '#0e0b08'; shape(); g.stroke(); g.stroke(PADP);
+  const gr = g.createRadialGradient(29, 19, 2, 32, 34, 36); gr.addColorStop(0, '#ffd27a'); gr.addColorStop(1, '#e0861e'); g.fillStyle = gr; shape(); g.fill(); g.fill(PADP);
+  g.fillStyle = '#2a1806'; g.font = '900 ' + (n > 9 ? 17 : 21) + 'px system-ui,sans-serif'; g.fillText(n > 99 ? '99' : n, 32, 45.5); g.restore();
 }
 function drawFr(x, y, r, L) {      // avatars des copains, empilés ; au-delà de 3 : deux avatars + « +N »
   const show = L.length > 3 ? L.slice(0, 2) : L, more = L.length - show.length, tot = show.length + (more ? 1 : 0), step = r * 1.25; let cx = x - (tot - 1) * step;
@@ -2533,7 +2536,7 @@ $('#mn').onclick = () => { alLabel(); accPage('main', true); accRender(); const 
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-69';
+const APP_V = '2026.10.24-70';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
