@@ -1548,7 +1548,7 @@ function draw() {
   CL.forEach(q => { if (q.al < .05) return; const x = sx(q.wx), y = sy(q.wy), upr = UP(x, y), n = q.items.length, rr = (PR + Math.min(8, n)) * (.55 + .45 * q.al);      // pastille de groupe : « 5 balades »
     g.save(); g.globalAlpha = Math.min(1, q.al * 1.15); g.beginPath(); g.arc(x, y, rr + 3, 0, 7); g.fillStyle = '#0e0b08'; g.fill(); g.beginPath(); g.arc(x, y, rr, 0, 7); const gr = g.createRadialGradient(x - rr * .3, y - rr * .4, 2, x, y, rr); gr.addColorStop(0, '#ffd27a'); gr.addColorStop(1, '#c6862a'); g.fillStyle = gr; g.fill();
     g.fillStyle = '#2a1806'; g.font = '900 ' + Math.round(rr * .8) + 'px system-ui,sans-serif'; g.fillText(n, x, y - 2); g.font = '800 ' + Math.round(rr * .34) + 'px system-ui,sans-serif'; g.fillText('balades', x, y + rr * .45);
-    { const L = socLive(); let cnt = 0; const fr = []; q.items.forEach(m => { const o = L.get(m.k); if (o) { cnt += o.cnt; fr.push(...o.fr); } }); if (cnt) drawPaw(x - rr * .85, y - rr * .6, Math.max(11, rr * .42), cnt); if (fr.length) drawFr(x + rr * .95, y + rr * .8, Math.max(9, rr * .34), fr); }
+    { const L = socLive(); let cnt = 0; const fr = []; q.items.forEach(m => { const o = L.get(m.k); if (o) { cnt += o.cnt; fr.push(...o.fr); } }); if (cnt) drawPaw(x - rr * 1.1, y - rr * .85, Math.max(11, rr * .42), cnt); if (fr.length) drawFr(x + rr * 1.25, y + rr * 1.0, Math.max(9, rr * .34), fr); }
     g.restore(); if (upr) g.restore(); });
   fly.forEach(({ k, c, x, y, n, shr, al }) => { const upr = UP(x, y), pf = FX.length && fxOf('pop', k), sc = (pf ? Math.max(.01, EZ.back(Math.min(1, Math.max(0, fxP(pf))))) : 1) * shr; g.save(); g.globalAlpha = al;
     if (sc !== 1) { g.save(); g.translate(x, y); g.scale(sc, sc); g.translate(-x, -y); }
@@ -1559,8 +1559,8 @@ function draw() {
     g.save(); g.beginPath(); g.arc(x, cy, R - .5, 0, 7); g.clip();
     if (im) g.drawImage(im, x - R, cy - R, R * 2, R * 2); else { const bg = g.createRadialGradient(x, cy - R * .3, 2, x, cy, R); bg.addColorStop(0, '#4d453a'); bg.addColorStop(1, '#1b1814'); g.fillStyle = bg; g.fillRect(x - R, cy - R, R * 2, R * 2); const pi = n ? SPI.on : SPI.off; if (pi && pi.complete && pi.naturalWidth) g.drawImage(pi, x - R * .85, cy - R * 1.05, R * 1.7, R * 1.7); }
     g.restore();
-    { const lv = socLive().get(k); if (lv && sc > .6) { drawPaw(x - R * .95, cy - R * .5, Math.max(10.5, R * .5), lv.cnt); if (lv.fr.length) drawFr(x + R * 1.05, cy + R * .8, Math.max(9, R * .44), lv.fr); } }
-    if (n) { const bx = x + R * .78, by = cy - R * .72, br = Math.max(8, R * .36); g.beginPath(); g.arc(bx, by, br + 1.5, 0, 7); g.fillStyle = '#0e0b08'; g.fill(); g.beginPath(); g.arc(bx, by, br, 0, 7); g.fillStyle = '#2a2018'; g.fill(); g.lineWidth = 1.6; g.strokeStyle = '#e3c071'; g.stroke(); g.fillStyle = '#f6ecd2'; g.font = '800 ' + Math.round(br * 1.1) + 'px system-ui,sans-serif'; g.fillText(n > 99 ? '99+' : n, bx, by + .5); }
+    { const lv = socLive().get(k); if (lv && sc > .6) { drawPaw(x - R * 1.25, cy - R * .78, Math.max(10.5, R * .5), lv.cnt); if (lv.fr.length) drawFr(x + R * 1.35, cy + R * 1.0, Math.max(9, R * .44), lv.fr); } }
+    if (n) { const bx = x + R * 1.02, by = cy - R * .9, br = Math.max(8, R * .36); g.beginPath(); g.arc(bx, by, br + 1.5, 0, 7); g.fillStyle = '#0e0b08'; g.fill(); g.beginPath(); g.arc(bx, by, br, 0, 7); g.fillStyle = '#2a2018'; g.fill(); g.lineWidth = 1.6; g.strokeStyle = '#e3c071'; g.stroke(); g.fillStyle = '#f6ecd2'; g.font = '800 ' + Math.round(br * 1.1) + 'px system-ui,sans-serif'; g.fillText(n > 99 ? '99+' : n, bx, by + .5); }
     if (sc !== 1) g.restore();
     const nm = mpp < 14 || isS ? balName(k) : ''; if (nm) { g.font = (isS ? '800 13px' : '700 12px') + ' system-ui,sans-serif'; g.fillStyle = isS ? '#ffd27a' : '#fff6e0'; g.strokeStyle = 'rgba(20,14,8,.92)'; g.lineWidth = 4; g.lineJoin = 'round'; const t = nm.length > 22 ? nm.slice(0, 21) + '…' : nm; g.strokeText(t, x, y + 10); g.fillText(t, x, y + 10); }
     if (mpp < 3) { const o = balInd(k), ic = [o.dz && ['⚠', '#ff5f4a'], o.water && ['💧', '#2b8fc4'], o.park && ['🅿', '#3f64a8'], o.wc && ['WC', '#5b6fa8']].filter(Boolean);      // de près : petits indicateurs sous le nom
@@ -2553,7 +2553,7 @@ $('#mn').onclick = () => { alLabel(); accPage('main', true); accRender(); const 
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-71';
+const APP_V = '2026.10.24-72';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
