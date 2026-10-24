@@ -1021,6 +1021,27 @@ body:has(#menu.open) header.bar{z-index:23}
 #menu .win.acw{width:100%!important;height:auto!important;max-height:none!important;align-self:stretch;padding:34px 14px 14px!important;border:3px solid var(--edge)!important;border-radius:6px!important;box-shadow:0 0 0 2px #574c3d,0 0 0 4px var(--edge),0 6px 18px rgba(0,0,0,.5)!important}
 #menu.open .win.acw{animation:socUp .3s cubic-bezier(.2,.85,.25,1) both!important}
 @media (max-height:720px){#menu .win.acw{padding-top:30px!important}#menu .acon{display:none}#menu .acg .act small{display:none}#menu .acr{padding:8px 10px}}
+
+/* ===== Messages ===== */
+.sct{grid-template-columns:repeat(3,1fr)!important}.sct button{font-size:13.5px!important;position:relative}
+#soc .scw{animation-fill-mode:backwards!important}#scmn{position:absolute;top:3px;right:5px;display:inline-block;min-width:17px;padding:0 4px;border-radius:9px;background:#c9472c;color:#fff;font:900 10.5px/17px var(--num)}#scmn[hidden]{display:none}
+.scml{margin-top:10px}.scmr{width:100%;border:0;border-top:1px solid #2e2820;background:none;color:var(--txt);text-align:left;cursor:pointer}.scmr:first-child{border-top:0}.scmr.nw .act small{color:#fff1cf;font-weight:800}
+.scmt{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:5px}.scmt small{font:700 11px var(--num);color:var(--mut)}.scmt i{width:10px;height:10px;border-radius:50%;background:var(--ember);box-shadow:0 0 6px rgba(234,165,60,.7)}
+.scr[data-chat]{cursor:pointer}.scnew{display:block;width:100%;margin-top:10px}
+.scch{position:fixed;top:var(--soct,0px);left:8px;right:8px;bottom:calc(6px + env(safe-area-inset-bottom));z-index:3;display:flex;flex-direction:column;border:3px solid var(--edge);border-radius:6px;background:linear-gradient(180deg,#322c25,#25211b);box-shadow:0 0 0 2px #574c3d,0 0 0 4px var(--edge);animation:accIn .28s cubic-bezier(.2,.85,.25,1) both;overflow:hidden}.scch[hidden]{display:none}
+.scchh{flex:none;display:flex;align-items:center;gap:10px;padding:34px 12px 10px;border-bottom:1px solid #2e2820;background:linear-gradient(#3a3024,#2a2119)}.scchh #scchb{flex:none;font-size:24px}#scchw{flex:1;min-width:0;display:flex;align-items:center;gap:10px}#scchw .scav{width:38px;height:38px;font-size:16px}
+#scchw .act b{font:800 15px var(--num);color:#fff1cf}#scchw .act b em{font-style:normal;color:var(--mut);font-weight:600}#scchw .act small{font:600 11.5px var(--num);color:var(--mut)}
+.scchl{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.scchn{align-self:center;max-width:90%;margin-bottom:4px;padding:5px 10px;border-radius:10px;border:1.5px dashed #5a4f40;font:600 11px/1.3 var(--num);color:var(--mut);text-align:center}
+.scchd{align-self:center;margin:6px 0 2px;padding:2px 10px;border-radius:9px;background:#14110e;font:700 10.5px var(--num);color:var(--mut);text-transform:capitalize}
+.scb{align-self:flex-start;max-width:78%;display:flex;flex-direction:column;gap:4px;padding:8px 11px 5px;border-radius:14px 14px 14px 4px;background:#3a332b;border:1.5px solid #0e0c09;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);color:#f1e6c9;font:600 14px/1.35 var(--num);animation:rise .25s ease both}
+.scb.me{align-self:flex-end;border-radius:14px 14px 4px 14px;background:linear-gradient(#f4c862,#d8973a);color:#2a1806}
+.scb>small{align-self:flex-end;font:700 10px var(--num);opacity:.65}.scb span{white-space:pre-wrap;word-break:break-word}
+.scbk{display:flex;flex-direction:column;gap:1px;padding:8px 10px;border:1.5px solid rgba(0,0,0,.35);border-radius:9px;background:rgba(0,0,0,.18);color:inherit;text-align:left;cursor:pointer;font:600 13px var(--num)}.scbk b{font-weight:800}.scbk small{font:700 11px var(--num);opacity:.75}
+.scchq{flex:none;display:flex;gap:6px;overflow-x:auto;padding:6px 10px 2px;scrollbar-width:none}.scchq::-webkit-scrollbar{display:none}
+.scchq button{flex:none;padding:6px 10px;border:2px solid var(--edge);border-radius:14px;background:#14110e;box-shadow:inset 0 0 0 1px #3a332a;color:var(--ember2);font:800 12px var(--num);white-space:nowrap;cursor:pointer}
+.scchf{flex:none;display:flex;gap:8px;padding:8px 10px 10px}.scchf input{flex:1;min-width:0;padding:11px 14px;border-radius:22px;font:600 15px var(--num);user-select:text;-webkit-user-select:text}
+.scchf button{flex:none;width:46px;height:46px;border:2px solid #0e0c09;border-radius:50%;background:linear-gradient(#f4c862,#c6862a);color:#2a1806;font:900 18px/1 var(--num);cursor:pointer;box-shadow:inset 0 2px 0 rgba(255,255,255,.35)}
 </style></head><body>
 <header class="bar win dg"><button class="hdog" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span></button><button class="hbr brand" id="hbr" aria-label="Cartodog : profil de mon chien"><span class="hinf"><b>Cartodog</b><small id="hsub">Carnet de balade</small></span></button><button class="hset" id="mn" aria-label="Mon compte"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e2e2de"/><stop offset="1" stop-color="#9a9a96"/></linearGradient></defs><circle cx="16" cy="16" r="14.5" fill="#2c2c2a" stroke="#6e6e6a" stroke-width="1"/><circle cx="16" cy="12.4" r="5.4" fill="url(#hsg)" stroke="#1e1e1c" stroke-width="1.2"/><path d="M6.6 26.2c1.3-5.2 5-8 9.4-8s8.1 2.8 9.4 8a14.4 14.4 0 0 1-18.8 0z" fill="url(#hsg)" stroke="#1e1e1c" stroke-width="1.2" stroke-linejoin="round"/></svg></button><b id="hnm" hidden></b>
 <small id="ssn" hidden></small>
@@ -1128,11 +1149,15 @@ body:has(#menu.open) header.bar{z-index:23}
 <div id="soc"><div class="win dg scw" role="dialog" aria-label="Copains et sorties">
   <div class="ach"><h2>Copains<small>Qui se balade, et les sorties à venir</small></h2><button class="ib" id="socx" aria-label="Fermer">✕</button></div>
   <div class="scme" id="scme"></div>
-  <div class="sct" role="tablist"><button data-st="fr" role="tab">👥 Copains</button><button data-st="ev" role="tab">📅 Sorties</button></div>
+  <div class="sct" role="tablist"><button data-st="fr" role="tab">👥 Copains</button><button data-st="ms" role="tab">💬 Messages<b id="scmn" hidden></b></button><button data-st="ev" role="tab">📅 Sorties</button></div>
   <div class="scdemo">👀 <b>Aperçu</b> avec des exemples : les vrais copains arriveront avec le compte en ligne.</div>
   <div class="scp" data-sp="fr" id="scfr"></div>
+  <div class="scp" data-sp="ms" id="scms"></div>
   <div class="scp" data-sp="ev" id="scev"></div>
-  <div class="scsh" id="scsh" hidden><div class="scshw"><div class="scshh" id="scshh"></div><button data-sa="map">📍 Voir où il se balade</button><button data-sa="prof">🐕 Voir son profil</button><button data-sa="rm">➖ Retirer de mes copains</button><button data-sa="blk" class="dgr">🚫 Bloquer</button><button data-sa="x" class="cx">Annuler</button></div></div>
+  <div class="scsh" id="scsh" hidden><div class="scshw"><div class="scshh" id="scshh"></div><button data-sa="msg">💬 Envoyer un message</button><button data-sa="map">📍 Voir où il se balade</button><button data-sa="prof">🐕 Voir son profil</button><button data-sa="rm">➖ Retirer de mes copains</button><button data-sa="blk" class="dgr">🚫 Bloquer</button><button data-sa="x" class="cx">Annuler</button></div></div>
+  <div class="scch" id="scch" hidden><div class="scchh"><button class="ib" id="scchb" aria-label="Retour">‹</button><span id="scchw"></span></div><div class="scchl" id="scchl"></div>
+    <div class="scchq"><button data-q="🐾 On se balade ?">🐾 On se balade ?</button><button data-q="bal">📍 Ma balade</button><button data-q="👋 Tu es où ?">👋 Tu es où ?</button><button data-q="🕙 J'arrive dans 10 min">🕙 J'arrive</button></div>
+    <form class="scchf" id="scchf"><input id="scchi" maxlength="300" placeholder="Écrire un message…" autocomplete="off" enterkeyhint="send"><button type="submit" aria-label="Envoyer">➤</button></form></div>
   <div class="scsh" id="scst" hidden><div class="scshw"><div class="scshh">Mon état</div><div id="scstl"></div><button data-ss="x" class="cx">Annuler</button></div></div>
 </div></div>
 <div id="lst"><div class="win dg">
@@ -2573,7 +2598,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-78';
+const APP_V = '2026.10.24-79';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2603,10 +2628,11 @@ function socRender() {
   const { F, E } = socDemo(); SOC.F = F; SOC.E = E;
   document.querySelectorAll('#soc [data-st]').forEach(b => { b.classList.toggle('on', b.dataset.st === SOC.tab); b.setAttribute('aria-selected', b.dataset.st === SOC.tab); });
   document.querySelectorAll('#soc [data-sp]').forEach(x => x.classList.toggle('on', x.dataset.sp === SOC.tab));
-  const row = f => `<div class="scr"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${f.st === 'walk' ? `<u>🐾 En balade</u> · ${esc(f.at.n)} · ${f.t} min` : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last)}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
+  const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${f.st === 'walk' ? `<u>🐾 En balade</u> · ${esc(f.at.n)} · ${f.t} min` : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last)}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
   const grp = (t, L) => L.length ? `<div class="mh">${t} · ${L.length}</div><div class="acg">${L.map(row).join('')}</div>` : '';
   $('#scfr').innerHTML = `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes <b>1</b></button></div>` +
     grp('🐾 En balade', F.filter(f => f.st === 'walk')) + grp('🟢 En ligne', F.filter(f => f.st === 'on')) + grp('Hors ligne', F.filter(f => f.st === 'off'));
+  msgList();
   const fmt = (t, o) => t.toLocaleDateString('fr-FR', o).replace('.', '');
   $('#scev').innerHTML = `<button class="btn gold scorg" data-sx="org">＋ Organiser une sortie</button>` + E.map(e => { const g = SOC.go[e.id];
     return `<div class="sce"><div class="scd"><small>${fmt(e.t, { weekday: 'short' })}</small><b>${e.t.getDate()}</b><small>${fmt(e.t, { month: 'short' })}</small></div><div class="act"><b>${esc(e.at.n)}</b><small>Organisée par <em>${esc(e.by.n)} & ${esc(e.by.d)}</em></small><small>🕙 ${e.t.getHours()} h 00 · ${e.dur} · ${e.n + (g === 'y' ? 1 : 0)} chiens</small>
@@ -2624,7 +2650,48 @@ function socMe() {
     ${SOC.ed ? `<input id="scbio" maxlength="80" enterkeyhint="done" placeholder="Ex. Balade tous les soirs vers 18 h au Taillan" value="${esc(u.bio || '')}">` : `<button class="scbio${u.bio ? '' : ' ph'}" data-sme="bio">${u.bio ? '« ' + esc(u.bio) + ' »' : '✏️ Ajouter une description…'}</button>`}</span>`;
   if (SOC.ed) { const el = $('#scbio'); el.focus(); const done = () => { if (!SOC.ed) return; SOC.ed = false; accU().bio = el.value.trim().slice(0, 80); save(); socMe(); }; el.onblur = done; el.onkeydown = e => { if (e.key === 'Enter') el.blur(); }; }
 }
-function socOpen() { const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#scst').hidden = true; socMe(); socRender(); $('#scsh').hidden = true; $('#soc').classList.add('open'); }
+
+/* ===== Messages entre copains (aperçu : les messages restent sur ce téléphone en attendant le compte en ligne) ===== */
+const MSK = 'cartodog-msgdemo';
+function msgAll() {
+  if (SOC.M) return SOC.M; let saved = {}; try { saved = JSON.parse(localStorage.getItem(MSK) || '{}') || {}; } catch (e) {}
+  const { F } = socDemo(), now = Date.now(), H = 36e5, B = F[1].at;
+  const seed = { f1: [{ me: 0, t: 'Salut ! Tu viens au ' + F[0].at.n + ' samedi ? 🐕', ts: now - 26 * H }, { me: 1, t: 'Carrément, vers 10 h ?', ts: now - 25 * H }, { me: 0, t: 'Parfait, ' + F[0].d + ' a hâte de revoir ' + (D.prof && D.prof.name || 'ton chien') + ' 😄', ts: now - 40 * 6e4, nw: 1 }],
+    f2: [{ me: 0, t: 'On est ici, il y a de l\'ombre 👌', ts: now - 9 * 6e4, k: B.k, kn: B.n, nw: 1 }],
+    f3: [{ me: 1, t: 'Merci pour le parking !', ts: now - 3 * 24 * H }, { me: 0, t: 'Avec plaisir 👍', ts: now - 3 * 24 * H + 6e5 }] };
+  Object.keys(saved).forEach(id => { if (Array.isArray(saved[id])) seed[id] = (seed[id] || []).map(m => ({ ...m, nw: 0 })).concat(saved[id]); });
+  if (saved._read) saved._read.forEach(id => (seed[id] || []).forEach(m => m.nw = 0));
+  SOC.M = seed; SOC.Ms = saved; return seed;
+}
+const msgSave = () => { try { localStorage.setItem(MSK, JSON.stringify(SOC.Ms)); } catch (e) {} };
+const msgT = ts => { const d = new Date(ts), n = new Date(); return d.toDateString() === n.toDateString() ? d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : Date.now() - ts < 1728e5 ? 'hier' : d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); };
+const msgUnread = () => Object.values(msgAll()).reduce((a, L) => a + (L.some(m => m.nw) ? 1 : 0), 0);
+function msgList() {
+  const M = msgAll(), F = SOC.F || socDemo().F, ids = Object.keys(M).filter(id => M[id].length && F.find(f => f.id === id)).sort((a, b) => M[b][M[b].length - 1].ts - M[a][M[a].length - 1].ts);
+  $('#scms').innerHTML = (ids.length ? `<div class="acg scml">${ids.map(id => { const f = F.find(x => x.id === id), L = M[id], m = L[L.length - 1], nw = L.some(x => x.nw);
+    return `<button class="scr scmr${nw ? ' nw' : ''}" data-chat="${id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${m.me ? 'Vous : ' : ''}${m.k ? '📍 ' : ''}${esc(m.t || m.kn || '')}</small></span><span class="scmt"><small>${msgT(m.ts)}</small>${nw ? '<i></i>' : ''}</span></button>`; }).join('')}</div>` : '<div class="hint">Aucun message pour l\'instant.</div>') +
+    `<button class="scadd scnew" data-sx="newmsg">✏️ Nouveau message</button>`;
+  const u = msgUnread(); $('#scmn').hidden = !u; $('#scmn').textContent = u;
+}
+function chatOpen(id) {
+  const f = (SOC.F || socDemo().F).find(x => x.id === id); if (!f) return; SOC.chat = id; const M = msgAll();
+  if ((M[id] || []).some(m => m.nw)) { M[id].forEach(m => m.nw = 0); (SOC.Ms._read ||= []).includes(id) || SOC.Ms._read.push(id); msgSave(); }
+  $('#scchw').innerHTML = `<span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${f.st === 'walk' ? '🐾 En balade · ' + esc(f.at.n) : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last)}</small></span>`;
+  chatRender(); $('#scch').hidden = false; msgList();
+}
+function chatRender() {
+  const L = msgAll()[SOC.chat] || []; let lastD = '';
+  $('#scchl').innerHTML = '<div class="scchn">👀 Aperçu : vos messages restent sur ce téléphone jusqu\'au compte en ligne.</div>' + L.map(m => { const d = new Date(m.ts).toDateString(), sep = d !== lastD ? `<div class="scchd">${new Date(m.ts).toDateString() === new Date().toDateString() ? 'Aujourd\'hui' : new Date(m.ts).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>` : ''; lastD = d;
+    return sep + `<div class="scb${m.me ? ' me' : ''}">${m.k ? `<button class="scbk" data-emap="${m.k}"><b>📍 ${esc(m.kn || 'Balade')}</b><small>Voir sur la carte ›</small></button>` : ''}${m.t ? `<span>${esc(m.t)}</span>` : ''}<small>${new Date(m.ts).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</small></div>`; }).join('');
+  const l = $('#scchl'); requestAnimationFrame(() => l.scrollTop = l.scrollHeight);
+}
+function chatSend(m) { const id = SOC.chat; if (!id) return; m.me = 1; m.ts = Date.now(); (msgAll()[id] ||= []).push(m); (SOC.Ms[id] ||= []).push(m); msgSave(); chatRender(); msgList(); try { navigator.vibrate && navigator.vibrate(15); } catch (e) {} }
+const chatClose = () => { SOC.chat = null; $('#scch').hidden = true; $('#scchi').blur(); };
+$('#scchb').onclick = chatClose;
+$('#scchf').onsubmit = e => { e.preventDefault(); const v = $('#scchi').value.trim(); if (!v) return; $('#scchi').value = ''; chatSend({ t: v }); };
+document.querySelector('#scch .scchq').onclick = e => { const b = e.target.closest('[data-q]'); if (!b) return; if (b.dataset.q !== 'bal') return chatSend({ t: b.dataset.q });
+  const k = sel && D.cells[sel] && cellGroup(sel) ? sel : Object.keys(D.cells).find(x => rec(D.cells[x]) && cellGroup(x)); if (!k) return toast('Aucune balade à partager'); chatSend({ t: '', k, kn: balName(k) }); };
+function socOpen() { const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; socMe(); socRender(); $('#scsh').hidden = true; $('#soc').classList.add('open'); }
 const socClose = () => { SOC.ed = false; $('#soc').classList.remove('open'); };
 const socSoon = () => toast('👀 Aperçu : disponible avec le compte en ligne');
 function socShow(k) { if (!k || !D.cells[k]) return socSoon(); socClose(); select(k); try { fitBal(k); } catch (e) {} }
@@ -2635,9 +2702,10 @@ $('#soc').addEventListener('click', e => {
   const ss = e.target.closest('[data-ss]'); if (ss) { $('#scst').hidden = true; if (ss.dataset.ss !== 'x') { accU().st = ss.dataset.ss; save(); socMe(); } return; }
   if (e.target.id === 'scst') { $('#scst').hidden = true; return; }
   const t = e.target.closest('[data-st]'); if (t) { SOC.tab = t.dataset.st; return socRender(); }
+  const ch = e.target.closest('[data-chat]'); if (ch && !e.target.closest('[data-fmap],[data-fmore]')) return chatOpen(ch.dataset.chat);
   const fm = e.target.closest('[data-fmap]'); if (fm) { const f = SOC.F.find(x => x.id === fm.dataset.fmap); return socShow(f && f.at.k); }
   const mo = e.target.closest('[data-fmore]'); if (mo) { const f = SOC.F.find(x => x.id === mo.dataset.fmore); SOC.who = f; $('#scshh').innerHTML = `${socAv(f)}<b>${esc(f.d)} & ${esc(f.n)}</b>`; $('#scsh [data-sa="map"]').hidden = f.st !== 'walk'; $('#scsh').hidden = false; return; }
-  const sa = e.target.closest('[data-sa]'); if (sa) { const a = sa.dataset.sa, f = SOC.who; $('#scsh').hidden = true; if (a === 'x') return; if (a === 'map') return socShow(f && f.at && f.at.k); return socSoon(); }
+  const sa = e.target.closest('[data-sa]'); if (sa) { const a = sa.dataset.sa, f = SOC.who; $('#scsh').hidden = true; if (a === 'x') return; if (a === 'msg') return chatOpen(f.id); if (a === 'map') return socShow(f && f.at && f.at.k); return socSoon(); }
   if (e.target.id === 'scsh') { $('#scsh').hidden = true; return; }
   const eg = e.target.closest('[data-eg]'); if (eg) { const [id, v] = eg.dataset.eg.split(':'); SOC.go[id] = SOC.go[id] === v ? null : v; if (SOC.go[id] === 'y') try { navigator.vibrate && navigator.vibrate(30); } catch (x) {} return socRender(); }
   const em = e.target.closest('[data-emap]'); if (em) return socShow(em.dataset.emap);
@@ -3535,7 +3603,7 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
     [op('encm'), () => { const b = !$('#encv').hidden && !(encFrom && !encStack.length) && $('#encbk'); b ? b.click() : encClose(); }],      // ouvert directement sur une fiche depuis une autre fenêtre : retour = revenir à cette fenêtre
     [op('dogm'), () => { const p = document.querySelector('#dogm .dgp.on'); p && p.dataset.p !== 'main' ? dogPane('main') : dogClose(); }],
     [op('balm'), () => { !$('#balb').hidden ? $('#balb').click() : balClose(); }],
-    [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('soc'), () => { !$('#scst').hidden ? ($('#scst').hidden = true) : !$('#scsh').hidden ? ($('#scsh').hidden = true) : socClose(); }], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
+    [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('soc'), () => { !$('#scch').hidden ? chatClose() : !$('#scst').hidden ? ($('#scst').hidden = true) : !$('#scsh').hidden ? ($('#scsh').hidden = true) : socClose(); }], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
     [vis('shm'), () => shClose()], [() => RM, () => setRM(false)], [() => ED.on, () => edToggle(false)], [() => P.on && !RC.on, () => $('#pt').click()],
     [() => !!BL.poly && !BR.on, () => { BL.wait = false; BL.poly = null; lpUi(); }], [() => !!sel, () => { const f = selFrom && selFrom.k === sel; const hub = f && selFrom.hub; selFrom = null; sel = null; collapse(); renderPanel(); draw(); if (f) hub ? balOpen() : $('#lb').click(); }]];
   let pushed = false, skip = 0, q = 0;
