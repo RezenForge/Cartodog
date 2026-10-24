@@ -1101,7 +1101,7 @@ body:has(#menu.open) header.bar{z-index:23}
 .scga .btn:disabled{opacity:.45}
 
 /* ===== Loupe : recherche de balade ===== */
-#srb{position:absolute;left:100px;top:8px;z-index:4;width:40px;height:40px;padding:7px;border-radius:50%;border:2px solid #d6ab55;background:rgba(14,12,9,.82);cursor:pointer;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}#srb svg{width:100%;height:100%;display:block}#srb:active{transform:scale(.92)}
+#srb{position:absolute;left:8px;top:26px;z-index:4;width:40px;height:40px;padding:7px;border-radius:50%;border:2px solid #d6ab55;background:rgba(14,12,9,.82);cursor:pointer;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}#srb svg{width:100%;height:100%;display:block}#srb:active{transform:scale(.92)}
 #srp{position:absolute;left:8px;right:8px;top:44px;z-index:8;display:none;flex-direction:column;max-height:calc(100% - 56px);border:2px solid var(--edge);border-radius:12px;background:linear-gradient(#2a2119,#1e1812);box-shadow:0 0 0 1.5px #8a6a3a,0 10px 28px rgba(0,0,0,.65);overflow:hidden;animation:pop .25s cubic-bezier(.2,.9,.3,1.15) both}#srp.open{display:flex}
 .srh{flex:none;display:flex;align-items:center;gap:8px;padding:8px 8px 8px 12px;border-bottom:1px solid #2e2820}.srh svg{flex:none;width:22px;height:22px}
 #srq{flex:1;min-width:0;padding:9px 10px;border:2px solid var(--edge);border-radius:8px;background:#14110e;box-shadow:inset 0 0 0 1px #3a332a;color:#fff1cf;font:700 16px var(--num);user-select:text;-webkit-user-select:text;color-scheme:dark}#srq::placeholder{color:#7d735f}
@@ -2685,7 +2685,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-89';
+const APP_V = '2026.10.25-90';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
