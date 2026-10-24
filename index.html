@@ -2598,7 +2598,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-79';
+const APP_V = '2026.10.24-80';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3001,13 +3001,13 @@ function pathBB(p) {      // emprise d'un sentier, recalculée seulement s'il a 
   let a = Infinity, b = Infinity, x = -Infinity, y = -Infinity; for (const q of p.pts) { if (q[0] < a) a = q[0]; if (q[0] > x) x = q[0]; if (q[1] < b) b = q[1]; if (q[1] > y) y = q[1]; }
   const bb = [a, b, x, y]; bbC.set(p, { n, lx: l[0], ly: l[1], b: bb }); return bb; }
 
-/* Balades « assez grandes » à l'écran (ou seule balade visible) : leur tracé et leurs repères s'affichent sans attendre d'être tout près */
+/* Une seule balade à l'écran : son tracé et ses repères s'affichent sans attendre d'être tout près */
 let AUTO = { fr: -1, g: [], k: new Set() };
 const grBB = gr => gr._bb || (gr._bb = gr.paths.reduce((a, p) => { const b = pathBB(p); return [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.max(a[2], b[2]), Math.max(a[3], b[3])]; }, [1e18, 1e18, -1e18, -1e18]));
 function autoGroups(vx0, vx1, vy0, vy1) {
   if (AUTO.fr === FR) return AUTO.g; const G = netGroups().filter(gr => gr.paths && gr.paths.length), mg = 0;
   const vis = G.filter(gr => { const b = grBB(gr); return b[2] >= vx0 && b[0] <= vx1 && b[3] >= vy0 && b[1] <= vy1; });
-  const out = V.mpp > 60 ? [] : vis.filter(gr => { const b = grBB(gr); return Math.max(b[2] - b[0], b[3] - b[1]) / V.mpp > 60 || vis.length === 1; });
+  const out = V.mpp > 60 ? [] : (vis.length === 1 ? vis : []);      // une seule balade à l'écran : son tracé et ses repères
   const ks = new Set(); if (out.length) { const ids = new Set(out.map(gr => gr.k)); Object.keys(D.cells).forEach(k => { const gg = cellGroup(k); if (gg && ids.has(gg.k)) ks.add(k); }); }
   AUTO = { fr: FR, g: out, k: ks }; return out;
 }
