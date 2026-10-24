@@ -1199,7 +1199,6 @@ body:has(#menu.open) header.bar{z-index:23}
   <button class="ib scx" id="socx" aria-label="Fermer">✕</button>
   <div class="scme" id="scme"></div>
   <div class="sct" role="tablist"><button data-st="fr" role="tab">👥 Copains</button><button data-st="ms" role="tab">💬 Messages<b id="scmn" hidden></b></button><button data-st="ev" role="tab">📅 Rendez-vous</button></div>
-  <div class="scdemo">👀 <b>Aperçu</b> avec des exemples : les vrais copains arriveront avec le compte en ligne.</div>
   <div class="scp" data-sp="fr" id="scfr"></div>
   <div class="scp" data-sp="ms" id="scms"></div>
   <div class="scp" data-sp="ev" id="scev"></div>
@@ -2664,7 +2663,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-84';
+const APP_V = '2026.10.24-85';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
