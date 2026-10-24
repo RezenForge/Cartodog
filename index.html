@@ -1076,6 +1076,20 @@ body:has(#menu.open) header.bar{z-index:23}
 #soc .scp.on{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
 #soc .scp>*{flex:none}#soc .scp>.scls{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;margin-top:2px;padding-bottom:6px;-webkit-mask-image:linear-gradient(#000 calc(100% - 14px),transparent);mask-image:linear-gradient(#000 calc(100% - 14px),transparent)}
 #soc .scnew{margin:10px 0 0!important}#soc .scls>.scml{margin-top:8px}
+
+/* ===== Groupes ===== */
+.scgrr,.scgnew{width:100%;border:0;border-top:1px solid #2e2820;background:none;color:var(--txt);text-align:left;cursor:pointer}.scgrr:first-child{border-top:0}
+.scgi{flex:none;display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:linear-gradient(#3a3024,#211b14);border:2px solid #0e0c09;box-shadow:0 0 0 1.5px #8a6a3a;font-size:20px}
+.scgnew .scgi{background:none;border:2px dashed #6b5333;box-shadow:none;color:var(--ember2);font-weight:900}.scgnew .act b{color:var(--ember2)!important}
+.scgo{flex:none;font-style:normal;font-size:22px;color:var(--ember2)}.scgrr .scps{margin:2px 0 0}.scav.more{--c:#2a2018;color:var(--ember2);font-family:var(--num);font-size:10px}
+.scav.grp{background:linear-gradient(#3a3024,#211b14);border-radius:12px;font-size:18px}
+.scgw{width:100%;max-width:440px;max-height:82dvh;overflow-y:auto;padding:12px;border:2px solid var(--edge);border-radius:12px;background:linear-gradient(#2a2119,#1e1812);box-shadow:0 -10px 30px rgba(0,0,0,.6);animation:rise .3s cubic-bezier(.2,.85,.25,1) both}
+.scgh{display:flex;align-items:center;gap:8px;margin-bottom:4px}.scgic{flex:none;width:46px;height:46px;border-radius:12px;border:2px solid #0e0c09;background:linear-gradient(#3a3024,#211b14);box-shadow:0 0 0 1.5px #8a6a3a;font-size:22px;cursor:pointer}
+#scgn{flex:1;min-width:0;padding:10px 12px;font:800 18px var(--px);user-select:text;-webkit-user-select:text}.scgpen{flex:none;color:var(--mut)}
+.scgl{max-height:40dvh;overflow-y:auto}.scgl .scr{width:100%;border:0;border-top:1px solid #2e2820;background:none;color:var(--txt);text-align:left}.scgl .scr:first-child{border-top:0}
+.scck{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:7px;border:2px solid #6b5333;font-style:normal;font-weight:900;color:#2a1806}.scck.on{background:linear-gradient(#f4c862,#c6862a);border-color:#0e0c09}
+.scga{display:flex;gap:6px;margin-top:8px}.scga .btn{flex:1;margin:0!important}
+.scgw .scadd{width:100%;margin-top:8px}.scgdel{display:block;margin:10px auto 0;padding:6px 10px;border:0;background:none;color:#ff8a6e;font:700 12.5px var(--num);cursor:pointer}
 </style></head><body>
 <header class="bar win dg"><button class="hdog" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span></button><button class="hbr brand" id="hbr" aria-label="Cartodog : profil de mon chien"><span class="hinf"><b>Cartodog</b><small id="hsub">Carnet de balade</small></span></button><button class="hset" id="mn" aria-label="Mon compte"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><circle cx="16" cy="16" r="14.5" fill="#2a2018" stroke="#8a6a3a" stroke-width="1"/><circle cx="16" cy="12.4" r="5.4" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2"/><path d="M6.6 26.2c1.3-5.2 5-8 9.4-8s8.1 2.8 9.4 8a14.4 14.4 0 0 1-18.8 0z" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2" stroke-linejoin="round"/></svg></button><b id="hnm" hidden></b>
 <small id="ssn" hidden></small>
@@ -1193,6 +1207,7 @@ body:has(#menu.open) header.bar{z-index:23}
   <div class="scch" id="scch" hidden><div class="scchh"><button class="ib" id="scchb" aria-label="Retour">‹</button><span id="scchw"></span></div><div class="scchl" id="scchl"></div>
     <div class="scchq"><button data-q="🐾 On se balade ?">🐾 On se balade ?</button><button data-q="bal">📍 Ma balade</button><button data-q="👋 Tu es où ?">👋 Tu es où ?</button><button data-q="🕙 J'arrive dans 10 min">🕙 J'arrive</button></div>
     <form class="scchf" id="scchf"><input id="scchi" maxlength="300" placeholder="Écrire un message…" autocomplete="off" enterkeyhint="send"><button type="submit" aria-label="Envoyer">➤</button></form></div>
+  <div class="scsh" id="scgr" hidden><div class="scgw" id="scgw"></div></div>
   <div class="scsh" id="scst" hidden><div class="scshw"><div class="scshh">Mon état</div><div id="scstl"></div><button data-ss="x" class="cx">Annuler</button></div></div>
 </div></div>
 <div id="lst"><div class="win dg">
@@ -2649,7 +2664,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-83';
+const APP_V = '2026.10.24-84';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2675,14 +2690,14 @@ function socDemo() {
   const E = [{ id: 'e1', by: F[0], at: B(0), t: day(sat, 10), dur: '≈ 1 h', n: 4, who: [F[0], F[2], F[3]] }, { id: 'e2', by: F[1], at: B(1), t: day(sat + 1, 17), dur: '≈ 45 min', n: 2, who: [F[1]] }, { id: 'e3', by: F[3], at: B(2), t: day(sat + 4, 18), dur: '≈ 1 h 30', n: 6, who: [F[3], F[4], F[0]] }];
   E.forEach(e => e.pk = PK(e.at)); return { F, E };
 }
-const socAv = (f, cls = '') => `<span class="scav ${cls}" style="--c:${f.c}">${esc(f.d[0])}</span>`;
+const socAv = (f, cls = '') => f.grp ? `<span class="scav grp ${cls}">${f.ic}</span>` : `<span class="scav ${cls}" style="--c:${f.c}">${esc(f.d[0])}</span>`;
 function socRender() {
   const { F, E } = socDemo(); SOC.F = F; SOC.E = E;
   document.querySelectorAll('#soc [data-st]').forEach(b => { b.classList.toggle('on', b.dataset.st === SOC.tab); b.setAttribute('aria-selected', b.dataset.st === SOC.tab); });
   document.querySelectorAll('#soc [data-sp]').forEach(x => x.classList.toggle('on', x.dataset.sp === SOC.tab));
   const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${spTag(f.sp)}${f.st === 'walk' ? `<u>🐾 En balade</u> · ${esc(f.at.n)} · ${f.t} min` : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last)}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
   const grp = (t, L) => L.length ? `<div class="mh">${t} · ${L.length}</div><div class="acg">${L.map(row).join('')}</div>` : '';
-  $('#scfr').innerHTML = `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes <b>1</b></button></div><div class="scls">` +
+  $('#scfr').innerHTML = `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes <b>1</b></button></div><div class="scls">` + grpRows() +
     grp('🐾 En balade', F.filter(f => f.st === 'walk')) + grp('🟢 En ligne', F.filter(f => f.st === 'on')) + grp('Hors ligne', F.filter(f => f.st === 'off')) + '</div>';
   msgList();
   const fmt = (t, o) => t.toLocaleDateString('fr-FR', o).replace('.', '');
@@ -2721,16 +2736,16 @@ const msgSave = () => { try { localStorage.setItem(MSK, JSON.stringify(SOC.Ms));
 const msgT = ts => { const d = new Date(ts), n = new Date(); return d.toDateString() === n.toDateString() ? d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : Date.now() - ts < 1728e5 ? 'hier' : d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); };
 const msgUnread = () => Object.values(msgAll()).reduce((a, L) => a + (L.some(m => m.nw) ? 1 : 0), 0);
 function msgList() {
-  const M = msgAll(), F = SOC.F || socDemo().F, ids = Object.keys(M).filter(id => M[id].length && F.find(f => f.id === id)).sort((a, b) => M[b][M[b].length - 1].ts - M[a][M[a].length - 1].ts);
-  $('#scms').innerHTML = `<button class="scadd scnew" data-sx="newmsg">✏️ Nouveau message</button><div class="scls">` + (ids.length ? `<div class="acg scml">${ids.map(id => { const f = F.find(x => x.id === id), L = M[id], m = L[L.length - 1], nw = L.some(x => x.nw);
+  const M = msgAll(), F = SOC.F || socDemo().F, ids = Object.keys(M).filter(id => M[id].length && who(id)).sort((a, b) => M[b][M[b].length - 1].ts - M[a][M[a].length - 1].ts);
+  $('#scms').innerHTML = `<button class="scadd scnew" data-sx="newmsg">✏️ Nouveau message</button><div class="scls">` + (ids.length ? `<div class="acg scml">${ids.map(id => { const f = who(id), L = M[id], m = L[L.length - 1], nw = L.some(x => x.nw);
     return `<button class="scr scmr${nw ? ' nw' : ''}" data-chat="${id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${m.me ? 'Vous : ' : ''}${m.k ? '📍 ' : ''}${esc(m.t || m.kn || '')}</small></span><span class="scmt"><small>${msgT(m.ts)}</small>${nw ? '<i></i>' : ''}</span></button>`; }).join('')}</div>` : '<div class="hint">Aucun message pour l\'instant.</div>') +
     '</div>';
   const u = msgUnread(); $('#scmn').hidden = !u; $('#scmn').textContent = u;
 }
 function chatOpen(id) {
-  const f = (SOC.F || socDemo().F).find(x => x.id === id); if (!f) return; SOC.chat = id; const M = msgAll();
+  const f = who(id); if (!f) return; SOC.chat = id; const M = msgAll();
   if ((M[id] || []).some(m => m.nw)) { M[id].forEach(m => m.nw = 0); (SOC.Ms._read ||= []).includes(id) || SOC.Ms._read.push(id); msgSave(); }
-  $('#scchw').innerHTML = `<span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${spTag(f.sp)}${f.st === 'walk' ? '🐾 En balade · ' + esc(f.at.n) : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last)}</small></span>`;
+  $('#scchw').innerHTML = `<span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${f.grp ? esc(f.ms.map(x => x.d).join(', ') || 'Aucun membre') : spTag(f.sp) + (f.st === 'walk' ? '🐾 En balade · ' + esc(f.at.n) : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last))}</small></span>`;
   chatRender(); $('#scch').hidden = false; msgList();
 }
 function chatRender() {
@@ -2745,7 +2760,38 @@ $('#scchb').onclick = chatClose;
 $('#scchf').onsubmit = e => { e.preventDefault(); const v = $('#scchi').value.trim(); if (!v) return; $('#scchi').value = ''; chatSend({ t: v }); };
 document.querySelector('#scch .scchq').onclick = e => { const b = e.target.closest('[data-q]'); if (!b) return; if (b.dataset.q !== 'bal') return chatSend({ t: b.dataset.q });
   const k = sel && D.cells[sel] && cellGroup(sel) ? sel : Object.keys(D.cells).find(x => rec(D.cells[x]) && cellGroup(x)); if (!k) return toast('Aucune balade à partager'); chatSend({ t: '', k, kn: balName(k) }); };
-function socOpen() { const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; socMe(); socRender(); $('#scsh').hidden = true; $('#soc').classList.add('open'); }
+
+/* ===== Groupes de copains : renommables, on y invite des copains, on peut leur écrire ===== */
+const GRK = 'cartodog-grp', GIC = ['🐕', '🌲', '🏞️', '⭐', '🦴', '☀️', '🌙', '🎾'];
+const grpAll = () => { if (!SOC.G) { try { SOC.G = JSON.parse(localStorage.getItem(GRK) || '[]') || []; } catch (e) { SOC.G = []; } } return SOC.G; };
+const grpSave = () => { try { localStorage.setItem(GRK, JSON.stringify(grpAll())); } catch (e) {} };
+const grpGet = id => grpAll().find(g => g.id === id);
+const FR_ = () => SOC.F || socDemo().F;
+function who(id) { const f = FR_().find(x => x.id === id); if (f) return f; const g = grpGet(id); if (!g) return null; const ms = g.m.map(i => FR_().find(x => x.id === i)).filter(Boolean);
+  return { id, grp: 1, ic: g.ic, d: g.name, n: ms.length + ' copain' + (ms.length > 1 ? 's' : ''), c: '#8a6a3a', st: ms.some(x => x.st === 'walk') ? 'walk' : ms.some(x => x.st === 'on') ? 'on' : 'off', ms }; }
+const grpStack = ms => `<span class="scps">${ms.slice(0, 4).map(f => socAv(f, 'sm')).join('')}${ms.length > 4 ? `<span class="scav sm more">+${ms.length - 4}</span>` : ''}</span>`;
+function grpRows() { const G = grpAll();
+  return `<div class="mh">👥 Groupes${G.length ? ' · ' + G.length : ''}</div><div class="acg">${G.map(g => { const w = who(g.id); return `<button class="scr scgrr" data-grp="${g.id}"><span class="scgi">${g.ic}</span><span class="act"><b>${esc(g.name)}</b><small>${w.ms.length ? grpStack(w.ms) : 'Aucun copain pour l\'instant'}</small></span><i class="scgo">›</i></button>`; }).join('')}<button class="scr scgnew" data-grpnew="1"><span class="scgi">＋</span><span class="act"><b>Nouveau groupe</b><small>Ex. « Balade du dimanche », « Les chiens du Taillan »</small></span></button></div>`; }
+function grpOpen(id, edit) { const g = grpGet(id); if (!g) return; SOC.gid = id; SOC.ginv = SOC.ginv || null; const F = FR_(), ms = g.m.map(i => F.find(x => x.id === i)).filter(Boolean), out = F.filter(f => !g.m.includes(f.id));
+  $('#scgw').innerHTML = `<div class="scgh"><button class="scgic" data-gic aria-label="Changer l'icône">${g.ic}</button><input id="scgn" maxlength="40" value="${esc(g.name)}" aria-label="Nom du groupe" enterkeyhint="done"><span class="scgpen">✏️</span></div>
+    ${SOC.ginv ? `<div class="mh">Inviter des copains</div><div class="acg scgl">${out.length ? out.map(f => `<button class="scr" data-gpick="${f.id}"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b></span><i class="scck${SOC.ginv.includes(f.id) ? ' on' : ''}">${SOC.ginv.includes(f.id) ? '✓' : ''}</i></button>`).join('') : '<div class="hint" style="padding:10px">Tous vos copains sont déjà dans ce groupe.</div>'}</div>
+      <div class="scga"><button class="btn" data-ginv="x">Annuler</button><button class="btn gold" data-ginv="ok"${SOC.ginv.length ? '' : ' disabled'}>Inviter${SOC.ginv.length ? ' (' + SOC.ginv.length + ')' : ''}</button></div>`
+    : `<div class="mh">Membres · ${ms.length + 1}</div><div class="acg scgl"><div class="scr"><span class="scaw"><span class="scav me">${esc((D.prof && D.prof.name || 'M')[0])}</span></span><span class="act"><b>Vous${D.prof && D.prof.name ? ' <em>& ' + esc(D.prof.name) + '</em>' : ''}</b><small>Créateur du groupe</small></span></div>${ms.map(f => `<div class="scr"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${spTag(f.sp)}${f.st === 'walk' ? '🐾 En balade' : f.st === 'on' ? 'En ligne' : 'Hors ligne'}</small></span><button class="scmore" data-gout="${f.id}" aria-label="Retirer du groupe">✕</button></div>`).join('')}</div>
+      <button class="scadd" data-ginv="go">＋ Inviter des copains</button>
+      <div class="scga"><button class="btn gold" data-gmsg>💬 Écrire au groupe</button><button class="btn" data-gx>Fermer</button></div><button class="scgdel" data-gdel>🗑 Supprimer le groupe</button>`}`;
+  $('#scgr').hidden = false; const n = $('#scgn'); n.onchange = n.onblur = () => { const v = n.value.trim().slice(0, 40); if (v && v !== g.name) { g.name = v; grpSave(); socRender(); } else n.value = g.name; }; n.onkeydown = e => { if (e.key === 'Enter') n.blur(); };
+  if (edit) { n.focus(); n.select(); } }
+const grpClose = () => { $('#scgr').hidden = true; SOC.gid = null; SOC.ginv = null; };
+$('#scgr').addEventListener('click', e => { const g = grpGet(SOC.gid); if (!g) return; if (e.target.id === 'scgr') return grpClose();
+  if (e.target.closest('[data-gic]')) { g.ic = GIC[(GIC.indexOf(g.ic) + 1) % GIC.length]; grpSave(); socRender(); return grpOpen(g.id); }
+  const pk = e.target.closest('[data-gpick]'); if (pk) { const id = pk.dataset.gpick, L = SOC.ginv; L.includes(id) ? L.splice(L.indexOf(id), 1) : L.push(id); return grpOpen(g.id); }
+  const iv = e.target.closest('[data-ginv]'); if (iv) { const a = iv.dataset.ginv; if (a === 'go') SOC.ginv = []; else if (a === 'x') SOC.ginv = null; else { const n = SOC.ginv.length; g.m.push(...SOC.ginv.filter(i => !g.m.includes(i))); SOC.ginv = null; grpSave(); socRender(); toast(`📨 ${n} invitation${n > 1 ? 's' : ''} envoyée${n > 1 ? 's' : ''} (aperçu)`); } return grpOpen(g.id); }
+  const out = e.target.closest('[data-gout]'); if (out) { g.m = g.m.filter(i => i !== out.dataset.gout); grpSave(); socRender(); return grpOpen(g.id); }
+  if (e.target.closest('[data-gmsg]')) { const id = g.id; grpClose(); return chatOpen(id); }
+  if (e.target.closest('[data-gx]')) return grpClose();
+  if (e.target.closest('[data-gdel]')) { const snap = JSON.stringify(grpAll()); SOC.G = grpAll().filter(x => x.id !== g.id); grpSave(); grpClose(); socRender(); return toast('Groupe supprimé', () => { SOC.G = JSON.parse(snap); grpSave(); socRender(); }); }
+});
+function socOpen() { const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); socMe(); socRender(); $('#scsh').hidden = true; $('#soc').classList.add('open'); }
 const socClose = () => { SOC.ed = false; $('#soc').classList.remove('open'); };
 const socSoon = () => toast('👀 Aperçu : disponible avec le compte en ligne');
 function socShow(k) { if (!k || !D.cells[k]) return socSoon(); socClose(); select(k); try { fitBal(k); } catch (e) {} }
@@ -2759,6 +2805,8 @@ $('#soc').addEventListener('click', e => {
   const ss = e.target.closest('[data-ss]'); if (ss) { $('#scst').hidden = true; if (ss.dataset.ss !== 'x') { accU().st = ss.dataset.ss; save(); socMe(); } return; }
   if (e.target.id === 'scst') { $('#scst').hidden = true; return; }
   const t = e.target.closest('[data-st]'); if (t) { SOC.tab = t.dataset.st; return socRender(); }
+  const gr = e.target.closest('[data-grp]'); if (gr) return grpOpen(gr.dataset.grp);
+  if (e.target.closest('[data-grpnew]')) { const g = { id: 'g' + Date.now().toString(36), name: 'Nouveau groupe', ic: GIC[grpAll().length % GIC.length], m: [] }; grpAll().push(g); grpSave(); socRender(); return grpOpen(g.id, true); }
   const ch = e.target.closest('[data-chat]'); if (ch && !e.target.closest('[data-fmap],[data-fmore]')) return chatOpen(ch.dataset.chat);
   const fm = e.target.closest('[data-fmap]'); if (fm) { const f = SOC.F.find(x => x.id === fm.dataset.fmap); return socShow(f && f.at.k); }
   const mo = e.target.closest('[data-fmore]'); if (mo) { const f = SOC.F.find(x => x.id === mo.dataset.fmore); SOC.who = f; $('#scshh').innerHTML = `${socAv(f)}<b>${esc(f.d)} & ${esc(f.n)}</b>`; $('#scsh [data-sa="map"]').hidden = f.st !== 'walk'; $('#scsh').hidden = false; return; }
@@ -3674,7 +3722,7 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
     [op('encm'), () => { const b = !$('#encv').hidden && !(encFrom && !encStack.length) && $('#encbk'); b ? b.click() : encClose(); }],      // ouvert directement sur une fiche depuis une autre fenêtre : retour = revenir à cette fenêtre
     [op('dogm'), () => { const p = document.querySelector('#dogm .dgp.on'); p && p.dataset.p !== 'main' ? dogPane('main') : dogClose(); }],
     [op('balm'), () => { !$('#balb').hidden ? $('#balb').click() : balClose(); }],
-    [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('soc'), () => { !$('#scch').hidden ? chatClose() : !$('#scst').hidden ? ($('#scst').hidden = true) : !$('#scsh').hidden ? ($('#scsh').hidden = true) : socClose(); }], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
+    [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('soc'), () => { !$('#scgr').hidden ? grpClose() : !$('#scch').hidden ? chatClose() : !$('#scst').hidden ? ($('#scst').hidden = true) : !$('#scsh').hidden ? ($('#scsh').hidden = true) : socClose(); }], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
     [vis('shm'), () => shClose()], [() => RM, () => setRM(false)], [() => ED.on, () => edToggle(false)], [() => P.on && !RC.on, () => $('#pt').click()],
     [() => !!BL.poly && !BR.on, () => { BL.wait = false; BL.poly = null; lpUi(); }], [() => !!sel, () => { const f = selFrom && selFrom.k === sel; const hub = f && selFrom.hub; selFrom = null; sel = null; collapse(); renderPanel(); draw(); if (f) hub ? balOpen() : $('#lb').click(); }]];
   let pushed = false, skip = 0, q = 0;
