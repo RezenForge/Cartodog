@@ -1576,20 +1576,19 @@ function renderPanel() {
   const dn = D.prof && D.prof.name || '', av = $('#dogav') ? $('#dogav').innerHTML : '', np = c.ph.length;
   p.innerHTML = `<div class="f4h"><span class="f4cv" style="--rk:${RK.c}">${typeof c.th === 'string' && c.th.startsWith('data:image/') ? `<img src="${c.th}" alt="">` : crest(rk, 30)}</span><div class="f3t"><input class="pname" data-f="name" placeholder="${esc(g ? g.name : 'Nommer cette balade…')}" value="${esc(c.name)}" aria-label="Nom de la balade"><span class="f4sub">${g ? `<b>${fmtDist(g.len)}</b> · ≈ ${fmtDur(g.len / 1.1)}` : 'Balade sans sentier'}<span id="nvt" class="nv">${navSub(sel)}</span></span></div>${g ? `<button class="ib f3s" data-act="share" aria-label="Partager cette balade">📤</button>` : ''}</div>
     <div class="f4soc"><span class="f4av">${av}</span><span class="f4st"><b>${n ? `${esc(dn || 'Vous')} · <i data-cu="${n}">${n}</i> passage${n > 1 ? 's' : ''}` : 'Pas encore venus ici'}</b><small>${n ? 'Dernier : ' + ago(last) : dn ? 'Première balade avec ' + esc(dn) + ' ?' : 'Première balade ?'}</small></span><button class="f4inv" data-act="invite" aria-label="Inviter des copains">👥 Inviter</button></div>
-    <button id="wxb" class="vd f3w" data-tab="wx"><span class="vdc">…</span><span class="vdt">Lecture du ciel…</span></button>
     <button id="pdzc" class="fdz" data-tab="nt" hidden></button>
     <div class="f4a"><button class="btn gold f4go" data-act="walk">${walkLbl()}</button><button class="btn f4i" data-act="go" aria-label="Y aller (itinéraire)">${ICO.compass}</button><button class="btn f4i" data-act="addtoggle" aria-label="Noter une sortie passée">＋</button></div>
     <div id="addv" class="row"><input type="date" id="vd" max="${today()}" value="${today()}"><input type="number" id="vn" min="0" step="1" placeholder="Durée min" inputmode="numeric"><input type="number" id="vw" min="0" step="0.1" placeholder="Distance km" inputmode="decimal">
       <input class="full" id="vt" placeholder="Note : rencontres, état du chien, météo…"><button class="btn gold full" data-act="add">Consigner la sortie</button></div>
-    <div class="f4tab"><button data-tab="hs">Sorties${n ? ' <em>' + n + '</em>' : ''}</button><button data-tab="ph">Photos${np ? ' <em>' + np + '</em>' : ''}</button><button data-tab="nt">Notes${c.note ? ' <em>•</em>' : ''}</button><button data-tab="wx">Météo</button></div>
+    <div class="f4tab"><button data-tab="hs">Sorties${n ? ' <em>' + n + '</em>' : ''}</button><button data-tab="ph">Photos${np ? ' <em>' + np + '</em>' : ''}</button><button data-tab="nt">Notes${c.note ? ' <em>•</em>' : ''}</button></div>
     <div class="tpw f3p">
     <div class="tp" data-pane="hs"><ul>${hist || '<li class="hint">Aucune sortie pour l\'instant : « Partir ici », ou ＋ pour noter une sortie passée.</li>'}</ul></div>
     <div class="tp" data-pane="ph"><div class="gal f3g"><label class="f3add" aria-label="Ajouter une photo">${ICO.photo}<small>Ajouter</small><input type="file" accept="image/*" id="phf" multiple hidden></label><div id="gal" class="f3gi"></div></div></div>
     <div class="tp" data-pane="nt"><textarea data-f="note" rows="3" placeholder="Accès, parking, ombre, points d'eau, chemins boueux…">${esc(c.note)}</textarea>
       <div id="pdz" class="f3z"></div><div class="f3x"><span id="fty">Type de forêt…</span><span id="rel">Relief…</span></div>
       <div class="f3f"><span>📍 ${la.toFixed(5)}, ${lo.toFixed(5)}</span>${rec(c) ? `<button class="fdel" data-act="delcell">${ICO.trash} Supprimer</button>` : ''}</div></div>
-    <div class="tp" data-pane="wx"><div id="wx"><div class="hint">Chargement…</div></div></div></div>`;
-  setTab(); showWx(sel); showFt(sel); showRel(sel); showNear(sel); loadGal(sel);
+    </div>`;
+  if (ptab === 'wx') ptab = ''; setTab(); showFt(sel); showRel(sel); showNear(sel); loadGal(sel);
 }
 /* ===== Dangers signalés autour d'un lieu (vos repères « danger ») ===== */
 function showNear(k) {
@@ -2458,7 +2457,7 @@ $('#mn').onclick = () => { alLabel(); accPage('main', true); accRender(); const 
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-64';
+const APP_V = '2026.10.24-65';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
