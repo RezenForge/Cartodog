@@ -1059,7 +1059,7 @@ body:has(#menu.open) header.bar{z-index:23}
 
 /* ===== Besoin d'espace, types de chemin, sauvegarde ===== */
 .scchips{display:flex;flex-wrap:wrap;gap:5px}.scsp.none{color:var(--ember2);border-style:dashed}.scsp.space{border-color:#e0b22a;color:#ffd96a}.scsp.heat{border-color:#c9472c;color:#ff9a7e}.scsp.shy{border-color:#d0702a;color:#ffb27a}.scsp.ok{border-color:#5f9a4a;color:#a8e08e}
-.sptg{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:8px;font:800 10.5px/15px var(--num);vertical-align:2px;background:#14110e;border:1px solid #3a332a;color:var(--txt);white-space:nowrap}
+.act small .sptg{margin:0 5px 0 0;vertical-align:0}.sptg{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:8px;font:800 10.5px/15px var(--num);vertical-align:2px;background:#14110e;border:1px solid #3a332a;color:var(--txt);white-space:nowrap}
 .sptg.space{background:#3a3010;border-color:#e0b22a;color:#ffd96a}.sptg.heat{background:#3a1610;border-color:#c9472c;color:#ff9a7e}.sptg.shy{background:#3a2210;border-color:#d0702a;color:#ffb27a}.sptg.ok{background:#1c2a16;border-color:#5f9a4a;color:#a8e08e}
 .spnote{margin-top:8px;padding:8px 10px;border-radius:6px;background:rgba(95,115,80,.16);border:1.5px solid #3f5233;font:600 11.5px/1.35 var(--num);color:#cfdcbf}
 .f4tg{flex:none;letter-spacing:1px}
@@ -1068,6 +1068,14 @@ body:has(#menu.open) header.bar{z-index:23}
 .hbl li[hidden]{display:none!important}.hbtg{display:flex;gap:5px;overflow-x:auto;margin:8px 0 2px;scrollbar-width:none}.hbtg::-webkit-scrollbar{display:none}.hbtg button{flex:none}
 .bkst{margin:0 0 8px;padding:9px 11px;border-radius:6px;background:rgba(95,115,80,.16);border:1.5px solid #3f5233;font:600 12.5px/1.35 var(--num);color:#cfdcbf}.bkst.old{background:rgba(201,71,44,.14);border-color:#7a3a2a;color:#ffc2b0}
 #bksh{flex-direction:column!important;gap:1px!important}#bksh small{display:block;font-weight:600;opacity:.8;font-size:11.5px}.sct button{white-space:nowrap;font-size:12.5px!important;letter-spacing:-.01em}
+
+/* ===== Copains : seule la liste défile ===== */
+#soc .scw{display:flex!important;flex-direction:column;overflow:hidden!important;padding-top:40px!important}
+#soc .scw>*{flex:none;width:100%}
+#soc .scx{position:absolute;top:4px;right:6px;width:34px!important;height:34px!important;z-index:2}
+#soc .scp.on{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+#soc .scp>*{flex:none}#soc .scp>.scls{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;margin-top:2px;padding-bottom:6px;-webkit-mask-image:linear-gradient(#000 calc(100% - 14px),transparent);mask-image:linear-gradient(#000 calc(100% - 14px),transparent)}
+#soc .scnew{margin:10px 0 0!important}#soc .scls>.scml{margin-top:8px}
 </style></head><body>
 <header class="bar win dg"><button class="hdog" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span></button><button class="hbr brand" id="hbr" aria-label="Cartodog : profil de mon chien"><span class="hinf"><b>Cartodog</b><small id="hsub">Carnet de balade</small></span></button><button class="hset" id="mn" aria-label="Mon compte"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><circle cx="16" cy="16" r="14.5" fill="#2a2018" stroke="#8a6a3a" stroke-width="1"/><circle cx="16" cy="12.4" r="5.4" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2"/><path d="M6.6 26.2c1.3-5.2 5-8 9.4-8s8.1 2.8 9.4 8a14.4 14.4 0 0 1-18.8 0z" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2" stroke-linejoin="round"/></svg></button><b id="hnm" hidden></b>
 <small id="ssn" hidden></small>
@@ -1174,7 +1182,7 @@ body:has(#menu.open) header.bar{z-index:23}
   </div>
 </div></div>
 <div id="soc"><div class="win dg scw" role="dialog" aria-label="Copains, messages et rendez-vous">
-  <div class="ach"><h2>Copains<small>Qui se balade, messages et rendez-vous</small></h2><button class="ib" id="socx" aria-label="Fermer">✕</button></div>
+  <button class="ib scx" id="socx" aria-label="Fermer">✕</button>
   <div class="scme" id="scme"></div>
   <div class="sct" role="tablist"><button data-st="fr" role="tab">👥 Copains</button><button data-st="ms" role="tab">💬 Messages<b id="scmn" hidden></b></button><button data-st="ev" role="tab">📅 Rendez-vous</button></div>
   <div class="scdemo">👀 <b>Aperçu</b> avec des exemples : les vrais copains arriveront avec le compte en ligne.</div>
@@ -2641,7 +2649,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.24-82';
+const APP_V = '2026.10.24-83';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2672,16 +2680,16 @@ function socRender() {
   const { F, E } = socDemo(); SOC.F = F; SOC.E = E;
   document.querySelectorAll('#soc [data-st]').forEach(b => { b.classList.toggle('on', b.dataset.st === SOC.tab); b.setAttribute('aria-selected', b.dataset.st === SOC.tab); });
   document.querySelectorAll('#soc [data-sp]').forEach(x => x.classList.toggle('on', x.dataset.sp === SOC.tab));
-  const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em>${spTag(f.sp)}</b><small>${f.st === 'walk' ? `<u>🐾 En balade</u> · ${esc(f.at.n)} · ${f.t} min` : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last)}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
+  const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${spTag(f.sp)}${f.st === 'walk' ? `<u>🐾 En balade</u> · ${esc(f.at.n)} · ${f.t} min` : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last)}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
   const grp = (t, L) => L.length ? `<div class="mh">${t} · ${L.length}</div><div class="acg">${L.map(row).join('')}</div>` : '';
-  $('#scfr').innerHTML = `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes <b>1</b></button></div>` +
-    grp('🐾 En balade', F.filter(f => f.st === 'walk')) + grp('🟢 En ligne', F.filter(f => f.st === 'on')) + grp('Hors ligne', F.filter(f => f.st === 'off'));
+  $('#scfr').innerHTML = `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes <b>1</b></button></div><div class="scls">` +
+    grp('🐾 En balade', F.filter(f => f.st === 'walk')) + grp('🟢 En ligne', F.filter(f => f.st === 'on')) + grp('Hors ligne', F.filter(f => f.st === 'off')) + '</div>';
   msgList();
   const fmt = (t, o) => t.toLocaleDateString('fr-FR', o).replace('.', '');
-  $('#scev').innerHTML = `<button class="btn gold scorg" data-sx="org">＋ Organiser un rendez-vous</button>` + E.map(e => { const g = SOC.go[e.id];
+  $('#scev').innerHTML = `<button class="btn gold scorg" data-sx="org">＋ Organiser un rendez-vous</button><div class="scls">` + E.map(e => { const g = SOC.go[e.id];
     return `<div class="sce"><div class="scd"><small>${fmt(e.t, { weekday: 'short' })}</small><b>${e.t.getDate()}</b><small>${fmt(e.t, { month: 'short' })}</small></div><div class="act"><b>${esc(e.at.n)}</b><small>Organisée par <em>${esc(e.by.n)} & ${esc(e.by.d)}</em></small><small>🕙 ${e.t.getHours()} h 00 · ${e.dur} · ${e.n + (g === 'y' ? 1 : 0)} chiens</small><small>🅿 Rendez-vous : <em>${esc(e.pk)}</em></small>
       <span class="scps">${e.who.map(f => socAv(f, 'sm')).join('')}${g === 'y' ? `<span class="scav sm me">${esc((D.prof && D.prof.name || 'M')[0])}</span>` : ''}</span>
-      <span class="scea"><button data-eg="${e.id}:y" class="${g === 'y' ? 'on' : ''}">${g === 'y' ? '✓ J\'y vais' : 'J\'y vais'}</button><button data-eg="${e.id}:m" class="${g === 'm' ? 'on' : ''}">Peut-être</button>${g === 'y' ? `<button data-erem="${e.id}" class="${SOC.rem[e.id] ? 'on' : ''}" aria-label="Rappel 30 min avant">${SOC.rem[e.id] ? '🔔' : '🔕'}</button>` : ''}${e.at.k ? `<button data-emap="${e.at.k}" aria-label="Voir sur la carte">📍</button>` : ''}</span></div></div>`; }).join('');
+      <span class="scea"><button data-eg="${e.id}:y" class="${g === 'y' ? 'on' : ''}">${g === 'y' ? '✓ J\'y vais' : 'J\'y vais'}</button><button data-eg="${e.id}:m" class="${g === 'm' ? 'on' : ''}">Peut-être</button>${g === 'y' ? `<button data-erem="${e.id}" class="${SOC.rem[e.id] ? 'on' : ''}" aria-label="Rappel 30 min avant">${SOC.rem[e.id] ? '🔔' : '🔕'}</button>` : ''}${e.at.k ? `<button data-emap="${e.at.k}" aria-label="Voir sur la carte">📍</button>` : ''}</span></div></div>`; }).join('') + '</div>';
 }
 
 /* ===== Mon état et ma description (visibles par les copains) ===== */
@@ -2714,15 +2722,15 @@ const msgT = ts => { const d = new Date(ts), n = new Date(); return d.toDateStri
 const msgUnread = () => Object.values(msgAll()).reduce((a, L) => a + (L.some(m => m.nw) ? 1 : 0), 0);
 function msgList() {
   const M = msgAll(), F = SOC.F || socDemo().F, ids = Object.keys(M).filter(id => M[id].length && F.find(f => f.id === id)).sort((a, b) => M[b][M[b].length - 1].ts - M[a][M[a].length - 1].ts);
-  $('#scms').innerHTML = (ids.length ? `<div class="acg scml">${ids.map(id => { const f = F.find(x => x.id === id), L = M[id], m = L[L.length - 1], nw = L.some(x => x.nw);
+  $('#scms').innerHTML = `<button class="scadd scnew" data-sx="newmsg">✏️ Nouveau message</button><div class="scls">` + (ids.length ? `<div class="acg scml">${ids.map(id => { const f = F.find(x => x.id === id), L = M[id], m = L[L.length - 1], nw = L.some(x => x.nw);
     return `<button class="scr scmr${nw ? ' nw' : ''}" data-chat="${id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${m.me ? 'Vous : ' : ''}${m.k ? '📍 ' : ''}${esc(m.t || m.kn || '')}</small></span><span class="scmt"><small>${msgT(m.ts)}</small>${nw ? '<i></i>' : ''}</span></button>`; }).join('')}</div>` : '<div class="hint">Aucun message pour l\'instant.</div>') +
-    `<button class="scadd scnew" data-sx="newmsg">✏️ Nouveau message</button>`;
+    '</div>';
   const u = msgUnread(); $('#scmn').hidden = !u; $('#scmn').textContent = u;
 }
 function chatOpen(id) {
   const f = (SOC.F || socDemo().F).find(x => x.id === id); if (!f) return; SOC.chat = id; const M = msgAll();
   if ((M[id] || []).some(m => m.nw)) { M[id].forEach(m => m.nw = 0); (SOC.Ms._read ||= []).includes(id) || SOC.Ms._read.push(id); msgSave(); }
-  $('#scchw').innerHTML = `<span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em>${spTag(f.sp)}</b><small>${f.st === 'walk' ? '🐾 En balade · ' + esc(f.at.n) : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last)}</small></span>`;
+  $('#scchw').innerHTML = `<span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${spTag(f.sp)}${f.st === 'walk' ? '🐾 En balade · ' + esc(f.at.n) : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last)}</small></span>`;
   chatRender(); $('#scch').hidden = false; msgList();
 }
 function chatRender() {
