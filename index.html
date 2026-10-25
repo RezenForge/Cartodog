@@ -1124,6 +1124,10 @@ body:has(#menu.open) header.bar{z-index:23}
 .apm{display:inline-flex;gap:4px}.apm button{padding:4px 9px;border:2px solid var(--edge);border-radius:12px;background:#14110e;box-shadow:inset 0 0 0 1px #3a332a;color:var(--mut);font:800 12px var(--num);cursor:pointer}.apm button.on{background:linear-gradient(#f4c862,#c6862a);color:#2a1806;border-color:#0e0c09}
 .aps{flex:1 1 auto;min-width:0}.apext{flex:1 0 100%;font-size:12px;color:var(--mut)}.apext a{color:var(--ember2);font-weight:800}
 body.lpon #dock #found:not(.rec),body.lpon #dock #socb{display:none!important}body.lpon #dock:not(:has(#found.rec)):not(:has(#homeb:not([hidden]))){display:none}
+#gate{position:fixed;inset:0;z-index:42;display:flex;flex-direction:column;overflow-y:auto;padding:calc(24px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom));border:0!important;border-radius:0!important;animation:fadeIn .3s ease both}#gate[hidden],#gtoff[hidden]{display:none}
+.gtc{margin:auto;width:100%;max-width:400px;display:flex;flex-direction:column;gap:10px}#gatef{display:flex;flex-direction:column;gap:10px}
+.gtl{text-align:center;margin-bottom:8px}.gtl img{width:76px;height:76px;border-radius:20px;box-shadow:0 4px 14px rgba(0,0,0,.6)}.gtl h1{margin:10px 0 4px;font:800 30px/1.1 var(--px);color:#fff1cf;text-shadow:2px 2px 0 #000}.gtl p{margin:0;font:600 14px/1.4 var(--num);color:var(--mut)}
+.scemp{display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;padding:26px 14px;font:700 15px/1.3 var(--num);color:var(--txt)}.scemp small{font:500 13px/1.4 var(--num);color:var(--mut);max-width:290px}
 .hico{display:inline-block;width:17px;height:17px;margin:0 0 0 4px;vertical-align:top;position:relative;top:1px;border-radius:5px;box-shadow:0 1px 2px rgba(0,0,0,.6)}
 
 /* ===== Compte en ligne ===== */
@@ -1154,6 +1158,7 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
   <div id="edm" class="dg" hidden><div id="edmt"></div><div class="edb"><button id="eddl">🗑 Supprimer</button><button id="eddt" hidden>✂ Détacher</button><button id="edsp">✂ Couper ici</button><button id="edx" aria-label="Fermer">✕</button></div></div>
   <div id="rt" class="dg" hidden><div class="eyb">Itinéraire</div><div id="rtt"></div><div id="rts"></div><div class="pmb"><button id="rtn" aria-label="Point suivant">Suivant ›</button><button id="rtg" aria-label="Ouvrir dans Maps">Ouvrir dans Maps</button><button id="rtx" aria-label="Fermer l'itinéraire" style="margin-left:auto">✕</button></div></div>
   <div id="shm" class="dg" hidden></div>
+  <div id="gate" class="dg" hidden><div class="gtc"><div class="gtl"><img src="icon.svg" alt="" aria-hidden="true"><h1>Cartodog</h1><p>Les balades des promeneurs de chiens, cartographiées sur le terrain.</p></div><div id="gatef"></div><button class="cllink" id="gtoff" hidden>Hors ligne : continuer sans me connecter</button></div></div>
   <div id="wel" class="dg" hidden><div class="obd" id="obd"></div><div class="obc" id="obc"></div></div>
   <div id="lp" class="dg" hidden><div class="eyb" id="lpe">Balade guidée</div><div id="lpt"></div><div class="pmb"><button id="lpgo" aria-label="Partir">▶</button><button id="lpn" aria-label="Proposer une autre boucle">↻</button><button id="lpd" aria-label="Changer la durée ou le départ">⏱</button><button id="lpv" aria-label="Guidage vocal"></button><button id="lpx" aria-label="Masquer la boucle">✕</button></div></div>
   <div id="rm" class="dg" hidden><div class="eyb">Poser un repère</div><div id="rmt">Touchez la carte pour poser un repère (point d'eau, danger, parking…), ou touchez un repère existant pour le modifier.</div><div class="pmb"><button id="rmg">À ma position</button><button id="rmx" aria-label="Quitter le mode repère">✕</button></div></div>
@@ -1222,7 +1227,6 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
     <button class="btn" id="alb"></button>
     <button class="btn" id="fs" hidden></button>
     <button class="btn" id="wk"></button>
-    <button class="btn" id="socdm"></button>
     <details class="acadv"><summary>Avancé <small>routes, communes, boussole</small></summary>
     <button class="btn" id="rdb"></button>
     <button class="btn" id="cmb"></button>
@@ -1628,7 +1632,7 @@ function repPos() {      // le bouton Signaler reste au-dessus de la barre et de
 new MutationObserver(() => repPos()).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['hidden'] });      // le bouton Signaler suit l'apparition / disparition des cartes du bas
 
 /* ===== Présence sur les balades : patte = promeneurs Cartodog ici en ce moment, avatars = copains (aperçu tant que le compte en ligne n'existe pas) ===== */
-let socPrev = (() => { try { return localStorage.getItem('cartodog-socdemo') !== '0'; } catch (e) { return true; } })();
+let socPrev = false;      // l'aperçu fictif (faux copains, faux promeneurs) est retiré : les vrais copains arriveront avec la messagerie en ligne
 let SLV = { t: 0, m: new Map() };
 function socLive() {
   if (!socPrev) return SLV.m.size ? (SLV = { t: 0, m: new Map() }).m : SLV.m;
@@ -2810,7 +2814,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-112';
+const APP_V = '2026.10.25-113';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2826,6 +2830,7 @@ $('#mx').onclick = () => $('#menu').classList.remove('open'); $('#menu').onclick
 /* ===== Copains et sorties (aperçu avant le compte en ligne) : qui se balade et où, gestion des copains, sorties organisées ===== */
 const SOC = { tab: 'fr', go: {}, who: null, rem: {} };
 function socDemo() {
+  if (!socPrev) return { F: [], E: [] };
   const bals = Object.keys(D.cells).filter(k => rec(D.cells[k]) && cellGroup(k)).map(k => ({ k, n: balName(k) })).filter(b => b.n);
   const B = i => bals.length ? bals[i % bals.length] : { k: null, n: ['Bois du Taillan', 'Parc de Majolan', 'Forêt du Bourgailh'][i % 3] };
   const F = [{ id: 'f1', n: 'Oslo', d: 'Ulysse', c: '#c6862a', st: 'walk', at: B(0), t: 25, sp: 'ok' }, { id: 'f2', n: 'Léa', d: 'Max', c: '#5f7350', st: 'walk', at: B(1), t: 8 },
@@ -2843,14 +2848,14 @@ function socRender() {
   document.querySelectorAll('#soc [data-sp]').forEach(x => x.classList.toggle('on', x.dataset.sp === SOC.tab));
   const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${f.st === 'walk' ? spTag(f.sp, 1) : spTag(f.sp)}${f.st === 'walk' ? `<u title="En balade">🐾 ${f.t} min</u><i class="mqs">·</i><span class="mqn"><span class="mqi">${esc(f.at.n)}</span></span>` : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last)}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
   const grp = (t, L) => L.length ? `<div class="mh">${t} · ${L.length}</div><div class="acg">${L.map(row).join('')}</div>` : '';
-  $('#scfr').innerHTML = `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes <b>1</b></button></div><div class="scls">` + grpRows() +
-    grp('🐾 En balade', F.filter(f => f.st === 'walk')) + grp('🟢 En ligne', F.filter(f => f.st === 'on')) + grp('Hors ligne', F.filter(f => f.st === 'off')) + '</div>';
+  $('#scfr').innerHTML = `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes${SOCREQ ? ` <b>${SOCREQ}</b>` : ''}</button></div><div class="scls">` + grpRows() +
+    grp('🐾 En balade', F.filter(f => f.st === 'walk')) + grp('🟢 En ligne', F.filter(f => f.st === 'on')) + grp('Hors ligne', F.filter(f => f.st === 'off')) + (F.length ? '' : '<div class="scemp">🐕 Pas encore de copains<small>Bientôt : ajoutez les promeneurs que vous croisez, voyez qui se balade et discutez.</small></div>') + '</div>';
   msgList(); mqFit($('#scfr'));
   const fmt = (t, o) => t.toLocaleDateString('fr-FR', o).replace('.', '');
   $('#scev').innerHTML = `<button class="btn gold scorg" data-sx="org">＋ Organiser un rendez-vous</button><div class="scls">` + E.map(e => { const g = SOC.go[e.id];
     return `<div class="sce"><div class="scd"><small>${fmt(e.t, { weekday: 'short' })}</small><b>${e.t.getDate()}</b><small>${fmt(e.t, { month: 'short' })}</small></div><div class="act"><b>${esc(e.at.n)}</b><small>Organisée par <em>${esc(e.by.n)} & ${esc(e.by.d)}</em></small><small>🕙 ${e.t.getHours()} h 00 · ${e.dur} · ${e.n + (g === 'y' ? 1 : 0)} chiens</small><small>🅿 Rendez-vous : <em>${esc(e.pk)}</em></small>
       <span class="scps">${e.who.map(f => socAv(f, 'sm')).join('')}${g === 'y' ? `<span class="scav sm me">${esc((D.prof && D.prof.name || 'M')[0])}</span>` : ''}</span>
-      <span class="scea"><button data-eg="${e.id}:y" class="${g === 'y' ? 'on' : ''}">${g === 'y' ? '✓ J\'y vais' : 'J\'y vais'}</button><button data-eg="${e.id}:m" class="${g === 'm' ? 'on' : ''}">Peut-être</button>${g === 'y' ? `<button data-erem="${e.id}" class="${SOC.rem[e.id] ? 'on' : ''}" aria-label="Rappel 30 min avant">${SOC.rem[e.id] ? '🔔' : '🔕'}</button>` : ''}${e.at.k ? `<button data-emap="${e.at.k}" aria-label="Voir sur la carte">📍</button>` : ''}</span></div></div>`; }).join('') + '</div>';
+      <span class="scea"><button data-eg="${e.id}:y" class="${g === 'y' ? 'on' : ''}">${g === 'y' ? '✓ J\'y vais' : 'J\'y vais'}</button><button data-eg="${e.id}:m" class="${g === 'm' ? 'on' : ''}">Peut-être</button>${g === 'y' ? `<button data-erem="${e.id}" class="${SOC.rem[e.id] ? 'on' : ''}" aria-label="Rappel 30 min avant">${SOC.rem[e.id] ? '🔔' : '🔕'}</button>` : ''}${e.at.k ? `<button data-emap="${e.at.k}" aria-label="Voir sur la carte">📍</button>` : ''}</span></div></div>`; }).join('') + (E.length ? '' : '<div class="scemp">📅 Aucun rendez-vous prévu<small>Bientôt : proposez une balade à plusieurs et voyez qui vient.</small></div>') + '</div>';
 }
 
 /* ===== Mon état et ma description (visibles par les copains) ===== */
@@ -2870,8 +2875,8 @@ function socMe() {
 const MSK = 'cartodog-msgdemo';
 function msgAll() {
   if (SOC.M) return SOC.M; let saved = {}; try { saved = JSON.parse(localStorage.getItem(MSK) || '{}') || {}; } catch (e) {}
-  const { F } = socDemo(), now = Date.now(), H = 36e5, B = F[1].at;
-  const seed = { f1: [{ me: 0, t: 'Salut ! Tu viens au ' + F[0].at.n + ' samedi ? 🐕', ts: now - 26 * H }, { me: 1, t: 'Carrément, vers 10 h ?', ts: now - 25 * H }, { me: 0, t: 'Parfait, ' + F[0].d + ' a hâte de revoir ' + (D.prof && D.prof.name || 'ton chien') + ' 😄', ts: now - 40 * 6e4, nw: 1 }],
+  const { F } = socDemo(), now = Date.now(), H = 36e5, B = F[1] ? F[1].at : {};
+  const seed = F.length < 2 ? {} : { f1: [{ me: 0, t: 'Salut ! Tu viens au ' + F[0].at.n + ' samedi ? 🐕', ts: now - 26 * H }, { me: 1, t: 'Carrément, vers 10 h ?', ts: now - 25 * H }, { me: 0, t: 'Parfait, ' + F[0].d + ' a hâte de revoir ' + (D.prof && D.prof.name || 'ton chien') + ' 😄', ts: now - 40 * 6e4, nw: 1 }],
     f2: [{ me: 0, t: 'On est ici, il y a de l\'ombre 👌', ts: now - 9 * 6e4, k: B.k, kn: B.n, nw: 1 }],
     f3: [{ me: 1, t: 'Merci pour le parking !', ts: now - 3 * 24 * H }, { me: 0, t: 'Avec plaisir 👍', ts: now - 3 * 24 * H + 6e5 }] };
   Object.keys(saved).forEach(id => { if (Array.isArray(saved[id])) seed[id] = (seed[id] || []).map(m => ({ ...m, nw: 0 })).concat(saved[id]); });
@@ -2961,7 +2966,7 @@ if (window.visualViewport) { const kb = () => { const v = visualViewport, h = Ma
   visualViewport.addEventListener('resize', kb); visualViewport.addEventListener('scroll', kb); }
 function mqFit(root) {      // seul le nom de la balade défile (aller-retour) quand il ne tient pas en entier
   requestAnimationFrame(() => root.querySelectorAll('.mqn').forEach(el => { const sp = el.firstElementChild, d = sp.scrollWidth - el.clientWidth; el.classList.toggle('mq', d > 2); if (d > 2) { sp.style.setProperty('--d', -(d + 10) + 'px'); sp.style.animationDuration = Math.max(6, (d + 10) / 22 + 4) + 's'; } })); }
-const SOCREQ = 1;      // demandes d'amis en attente (aperçu)
+const SOCREQ = 0;      // demandes d'amis en attente (arriveront avec les comptes en ligne)
 function socBadge() { let n = 0; try { n = msgUnread() + SOCREQ; } catch (e) {} const b = $('#socn'); b.hidden = !n; b.textContent = n > 9 ? '9+' : n; $('#socb').setAttribute('aria-label', 'Copains, messages et rendez-vous' + (n ? ' : ' + n + ' notification' + (n > 1 ? 's' : '') : '')); }
 setTimeout(socBadge, 300);
 function socOpen() { const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); socMe(); socRender(); $('#scsh').hidden = true; $('#soc').classList.add('open'); }
@@ -3046,11 +3051,27 @@ const redir = () => location.origin + location.pathname;
 async function clSignUp(email, pw, name) { const j = await clAuth('signup?redirect_to=' + encodeURIComponent(redir()), { email, password: pw, data: { name } }); if (clSet(j)) { await clAfterLogin(true); return 'ok'; } return 'confirm'; }
 async function clSignIn(email, pw) { clSet(await clAuth('token?grant_type=password', { email, password: pw })); await clAfterLogin(true); }
 async function clRecover(email) { await clAuth('recover?redirect_to=' + encodeURIComponent(redir()), { email }); }
-async function clSignOut() { const t = CLD.s && CLD.s.access_token; CLD.s = null; CLD.role = ''; clSave(); try { localStorage.removeItem(SYK); } catch (e) {} clUi(); if (t) try { await clAuth('logout', {}, t); } catch (e) {} }
+async function clSignOut(gone) {      // le carnet reste dans le compte et quitte ce téléphone : le compte suivant démarre vierge
+  if (!gone && clOn() && navigator.onLine !== false) { if (CLD.busy) await new Promise(r => { let n = 0; const w = setInterval(() => { if (!CLD.busy || ++n > 60) { clearInterval(w); r(); } }, 250); }); try { await sync(true); } catch (e) {} }
+  const t = CLD.s && CLD.s.access_token; CLD.s = null; CLD.role = ''; CLD.skip = false; clSave(); localWipe(); try { localStorage.removeItem(OWK); } catch (e) {} clUi(); if (t) try { await clAuth('logout', {}, t); } catch (e) {} }
+const OWK = 'cartodog-owner';      // compte à qui appartiennent les données de ce téléphone
+function localWipe() {
+  D = { cells: {}, paths: [], marks: [], dog: '', prof: cleanProf({}, ''), user: cleanUser({}) }; sel = null;
+  [GRK, MSK, SYK, 'cartodog-socdemo'].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} }); SOC.G = null; SOC.M = null; SOC.Ms = null;
+  try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) {} try { CGM.clear(); } catch (e) {} NG.sig = '';
+  idb.then(db => { if (db) try { db.transaction('p', 'readwrite').objectStore('p').clear(); } catch (e) {} });
+  try { $('#panel').hidden = true; } catch (e) {} try { hdrRender(); dogAvatar(); } catch (e) {} schedule();
+}
+function gateSync() { const g = $('#gate'); if (!g) return; const show = !clOn() && !CLD.skip; if (g.hidden === show) g.hidden = !show; $('#gtoff').hidden = navigator.onLine !== false; }
 async function clAfterLogin(first) {
+  const uid = CLD.s && CLD.s.user && CLD.s.user.id; let own = ''; try { own = localStorage.getItem(OWK) || ''; } catch (e) {}
+  if (uid && own && own !== uid) localWipe();      // données d'un autre compte : on repart de zéro
+  if (uid) try { localStorage.setItem(OWK, uid); } catch (e) {}
+  gateSync();
   try { const p = await sb('/rest/v1/profiles?select=name,role&id=eq.' + CLD.s.user.id); if (p && p[0]) { CLD.role = p[0].role; CLD.name = p[0].name; }
     const u = accU(); if (!u.name.trim() && CLD.name) { u.name = CLD.name; save(); try { hdrRender(); } catch (e) {} } } catch (e) {}
-  clUi(); if (first) toast('☁️ Connecté : vos données se synchronisent'); sync(true);
+  clUi(); if (first) toast('☁️ Connecté : vos données se synchronisent');
+  sync(true).then(() => { if (!first) return; if (!(D.prof && D.prof.name)) { if (window.welOpen) welOpen(); } else if (!$('#wel').hidden) { $('#wel').hidden = true; try { localStorage.setItem('cartodog-wel', '1'); } catch (e) {} } try { hdrRender(); dogAvatar(); } catch (e) {} });
 }
 /* Retour d'un lien reçu par e-mail (confirmation d'inscription, mot de passe oublié) : #access_token=…&type=… */
 { const h = location.hash; if (/access_token=/.test(h)) { const q = new URLSearchParams(h.slice(1)); history.replaceState(null, '', location.pathname + location.search);
@@ -3133,6 +3154,7 @@ async function sync(force) {
 addEventListener('online', () => sync(true));
 setInterval(() => { if (!document.hidden) sync(); }, 180000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) sync(); });
+clUi(); addEventListener('online', gateSync); addEventListener('offline', gateSync);
 if (clOn()) setTimeout(() => clAfterLogin(false), 2500);
 
 /* ===== Écrans du compte en ligne ===== */
@@ -3142,15 +3164,15 @@ function clUi() {
   b.innerHTML = on ? `<span>☁️</span><span><b>Compte en ligne · connecté</b><small>${esc(CLD.s.user.email || '')} · ${CLD.st === 'busy' ? '🔄 synchronisation…' : CLD.st === 'err' ? '⚠️ ' + esc(CLD.err) : CLD.at ? '✅ synchronisé ' + fmtAgo(CLD.at) : 'en attente'}</small></span><i>›</i>`
     : `<span>☁️</span><span><b>Créer mon compte · Se connecter</b><small>Sauvegarde automatique, carnet sur tous vos appareils, sentiers partagés</small></span><i>›</i>`;
   b.classList.toggle('on', on);
-  const c = $('#accl'); if (!c) return;
-  if (!on) { c.innerHTML = `<div class="clseg"><button data-clm="in" class="${CLD.mode !== 'up' ? 'on' : ''}">Se connecter</button><button data-clm="up" class="${CLD.mode === 'up' ? 'on' : ''}">Créer un compte</button></div>
+  gateSync(); let c = $('#accl'); if (!c) return;
+  if (!on) { c.innerHTML = ''; c = $('#gatef'); c.innerHTML = `<div class="clseg"><button data-clm="in" class="${CLD.mode !== 'up' ? 'on' : ''}">Se connecter</button><button data-clm="up" class="${CLD.mode === 'up' ? 'on' : ''}">Créer un compte</button></div>
     ${CLD.mode === 'up' ? `<label class="acf"><span>Pseudo</span><input id="clname" maxlength="24" autocomplete="nickname" value="${esc(accU().name || '')}" placeholder="Ex. Dylan"></label>` : ''}
     <label class="acf"><span>E-mail</span><input id="clmail" type="email" autocomplete="email" inputmode="email" value="${esc(CLD.mail || '')}" placeholder="vous@exemple.fr"></label>
     <label class="acf"><span>Mot de passe</span><input id="clpw" type="password" minlength="8" autocomplete="${CLD.mode === 'up' ? 'new-password' : 'current-password'}" placeholder="8 caractères minimum"></label>
     <div class="clerr" id="clerr"></div>
     <button class="btn gold" id="clgo">${CLD.mode === 'up' ? '✨ Créer mon compte' : '☁️ Se connecter'}</button>
     ${CLD.mode !== 'up' ? '<button class="cllink" id="clforgot">Mot de passe oublié ?</button>' : ''}
-    <div class="acnote">🔐 Vos données sont hébergées en Europe (Paris). Vos sentiers et repères deviennent visibles par les autres promeneurs ; votre carnet (sorties, notes, photos) reste privé. Sans compte, tout continue de marcher sur ce téléphone.</div>`;
+    <div class="acnote">🔐 Vos données sont hébergées en Europe (Paris). Vos sentiers et repères deviennent visibles par les autres promeneurs ; votre carnet (chien, sorties, notes, photos) reste privé.</div>`;
     return; }
   if (CLD.pwReset) { c.innerHTML = `<div class="acnote">🔑 Choisissez un nouveau mot de passe.</div><label class="acf"><span>Nouveau mot de passe</span><input id="clnpw" type="password" minlength="8" autocomplete="new-password"></label><div class="clerr" id="clerr"></div><button class="btn gold" id="clnpwgo">Enregistrer</button>`; return; }
   const S = syLoad(), np = Object.values(S.pst).filter(v => v === 'public').length, pp = Object.values(S.pst).filter(v => v === 'proposed').length;
@@ -3163,7 +3185,8 @@ function clUi() {
 }
 document.addEventListener('click', async e => {
   const t = e.target; if (!t.closest) return;
-  if (t.closest('#acloud')) { accPage('cloud'); return clUi(); }
+  if (t.closest('#acloud')) { if (!clOn()) { CLD.skip = false; return clUi(); } accPage('cloud'); return clUi(); }
+  if (t.closest('#gtoff')) { CLD.skip = true; return gateSync(); }
   const md = t.closest('[data-clm]'); if (md) { CLD.mail = ($('#clmail') || {}).value || CLD.mail; CLD.mode = md.dataset.clm; return clUi(); }
   const err = m => { const el = $('#clerr'); if (el) el.textContent = m; };
   if (t.closest('#clgo')) { const mail = $('#clmail').value.trim(), pw = $('#clpw').value; CLD.mail = mail;
@@ -3177,16 +3200,14 @@ document.addEventListener('click', async e => {
   if (t.closest('#clforgot')) { const mail = ($('#clmail').value || '').trim(); if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) return err('Saisissez d\'abord votre e-mail'); try { await clRecover(mail); err(''); toast('📧 E-mail envoyé : suivez le lien pour choisir un nouveau mot de passe'); } catch (x) { err(x.message); } return; }
   if (t.closest('#clnpwgo')) { const pw = $('#clnpw').value; if (pw.length < 8) return err('8 caractères minimum'); try { const tok = await clToken(); const r = await fetchT(SB.url + '/auth/v1/user', 12000, { method: 'PUT', headers: { apikey: SB.key, Authorization: 'Bearer ' + tok, 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }) }); if (!r.ok) throw new Error(clMsg(await r.json().catch(() => null), r.status)); CLD.pwReset = false; toast('🔑 Mot de passe changé'); clAfterLogin(false); } catch (x) { err(x.message); } return; }
   if (t.closest('#clsync')) return sync(true);
-  if (t.closest('#clout')) { await clSignOut(); toast('☁️ Déconnecté : vos données restent sur ce téléphone'); return; }
-  if (t.closest('#cldel')) { if (!confirm('Supprimer définitivement votre compte en ligne ? Vos sentiers publics restent sur la carte (sans votre nom) ; votre carnet en ligne et vos photos en ligne sont effacés. Les données de ce téléphone sont conservées.')) return;
+  if (t.closest('#clout')) { if (!confirm('Se déconnecter ?\n\nVotre carnet reste sauvegardé dans votre compte et quitte ce téléphone jusqu\'à votre prochaine connexion.' + (navigator.onLine === false ? '\n\n⚠️ Hors ligne : les dernières modifications pas encore envoyées seront perdues.' : ''))) return; await clSignOut(); toast('☁️ Déconnecté'); return; }
+  if (t.closest('#cldel')) { if (!confirm('Supprimer définitivement votre compte en ligne ? Vos sentiers publics restent sur la carte (sans votre nom) ; votre carnet en ligne et vos photos en ligne sont effacés. Tout est aussi retiré de ce téléphone.')) return;
     try { const S = syLoad(); for (const id of Object.keys(S.ph)) { try { await sb(`/storage/v1/object/photos/${CLD.s.user.id}/${id}`, { method: 'DELETE' }); } catch (x) {} }
-      await sb('/rest/v1/rpc/delete_my_account', { method: 'POST', json: {} }); await clSignOut(); toast('Compte supprimé'); }
+      await sb('/rest/v1/rpc/delete_my_account', { method: 'POST', json: {} }); await clSignOut(true); toast('Compte supprimé'); }
     catch (x) { toast(x.status === 404 ? '⚠️ Suppression bientôt disponible : écrivez-nous pour supprimer votre compte' : '⚠️ ' + x.message); } return; }
 });
 
 $('#imp').onclick = () => $('#fi').click();
-const sdLabel = () => $('#socdm').innerHTML = sw('Aperçu social : exemples de promeneurs et copains sur les balades', socPrev); sdLabel();
-$('#socdm').onclick = () => { socPrev = !socPrev; try { localStorage.setItem('cartodog-socdemo', socPrev ? '1' : '0'); } catch (e) {} SLV.t = 0; sdLabel(); schedule(); };
 /* ===== Mon compte : tiroir à droite, pages qui glissent ===== */
 const ACV = { none: 'Personne · mode fantôme', friends: 'Copains', all: 'Tout le monde' };
 const accU = () => (D.user = Object.assign({ name: '', city: '', vis: 'friends', pres: true, stats: true, st: 'on', bio: '' }, D.user || {}));
@@ -4072,7 +4093,13 @@ $('#encm').addEventListener('click', e => {
 document.addEventListener('click', e => { const b = e.target.closest('[data-guide]'); if (!b) return; encFrom = $('#dogm').classList.contains('open') ? 'dogm' : $('#menu').classList.contains('open') ? 'menu' : null; $('#menu').classList.remove('open'); $('#dogm').classList.remove('open'); encOpen(true); encShow(encById(b.dataset.guide)); });
 
 /* ===== Démarrage ===== */
-load(); try { if (syncBal()) save(); } catch (e) {}
+load();
+{ let done = false; try { done = localStorage.getItem('cartodog-clean1') === '1'; } catch (e) {}      // une fois : on retire le profil, le chien, les sorties et les copains de test, on garde les sentiers
+  if (!done && !clOn()) { Object.keys(D.cells).forEach(k => { const c = D.cells[k]; D.cells[k] = clean({ x: c.x, y: c.y, name: c.name, tags: c.tags }); });
+    D.prof = cleanProf({}, ''); D.dog = ''; D.user = cleanUser({}); [GRK, MSK, 'cartodog-socdemo', 'cartodog-seen'].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
+    try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) {} idb.then(db => { if (db) try { db.transaction('p', 'readwrite').objectStore('p').clear(); } catch (e) {} }); }
+  try { localStorage.setItem('cartodog-clean1', '1'); } catch (e) {} }
+try { if (syncBal()) save(); } catch (e) {}
 if (!Object.keys(D.cells).length && !(D.paths || []).length && !(D.marks || []).length) {      // Cartocèpe utilisé sur cet appareil (même adresse) : proposer de reprendre sentiers, repères et brouillard
   try { const old = JSON.parse(localStorage.getItem('carnet-cepes-v4') || 'null');
     if (old && ((old.paths || []).length || (old.marks || []).length) && confirm('Des sentiers et repères de Cartocèpe ont été trouvés sur cet appareil. Les récupérer dans Cartodog ?')) {
@@ -4122,6 +4149,7 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
     if (a === 'n2') { step = 2; return render(); }
     if (a === 'trail') { done(); return $('#pt').click(); } };
   $('#wel').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'obn') $('#wel [data-ob="n1"]').click(); });
+  window.welOpen = () => { if (!$('#wel').hidden) return; step = 0; $('#wel').hidden = false; render(); };
   if (!$('#wel').hidden) render(); }
 
 /* ===== Au départ d'une sortie : prévenir seulement si quelque chose est prévu pendant sa durée estimée ===== */
