@@ -1552,7 +1552,8 @@ function camSet(m, quiet) {
 function camKick() { if (!CAM.raf) { CAM.t = performance.now(); CAM.raf = requestAnimationFrame(camLoop); } }
 function camLoop(now) {
   CAM.raf = 0; const dt = Math.min(80, now - CAM.t); CAM.t = now; let busy = false;
-  if (CAM.m && me) { const [mx, my] = meDisp(), k = 1 - Math.exp(-dt / 260), dx = mx - V.cx, dy = my - V.cy;
+  if (CAM.m && me) { let [mx, my] = meDisp(); if (CAM.m === 2 && AP.on && AP.mode === 'car' && AP.poly) { const h = -CAM.rot, cr = cv.getBoundingClientRect(), lp = $('#lp'), vb = lp && !lp.hidden ? Math.min(cr.bottom, lp.getBoundingClientRect().top) : cr.bottom, ym = (vb - cr.top) * .7, off = (ym - cr.height / 2) * V.mpp; mx += Math.sin(h) * off; my += Math.cos(h) * off; }      /* en voiture : la position est placée plus bas, on voit la route devant (comme un GPS) */
+    const k = 1 - Math.exp(-dt / 260), dx = mx - V.cx, dy = my - V.cy;
     if (Math.hypot(dx, dy) / V.mpp > .25) { V.cx += dx * k; V.cy += dy * k; busy = true; } else { V.cx = mx; V.cy = my; } }
   let tr = 0; const noRot = P.on && !RC.on; if (CAM.m === 2 && !noRot) { const h = compLive() ? CP.h : HD.h; tr = h == null ? CAM.rot : -h * Math.PI / 180; }
   const d = ((tr - CAM.rot) % (2 * Math.PI) + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
@@ -2514,8 +2515,11 @@ function apBlock() {      // bloc d'infos commun (panneau « En route vers… »
   return `<div class="apb">${chips}<span class="aps">${car ? '🚗' : '🚶'} ${st}</span>${ext}</div>`;
 }
 document.addEventListener('click', e => { const b = e.target.closest('[data-apm]'); if (b) apSetMode(b.dataset.apm); });
-function balGo() { if (!(AP.on && AP.tag === 'loop' && me && BL.poly && rdist([me.x, me.y], BL.poly[0]) > 60)) apClear('loop');      // « Démarrer ici » loin du départ : le guidage jusqu'à la boucle continue
-  BL.wait = false; BR.bal0 = BL.g.name; brStart(); voxPlan(); say('C\u2019est parti pour ' + fmtDist(BL.tot).replace(' km', ' kilomètres').replace(' m', ' mètres') + '. Je vous indiquerai les changements de direction.'); lpUi(); }
+function zoomToMpp(m1, dur = 900) {      // zoom en douceur sans toucher au mode de caméra (qui suit la position)
+  const m0 = V.mpp, t0 = performance.now(); if (RMO.matches) { V.mpp = m1; return schedule(); }
+  const st = now => { const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3); V.mpp = Math.exp(Math.log(m0) + (Math.log(m1) - Math.log(m0)) * e); draw(); if (k < 1) requestAnimationFrame(st); }; requestAnimationFrame(st); }
+function balGo() { const carNav = AP.on && AP.tag === 'loop' && AP.mode === 'car' && AP.poly; if (!(AP.on && AP.tag === 'loop' && me && BL.poly && rdist([me.x, me.y], BL.poly[0]) > 60)) apClear('loop');      // « Démarrer ici » loin du départ : le guidage jusqu'à la boucle continue
+  BL.wait = false; BR.bal0 = BL.g.name; brStart(); voxPlan(); if (carNav) { camSet(2, true); zoomToMpp(1.6); }      /* en voiture : vue boussole centrée sur vous, zoom « GPS » */ say('C\u2019est parti pour ' + fmtDist(BL.tot).replace(' km', ' kilomètres').replace(' m', ' mètres') + '. Je vous indiquerai les changements de direction.'); lpUi(); }
 $('#lpgo').onclick = () => {
   if (BL.wait) return balGo();      // « Démarrer quand même »
   if (startDist() <= Math.max(START_R, me ? Math.min(me.acc, 100) : 0)) return balGo();
@@ -2789,7 +2793,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-109';
+const APP_V = '2026.10.25-110';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
