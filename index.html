@@ -982,7 +982,7 @@ body{padding-top:0!important}header.bar{margin-top:6px!important}
 .scd{flex:none;width:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 0;border-radius:8px;background:linear-gradient(#f4c862,#c6862a);border:2px solid #0e0c09;color:#2a1806;text-transform:uppercase}.scd small{font:800 10px/1.1 var(--num)}.scd b{font:900 22px/1.05 var(--num)}
 .sce .act{gap:3px}.sce .act>b{font-size:15.5px}.sce .act small{white-space:normal}.sce .act small em{font-style:normal;color:var(--txt);font-weight:700}
 .scps{display:flex;margin:4px 0 2px}
-.scea{display:flex;gap:6px;margin-top:6px}.scea button{padding:7px 11px;border:2px solid var(--edge);border-radius:16px;background:#14110e;box-shadow:inset 0 0 0 1px #3a332a;color:var(--txt);font:800 12.5px var(--num);cursor:pointer}
+.scea{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.scea button{white-space:nowrap}.scea [data-erem],.scea [data-emap]{width:36px;padding:7px 0!important}.scea .evr{display:flex;gap:6px;width:100%}.scea .evr button{flex:1;padding:7px 4px}.scea button:last-child:not([data-eg]){margin-left:0!important}.scea button{padding:7px 11px;border:2px solid var(--edge);border-radius:16px;background:#14110e;box-shadow:inset 0 0 0 1px #3a332a;color:var(--txt);font:800 12.5px var(--num);cursor:pointer}
 .scea button.on{background:linear-gradient(#f4c862,#c6862a);color:#2a1806;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}.scea button:last-child:not([data-eg]){margin-left:auto;width:36px;padding:7px 0}
 .scsh{position:fixed;inset:0;z-index:2;display:flex;align-items:flex-end;justify-content:center;max-width:none!important;background:rgba(6,5,3,.6);padding:8px}.scsh[hidden]{display:none}
 .scshw{width:100%;max-width:440px;padding:12px;border:2px solid var(--edge);border-radius:12px;background:linear-gradient(#2a2119,#1e1812);box-shadow:0 -10px 30px rgba(0,0,0,.6);animation:rise .3s cubic-bezier(.2,.85,.25,1) both}
@@ -1129,6 +1129,11 @@ body.lpon #dock #found:not(.rec),body.lpon #dock #socb{display:none!important}bo
 .gtl{text-align:center;margin-bottom:8px}.gtl img{width:76px;height:76px;border-radius:20px;box-shadow:0 4px 14px rgba(0,0,0,.6)}.gtl h1{margin:10px 0 4px;font:800 30px/1.1 var(--px);color:#fff1cf;text-shadow:2px 2px 0 #000}.gtl p{margin:0;font:600 14px/1.4 var(--num);color:var(--mut)}
 .scb.pend{opacity:.6}.scbn{display:block;font:800 11.5px/1.2 var(--num);color:var(--ember2);margin-bottom:2px;font-style:normal}.scok{flex:none;height:34px;padding:0 12px;border-radius:9px;border:1.5px solid #0e0b08;background:linear-gradient(#f4c862,#c6862a);color:#2a1806;font:800 13px var(--num)}
 .scfme{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.05);font:600 13px var(--num);color:var(--mut)}.scfme b{color:var(--txt)}.scfme .cllink{margin:0}
+.evrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:2px 0 6px}.evrow .acf{flex:1;min-width:130px}.evl{font:800 11px var(--num);letter-spacing:.1em;text-transform:uppercase;color:var(--ember);margin-right:4px}
+.evc{height:34px;padding:0 12px;border-radius:17px;border:1.5px solid var(--rim);background:var(--slot);color:var(--txt);font:700 13px var(--num)}.evc.on{border-color:var(--ember);background:linear-gradient(#f4c862,#c6862a);color:#2a1806}
+#evk{width:100%;height:42px;border-radius:9px;border:2px solid var(--edge);background:var(--slot);color:var(--txt);font:600 15px var(--num);padding:0 10px}.evfrom{width:100%;margin-bottom:10px}
+.evtag{font:800 10.5px var(--num);font-style:normal;padding:2px 7px;border-radius:9px;background:#3f6a2c;color:#e9f6dc;vertical-align:2px;margin-left:4px}.evtag.x{background:#4a4236;color:var(--mut)}.sce.x,.sce.past{opacity:.6}
+#scen{position:absolute;top:3px;right:5px;display:inline-block;min-width:17px;padding:0 4px;border-radius:9px;background:#c9472c;color:#fff;font:900 10.5px/17px var(--num)}#scen[hidden]{display:none}
 .scemp{display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;padding:26px 14px;font:700 15px/1.3 var(--num);color:var(--txt)}.scemp small{font:500 13px/1.4 var(--num);color:var(--mut);max-width:290px}
 .hico{display:inline-block;width:17px;height:17px;margin:0 0 0 4px;vertical-align:top;position:relative;top:1px;border-radius:5px;box-shadow:0 1px 2px rgba(0,0,0,.6)}
 
@@ -1256,7 +1261,7 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
 <div id="soc"><div class="win dg scw" role="dialog" aria-label="Copains, messages et rendez-vous">
   <button class="ib scx" id="socx" aria-label="Fermer">✕</button>
   <div class="scme" id="scme"></div>
-  <div class="sct" role="tablist"><button data-st="fr" role="tab">👥 Copains</button><button data-st="ms" role="tab">💬 Messages<b id="scmn" hidden></b></button><button data-st="ev" role="tab">📅 Rendez-vous</button></div>
+  <div class="sct" role="tablist"><button data-st="fr" role="tab">👥 Copains</button><button data-st="ms" role="tab">💬 Messages<b id="scmn" hidden></b></button><button data-st="ev" role="tab">📅 Rendez-vous<b id="scen" hidden></b></button></div>
   <div class="scp" data-sp="fr" id="scfr"></div>
   <div class="scp" data-sp="ms" id="scms"></div>
   <div class="scp" data-sp="ev" id="scev"></div>
@@ -2818,7 +2823,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-116';
+const APP_V = '2026.10.25-117';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2833,7 +2838,7 @@ $('#mx').onclick = () => $('#menu').classList.remove('open'); $('#menu').onclick
 
 /* ===== Copains et sorties (aperçu avant le compte en ligne) : qui se balade et où, gestion des copains, sorties organisées ===== */
 /* ===== Copains en ligne : la base garde amis, présence, groupes et messages ; le téléphone relève les nouveautés (4 s dans une conversation, 8 s dans Copains, 20 s sinon) ===== */
-const soNew = () => ({ P: {}, fr: [], rin: [], rout: [], G: [], th: {}, last: 0, ph: '', init: 0 });
+const soNew = () => ({ P: {}, fr: [], rin: [], rout: [], G: [], E: [], th: {}, last: 0, ph: '', init: 0, rem: {}, evs: {} });
 let SO = (() => { try { const o = JSON.parse(localStorage.getItem('cartodog-msgs') || 'null'); if (o && o.th) return Object.assign(soNew(), o); } catch (e) {} return soNew(); })();
 const SOT = { tm: 0, busy: false, sig: '', pt: 0 };
 const soSave = () => { try { localStorage.setItem('cartodog-msgs', JSON.stringify(SO)); } catch (e) {} };
@@ -2877,9 +2882,9 @@ async function soPoll() {
     soProfile(); if (Date.now() - SOT.pt > 6e4) soPresence();
     const r = await soRpc('social_poll', { since: SO.last || 0 }); if (!r || !clOn()) return;
     const first = !SO.init; SO.init = 1; (r.people || []).forEach(p => SO.P[p.id] = p); SO.fr = r.friends || []; SO.rin = r.reqin || []; SO.rout = r.reqout || [];
-    SO.G = (r.groups || []).map(g => ({ id: g.id, name: g.name, ic: g.ic, owner: g.owner, m: g.ms || [] }));
+    SO.E = r.events || []; SO.G = (r.groups || []).map(g => ({ id: g.id, name: g.name, ic: g.ic, owner: g.owner, m: g.ms || [] }));
     const ths = new Set(); (r.msgs || []).forEach(x => { const t = soIngest(x, first); if (t) ths.add(t); });
-    soSave(); const sig = JSON.stringify([r.friends, r.reqin, r.reqout, r.groups, r.people]) + SO.last, ch = sig !== SOT.sig; SOT.sig = sig;
+    soSave(); const sig = JSON.stringify([r.friends, r.reqin, r.reqout, r.groups, r.people, r.events]) + SO.last, ch = sig !== SOT.sig; SOT.sig = sig;
     if (ths.size && [...ths].some(t => (SO.th[t] || []).some(m => m.nw))) try { navigator.vibrate && navigator.vibrate([20, 60, 20]); } catch (e) {}
     if ($('#soc').classList.contains('open')) { if (ch) socRender(); if (SOC.chat && ths.has(SOC.chat)) chatRender(); } else socBadge();
   } catch (e) {} finally { SOT.busy = false; }
@@ -2891,7 +2896,7 @@ function soTick(now) {
 document.addEventListener('visibilitychange', () => { if (!document.hidden) soTick(true); });
 const SOC = { tab: 'fr', go: {}, who: null, rem: {} };
 function socDemo() {
-  if (!socPrev) return { F: SO.fr.map(person).filter(Boolean), E: [] };
+  if (!socPrev) return { F: SO.fr.map(person).filter(Boolean), E: soEvents() };
   const bals = Object.keys(D.cells).filter(k => rec(D.cells[k]) && cellGroup(k)).map(k => ({ k, n: balName(k) })).filter(b => b.n);
   const B = i => bals.length ? bals[i % bals.length] : { k: null, n: ['Bois du Taillan', 'Parc de Majolan', 'Forêt du Bourgailh'][i % 3] };
   const F = [{ id: 'f1', n: 'Oslo', d: 'Ulysse', c: '#c6862a', st: 'walk', at: B(0), t: 25, sp: 'ok' }, { id: 'f2', n: 'Léa', d: 'Max', c: '#5f7350', st: 'walk', at: B(1), t: 8 },
@@ -2903,6 +2908,79 @@ function socDemo() {
   E.forEach(e => e.pk = PK(e.at)); return { F, E };
 }
 const socAv = (f, cls = '') => f.grp ? `<span class="scav grp ${cls}">${f.ic}</span>` : `<span class="scav ${cls}" style="--c:${f.c}">${esc(f.d[0])}</span>`;
+/* ===== Rendez-vous : une balade, une date, des copains ou un groupe ; chacun répond « J'y vais », « Peut-être » ou « Non » ===== */
+const meP = () => ({ id: 'me', d: D.prof && D.prof.name || accU().first || 'Moi', n: '', c: '#e0861e' });
+const fmtDurM = m => m < 60 ? m + ' min' : Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + String(m % 60).padStart(2, '0') : '');
+function soEvents() {
+  const uid = CLD.s && CLD.s.user.id; return (SO.E || []).map(e => { const mine = e.owner === uid, by = mine ? meP() : person(e.owner) || { id: e.owner, d: '?', n: '', c: '#777' }, gs = e.gs || [], g = gs.find(x => x.u === uid);
+    const yes = gs.filter(x => x.r === 'y').map(x => x.u === uid ? meP() : person(x.u)).filter(Boolean);
+    return { id: e.id, mine, by, at: { k: soCell(e.bx, e.by), n: e.bal }, t: new Date(e.at), durM: e.dur, dur: fmtDurM(e.dur), who: [by, ...yes], n: 1 + yes.length, mb: gs.filter(x => x.r === 'm').length, pk: e.pk, note: e.note, x: e.x,
+      r: mine ? 'y' : g ? g.r : '', grp: e.g ? (SO.G.find(z => z.id === e.g) || {}).name || '' : '', inv: gs.length }; }); }
+const evNew = () => { const uid = CLD.s && CLD.s.user.id; return (SO.E || []).filter(e => e.owner !== uid && !e.x && Date.parse(e.at) > Date.now() && !(SO.evs || {})[e.id] && ((e.gs || []).find(x => x.u === uid) || {}).r === '').length; };
+function evRender(E) {
+  const fmt = (t, o) => t.toLocaleDateString('fr-FR', o).replace('.', ''), now = Date.now(), L = E.filter(e => !e.x || e.t.getTime() > now - 864e5);
+  $('#scev').innerHTML = `<button class="btn gold scorg" data-sx="org">＋ Organiser un rendez-vous</button><div class="scls">` + L.map(e => {
+    const past = e.t.getTime() + e.durM * 6e4 < now, live = !past && e.t.getTime() <= now;
+    return `<div class="sce${e.x ? ' x' : ''}${past ? ' past' : ''}"><div class="scd"><small>${fmt(e.t, { weekday: 'short' })}</small><b>${e.t.getDate()}</b><small>${fmt(e.t, { month: 'short' })}</small></div><div class="act">
+      <b>${esc(e.at.n)}${e.x ? ' <em class="evtag x">Annulé</em>' : live ? ' <em class="evtag">En cours</em>' : past ? ' <em class="evtag x">Terminé</em>' : ''}</b>
+      <small>${e.mine ? 'Organisé par <em>vous</em>' : `Organisé par <em>${esc(e.by.d)}${e.by.n ? ' & ' + esc(e.by.n) : ''}</em>`}${e.grp ? ' · ' + esc(e.grp) : ''}</small>
+      <small>🕙 ${e.t.getHours()} h ${String(e.t.getMinutes()).padStart(2, '0')} · ${e.dur} · ${e.n} chien${e.n > 1 ? 's' : ''}${e.mb ? ` · ${e.mb} peut-être` : ''}</small>
+      ${e.pk ? `<small>🅿 Rendez-vous : <em>${esc(e.pk)}</em></small>` : ''}${e.note ? `<small>💬 ${esc(e.note)}</small>` : ''}
+      <span class="scps">${e.who.slice(0, 6).map(f => socAv(f, 'sm')).join('')}${e.who.length > 6 ? `<span class="scav sm more">+${e.who.length - 6}</span>` : ''}</span>
+      ${e.x || past ? (e.at.k ? `<span class="scea"><button data-emap="${e.at.k}" aria-label="Voir sur la carte">📍</button></span>` : '') : `<span class="scea">${e.mine ? `<button data-ecx="${e.id}">Annuler</button>` : `<span class="evr"><button data-eg="${e.id}:y" class="${e.r === 'y' ? 'on' : ''}">${e.r === 'y' ? '✓ J\'y vais' : 'J\'y vais'}</button><button data-eg="${e.id}:m" class="${e.r === 'm' ? 'on' : ''}">Peut-être</button><button data-eg="${e.id}:n" class="${e.r === 'n' ? 'on' : ''}">Non</button></span>`}${e.r === 'y' ? `<button data-erem="${e.id}" class="${SO.rem[e.id] ? 'on' : ''}" aria-label="Rappel 30 min avant">${SO.rem[e.id] ? '🔔' : '🔕'}</button>` : ''}${e.at.k ? `<button data-emap="${e.at.k}" aria-label="Voir sur la carte">📍</button>` : ''}</span>`}</div></div>`; }).join('')
+    + (L.length ? '' : `<div class="scemp">📅 Aucun rendez-vous prévu<small>${clOn() ? 'Proposez une balade à vos copains ou à un groupe : chacun répond « J\'y vais » ou « Peut-être ».' : 'Connectez-vous pour organiser des balades à plusieurs.'}</small></div>`) + '</div>';
+}
+function evDefaults(k) {      // prochaine demi-heure ronde (au moins 1 h devant) ; après 20 h : demain 10 h
+  const d = new Date(Date.now() + 36e5); d.setMinutes(d.getMinutes() < 30 ? 30 : 60, 0, 0); if (d.getHours() >= 21 || d.getHours() < 7) { if (d.getHours() >= 21) d.setDate(d.getDate() + 1); d.setHours(10, 0, 0, 0); }
+  const ymd = x => `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
+  let kk = k && D.cells[k] && cellGroup(k) ? k : sel && D.cells[sel] && cellGroup(sel) ? sel : null;
+  if (!kk) { const ref = me ? [me.x, me.y] : [V.cx, V.cy]; let bd = Infinity; Object.keys(D.cells).forEach(x => { if (!rec(D.cells[x]) || !cellGroup(x)) return; const dd = rdist(ctr(x), ref); if (dd < bd) { bd = dd; kk = x; } }); }
+  return { k: kk, date: ymd(d), time: String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'), dur: 60, grp: '', fr: [], note: '', ymd };
+}
+function evForm() {
+  const v = SOC.ev, w = $('#scfw'), ymd = v.ymd, t0 = new Date(), day = n => { const x = new Date(t0); x.setDate(x.getDate() + n); return x; };
+  const sat = (6 - t0.getDay() + 7) % 7, sun = (7 - t0.getDay()) % 7, chips = [[0, 'Aujourd\'hui'], [1, 'Demain'], ...(sat > 1 ? [[sat, 'Samedi']] : []), ...(sun > 1 ? [[sun, 'Dimanche']] : [])];
+  const bals = walkPlaces().filter(x => x.g && x.k).sort((a, b) => a.label.localeCompare(b.label, 'fr')), F = FR_(), G = grpAll();
+  w.innerHTML = `<div class="scgt">Organiser un rendez-vous</div>
+    <label class="acf"><span>Balade</span><select id="evk">${bals.length ? bals.map(x => `<option value="${x.k}"${x.k === v.k ? ' selected' : ''}>${esc(x.label)}</option>`).join('') : '<option value="">Aucune balade sur votre carte</option>'}</select></label>
+    <div class="evrow">${chips.map(([n, l]) => `<button class="evc${ymd(day(n)) === v.date ? ' on' : ''}" data-evd="${ymd(day(n))}">${l}</button>`).join('')}</div>
+    <div class="evrow"><label class="acf"><span>Date</span><input id="evdt" type="date" value="${v.date}" min="${ymd(t0)}"></label><label class="acf"><span>Heure</span><input id="evtm" type="time" value="${v.time}" step="300"></label></div>
+    <div class="evrow"><span class="evl">Durée</span>${[30, 60, 90, 120].map(m => `<button class="evc${v.dur === m ? ' on' : ''}" data-evm="${m}">${fmtDurM(m)}</button>`).join('')}</div>
+    <div class="mh">Inviter</div>
+    ${G.length ? `<div class="evrow">${G.map(g => `<button class="evc${v.grp === g.id ? ' on' : ''}" data-evg="${g.id}">${g.ic} ${esc(g.name)}</button>`).join('')}</div>` : ''}
+    ${F.length ? `<div class="acg scgl">${F.filter(f => !(v.grp && (grpGet(v.grp) || { m: [] }).m.includes(f.id))).map(f => `<button class="scr" data-evf="${f.id}"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}</b></span><i class="scck${v.fr.includes(f.id) ? ' on' : ''}">${v.fr.includes(f.id) ? '✓' : ''}</i></button>`).join('')}</div>` : '<div class="hint" style="padding:6px 4px">Ajoutez d\'abord des copains pour les inviter.</div>'}
+    ${v.grp ? `<div class="hint" style="padding:6px 4px">Tout le groupe « ${esc((grpGet(v.grp) || {}).name || '')} » est invité.</div>` : ''}
+    <label class="acf"><span>Petit mot <em>facultatif</em></span><input id="evnote" maxlength="200" placeholder="Ex. On se retrouve au portail" value="${esc(v.note)}" enterkeyhint="done"></label>
+    <div class="clerr" id="eve"></div>
+    <div class="scga"><button class="btn" data-fa="x">Annuler</button><button class="btn gold" data-evgo>📅 Proposer</button></div>`;
+  const keep = () => { const k = $('#evk'), dt = $('#evdt'), tm = $('#evtm'), nt = $('#evnote'); if (k) v.k = k.value; if (dt && dt.value) v.date = dt.value; if (tm && tm.value) v.time = tm.value; if (nt) v.note = nt.value; };
+  w.querySelectorAll('select,input').forEach(el => { el.onchange = () => { keep(); if (el.id === 'evdt') evForm(); }; el.oninput = keep; });
+}
+async function evClick(b) {
+  const v = SOC.ev; if (!v) return; const keepNote = $('#evnote') ? $('#evnote').value : v.note; v.note = keepNote;
+  if (b.dataset.evd) { v.date = b.dataset.evd; return evForm(); }
+  if (b.dataset.evm) { v.dur = +b.dataset.evm; return evForm(); }
+  if (b.dataset.evg) { v.grp = v.grp === b.dataset.evg ? '' : b.dataset.evg; return evForm(); }
+  if (b.dataset.evf) { const id = b.dataset.evf; v.fr.includes(id) ? v.fr.splice(v.fr.indexOf(id), 1) : v.fr.push(id); return evForm(); }
+  if (b.hasAttribute('data-evgo')) { const er = $('#eve'), at = new Date(v.date + 'T' + v.time); er.textContent = '';
+    if (!v.k || !D.cells[v.k]) return er.textContent = 'Choisissez une balade'; if (!(at.getTime() > Date.now() - 6e5)) return er.textContent = 'Choisissez une date et une heure à venir';
+    if (!v.grp && !v.fr.length) return er.textContent = 'Invitez au moins un copain ou un groupe';
+    const g = cellGroup(v.k), c = ctr(v.k), bal = balName(v.k); let pk = ''; try { const L = g ? balParks(g) : []; if (L.length) pk = pkShort(L[0].name); } catch (x) {}
+    b.disabled = true; b.textContent = '…';
+    try { const id = await soRpc('event_create', { bal, bx: c[0], by: c[1], pk, at: at.toISOString(), dur: v.dur, note: (v.note || '').trim().slice(0, 200), grp: v.grp || null, guests: v.fr });
+      SO.rem[id] = 1; soSave(); const grp = v.grp; faClose(); SOC.tab = 'ev'; socRender(); try { navigator.vibrate && navigator.vibrate(30); } catch (x) {}
+      toast('📅 Rendez-vous proposé : ' + at.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }) + ' à ' + at.getHours() + ' h ' + String(at.getMinutes()).padStart(2, '0'));
+      if (grp) soRpc('send_message', { to_user: null, grp, body: `📅 Rendez-vous ${at.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })} à ${at.getHours()} h ${String(at.getMinutes()).padStart(2, '0')}${pk ? ' · 🅿 ' + pk : ''} — répondez dans Rendez-vous !`, meta: { kn: bal, x: c[0], y: c[1] } }).catch(() => {});
+      soTick(true); } catch (x) { er.textContent = x.message; b.disabled = false; b.textContent = '📅 Proposer'; } }
+}
+function evRemind() {      // rappel 30 min avant (appli ouverte) : petit message, vibration, et notification si autorisée
+  const uid = CLD.s && CLD.s.user.id; if (!uid) return; SO.remd ||= {};
+  (SO.E || []).forEach(e => { const t = Date.parse(e.at), dt = t - Date.now(), r = e.owner === uid ? 'y' : ((e.gs || []).find(x => x.u === uid) || {}).r;
+    if (e.x || r !== 'y' || !SO.rem[e.id] || SO.remd[e.id] || dt > 30 * 6e4 || dt < -10 * 6e4) return; SO.remd[e.id] = 1; soSave();
+    const h = new Date(t), msg = `🔔 Rendez-vous à ${h.getHours()} h ${String(h.getMinutes()).padStart(2, '0')} : ${e.bal}${e.pk ? ' · 🅿 ' + e.pk : ''}`;
+    toast(msg); try { navigator.vibrate && navigator.vibrate([60, 80, 60]); } catch (x) {} try { if (window.Notification && Notification.permission === 'granted') new Notification('Cartodog', { body: msg.slice(2), icon: 'icon.svg' }); } catch (x) {} });
+}
+setInterval(evRemind, 30000);
 function socRender() {
   const { F, E } = socDemo(); SOC.F = F; SOC.E = E;
   document.querySelectorAll('#soc [data-st]').forEach(b => { b.classList.toggle('on', b.dataset.st === SOC.tab); b.setAttribute('aria-selected', b.dataset.st === SOC.tab); });
@@ -2912,11 +2990,7 @@ function socRender() {
   $('#scfr').innerHTML = `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes${SO.rin.length ? ` <b>${SO.rin.length}</b>` : ''}</button></div><div class="scls">` + grpRows() +
     grp('🐾 En balade', F.filter(f => f.st === 'walk')) + grp('🟢 En ligne', F.filter(f => f.st === 'on')) + grp('Hors ligne', F.filter(f => f.st === 'off')) + (F.length ? '' : (clOn() ? '<div class="scemp">🐕 Pas encore de copains<small>Ajoutez les promeneurs que vous croisez avec leur pseudo : vous verrez qui se balade et pourrez discuter.</small></div>' : '<div class="scemp">☁️ Connectez-vous pour retrouver vos copains</div>')) + '</div>';
   msgList(); mqFit($('#scfr'));
-  const fmt = (t, o) => t.toLocaleDateString('fr-FR', o).replace('.', '');
-  $('#scev').innerHTML = `<button class="btn gold scorg" data-sx="org">＋ Organiser un rendez-vous</button><div class="scls">` + E.map(e => { const g = SOC.go[e.id];
-    return `<div class="sce"><div class="scd"><small>${fmt(e.t, { weekday: 'short' })}</small><b>${e.t.getDate()}</b><small>${fmt(e.t, { month: 'short' })}</small></div><div class="act"><b>${esc(e.at.n)}</b><small>Organisée par <em>${esc(e.by.n)} & ${esc(e.by.d)}</em></small><small>🕙 ${e.t.getHours()} h 00 · ${e.dur} · ${e.n + (g === 'y' ? 1 : 0)} chiens</small><small>🅿 Rendez-vous : <em>${esc(e.pk)}</em></small>
-      <span class="scps">${e.who.map(f => socAv(f, 'sm')).join('')}${g === 'y' ? `<span class="scav sm me">${esc((D.prof && D.prof.name || 'M')[0])}</span>` : ''}</span>
-      <span class="scea"><button data-eg="${e.id}:y" class="${g === 'y' ? 'on' : ''}">${g === 'y' ? '✓ J\'y vais' : 'J\'y vais'}</button><button data-eg="${e.id}:m" class="${g === 'm' ? 'on' : ''}">Peut-être</button>${g === 'y' ? `<button data-erem="${e.id}" class="${SOC.rem[e.id] ? 'on' : ''}" aria-label="Rappel 30 min avant">${SOC.rem[e.id] ? '🔔' : '🔕'}</button>` : ''}${e.at.k ? `<button data-emap="${e.at.k}" aria-label="Voir sur la carte">📍</button>` : ''}</span></div></div>`; }).join('') + (E.length ? '' : '<div class="scemp">📅 Aucun rendez-vous prévu<small>Bientôt : proposez une balade à plusieurs et voyez qui vient.</small></div>') + '</div>';
+  evRender(E); const en = evNew(); $('#scen').hidden = !en; $('#scen').textContent = en;
 }
 
 /* ===== Mon état et ma description (visibles par les copains) ===== */
@@ -3025,7 +3099,7 @@ if (window.visualViewport) { const kb = () => { const v = visualViewport, h = Ma
   visualViewport.addEventListener('resize', kb); visualViewport.addEventListener('scroll', kb); }
 function mqFit(root) {      // seul le nom de la balade défile (aller-retour) quand il ne tient pas en entier
   requestAnimationFrame(() => root.querySelectorAll('.mqn').forEach(el => { const sp = el.firstElementChild, d = sp.scrollWidth - el.clientWidth; el.classList.toggle('mq', d > 2); if (d > 2) { sp.style.setProperty('--d', -(d + 10) + 'px'); sp.style.animationDuration = Math.max(6, (d + 10) / 22 + 4) + 's'; } })); }
-function socBadge() { let n = 0; try { n = msgUnread() + SO.rin.length; } catch (e) {} const b = $('#socn'); b.hidden = !n; b.textContent = n > 9 ? '9+' : n; $('#socb').setAttribute('aria-label', 'Copains, messages et rendez-vous' + (n ? ' : ' + n + ' notification' + (n > 1 ? 's' : '') : '')); }
+function socBadge() { let n = 0; try { n = msgUnread() + SO.rin.length + evNew(); } catch (e) {} const b = $('#socn'); b.hidden = !n; b.textContent = n > 9 ? '9+' : n; $('#socb').setAttribute('aria-label', 'Copains, messages et rendez-vous' + (n ? ' : ' + n + ' notification' + (n > 1 ? 's' : '') : '')); }
 setTimeout(socBadge, 300);
 function socOpen() { const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); faClose(); socMe(); socRender(); $('#scsh').hidden = true; $('#soc').classList.add('open'); soTick(true); }
 const socClose = () => { SOC.ed = false; $('#soc').classList.remove('open'); };
@@ -3034,6 +3108,7 @@ function socShow(k) { if (!k || !D.cells[k]) return toast('📍 Cette balade n\'
 /* Ajouter un copain (par pseudo), demandes reçues / envoyées, nouveau message */
 function faOpen(mode, pre) {
   if (!clOn()) return toast('☁️ Connectez-vous pour retrouver vos copains');
+  if (mode === 'ev') { SOC.ev = evDefaults(pre); SOC.fa = 'ev'; evForm(); $('#scfa').hidden = false; return; }
   const w = $('#scfw'), pseudo = (accU().name || CLD.name || '').trim(), row = (f, x) => `<div class="scr"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}</b><small>${esc(f.h)}</small></span>${x}</div>`;
   if (mode === 'add') w.innerHTML = `<div class="scgt">Ajouter un copain</div><div class="scgs">Demandez son pseudo à l'autre promeneur.</div>
     <div class="scgh"><input id="scfq" maxlength="24" placeholder="Pseudo de votre copain" autocapitalize="none" autocomplete="off" spellcheck="false" enterkeyhint="send" value="${esc(pre || '')}" aria-label="Pseudo"></div><div class="clerr" id="scfe"></div>
@@ -3044,13 +3119,15 @@ function faOpen(mode, pre) {
       + (O.length ? `<div class="mh">Envoyées · ${O.length}</div><div class="acg scgl">${O.map(f => row(f, `<button class="scmore" data-fcx="${f.id}" aria-label="Annuler la demande">✕</button>`)).join('')}</div>` : '')
       + `<div class="scga"><button class="btn" data-fa="x">Fermer</button><button class="btn gold" data-fa="add">＋ Ajouter</button></div>`; }
   else { const L = [...grpAll().map(g => who(g.id)), ...FR_()].filter(Boolean);
-    w.innerHTML = `<div class="scgt">${SOC.shareK ? 'Proposer cette balade à…' : 'Nouveau message'}</div>` + (L.length ? `<div class="acg scgl">${L.map(f => `<button class="scr" data-fto="${f.id}"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}</b></span><i class="scgo">›</i></button>`).join('')}</div>` : '<div class="hint" style="padding:10px 4px">Ajoutez d\'abord un copain.</div>')
+    w.innerHTML = `<div class="scgt">${SOC.shareK ? 'Proposer cette balade à…' : 'Nouveau message'}</div>` + (SOC.shareK ? `<button class="btn gold evfrom" data-evk="${SOC.shareK}">📅 Organiser un rendez-vous ici</button>` : '') + (L.length ? `<div class="acg scgl">${L.map(f => `<button class="scr" data-fto="${f.id}"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}</b></span><i class="scgo">›</i></button>`).join('')}</div>` : '<div class="hint" style="padding:10px 4px">Ajoutez d\'abord un copain.</div>')
       + `<div class="scga"><button class="btn" data-fa="x">Fermer</button>${FR_().length ? '' : '<button class="btn gold" data-fa="add">＋ Ajouter un copain</button>'}</div>`; }
   SOC.fa = mode; $('#scfa').hidden = false; const q = $('#scfq'); if (q) { setTimeout(() => q.focus(), 60); q.onkeydown = e => { if (e.key === 'Enter') $('#scfw [data-fa="go"]').click(); }; }
 }
 const faClose = () => { $('#scfa').hidden = true; SOC.fa = null; SOC.shareK = null; };
 $('#scfa').addEventListener('click', async e => {
-  if (e.target.id === 'scfa') return faClose(); const b = e.target.closest('[data-fa],[data-fok],[data-fno],[data-fcx],[data-fto]'); if (!b) return; const a = b.dataset.fa;
+  if (e.target.id === 'scfa') return faClose(); const ek = e.target.closest('[data-evk]'); if (ek) { const k = ek.dataset.evk; SOC.shareK = null; return faOpen('ev', k); }
+  const evb = e.target.closest('[data-evd],[data-evm],[data-evg],[data-evf],[data-evgo]'); if (evb) return evClick(evb);
+  const b = e.target.closest('[data-fa],[data-fok],[data-fno],[data-fcx],[data-fto]'); if (!b) return; const a = b.dataset.fa;
   if (a === 'x') return faClose(); if (a === 'add') return faOpen('add');
   if (a === 'share') { const ps = (accU().name || CLD.name || '').trim(), txt = `Ajoute-moi en copain sur Cartodog 🐕 Mon pseudo : ${ps}`, url = location.origin + location.pathname + '#ami=' + encodeURIComponent(ps);
     try { if (navigator.share) await navigator.share({ title: 'Cartodog', text: txt, url }); else { await navigator.clipboard.writeText(txt + '\n' + url); toast('📋 Lien copié'); } } catch (x) {} return; }
@@ -3074,7 +3151,7 @@ $('#soc').addEventListener('click', e => {
   const spb = e.target.closest('[data-spc]'); if (spb) { $('#scst').hidden = true; D.prof.space = spb.dataset.spc; save(); socMe(); return; }
   const ss = e.target.closest('[data-ss]'); if (ss) { $('#scst').hidden = true; if (ss.dataset.ss !== 'x') { accU().st = ss.dataset.ss; save(); socMe(); soPresence(); } return; }
   if (e.target.id === 'scst') { $('#scst').hidden = true; return; }
-  const t = e.target.closest('[data-st]'); if (t) { SOC.tab = t.dataset.st; return socRender(); }
+  const t = e.target.closest('[data-st]'); if (t) { SOC.tab = t.dataset.st; if (SOC.tab === 'ev') { (SO.E || []).forEach(x => SO.evs[x.id] = 1); soSave(); socBadge(); } return socRender(); }
   const gr = e.target.closest('[data-grp]'); if (gr) return grpOpen(gr.dataset.grp);
   if (e.target.closest('[data-grpnew]')) { SOC.gnew = null; return grpNew(); }
   const ch = e.target.closest('[data-chat]'); if (ch && !e.target.closest('[data-fmap],[data-fmore]')) return chatOpen(ch.dataset.chat);
@@ -3085,10 +3162,12 @@ $('#soc').addEventListener('click', e => {
     if (a === 'rm') { if (!confirm(`Retirer ${f.d}${f.n ? ' & ' + f.n : ''} de vos copains ?`)) return; SO.fr = SO.fr.filter(x => x !== f.id); delete SO.th[f.id]; soSave(); socRender(); soRpc('friend_remove', { other: f.id }).then(() => soTick(true)).catch(x => toast('⚠️ ' + x.message)); return toast('Retiré de vos copains'); }
     return socSoon(); }
   if (e.target.id === 'scsh') { $('#scsh').hidden = true; return; }
-  const eg = e.target.closest('[data-eg]'); if (eg) { const [id, v] = eg.dataset.eg.split(':'); SOC.go[id] = SOC.go[id] === v ? null : v; if (SOC.go[id] === 'y') try { navigator.vibrate && navigator.vibrate(30); } catch (x) {} return socRender(); }
-  const er = e.target.closest('[data-erem]'); if (er) { const id = er.dataset.erem; SOC.rem[id] = !SOC.rem[id]; toast(SOC.rem[id] ? '🔔 Rappel 30 min avant le rendez-vous' : '🔕 Rappel retiré'); return socRender(); }
+  const eg = e.target.closest('[data-eg]'); if (eg) { const [id, v] = eg.dataset.eg.split(':'), uid = CLD.s && CLD.s.user.id, ev = (SO.E || []).find(x => x.id === id), gg = ev && (ev.gs || []).find(x => x.u === uid); if (!gg) return;
+    const nv = gg.r === v ? '' : v; gg.r = nv; if (nv === 'y') { SO.rem[id] = 1; try { navigator.vibrate && navigator.vibrate(30); } catch (x) {} } soSave(); socRender(); soRpc('event_rsvp', { e: id, r: nv }).catch(x => toast('⚠️ ' + x.message)); return; }
+  const er = e.target.closest('[data-erem]'); if (er) { const id = er.dataset.erem; SO.rem[id] = SO.rem[id] ? 0 : 1; soSave(); toast(SO.rem[id] ? '🔔 Rappel 30 min avant le rendez-vous' : '🔕 Rappel retiré'); if (SO.rem[id]) try { window.Notification && Notification.permission === 'default' && Notification.requestPermission(); } catch (x) {} return socRender(); }
+  const ecx = e.target.closest('[data-ecx]'); if (ecx) { const id = ecx.dataset.ecx, ev = (SO.E || []).find(x => x.id === id); if (!ev || !confirm(`Annuler le rendez-vous « ${ev.bal} » ? Les invités le verront annulé.`)) return; ev.x = true; soSave(); socRender(); soRpc('event_cancel', { e: id }).then(() => soTick(true)).catch(x => toast('⚠️ ' + x.message)); return toast('Rendez-vous annulé'); }
   const em = e.target.closest('[data-emap]'); if (em) return socShow(em.dataset.emap);
-  const sx = e.target.closest('[data-sx]'); if (sx) { const a = sx.dataset.sx; if (a === 'add') return faOpen('add'); if (a === 'req') return faOpen('req'); if (a === 'newmsg') return faOpen('new'); if (a === 'org') return toast('📅 Rendez-vous à plusieurs : bientôt disponible'); return socSoon(); }
+  const sx = e.target.closest('[data-sx]'); if (sx) { const a = sx.dataset.sx; if (a === 'add') return faOpen('add'); if (a === 'req') return faOpen('req'); if (a === 'newmsg') return faOpen('new'); if (a === 'org') return faOpen('ev'); return socSoon(); }
 });
 
 /* ===== Recherche de balade par nom (loupe en haut à gauche) : suggestions au fil de la frappe, sans accents ni majuscules ===== */
