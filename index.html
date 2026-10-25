@@ -1134,6 +1134,7 @@ body.lpon #dock #found:not(.rec),body.lpon #dock #socb{display:none!important}bo
 #evk{width:100%;height:42px;border-radius:9px;border:2px solid var(--edge);background:var(--slot);color:var(--txt);font:600 15px var(--num);padding:0 10px}.evfrom{width:100%;margin-bottom:10px}
 .evtag{font:800 10.5px var(--num);font-style:normal;padding:2px 7px;border-radius:9px;background:#3f6a2c;color:#e9f6dc;vertical-align:2px;margin-left:4px}.evtag.x{background:#4a4236;color:var(--mut)}.sce.x,.sce.past{opacity:.6}
 #scen{position:absolute;top:3px;right:5px;display:inline-block;min-width:17px;padding:0 4px;border-radius:9px;background:#c9472c;color:#fff;font:900 10.5px/17px var(--num)}#scen[hidden]{display:none}
+.scpn{display:flex;align-items:center;gap:8px;margin:0 0 10px;padding:10px 10px 10px 12px;border-radius:12px;border:1.5px solid rgba(234,165,60,.45);background:rgba(234,165,60,.1);font:600 13px/1.35 var(--num);color:var(--txt)}.scpn span{flex:1}.scpn button{flex:none;height:34px;padding:0 12px;border-radius:9px;border:1.5px solid #0e0b08;background:linear-gradient(#f4c862,#c6862a);color:#2a1806;font:800 13px var(--num)}.scpn button[data-pn=x]{width:34px;padding:0;background:transparent;border-color:var(--rim);color:var(--mut)}
 .scemp{display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;padding:26px 14px;font:700 15px/1.3 var(--num);color:var(--txt)}.scemp small{font:500 13px/1.4 var(--num);color:var(--mut);max-width:290px}
 .hico{display:inline-block;width:17px;height:17px;margin:0 0 0 4px;vertical-align:top;position:relative;top:1px;border-radius:5px;box-shadow:0 1px 2px rgba(0,0,0,.6)}
 
@@ -2820,10 +2821,10 @@ $('#found').innerHTML = foundOff(); $('#found').onclick = () => { if (BR.on) ret
 const bump = s => { const b = $(s); if (!b || RMO.matches) return; b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); };
 let tt; function toast(m, undo, lbl) { $('#tm').textContent = m; $('#tu').hidden = !undo; $('#tu').textContent = lbl || 'Annuler'; $('#tu').onclick = () => { undo && undo(); $('#toast').classList.remove('show'); }; { const el = $('#toast'); el.classList.remove('show'); void el.offsetWidth; el.classList.add('show'); } clearTimeout(tt); tt = setTimeout(() => $('#toast').classList.remove('show'), undo ? 7000 : 3500); }
 $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Math.round($('#mapBox').getBoundingClientRect().top)) + 'px'); alLabel(); accPage('main', true); accRender(); const nl = Object.values(D.cells).filter(rec).length, nm = (D.marks || []).length, np = (D.paths || []).length; $('#info').textContent = `Version ${APP_V} · ${nl} balade${nl > 1 ? 's' : ''} · ${nm} repère${nm > 1 ? 's' : ''} · ${np} sentier${np > 1 ? 's' : ''} dans le carnet`; $('#menu').classList.add('open'); };
-$('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
+$('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-117';
+const APP_V = '2026.10.25-118';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2987,7 +2988,7 @@ function socRender() {
   document.querySelectorAll('#soc [data-sp]').forEach(x => x.classList.toggle('on', x.dataset.sp === SOC.tab));
   const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}</b><small>${f.st === 'walk' ? spTag(f.sp, 1) : spTag(f.sp)}${f.st === 'walk' ? `<u title="En balade">🐾 ${f.t} min</u><i class="mqs">·</i><span class="mqn"><span class="mqi">${esc(f.at.n)}</span></span>` : f.st === 'on' ? 'En ligne' : f.last ? 'Vu ' + esc(f.last) : 'Hors ligne'}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
   const grp = (t, L) => L.length ? `<div class="mh">${t} · ${L.length}</div><div class="acg">${L.map(row).join('')}</div>` : '';
-  $('#scfr').innerHTML = `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes${SO.rin.length ? ` <b>${SO.rin.length}</b>` : ''}</button></div><div class="scls">` + grpRows() +
+  $('#scfr').innerHTML = (pushAsk() ? `<div class="scpn"><span>${pushIosHint() ? '📲 Ajoutez Cartodog à l\'écran d\'accueil pour être prévenu des messages, même appli fermée.' : '🔔 Soyez prévenu des messages, demandes et rendez-vous, même appli fermée.'}</span><button data-pn="on">${pushIosHint() ? 'Comment ?' : 'Activer'}</button><button data-pn="x" aria-label="Plus tard">✕</button></div>` : '') + `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes${SO.rin.length ? ` <b>${SO.rin.length}</b>` : ''}</button></div><div class="scls">` + grpRows() +
     grp('🐾 En balade', F.filter(f => f.st === 'walk')) + grp('🟢 En ligne', F.filter(f => f.st === 'on')) + grp('Hors ligne', F.filter(f => f.st === 'off')) + (F.length ? '' : (clOn() ? '<div class="scemp">🐕 Pas encore de copains<small>Ajoutez les promeneurs que vous croisez avec leur pseudo : vous verrez qui se balade et pourrez discuter.</small></div>' : '<div class="scemp">☁️ Connectez-vous pour retrouver vos copains</div>')) + '</div>';
   msgList(); mqFit($('#scfr'));
   evRender(E); const en = evNew(); $('#scen').hidden = !en; $('#scen').textContent = en;
@@ -3142,6 +3143,54 @@ $('#scfa').addEventListener('click', async e => {
 });
 function amiGo() { const v = SOC.ami; if (!v || !clOn()) return; SOC.ami = null; socOpen(); faOpen('add', v); }      // lien « #ami=pseudo » partagé par un copain
 { const m = /^#ami=([^&]+)/.exec(location.hash); if (m) { try { SOC.ami = decodeURIComponent(m[1]).slice(0, 24); } catch (e) {} history.replaceState(null, '', location.pathname + location.search); } }
+/* ===== Notifications push : messages, demandes de copains et rendez-vous, même appli fermée (iPhone : appli ajoutée à l'écran d'accueil) ===== */
+const VAPID = 'BJvC0LQFSLO-fgR1PqI-vVqY831u6Taw2PNjMBuz6wBUY4Uhs0XdSvwR-Y1OyRw8_K3vxuBGGXxZlZJRqw7Hrv4';
+const PUSH = { on: (() => { try { return localStorage.getItem('cartodog-push') === '1'; } catch (e) { return false; } })(), busy: false };
+const isIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const isApp = () => !!(navigator.standalone || matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: fullscreen)').matches);
+const pushOk = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+const pushPerm = () => window.Notification ? Notification.permission : 'default';
+const pushIosHint = () => isIOS() && !isApp();
+const u8 = s => { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; const b = atob(s), o = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) o[i] = b.charCodeAt(i); return o; };
+const pushUa = () => /Android/.test(navigator.userAgent) ? 'Android' : isIOS() ? 'iPhone' : 'Ordinateur';
+async function pushReg() { if (!('serviceWorker' in navigator)) return null; try { return await navigator.serviceWorker.register('sw.js', { scope: './' }); } catch (e) { return null; } }
+async function pushEnable(quiet) {
+  if (!clOn()) return quiet || toast('☁️ Connectez-vous d\'abord');
+  if (!pushOk()) return quiet || toast(pushIosHint() ? '📲 Ajoutez d\'abord Cartodog à l\'écran d\'accueil (Partager › « Sur l\'écran d\'accueil »), puis ouvrez-la depuis l\'icône' : '🔕 Ce navigateur ne gère pas les notifications');
+  if (PUSH.busy) return; PUSH.busy = true;
+  try {
+    const perm = pushPerm() === 'granted' ? 'granted' : quiet ? pushPerm() : await Notification.requestPermission();
+    if (perm !== 'granted') { if (!quiet) toast(perm === 'denied' ? '🔕 Notifications bloquées : autorisez-les dans les réglages du navigateur' : '🔕 Notifications non activées'); return; }
+    const reg = await pushReg(); if (!reg) throw new Error('service worker'); await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: u8(VAPID) });
+    const j = sub.toJSON(); await soRpc('push_subscribe', { endpoint: j.endpoint, p256dh: j.keys.p256dh, auth: j.keys.auth, ua: pushUa() });
+    PUSH.on = true; try { localStorage.setItem('cartodog-push', '1'); } catch (e) {} if (!quiet) { toast('🔔 Notifications activées sur ce téléphone'); try { navigator.vibrate && navigator.vibrate(30); } catch (e) {} }
+  } catch (e) { if (!quiet) toast('⚠️ Notifications impossibles : ' + (e.message || e)); }
+  finally { PUSH.busy = false; try { clUi(); } catch (e) {} try { if ($('#soc').classList.contains('open')) socRender(); } catch (e) {} }
+}
+async function pushDisable(quiet) {
+  PUSH.on = false; try { localStorage.removeItem('cartodog-push'); } catch (e) {}
+  try { const reg = 'serviceWorker' in navigator && await navigator.serviceWorker.getRegistration(); const sub = reg && await reg.pushManager.getSubscription();
+    if (sub) { if (clOn()) try { await soRpc('push_unsubscribe', { endpoint: sub.endpoint }); } catch (e) {} await sub.unsubscribe(); } } catch (e) {}
+  if (!quiet) toast('🔕 Notifications coupées sur ce téléphone'); try { clUi(); } catch (e) {}
+}
+function pushHtml() {      // la ligne « Notifications » de la carte du compte
+  if (!pushOk()) return pushIosHint() ? '<div class="acnote">📲 <b>Notifications sur iPhone</b> : ajoutez Cartodog à l\'écran d\'accueil (bouton Partager › « Sur l\'écran d\'accueil »), ouvrez-la depuis l\'icône, puis activez-les ici.</div>' : '<div class="acnote">🔕 Ce navigateur ne gère pas les notifications.</div>';
+  if (pushPerm() === 'denied') return '<div class="acnote">🔕 Notifications bloquées pour Cartodog : autorisez-les dans les réglages du navigateur, puis revenez ici.</div>';
+  return `<button class="btn" id="clpush">${sw('🔔 Notifications sur ce téléphone', PUSH.on && pushPerm() === 'granted')}</button><div class="hint">Messages, demandes de copains, invitations et rappels de rendez-vous, même appli fermée.</div>`;
+}
+const pushAsk = () => clOn() && !(PUSH.on && pushPerm() === 'granted') && pushPerm() !== 'denied' && (pushOk() || pushIosHint()) && (() => { try { return !localStorage.getItem('cartodog-pushno'); } catch (e) { return true; } })();
+async function pushGo(u) {      // toucher une notification : ouvrir la conversation, les demandes ou les rendez-vous
+  u = u || SOC.pushU; SOC.pushU = null; if (!u || !clOn()) return; let m;
+  if ((m = /^#chat=([\w-]+)/.exec(u))) { const id = m[1]; if (!who(id)) { SOT.busy = false; await soPoll(); } if (!$('#soc').classList.contains('open')) socOpen(); if (who(id)) chatOpen(id); return; }
+  if ((m = /^#soc=(\w+)/.exec(u))) { if (!$('#soc').classList.contains('open')) socOpen(); if (m[1] === 'req') return faOpen('req'); SOC.tab = m[1] === 'ev' ? 'ev' : 'fr'; if (SOC.tab === 'ev') { (SO.E || []).forEach(x => SO.evs[x.id] = 1); soSave(); } socRender(); soTick(true); }
+}
+{ const m = /^#(chat=[\w-]+|soc=\w+)/.exec(location.hash); if (m) { SOC.pushU = '#' + m[1]; history.replaceState(null, '', location.pathname + location.search); } }
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('message', e => { const d = e.data || {}; if (d.cartodog === 'push') soTick(true); if (d.cartodog === 'open') pushGo(d.u); });
+  if (PUSH.on) pushReg();
+}
 $('#socb').onclick = socOpen; $('#socx').onclick = socClose;
 $('#soc').addEventListener('click', e => {
   const me = e.target.closest('[data-sme]'); if (me) { if (me.dataset.sme === 'bio') { SOC.ed = true; return socMe(); }
@@ -3167,6 +3216,7 @@ $('#soc').addEventListener('click', e => {
   const er = e.target.closest('[data-erem]'); if (er) { const id = er.dataset.erem; SO.rem[id] = SO.rem[id] ? 0 : 1; soSave(); toast(SO.rem[id] ? '🔔 Rappel 30 min avant le rendez-vous' : '🔕 Rappel retiré'); if (SO.rem[id]) try { window.Notification && Notification.permission === 'default' && Notification.requestPermission(); } catch (x) {} return socRender(); }
   const ecx = e.target.closest('[data-ecx]'); if (ecx) { const id = ecx.dataset.ecx, ev = (SO.E || []).find(x => x.id === id); if (!ev || !confirm(`Annuler le rendez-vous « ${ev.bal} » ? Les invités le verront annulé.`)) return; ev.x = true; soSave(); socRender(); soRpc('event_cancel', { e: id }).then(() => soTick(true)).catch(x => toast('⚠️ ' + x.message)); return toast('Rendez-vous annulé'); }
   const em = e.target.closest('[data-emap]'); if (em) return socShow(em.dataset.emap);
+  const pn = e.target.closest('[data-pn]'); if (pn) { if (pn.dataset.pn === 'x') { try { localStorage.setItem('cartodog-pushno', '1'); } catch (x) {} return socRender(); } return pushEnable(); }
   const sx = e.target.closest('[data-sx]'); if (sx) { const a = sx.dataset.sx; if (a === 'add') return faOpen('add'); if (a === 'req') return faOpen('req'); if (a === 'newmsg') return faOpen('new'); if (a === 'org') return faOpen('ev'); return socSoon(); }
 });
 
@@ -3226,6 +3276,7 @@ async function clSignUp(email, pw, name) { const j = await clAuth('signup?redire
 async function clSignIn(email, pw) { clSet(await clAuth('token?grant_type=password', { email, password: pw })); await clAfterLogin(true); }
 async function clRecover(email) { await clAuth('recover?redirect_to=' + encodeURIComponent(redir()), { email }); }
 async function clSignOut(gone) {      // le carnet reste dans le compte et quitte ce téléphone : le compte suivant démarre vierge
+  if (!gone && PUSH.on) { await pushDisable(true); try { localStorage.setItem('cartodog-push', '1'); } catch (e) {} PUSH.on = true; }      // on se réabonnera pour le compte suivant
   if (!gone && clOn() && navigator.onLine !== false) { if (CLD.busy) await new Promise(r => { let n = 0; const w = setInterval(() => { if (!CLD.busy || ++n > 60) { clearInterval(w); r(); } }, 250); }); try { await sync(true); } catch (e) {} }
   const t = CLD.s && CLD.s.access_token; CLD.s = null; CLD.role = ''; CLD.skip = false; clSave(); localWipe(); try { localStorage.removeItem(OWK); } catch (e) {} clUi(); if (t) try { await clAuth('logout', {}, t); } catch (e) {} }
 const OWK = 'cartodog-owner';      // compte à qui appartiennent les données de ce téléphone
@@ -3245,7 +3296,8 @@ async function clAfterLogin(first) {
   try { const p = await sb('/rest/v1/profiles?select=name,role&id=eq.' + CLD.s.user.id); if (p && p[0]) { CLD.role = p[0].role; CLD.name = p[0].name; }
     const u = accU(); if (!u.name.trim() && CLD.name) { u.name = CLD.name; save(); try { hdrRender(); } catch (e) {} } } catch (e) {}
   clUi(); if (first) toast('☁️ Connecté : vos données se synchronisent');
-  sync(true).then(() => { soTick(true); amiGo(); if (!first) return; if (!(D.prof && D.prof.name)) { if (window.welOpen) welOpen(); } else if (!$('#wel').hidden) { $('#wel').hidden = true; try { localStorage.setItem('cartodog-wel', '1'); } catch (e) {} } try { hdrRender(); dogAvatar(); } catch (e) {} });
+  if (PUSH.on && pushOk() && pushPerm() === 'granted') pushEnable(true);
+  sync(true).then(() => { soTick(true); amiGo(); pushGo(); if (!first) return; if (!(D.prof && D.prof.name)) { if (window.welOpen) welOpen(); } else if (!$('#wel').hidden) { $('#wel').hidden = true; try { localStorage.setItem('cartodog-wel', '1'); } catch (e) {} } try { hdrRender(); dogAvatar(); } catch (e) {} });
 }
 /* Retour d'un lien reçu par e-mail (confirmation d'inscription, mot de passe oublié) : #access_token=…&type=… */
 { const h = location.hash; if (/access_token=/.test(h)) { const q = new URLSearchParams(h.slice(1)); history.replaceState(null, '', location.pathname + location.search);
@@ -3353,6 +3405,7 @@ function clUi() {
   c.innerHTML = `<div class="clcard"><b>${esc(CLD.s.user.email || '')}</b><small>${CLD.role === 'admin' ? '👑 Administrateur' : CLD.role === 'editor' ? '🧭 Éditeur des sentiers' : '🐾 Membre'}</small></div>
     <div class="clstat"><span><b>${np}</b><small>sentiers publics</small></span><span><b>${pp}</b><small>sentiers proposés</small></span><span><b>${(D.marks || []).length}</b><small>repères</small></span></div>
     <div class="clsy ${CLD.st}">${CLD.st === 'busy' ? '🔄 Synchronisation en cours…' : CLD.st === 'err' ? '⚠️ ' + esc(CLD.err) : CLD.at ? `✅ Synchronisé ${fmtAgo(CLD.at)}${CLD.n.up || CLD.n.down ? ` · ↑ ${CLD.n.up} ↓ ${CLD.n.down}` : ''}` : 'Pas encore synchronisé'}</div>
+    ${pushHtml()}
     <button class="btn gold" id="clsync">🔄 Synchroniser maintenant</button>
     <div class="hint">${CLD.role === 'admin' || CLD.role === 'editor' ? 'Vos sentiers sont publiés directement pour tous les promeneurs.' : 'Vos nouveaux sentiers sont envoyés comme « proposés » : ils deviennent publics une fois validés.'} La synchronisation se fait toute seule : au démarrage, après vos modifications et au retour du réseau.</div>
     <button class="btn" id="clout">Se déconnecter</button><button class="cllink dgr" id="cldel">Supprimer mon compte</button>`;
@@ -3374,6 +3427,7 @@ document.addEventListener('click', async e => {
   if (t.closest('#clforgot')) { const mail = ($('#clmail').value || '').trim(); if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) return err('Saisissez d\'abord votre e-mail'); try { await clRecover(mail); err(''); toast('📧 E-mail envoyé : suivez le lien pour choisir un nouveau mot de passe'); } catch (x) { err(x.message); } return; }
   if (t.closest('#clnpwgo')) { const pw = $('#clnpw').value; if (pw.length < 8) return err('8 caractères minimum'); try { const tok = await clToken(); const r = await fetchT(SB.url + '/auth/v1/user', 12000, { method: 'PUT', headers: { apikey: SB.key, Authorization: 'Bearer ' + tok, 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }) }); if (!r.ok) throw new Error(clMsg(await r.json().catch(() => null), r.status)); CLD.pwReset = false; toast('🔑 Mot de passe changé'); clAfterLogin(false); } catch (x) { err(x.message); } return; }
   if (t.closest('#clsync')) return sync(true);
+  if (t.closest('#clpush')) return PUSH.on && pushPerm() === 'granted' ? pushDisable() : pushEnable();
   if (t.closest('#clout')) { if (!confirm('Se déconnecter ?\n\nVotre carnet reste sauvegardé dans votre compte et quitte ce téléphone jusqu\'à votre prochaine connexion.' + (navigator.onLine === false ? '\n\n⚠️ Hors ligne : les dernières modifications pas encore envoyées seront perdues.' : ''))) return; await clSignOut(); toast('☁️ Déconnecté'); return; }
   if (t.closest('#cldel')) { if (!confirm('Supprimer définitivement votre compte en ligne ? Vos sentiers publics restent sur la carte (sans votre nom) ; votre carnet en ligne et vos photos en ligne sont effacés. Tout est aussi retiré de ce téléphone.')) return;
     try { const S = syLoad(); for (const id of Object.keys(S.ph)) { try { await sb(`/storage/v1/object/photos/${CLD.s.user.id}/${id}`, { method: 'DELETE' }); } catch (x) {} }
