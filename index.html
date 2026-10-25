@@ -1210,7 +1210,8 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
   </div>
   <div class="acp" data-pg="cloud"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Compte en ligne<small>Sauvegarde et partage</small></h2></div><div id="accl"></div></div>
   <div class="acp" data-pg="me"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Mes infos<small>Comment les autres vous verront</small></h2></div>
-    <label class="acf"><span>Pseudo</span><input id="acpn" maxlength="24" placeholder="Ex. Dylan" autocomplete="nickname" enterkeyhint="done"></label>
+    <label class="acf"><span>Prénom</span><input id="acpf" maxlength="24" placeholder="Ex. Dylan" autocomplete="given-name" enterkeyhint="next"></label>
+    <label class="acf"><span>Pseudo</span><input id="acpn" maxlength="24" placeholder="Ex. dylan_nova" autocomplete="nickname" enterkeyhint="done"></label>
     <label class="acf"><span>Commune</span><input id="acpc" maxlength="40" placeholder="Ex. Le Taillan-Médoc" autocomplete="address-level2" enterkeyhint="done"></label>
     <label class="acf off"><span>E-mail <em>bientôt</em></span><input disabled placeholder="Avec le compte en ligne"></label>
     <div class="hint">Le pseudo s'affichera à côté de votre chien quand Cartodog sera en ligne.</div>
@@ -1482,7 +1483,7 @@ D.prof = cleanProf(null);
 function load() {
   try { const d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && d.cells) { D = { cells: {}, paths: cleanPaths(d.paths), marks: cleanMarks(d.marks), dog: String(d.dog || '').slice(0, 30), prof: cleanProf(d.prof, d.dog), user: cleanUser(d.user) }; D.dog = D.prof.name || D.dog; Object.entries(d.cells).forEach(([k, c]) => { if (/^[\w,-]+$/.test(k)) { const x = clean(c); if (x.x != null) D.cells[k] = x; } }); } } catch (e) {}
 }
-function cleanUser(u) { u = u && typeof u === 'object' ? u : {}; return { name: String(u.name || '').slice(0, 24), city: String(u.city || '').slice(0, 40), vis: ['none', 'friends', 'all'].includes(u.vis) ? u.vis : 'friends', pres: u.pres !== false, stats: u.stats !== false, st: ['on', 'look', 'dnd', 'hid'].includes(u.st) ? u.st : 'on', bio: String(u.bio || '').slice(0, 80) }; }
+function cleanUser(u) { u = u && typeof u === 'object' ? u : {}; return { name: String(u.name || '').slice(0, 24), first: String(u.first || '').slice(0, 24), city: String(u.city || '').slice(0, 40), vis: ['none', 'friends', 'all'].includes(u.vis) ? u.vis : 'friends', pres: u.pres !== false, stats: u.stats !== false, st: ['on', 'look', 'dnd', 'hid'].includes(u.st) ? u.st : 'on', bio: String(u.bio || '').slice(0, 80) }; }
 function importData(d) {
   let msg;
   if (d && d.app === 'cartodog' && d.kind === 'balade' && Array.isArray(d.paths)) { mergePaths(d.paths); mergeMarks(d.marks); NG.sig = ''; msg = 'Balade « ' + String(d.name || '').slice(0, 60) + ' » importée' + (d.from ? ' (partagée par ' + String(d.from).slice(0, 30) + ')' : '');
@@ -2814,7 +2815,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-113';
+const APP_V = '2026.10.25-114';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2865,7 +2866,7 @@ const STS = { on: ['🟢', 'Disponible', 'En ligne, joignable'], look: ['👋', 
 function socMe() {
   const u = accU(), st = STS[u.st] ? u.st : 'on', walk = !!BR.on, ic = walk ? '🐾' : STS[st][0], lb = walk ? 'En balade' : STS[st][1], dn = D.prof && D.prof.name || '';
   $('#scme').innerHTML = `<span class="scaw"><span class="scmav">${$('#dogav') ? $('#dogav').innerHTML : ''}</span><i class="scdot ${walk ? 'walk' : st}"></i></span>
-    <span class="act"><b>${esc(u.name.trim() || 'Moi')}${dn ? ` <em>& ${esc(dn)}</em>` : ''}</b>
+    <span class="act"><b>${esc((u.first || '').trim() || u.name.trim() || 'Moi')}${dn ? ` <em>& ${esc(dn)}</em>` : ''}</b>
     <span class="scchips"><button class="scst" data-sme="st">${ic} ${lb}${walk ? ' <small>auto</small>' : ''} <i>▾</i></button><button class="scst scsp ${D.prof.space || 'none'}" data-sme="sp">${(SPC[D.prof.space] || SPC[''])[0]} ${SPC[D.prof.space] && D.prof.space ? SPC[D.prof.space][1] : (dn || 'Mon chien') + ' : sociable ?'} <i>▾</i></button></span>
     ${SOC.ed ? `<input id="scbio" maxlength="80" enterkeyhint="done" placeholder="Ex. Balade tous les soirs vers 18 h au Taillan" value="${esc(u.bio || '')}">` : `<button class="scbio${u.bio ? '' : ' ph'}" data-sme="bio">${u.bio ? '« ' + esc(u.bio) + ' »' : '✏️ Ajouter une description…'}</button>`}</span>`;
   if (SOC.ed) { const el = $('#scbio'); el.focus(); const done = () => { if (!SOC.ed) return; SOC.ed = false; accU().bio = el.value.trim().slice(0, 80); save(); socMe(); }; el.onblur = done; el.onkeydown = e => { if (e.key === 'Enter') el.blur(); }; }
@@ -3166,7 +3167,7 @@ function clUi() {
   b.classList.toggle('on', on);
   gateSync(); let c = $('#accl'); if (!c) return;
   if (!on) { c.innerHTML = ''; c = $('#gatef'); c.innerHTML = `<div class="clseg"><button data-clm="in" class="${CLD.mode !== 'up' ? 'on' : ''}">Se connecter</button><button data-clm="up" class="${CLD.mode === 'up' ? 'on' : ''}">Créer un compte</button></div>
-    ${CLD.mode === 'up' ? `<label class="acf"><span>Pseudo</span><input id="clname" maxlength="24" autocomplete="nickname" value="${esc(accU().name || '')}" placeholder="Ex. Dylan"></label>` : ''}
+    ${CLD.mode === 'up' ? `<label class="acf"><span>Prénom</span><input id="clfirst" maxlength="24" autocomplete="given-name" value="${esc(accU().first || '')}" placeholder="Ex. Dylan"></label><label class="acf"><span>Pseudo <em>visible par les autres promeneurs</em></span><input id="clname" maxlength="24" autocomplete="nickname" value="${esc(accU().name || '')}" placeholder="Ex. dylan_nova"></label>` : ''}
     <label class="acf"><span>E-mail</span><input id="clmail" type="email" autocomplete="email" inputmode="email" value="${esc(CLD.mail || '')}" placeholder="vous@exemple.fr"></label>
     <label class="acf"><span>Mot de passe</span><input id="clpw" type="password" minlength="8" autocomplete="${CLD.mode === 'up' ? 'new-password' : 'current-password'}" placeholder="8 caractères minimum"></label>
     <div class="clerr" id="clerr"></div>
@@ -3192,8 +3193,8 @@ document.addEventListener('click', async e => {
   if (t.closest('#clgo')) { const mail = $('#clmail').value.trim(), pw = $('#clpw').value; CLD.mail = mail;
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) return err('Adresse e-mail invalide'); if (pw.length < 8) return err('Mot de passe trop court (8 caractères minimum)');
     const b = t.closest('#clgo'); b.disabled = true; b.textContent = '…';
-    try { if (CLD.mode === 'up') { const nm = ($('#clname').value || '').trim().slice(0, 24); if (nm) { accU().name = nm; save(); }
-        const r = await clSignUp(mail, pw, nm); if (r === 'confirm') { CLD.mode = 'in'; clUi(); err(''); toast('📧 Compte créé : ouvrez le lien reçu par e-mail pour le confirmer, puis connectez-vous'); const n = $('#accl .acnote'); if (n) n.innerHTML = '📧 <b>Presque fini !</b> Un e-mail de confirmation vient de partir vers ' + esc(mail) + '. Ouvrez le lien, puis connectez-vous ici.'; return; } }
+    try { if (CLD.mode === 'up') { const nm = ($('#clname').value || '').trim().slice(0, 24), fn = ($('#clfirst').value || '').trim().slice(0, 24); if (nm) accU().name = nm; if (fn) accU().first = fn; if (nm || fn) save();
+        const r = await clSignUp(mail, pw, nm); if (r === 'confirm') { CLD.mode = 'in'; clUi(); err(''); toast('📧 Compte créé : ouvrez le lien reçu par e-mail pour le confirmer, puis connectez-vous'); const n = $('#gatef .acnote') || $('#accl .acnote'); if (n) n.innerHTML = '📧 <b>Presque fini !</b> Un e-mail de confirmation vient de partir vers ' + esc(mail) + '. Ouvrez le lien, puis connectez-vous ici.'; return; } }
       else await clSignIn(mail, pw);
       accRender(); clUi();
     } catch (x) { err(x.message); b.disabled = false; b.textContent = CLD.mode === 'up' ? '✨ Créer mon compte' : '☁️ Se connecter'; } return; }
@@ -3210,7 +3211,7 @@ document.addEventListener('click', async e => {
 $('#imp').onclick = () => $('#fi').click();
 /* ===== Mon compte : tiroir à droite, pages qui glissent ===== */
 const ACV = { none: 'Personne · mode fantôme', friends: 'Copains', all: 'Tout le monde' };
-const accU = () => (D.user = Object.assign({ name: '', city: '', vis: 'friends', pres: true, stats: true, st: 'on', bio: '' }, D.user || {}));
+const accU = () => (D.user = Object.assign({ name: '', first: '', city: '', vis: 'friends', pres: true, stats: true, st: 'on', bio: '' }, D.user || {}));
 function accPage(pg, instant) {      // renvoie true si on a changé de page (sert au bouton retour)
   const cur = document.querySelector('#menu .acp.on'); if (cur && cur.dataset.pg === pg) return false;
   document.querySelectorAll('#menu .acp').forEach(x => { const on = x.dataset.pg === pg; x.classList.toggle('on', on); x.classList.toggle('back', on && pg === 'main' && !instant); });
@@ -3224,7 +3225,7 @@ function accRender() {
   $('#acme').textContent = nm ? nm + (u.city ? ' · ' + u.city : '') : 'Pseudo, commune';
   $('#acdgs').textContent = dog ? dog + ' · niveau ' + ($('#hlv').textContent || 1) : 'Créer son profil';
   $('#acpv').textContent = ACV[u.vis] || ACV.friends;
-  $('#acpn').value = u.name; $('#acpc').value = u.city;
+  $('#acpn').value = u.name; $('#acpf').value = u.first || ''; $('#acpc').value = u.city;
   document.querySelectorAll('#acvis [data-v]').forEach(b => b.classList.toggle('on', b.dataset.v === u.vis));
   $('#acpres').innerHTML = sw('Montrer ma présence sur les balades', u.pres); $('#acstat').innerHTML = sw('Partager mes stats (km, niveau) avec mes copains', u.stats);
   $('#acver').textContent = 'Version ' + APP_V; try { clUi(); } catch (e) {}
@@ -3233,7 +3234,7 @@ document.querySelectorAll('#menu [data-acp]').forEach(b => b.onclick = () => { a
 $('#bksh').onclick = () => bkShare();
 document.querySelectorAll('#menu [data-acb]').forEach(b => b.onclick = () => { accPage('main'); accRender(); });
 $('#acdog').onclick = () => dogOpen();
-[['#acpn', 'name'], ['#acpc', 'city']].forEach(([id, k]) => { const el = $(id); el.oninput = () => { accU()[k] = el.value; saveSoon(); }; el.onchange = () => { accU()[k] = el.value.trim(); save(); accRender(); try { hdrRender(); } catch (x) {} }; el.onkeydown = e => { if (e.key === 'Enter') el.blur(); }; });
+[['#acpn', 'name'], ['#acpf', 'first'], ['#acpc', 'city']].forEach(([id, k]) => { const el = $(id); el.oninput = () => { accU()[k] = el.value; saveSoon(); }; el.onchange = () => { accU()[k] = el.value.trim(); save(); accRender(); try { hdrRender(); } catch (x) {} }; el.onkeydown = e => { if (e.key === 'Enter') el.blur(); }; });
 document.querySelectorAll('#acvis [data-v]').forEach(b => b.onclick = () => { accU().vis = b.dataset.v; save(); accRender(); });
 $('#acpres').onclick = () => { const u = accU(); u.pres = !u.pres; save(); accRender(); };
 $('#acstat').onclick = () => { const u = accU(); u.stats = !u.stats; save(); accRender(); };
@@ -3269,7 +3270,7 @@ function hdrRender() {      // bandeau : le chien est le héros (photo, niveau, 
   if (!nm) { el.textContent = 'Mon chien'; $('#hsub').innerHTML = '<span class="hcta">Carnet de balade</span>'; $('#hdog').classList.add('new'); $('#hlv').hidden = true; $('#hring').style.strokeDasharray = '0 200'; return; }
   const S = dogStats(), a0 = lvNeed(S.L), a1 = lvNeed(S.L + 1), pc = Math.max(0, Math.min(1, (S.xp - a0) / (a1 - a0))), C = 2 * Math.PI * 21.5;
   el.textContent = nm; $('#hlv').hidden = false; $('#hlv').textContent = S.L; $('#hring').style.strokeDasharray = `${(C * pc).toFixed(1)} ${C.toFixed(1)}`;
-  $('#hdog').classList.remove('new'); const hu = (D.user && D.user.name || '').trim(); $('#hsub').innerHTML = `<span class="hwk">${esc(nm)}${hu ? ' & ' + esc(hu) : ''}</span>${S.st ? `<span class="hst">🔥${S.st}</span>` : ''}`;
+  $('#hdog').classList.remove('new'); const hu = (D.user && D.user.first || '').trim(); $('#hsub').innerHTML = `<span class="hwk">${esc(nm)}${hu ? ' & ' + esc(hu) : ''}</span>${S.st ? `<span class="hst">🔥${S.st}</span>` : ''}`;
 }
 function dogLabel() {
   const p = D.prof, w = lastW(), bits = [p.breed, ageTxt(p.bd), w ? fkg(w.kg) : ''].filter(Boolean).join(' · ');
