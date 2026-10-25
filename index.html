@@ -1555,7 +1555,7 @@ function camLoop(now) {
   if (CAM.m && me) { let [mx, my] = meDisp(); if (CAM.m === 2 && AP.on && AP.mode === 'car' && AP.poly) { const h = -CAM.rot, cr = cv.getBoundingClientRect(), lp = $('#lp'), vb = lp && !lp.hidden ? Math.min(cr.bottom, lp.getBoundingClientRect().top) : cr.bottom, ym = (vb - cr.top) * .7, off = (ym - cr.height / 2) * V.mpp; mx += Math.sin(h) * off; my += Math.cos(h) * off; }      /* en voiture : la position est placée plus bas, on voit la route devant (comme un GPS) */
     const k = 1 - Math.exp(-dt / 260), dx = mx - V.cx, dy = my - V.cy;
     if (Math.hypot(dx, dy) / V.mpp > .25) { V.cx += dx * k; V.cy += dy * k; busy = true; } else { V.cx = mx; V.cy = my; } }
-  let tr = 0; const noRot = P.on && !RC.on; if (CAM.m === 2 && !noRot) { const h = compLive() ? CP.h : HD.h; tr = h == null ? CAM.rot : -h * Math.PI / 180; }
+  let tr = 0; const noRot = P.on && !RC.on; if (CAM.m === 2 && !noRot) { const rh = apHeading(), h = rh != null ? rh : compLive() ? CP.h : HD.h;      /* en voiture : cap figé sur le sens de la route */ tr = h == null ? CAM.rot : -h * Math.PI / 180; }
   const d = ((tr - CAM.rot) % (2 * Math.PI) + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
   if (noRot && CAM.rot) { CAM.rot = 0; busy = true; }      // dessin / modification des sentiers : nord en haut ; l'enregistrement en marchant peut suivre la direction
   else if (Math.abs(d) > .003) { CAM.rot += d * (1 - Math.exp(-dt / 320)); CAM.rot = Math.atan2(Math.sin(CAM.rot), Math.cos(CAM.rot)); busy = true; }
@@ -2486,6 +2486,11 @@ async function apFetch() {
   else { AP.err = true; AP.errm = r.why; }
   apRefresh();
 }
+function apHeading() {      // en voiture : cap de la route ≈ 40 m devant vous (stable, sans les à-coups de la boussole)
+  if (!(AP.on && AP.mode === 'car' && AP.poly && me && BR.on)) return null; const here = [me.x, me.y]; let bi = 1, bd = Infinity, bq = AP.poly[0];
+  for (let i = 1; i < AP.poly.length; i++) { const pr = segProj(here, AP.poly[i - 1], AP.poly[i]); if (pr.d < bd) { bd = pr.d; bi = i; bq = pr.q; } }
+  let a = bq, left = 40, i = bi; while (i < AP.poly.length) { const d = rdist(a, AP.poly[i]); if (d >= left) { const t = left / d; a = [a[0] + (AP.poly[i][0] - a[0]) * t, a[1] + (AP.poly[i][1] - a[1]) * t]; left = 0; break; } left -= d; a = AP.poly[i]; i++; }
+  const dx = a[0] - bq[0], dy = a[1] - bq[1]; if (Math.hypot(dx, dy) < 1) return null; return (Math.atan2(dx, dy) * 180 / Math.PI + 360) % 360; }
 function apLeft() {      // distance restante le long de l'itinéraire
   if (!AP.poly || !me) return null; const here = [me.x, me.y]; let bi = 1, bd = Infinity, bq = AP.poly[0];
   for (let i = 1; i < AP.poly.length; i++) { const pr = segProj(here, AP.poly[i - 1], AP.poly[i]); if (pr.d < bd) { bd = pr.d; bi = i; bq = pr.q; } }
@@ -2793,7 +2798,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-110';
+const APP_V = '2026.10.25-111';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
