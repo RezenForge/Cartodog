@@ -1441,7 +1441,7 @@ function markLinks() { const sig = (D.marks || []).length + '|' + (NG.sig || '')
       if (!near && g) { const k2 = 60 / cosAt(m.y); near = g.paths.some(p => { const b = pathBB(p); if (m.x < b[0] - k2 || m.x > b[2] + k2 || m.y < b[1] - k2 || m.y > b[3] + k2) return false; for (let i = 1; i < p.pts.length; i++) if (segProj(q, p.pts[i - 1], p.pts[i]).d < k2) return true; return false; }); }
       if (near) (m2.get(m.id) || m2.set(m.id, new Set()).get(m.id)).add(k); }); });
   MLK = { sig, m: m2 }; return m2; }
-const balFocus = () => { const bm = document.getElementById('balm'); if (!(bm && bm.classList.contains('open') && bm.classList.contains('sheet') && BL.g)) return null;      // balade ouverte dans « Partir en balade » : son tracé et ses repères restent visibles
+const balFocus = () => { const bm = document.getElementById('balm'); if (!(BL.g && ((bm && bm.classList.contains('open') && bm.classList.contains('sheet')) || (BL.poly && !BR.on)))) return null;      // aussi pendant la boucle proposée      // balade ouverte dans « Partir en balade » : son tracé et ses repères restent visibles
   if (BL.fk && BL.fk[0] === BL.g.k && D.cells[BL.fk[1]]) return BL.fk[1]; const k = Object.keys(D.cells).find(kk => { const gg = cellGroup(kk); return gg && gg.k === BL.g.k; }) || null; BL.fk = [BL.g.k, k]; return k; };
 function markShown(m) {      // affiché : en mode repère / Sentiers, s'il n'est lié à aucune balade, si sa balade est choisie, ou pendant une sortie à moins de 500 m
   if (RM || P.on) return true; const L = markLinks().get(m.id); if (!L) return true; if (sel && L.has(sel)) return true; const bf = balFocus(); if (bf && L.has(bf)) return true; if (AUTO.fr === FR && AUTO.k.size) for (const k of L) if (AUTO.k.has(k)) return true;
@@ -2312,7 +2312,9 @@ function balPropose() {
   try { localStorage.setItem('cartodog-dur', BL.min); if (st.park || st.here) localStorage.setItem('cartodog-pk-' + g.k, st.here ? 'me' : st.park.id); } catch (e) {}
   BL.net = net; BL.st = st; BL.con = con; BL.Lt = Math.max(150, L - 2 * con); BL.seen = new Set();
   const lp = balPick(balLoops(net, BL.Lt, BL.avoid, 12), true); BL.dzAll = net.dzAll; if (!lp) return toast('Impossible de calculer une boucle sur ces sentiers');
-  BL.loops = [lp]; BL.i = 0; BL.park = st.park; BL.pname = st.pname; BL.sp = sp; BL.L = L; BL.arr = false; BL.wait = false; balClose(); balShow();
+  BL.loops = [lp]; BL.i = 0; BL.park = st.park; BL.pname = st.pname; BL.sp = sp; BL.L = L; BL.arr = false; BL.wait = false; balClose();
+  if (sel) { sel = null; BSEL = null; renderPanel(); }      // la fiche de la balade se ferme : place à la boucle
+  balShow();
 }
 /* Une seule boucle proposée ; ↻ en tire une autre au hasard parmi les bonnes, différente de celles déjà vues */
 const sigSim = (a, b) => { const A = new Set(a.split(',')), B = b.split(','); let n = 0; B.forEach(x => A.has(x) && n++); return n / Math.max(A.size, B.length, 1); };
@@ -2786,7 +2788,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-107';
+const APP_V = '2026.10.25-108';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
