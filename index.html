@@ -1127,6 +1127,8 @@ body.lpon #dock #found:not(.rec),body.lpon #dock #socb{display:none!important}bo
 #gate{position:fixed;inset:0;z-index:42;display:flex;flex-direction:column;overflow-y:auto;padding:calc(24px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom));border:0!important;border-radius:0!important;animation:fadeIn .3s ease both}#gate[hidden],#gtoff[hidden]{display:none}
 .gtc{margin:auto;width:100%;max-width:400px;display:flex;flex-direction:column;gap:10px}#gatef{display:flex;flex-direction:column;gap:10px}
 .gtl{text-align:center;margin-bottom:8px}.gtl img{width:76px;height:76px;border-radius:20px;box-shadow:0 4px 14px rgba(0,0,0,.6)}.gtl h1{margin:10px 0 4px;font:800 30px/1.1 var(--px);color:#fff1cf;text-shadow:2px 2px 0 #000}.gtl p{margin:0;font:600 14px/1.4 var(--num);color:var(--mut)}
+.scb.pend{opacity:.6}.scbn{display:block;font:800 11.5px/1.2 var(--num);color:var(--ember2);margin-bottom:2px;font-style:normal}.scok{flex:none;height:34px;padding:0 12px;border-radius:9px;border:1.5px solid #0e0b08;background:linear-gradient(#f4c862,#c6862a);color:#2a1806;font:800 13px var(--num)}
+.scfme{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.05);font:600 13px var(--num);color:var(--mut)}.scfme b{color:var(--txt)}.scfme .cllink{margin:0}
 .scemp{display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;padding:26px 14px;font:700 15px/1.3 var(--num);color:var(--txt)}.scemp small{font:500 13px/1.4 var(--num);color:var(--mut);max-width:290px}
 .hico{display:inline-block;width:17px;height:17px;margin:0 0 0 4px;vertical-align:top;position:relative;top:1px;border-radius:5px;box-shadow:0 1px 2px rgba(0,0,0,.6)}
 
@@ -1258,11 +1260,12 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
   <div class="scp" data-sp="fr" id="scfr"></div>
   <div class="scp" data-sp="ms" id="scms"></div>
   <div class="scp" data-sp="ev" id="scev"></div>
-  <div class="scsh" id="scsh" hidden><div class="scshw"><div class="scshh" id="scshh"></div><button data-sa="msg">💬 Envoyer un message</button><button data-sa="map">📍 Voir où il se balade</button><button data-sa="prof">🐕 Voir son profil</button><button data-sa="rm">➖ Retirer de mes copains</button><button data-sa="blk" class="dgr">🚫 Bloquer</button><button data-sa="x" class="cx">Annuler</button></div></div>
+  <div class="scsh" id="scsh" hidden><div class="scshw"><div class="scshh" id="scshh"></div><button data-sa="msg">💬 Envoyer un message</button><button data-sa="map">📍 Voir où il se balade</button><button data-sa="prof">🐕 Voir son profil</button><button data-sa="rm">➖ Retirer de mes copains</button><button data-sa="x" class="cx">Annuler</button></div></div>
   <div class="scch" id="scch" hidden><div class="scchh"><button class="ib" id="scchb" aria-label="Retour">‹</button><span id="scchw"></span></div><div class="scchl" id="scchl"></div>
     <div class="scchq"><button data-q="🐾 On se balade ?">🐾 On se balade ?</button><button data-q="bal">📍 Ma balade</button><button data-q="👋 Tu es où ?">👋 Tu es où ?</button><button data-q="🕙 J'arrive dans 10 min">🕙 J'arrive</button></div>
     <form class="scchf" id="scchf"><input id="scchi" maxlength="300" placeholder="Écrire un message…" autocomplete="off" enterkeyhint="send"><button type="submit" aria-label="Envoyer">➤</button></form></div>
   <div class="scsh" id="scgr" hidden><div class="scgw" id="scgw"></div></div>
+  <div class="scsh" id="scfa" hidden><div class="scgw" id="scfw"></div></div>
   <div class="scsh" id="scst" hidden><div class="scshw"><div class="scshh">Mon état</div><div id="scstl"></div><button data-ss="x" class="cx">Annuler</button></div></div>
 </div></div>
 <div id="lst"><div class="win dg">
@@ -1632,7 +1635,7 @@ function repPos() {      // le bouton Signaler reste au-dessus de la barre et de
 }
 new MutationObserver(() => repPos()).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['hidden'] });      // le bouton Signaler suit l'apparition / disparition des cartes du bas
 
-/* ===== Présence sur les balades : patte = promeneurs Cartodog ici en ce moment, avatars = copains (aperçu tant que le compte en ligne n'existe pas) ===== */
+/* ===== Présence sur les balades : patte = promeneurs Cartodog ici en ce moment, avatars = copains (l'aperçu fictif est retiré) ===== */
 let socPrev = false;      // l'aperçu fictif (faux copains, faux promeneurs) est retiré : les vrais copains arriveront avec la messagerie en ligne
 let SLV = { t: 0, m: new Map() };
 function socLive() {
@@ -1965,7 +1968,7 @@ $('#panel').addEventListener('click', e => {
     return toast('Balade supprimée', () => { restoreSnap(snap); D.paths = JSON.parse(pj); NG.sig = ''; sel = k; save(); draw(); renderPanel(); }); }
   if (a === 'tag') { const t = b.dataset.tag, L = new Set(c.tags || []); L.has(t) ? L.delete(t) : L.add(t); c.tags = Object.keys(TAGS).filter(x => L.has(x)); save(); b.classList.toggle('on', L.has(t)); const st = document.querySelector('#panel .f4tg'); const ic = c.tags.map(x => TAGS[x][0]).join(''); if (st) st.textContent = ic; else if (ic) { const sp = document.createElement('span'); sp.className = 'f4tg'; sp.textContent = ic; const n = document.querySelector('#panel .f4sub #nvt'); n && n.before(sp); } return; }
   if (a === 'go') return goTo(sel);
-  if (a === 'invite') return toast('👥 Inviter des copains arrivera avec le compte en ligne');
+  if (a === 'invite') { if (!clOn()) return toast('☁️ Connectez-vous pour inviter vos copains'); const k = sel; socOpen(); SOC.shareK = k; return faOpen('new'); }
   if (a === 'walk') { if (BR.on) return brStop(); BR.k0 = sel; const g = cellGroup(sel); return g ? openBal(g.k, 'panel') : balOpen(); }
   if (a === 'bal') { const g = cellGroup(sel); if (g) openBal(g.k, 'panel'); return; }
   if (a === 'share') { const g = cellGroup(sel); if (g) balShare(g); return; }
@@ -2012,7 +2015,7 @@ function brUi() {
 setInterval(() => { if (BR.on) brUi(); }, 1000);
 function brStart() {
   if (BR.on) return; const k0 = BR.k0 && D.cells[BR.k0] ? BR.k0 : null;
-  VOX.said = new Set(); const bal = BR.bal0 || ''; BR = { on: true, t0: Date.now(), pts: [], m: 0, f: null, k: k0, hyd: 0, bal }; BSEL = null;
+  VOX.said = new Set(); const bal = BR.bal0 || ''; BR = { on: true, t0: Date.now(), pts: [], m: 0, f: null, k: k0, hyd: 0, bal }; BSEL = null; setTimeout(soPresence, 50);
   if (watch === null) startLoc(); wakeSync(); brTick(); brUi(); bump('#found'); schedule();
   toast('▶ ' + (bal ? bal : 'Balade lancée') + (D.dog ? ' avec ' + D.dog : '') + ' : bonne promenade !');
   setTimeout(brWeather, me ? 600 : 6000);
@@ -2023,7 +2026,7 @@ function simplifyPts(pts, tolM = 3) {      // Douglas-Peucker sur un tracé de b
   return pts.filter((_, i) => keep[i]);
 }
 function brStop() { setTimeout(hdrRender, 300);
-  if (!BR.on) return; const b = BR, dur = Math.round((Date.now() - b.t0) / 1000); BR = { on: false, pts: [], m: 0 }; wakeSync(); brUi();
+  if (!BR.on) return; const b = BR, dur = Math.round((Date.now() - b.t0) / 1000); BR = { on: false, pts: [], m: 0 }; wakeSync(); brUi(); setTimeout(soPresence, 50);
   if (dur < 60 && b.m < 50) { draw(); return toast('⏹ Sortie annulée (moins d\'une minute)'); }
   const start = b.pts[0] || (me ? [me.x, me.y] : null), snap = snapC(); let k = b.k && D.cells[b.k] ? b.k : b.bal ? Object.keys(D.cells).find(x => { const g = cellGroup(x); return g && g.k === gkey(b.bal); }) : null; if (!k) k = start ? nearestSpot(start[0], start[1], 400) : sel; let neu = false;
   if (!k) { const p = start || [V.cx, V.cy]; k = newSpot(p[0], p[1]); neu = true; fxa({ k: 'pop', key: k, dur: 520 }); }
@@ -2815,7 +2818,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-114';
+const APP_V = '2026.10.25-115';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2829,9 +2832,66 @@ setTimeout(checkUpdate, 2500); document.addEventListener('visibilitychange', () 
 $('#mx').onclick = () => $('#menu').classList.remove('open'); $('#menu').onclick = e => { if (e.target.id === 'menu') $('#menu').classList.remove('open'); };
 
 /* ===== Copains et sorties (aperçu avant le compte en ligne) : qui se balade et où, gestion des copains, sorties organisées ===== */
+/* ===== Copains en ligne : la base garde amis, présence, groupes et messages ; le téléphone relève les nouveautés (4 s dans une conversation, 8 s dans Copains, 20 s sinon) ===== */
+const soNew = () => ({ P: {}, fr: [], rin: [], rout: [], G: [], th: {}, last: 0, ph: '', init: 0 });
+let SO = (() => { try { const o = JSON.parse(localStorage.getItem('cartodog-msgs') || 'null'); if (o && o.th) return Object.assign(soNew(), o); } catch (e) {} return soNew(); })();
+const SOT = { tm: 0, busy: false, sig: '', pt: 0 };
+const soSave = () => { try { localStorage.setItem('cartodog-msgs', JSON.stringify(SO)); } catch (e) {} };
+const soRpc = (fn, args) => sb('/rest/v1/rpc/' + fn, { method: 'POST', json: args || {} });
+const PAL = ['#c6862a', '#5f7350', '#466f9a', '#8a4f7d', '#6b5b44', '#9a5a3a', '#3f7a74', '#7a6a2a'];
+const soCol = id => PAL[[...String(id)].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % PAL.length];
+const soAgo = t => { const s = (Date.now() - t) / 1000, d = new Date(t), n = new Date(); if (s < 90) return 'à l\'instant'; if (s < 3600) return 'il y a ' + Math.round(s / 60) + ' min';
+  if (d.toDateString() === n.toDateString()) return 'à ' + d.getHours() + ' h ' + String(d.getMinutes()).padStart(2, '0'); n.setDate(n.getDate() - 1); if (d.toDateString() === n.toDateString()) return 'hier'; return 'le ' + d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); };
+function soCell(x, y) {      // la balade de ma carte la plus proche d'un point partagé (moins de 900 m)
+  if (x == null || y == null) return null; let best = null, bd = 900;
+  try { Object.keys(D.cells).forEach(k => { if (!rec(D.cells[k]) || !cellGroup(k)) return; const d = rdist(ctr(k), [x, y]); if (d < bd) { bd = d; best = k; } }); } catch (e) {} return best; }
+function person(id) {      // un promeneur tel que l'affichent les listes : chien (d), prénom (n), état, balade en cours
+  const p = SO.P[id]; if (!p) return null; const seen = p.seen ? Date.parse(p.seen) : 0, on = seen && Date.now() - seen < 3 * 6e4, walk = !!p.walk && seen && Date.now() - seen < 20 * 6e4, hu = (p.first || '').trim() || (p.name || '').trim();
+  return { id, h: p.name || '', d: (p.dog || '').trim() || hu || '?', n: (p.dog || '').trim() ? hu : '', c: soCol(id), sp: p.sp || '', bio: p.bio || '',
+    st: walk ? 'walk' : on && p.st !== 'hid' ? 'on' : 'off', at: walk ? { k: soCell(p.bx, p.by), n: p.bal || 'Balade' } : null, t: walk && p.since ? Math.max(1, Math.round((Date.now() - Date.parse(p.since)) / 6e4)) : 0, last: seen ? soAgo(seen) : '' };
+}
+function soIngest(x, first) {
+  const uid = CLD.s.user.id, me = x.f === uid, th = x.g || (me ? x.to : x.f); if (!th) return null; const L = SO.th[th] ||= [];
+  if (L.some(m => m.id === x.id)) return null;
+  const pend = me ? L.find(m => m.pend && m.t === (x.t || '')) : null, m = pend || {};
+  Object.assign(m, { id: x.id, me: me ? 1 : 0, t: x.t || '', ts: Date.parse(x.ts) || Date.now(), f: x.f }); delete m.pend;
+  if (x.m && x.m.kn) { m.kn = String(x.m.kn).slice(0, 60); m.bx = x.m.x; m.by = x.m.y; m.k = soCell(m.bx, m.by); }
+  if (!pend) { m.nw = !me && !first && !(SOC.chat === th && $('#soc').classList.contains('open') && !document.hidden) ? 1 : 0; L.push(m); }
+  L.sort((a, b) => (a.id || 1e15) - (b.id || 1e15)); if (L.length > 300) L.splice(0, L.length - 300);
+  SO.last = Math.max(SO.last || 0, x.id); return th;
+}
+function soPresence() {      // mon état pour les copains ; en balade : le nom de la balade et son centre, jamais ma position exacte
+  if (!clOn()) return; const u = accU(), walk = !!(BR.on && u.pres !== false), k = walk && BR.k && D.cells[BR.k] ? BR.k : null, c = k ? ctr(k) : null; SOT.pt = Date.now();
+  let bal = ''; if (walk) try { bal = String(BR.bal || (k ? balName(k) : '') || ''); } catch (e) {}
+  soRpc('set_presence', { st: ['on', 'look', 'dnd', 'hid'].includes(u.st) ? u.st : 'on', walk, bal: bal.slice(0, 60), bx: c ? c[0] : null, by: c ? c[1] : null }).catch(() => {});
+}
+function soProfile() {      // ce que voient les autres promeneurs : pseudo, prénom, nom du chien, sociabilité, description
+  if (!clOn() || !CLD.at) return; const u = accU(), nm = (u.name || '').trim().slice(0, 24), o = { first: (u.first || '').trim().slice(0, 24), dog: String(D.prof.name || '').slice(0, 30), sp: D.prof.space || '', bio: String(u.bio || '').slice(0, 80) }; if (nm) o.name = nm;
+  const h = JSON.stringify(o); if (h === SO.ph) return; SO.ph = h;
+  sb('/rest/v1/profiles?id=eq.' + CLD.s.user.id, { method: 'PATCH', json: o, headers: { Prefer: 'return=minimal' } }).then(() => { if (nm) CLD.name = nm; })
+    .catch(e => { if (e.status === 409 || e.code === '23505') toast('⚠️ Le pseudo « ' + nm + ' » est déjà pris : choisissez-en un autre dans Mon compte'); else SO.ph = ''; });
+}
+async function soPoll() {
+  if (!clOn() || SOT.busy || navigator.onLine === false) return; SOT.busy = true;
+  try {
+    soProfile(); if (Date.now() - SOT.pt > 6e4) soPresence();
+    const r = await soRpc('social_poll', { since: SO.last || 0 }); if (!r || !clOn()) return;
+    const first = !SO.init; SO.init = 1; (r.people || []).forEach(p => SO.P[p.id] = p); SO.fr = r.friends || []; SO.rin = r.reqin || []; SO.rout = r.reqout || [];
+    SO.G = (r.groups || []).map(g => ({ id: g.id, name: g.name, ic: g.ic, owner: g.owner, m: g.ms || [] }));
+    const ths = new Set(); (r.msgs || []).forEach(x => { const t = soIngest(x, first); if (t) ths.add(t); });
+    soSave(); const sig = JSON.stringify([r.friends, r.reqin, r.reqout, r.groups, r.people]) + SO.last, ch = sig !== SOT.sig; SOT.sig = sig;
+    if (ths.size && [...ths].some(t => (SO.th[t] || []).some(m => m.nw))) try { navigator.vibrate && navigator.vibrate([20, 60, 20]); } catch (e) {}
+    if ($('#soc').classList.contains('open')) { if (ch) socRender(); if (SOC.chat && ths.has(SOC.chat)) chatRender(); } else socBadge();
+  } catch (e) {} finally { SOT.busy = false; }
+}
+function soTick(now) {
+  clearTimeout(SOT.tm); if (!clOn()) return; const open = $('#soc').classList.contains('open'), dt = document.hidden ? 0 : SOC.chat && open ? 4000 : open ? 8000 : 20000;
+  if (now) soPoll().finally(() => { if (!SOT.tm || now) soTick(); }); else if (dt) SOT.tm = setTimeout(() => soPoll().finally(() => soTick()), dt);
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) soTick(true); });
 const SOC = { tab: 'fr', go: {}, who: null, rem: {} };
 function socDemo() {
-  if (!socPrev) return { F: [], E: [] };
+  if (!socPrev) return { F: SO.fr.map(person).filter(Boolean), E: [] };
   const bals = Object.keys(D.cells).filter(k => rec(D.cells[k]) && cellGroup(k)).map(k => ({ k, n: balName(k) })).filter(b => b.n);
   const B = i => bals.length ? bals[i % bals.length] : { k: null, n: ['Bois du Taillan', 'Parc de Majolan', 'Forêt du Bourgailh'][i % 3] };
   const F = [{ id: 'f1', n: 'Oslo', d: 'Ulysse', c: '#c6862a', st: 'walk', at: B(0), t: 25, sp: 'ok' }, { id: 'f2', n: 'Léa', d: 'Max', c: '#5f7350', st: 'walk', at: B(1), t: 8 },
@@ -2847,10 +2907,10 @@ function socRender() {
   const { F, E } = socDemo(); SOC.F = F; SOC.E = E;
   document.querySelectorAll('#soc [data-st]').forEach(b => { b.classList.toggle('on', b.dataset.st === SOC.tab); b.setAttribute('aria-selected', b.dataset.st === SOC.tab); });
   document.querySelectorAll('#soc [data-sp]').forEach(x => x.classList.toggle('on', x.dataset.sp === SOC.tab));
-  const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${f.st === 'walk' ? spTag(f.sp, 1) : spTag(f.sp)}${f.st === 'walk' ? `<u title="En balade">🐾 ${f.t} min</u><i class="mqs">·</i><span class="mqn"><span class="mqi">${esc(f.at.n)}</span></span>` : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last)}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
+  const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}</b><small>${f.st === 'walk' ? spTag(f.sp, 1) : spTag(f.sp)}${f.st === 'walk' ? `<u title="En balade">🐾 ${f.t} min</u><i class="mqs">·</i><span class="mqn"><span class="mqi">${esc(f.at.n)}</span></span>` : f.st === 'on' ? 'En ligne' : f.last ? 'Vu ' + esc(f.last) : 'Hors ligne'}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
   const grp = (t, L) => L.length ? `<div class="mh">${t} · ${L.length}</div><div class="acg">${L.map(row).join('')}</div>` : '';
-  $('#scfr').innerHTML = `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes${SOCREQ ? ` <b>${SOCREQ}</b>` : ''}</button></div><div class="scls">` + grpRows() +
-    grp('🐾 En balade', F.filter(f => f.st === 'walk')) + grp('🟢 En ligne', F.filter(f => f.st === 'on')) + grp('Hors ligne', F.filter(f => f.st === 'off')) + (F.length ? '' : '<div class="scemp">🐕 Pas encore de copains<small>Bientôt : ajoutez les promeneurs que vous croisez, voyez qui se balade et discutez.</small></div>') + '</div>';
+  $('#scfr').innerHTML = `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes${SO.rin.length ? ` <b>${SO.rin.length}</b>` : ''}</button></div><div class="scls">` + grpRows() +
+    grp('🐾 En balade', F.filter(f => f.st === 'walk')) + grp('🟢 En ligne', F.filter(f => f.st === 'on')) + grp('Hors ligne', F.filter(f => f.st === 'off')) + (F.length ? '' : (clOn() ? '<div class="scemp">🐕 Pas encore de copains<small>Ajoutez les promeneurs que vous croisez avec leur pseudo : vous verrez qui se balade et pourrez discuter.</small></div>' : '<div class="scemp">☁️ Connectez-vous pour retrouver vos copains</div>')) + '</div>';
   msgList(); mqFit($('#scfr'));
   const fmt = (t, o) => t.toLocaleDateString('fr-FR', o).replace('.', '');
   $('#scev').innerHTML = `<button class="btn gold scorg" data-sx="org">＋ Organiser un rendez-vous</button><div class="scls">` + E.map(e => { const g = SOC.go[e.id];
@@ -2874,39 +2934,35 @@ function socMe() {
 
 /* ===== Messages entre copains (aperçu : les messages restent sur ce téléphone en attendant le compte en ligne) ===== */
 const MSK = 'cartodog-msgdemo';
-function msgAll() {
-  if (SOC.M) return SOC.M; let saved = {}; try { saved = JSON.parse(localStorage.getItem(MSK) || '{}') || {}; } catch (e) {}
-  const { F } = socDemo(), now = Date.now(), H = 36e5, B = F[1] ? F[1].at : {};
-  const seed = F.length < 2 ? {} : { f1: [{ me: 0, t: 'Salut ! Tu viens au ' + F[0].at.n + ' samedi ? 🐕', ts: now - 26 * H }, { me: 1, t: 'Carrément, vers 10 h ?', ts: now - 25 * H }, { me: 0, t: 'Parfait, ' + F[0].d + ' a hâte de revoir ' + (D.prof && D.prof.name || 'ton chien') + ' 😄', ts: now - 40 * 6e4, nw: 1 }],
-    f2: [{ me: 0, t: 'On est ici, il y a de l\'ombre 👌', ts: now - 9 * 6e4, k: B.k, kn: B.n, nw: 1 }],
-    f3: [{ me: 1, t: 'Merci pour le parking !', ts: now - 3 * 24 * H }, { me: 0, t: 'Avec plaisir 👍', ts: now - 3 * 24 * H + 6e5 }] };
-  Object.keys(saved).forEach(id => { if (Array.isArray(saved[id])) seed[id] = (seed[id] || []).map(m => ({ ...m, nw: 0 })).concat(saved[id]); });
-  if (saved._read) saved._read.forEach(id => (seed[id] || []).forEach(m => m.nw = 0));
-  SOC.M = seed; SOC.Ms = saved; return seed;
-}
-const msgSave = () => { try { localStorage.setItem(MSK, JSON.stringify(SOC.Ms)); } catch (e) {} };
+function msgAll() { return SO.th; }
+const msgSave = soSave;
 const msgT = ts => { const d = new Date(ts), n = new Date(); return d.toDateString() === n.toDateString() ? d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : Date.now() - ts < 1728e5 ? 'hier' : d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); };
 const msgUnread = () => Object.values(msgAll()).reduce((a, L) => a + (L.some(m => m.nw) ? 1 : 0), 0);
 function msgList() {
   const M = msgAll(), F = SOC.F || socDemo().F, ids = Object.keys(M).filter(id => M[id].length && who(id)).sort((a, b) => M[b][M[b].length - 1].ts - M[a][M[a].length - 1].ts);
   $('#scms').innerHTML = `<button class="scadd scnew" data-sx="newmsg">✏️ Nouveau message</button><div class="scls">` + (ids.length ? `<div class="acg scml">${ids.map(id => { const f = who(id), L = M[id], m = L[L.length - 1], nw = L.some(x => x.nw);
-    return `<button class="scr scmr${nw ? ' nw' : ''}" data-chat="${id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${m.me ? 'Vous : ' : ''}${m.k ? '📍 ' : ''}${esc(m.t || m.kn || '')}</small></span><span class="scmt"><small>${msgT(m.ts)}</small>${nw ? '<i></i>' : ''}</span></button>`; }).join('')}</div>` : '<div class="hint">Aucun message pour l\'instant.</div>') +
+    return `<button class="scr scmr${nw ? ' nw' : ''}" data-chat="${id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}</b><small>${m.me ? 'Vous : ' : ''}${m.k ? '📍 ' : ''}${esc(m.t || m.kn || '')}</small></span><span class="scmt"><small>${msgT(m.ts)}</small>${nw ? '<i></i>' : ''}</span></button>`; }).join('')}</div>` : '<div class="hint">Aucun message pour l\'instant.</div>') +
     '</div>';
   const u = msgUnread(); $('#scmn').hidden = !u; $('#scmn').textContent = u; socBadge();
 }
 function chatOpen(id) {
   const f = who(id); if (!f) return; SOC.chat = id; const M = msgAll();
-  if ((M[id] || []).some(m => m.nw)) { M[id].forEach(m => m.nw = 0); (SOC.Ms._read ||= []).includes(id) || SOC.Ms._read.push(id); msgSave(); }
-  $('#scchw').innerHTML = `<span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${f.grp ? esc(f.ms.map(x => x.d).join(', ') || 'Aucun membre') : spTag(f.sp) + (f.st === 'walk' ? '🐾 En balade · ' + esc(f.at.n) : f.st === 'on' ? 'En ligne' : 'Vu ' + esc(f.last))}</small></span>`;
-  chatRender(); $('#scch').hidden = false; msgList();
+  if ((M[id] || []).some(m => m.nw)) { M[id].forEach(m => m.nw = 0); msgSave(); }
+  $('#scchw').innerHTML = `<span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}</b><small>${f.grp ? esc(f.ms.map(x => x.d).join(', ') || 'Aucun membre') : spTag(f.sp) + (f.st === 'walk' ? '🐾 En balade · ' + esc(f.at.n) : f.st === 'on' ? 'En ligne' : f.last ? 'Vu ' + esc(f.last) : 'Hors ligne')}</small></span>`;
+  chatRender(); $('#scch').hidden = false; msgList(); soTick();
 }
 function chatRender() {
   const L = msgAll()[SOC.chat] || []; let lastD = '';
-  $('#scchl').innerHTML = '<div class="scchn">👀 Aperçu : vos messages restent sur ce téléphone jusqu\'au compte en ligne.</div>' + L.map(m => { const d = new Date(m.ts).toDateString(), sep = d !== lastD ? `<div class="scchd">${new Date(m.ts).toDateString() === new Date().toDateString() ? 'Aujourd\'hui' : new Date(m.ts).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>` : ''; lastD = d;
-    return sep + `<div class="scb${m.me ? ' me' : ''}">${m.k ? `<button class="scbk" data-emap="${m.k}"><b>📍 ${esc(m.kn || 'Balade')}</b><small>Voir sur la carte ›</small></button>` : ''}${m.t ? `<span>${esc(m.t)}</span>` : ''}<small>${new Date(m.ts).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</small></div>`; }).join('');
+  const gr = (who(SOC.chat) || {}).grp; $('#scchl').innerHTML = (L.length ? '' : '<div class="scchn">👋 Dites bonjour !</div>') + L.map(m => { const d = new Date(m.ts).toDateString(), sep = d !== lastD ? `<div class="scchd">${new Date(m.ts).toDateString() === new Date().toDateString() ? 'Aujourd\'hui' : new Date(m.ts).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>` : ''; lastD = d;
+    if (m.kn && !m.k && m.bx != null) m.k = soCell(m.bx, m.by);
+    return sep + `<div class="scb${m.me ? ' me' : ''}${m.pend ? ' pend' : ''}">${gr && !m.me ? `<em class="scbn">${esc(((p => p ? p.n || p.d : '')(person(m.f))))}</em>` : ''}${m.kn ? `<button class="scbk" data-emap="${m.k || ''}"><b>📍 ${esc(m.kn || 'Balade')}</b><small>Voir sur la carte ›</small></button>` : ''}${m.t ? `<span>${esc(m.t)}</span>` : ''}<small>${new Date(m.ts).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</small></div>`; }).join('');
   const l = $('#scchl'); requestAnimationFrame(() => l.scrollTop = l.scrollHeight);
 }
-function chatSend(m) { const id = SOC.chat; if (!id) return; m.me = 1; m.ts = Date.now(); (msgAll()[id] ||= []).push(m); (SOC.Ms[id] ||= []).push(m); msgSave(); chatRender(); msgList(); try { navigator.vibrate && navigator.vibrate(15); } catch (e) {} }
+function chatSend(m) { const id = SOC.chat; if (!id) return; if (!clOn()) return toast('☁️ Connectez-vous pour envoyer des messages');
+  const f = who(id), c = m.k && D.cells[m.k] ? ctr(m.k) : null; m.me = 1; m.ts = Date.now(); m.pend = 1; (SO.th[id] ||= []).push(m); soSave(); chatRender(); msgList(); try { navigator.vibrate && navigator.vibrate(15); } catch (e) {}
+  soRpc('send_message', { to_user: f && f.grp ? null : id, grp: f && f.grp ? id : null, body: m.t || '', meta: m.kn ? { kn: m.kn, x: c ? c[0] : null, y: c ? c[1] : null } : null })
+    .then(r => { if (r && r.id && m.pend) { m.id = r.id; delete m.pend; } soSave(); if (SOC.chat === id) chatRender(); soTick(); })
+    .catch(e => { const L = SO.th[id] || [], i = L.indexOf(m); if (i >= 0) L.splice(i, 1); soSave(); if (SOC.chat === id) chatRender(); msgList(); toast('⚠️ Message non envoyé : ' + e.message); if (m.t && !$('#scchi').value) $('#scchi').value = m.t; }); }
 const chatClose = () => { SOC.chat = null; $('#scch').hidden = true; $('#scchi').blur(); };
 $('#scchb').onclick = chatClose;
 $('#scchf').onsubmit = e => { e.preventDefault(); const v = $('#scchi').value.trim(); if (!v) return; $('#scchi').value = ''; chatSend({ t: v }); };
@@ -2915,16 +2971,16 @@ document.querySelector('#scch .scchq').onclick = e => { const b = e.target.close
 
 /* ===== Groupes de copains : renommables, on y invite des copains, on peut leur écrire ===== */
 const GRK = 'cartodog-grp', GIC = ['🐕', '🌲', '🏞️', '⭐', '🦴', '☀️', '🌙', '🎾'];
-const grpAll = () => { if (!SOC.G) { try { SOC.G = JSON.parse(localStorage.getItem(GRK) || '[]') || []; } catch (e) { SOC.G = []; } } return SOC.G; };
-const grpSave = () => { try { localStorage.setItem(GRK, JSON.stringify(grpAll())); } catch (e) {} };
+const grpAll = () => SO.G;
+const grpSave = soSave;
 const grpGet = id => grpAll().find(g => g.id === id);
 const FR_ = () => SOC.F || socDemo().F;
-function who(id) { const f = FR_().find(x => x.id === id); if (f) return f; const g = grpGet(id); if (!g) return null; const ms = g.m.map(i => FR_().find(x => x.id === i)).filter(Boolean);
+function who(id) { const f = FR_().find(x => x.id === id); if (f) return f; const g = grpGet(id); if (!g) return null; const ms = g.m.map(i => FR_().find(x => x.id === i) || person(i)).filter(Boolean);
   return { id, grp: 1, ic: g.ic, d: g.name, n: ms.length + ' copain' + (ms.length > 1 ? 's' : ''), c: '#8a6a3a', st: ms.some(x => x.st === 'walk') ? 'walk' : ms.some(x => x.st === 'on') ? 'on' : 'off', ms }; }
 const grpStack = ms => `<span class="scps">${ms.slice(0, 4).map(f => socAv(f, 'sm')).join('')}${ms.length > 4 ? `<span class="scav sm more">+${ms.length - 4}</span>` : ''}</span>`;
 function grpRows() { const G = grpAll();
   return `<div class="mh">👥 Groupes${G.length ? ' · ' + G.length : ''}</div><div class="acg">${G.map(g => { const w = who(g.id); return `<button class="scr scgrr" data-grp="${g.id}"><span class="scgi">${g.ic}</span><span class="act"><b>${esc(g.name)}</b><small>${w.ms.length ? grpStack(w.ms) : 'Aucun copain pour l\'instant'}</small></span><i class="scgo">›</i></button>`; }).join('')}<button class="scr scgnew" data-grpnew="1"><span class="scgi">＋</span><span class="act"><b>Nouveau groupe</b><small>Ex. « Balade du dimanche », « Les chiens du Taillan »</small></span></button></div>`; }
-const grpPick = (L, sel) => L.length ? `<div class="acg scgl">${L.map(f => `<button class="scr" data-gpick="${f.id}"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b></span><i class="scck${sel.includes(f.id) ? ' on' : ''}">${sel.includes(f.id) ? '✓' : ''}</i></button>`).join('')}</div>` : '<div class="hint" style="padding:10px">Tous vos copains sont déjà dans ce groupe.</div>';
+const grpPick = (L, sel) => L.length ? `<div class="acg scgl">${L.map(f => `<button class="scr" data-gpick="${f.id}"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}</b></span><i class="scck${sel.includes(f.id) ? ' on' : ''}">${sel.includes(f.id) ? '✓' : ''}</i></button>`).join('')}</div>` : '<div class="hint" style="padding:10px">Tous vos copains sont déjà dans ce groupe.</div>';
 function grpNew() {      // création : nom + icône + copains à inviter, puis « Créer le groupe »
   const n = SOC.gnew ||= { name: '', ic: GIC[grpAll().length % GIC.length], m: [] }, F = FR_();
   $('#scgw').innerHTML = `<div class="scgt">Nouveau groupe</div>
@@ -2934,14 +2990,14 @@ function grpNew() {      // création : nom + icône + copains à inviter, puis 
     <div class="scga"><button class="btn" data-gx>Annuler</button><button class="btn gold" data-gcreate${n.name.trim() ? '' : ' disabled'}>Créer le groupe</button></div>`;
   $('#scgr').hidden = false; const el = $('#scgn'); el.oninput = () => { n.name = el.value; $('#scgw [data-gcreate]').disabled = !el.value.trim(); }; el.onkeydown = e => { if (e.key === 'Enter') el.blur(); };
 }
-function grpOpen(id) { const g = grpGet(id); if (!g) return; SOC.gid = id; SOC.gnew = null; const F = FR_(), ms = g.m.map(i => F.find(x => x.id === i)).filter(Boolean), out = F.filter(f => !g.m.includes(f.id));
+function grpOpen(id) { const g = grpGet(id); if (!g) return; SOC.gid = id; SOC.gnew = null; const F = FR_(), ms = g.m.map(i => F.find(x => x.id === i) || person(i)).filter(Boolean), out = F.filter(f => !g.m.includes(f.id)), own = !!(CLD.s && g.owner === CLD.s.user.id);
   const head = SOC.gren ? `<div class="scgh"><button class="scgic" data-gic aria-label="Changer l'icône">${g.ic}</button><input id="scgn" maxlength="40" value="${esc(g.name)}" aria-label="Nom du groupe" enterkeyhint="done"><button class="scgok" data-gren="ok">OK</button></div>`
     : `<div class="scgh"><span class="scgic">${g.ic}</span><b class="scgname">${esc(g.name)}</b><button class="scgedit" data-gren="go">✏️ Renommer</button></div>`;
   $('#scgw').innerHTML = head + (SOC.ginv ? `<div class="mh">Inviter des copains${SOC.ginv.length ? ' · ' + SOC.ginv.length : ''}</div>${grpPick(out, SOC.ginv)}
       <div class="scga"><button class="btn" data-ginv="x">Retour</button><button class="btn gold" data-ginv="ok"${SOC.ginv.length ? '' : ' disabled'}>Inviter${SOC.ginv.length ? ' (' + SOC.ginv.length + ')' : ''}</button></div>`
-    : `<div class="mh">Membres · ${ms.length + 1}</div><div class="acg scgl"><div class="scr"><span class="scaw"><span class="scav me">${esc((D.prof && D.prof.name || 'M')[0])}</span></span><span class="act"><b>Vous${D.prof && D.prof.name ? ' <em>& ' + esc(D.prof.name) + '</em>' : ''}</b><small>Créateur du groupe</small></span></div>${ms.map(f => `<div class="scr"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} <em>& ${esc(f.n)}</em></b><small>${spTag(f.sp)}${f.st === 'walk' ? '🐾 En balade' : f.st === 'on' ? 'En ligne' : 'Hors ligne'}</small></span><button class="scmore" data-gout="${f.id}" aria-label="Retirer ${esc(f.d)} du groupe">✕</button></div>`).join('')}</div>
+    : `<div class="mh">Membres · ${ms.length + 1}</div><div class="acg scgl"><div class="scr"><span class="scaw"><span class="scav me">${esc((D.prof && D.prof.name || 'M')[0])}</span></span><span class="act"><b>Vous${D.prof && D.prof.name ? ' <em>& ' + esc(D.prof.name) + '</em>' : ''}</b><small>${own ? 'Créateur du groupe' : 'Membre'}</small></span></div>${ms.map(f => `<div class="scr"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}</b><small>${spTag(f.sp)}${f.st === 'walk' ? '🐾 En balade' : f.st === 'on' ? 'En ligne' : 'Hors ligne'}</small></span>${own ? `<button class="scmore" data-gout="${f.id}" aria-label="Retirer ${esc(f.d)} du groupe">✕</button>` : ''}</div>`).join('')}</div>
       ${out.length ? '<button class="scadd" data-ginv="go">＋ Inviter des copains</button>' : ''}
-      <div class="scga"><button class="btn" data-gx>Fermer</button><button class="btn gold" data-gmsg>💬 Écrire au groupe</button></div><button class="scgdel" data-gdel>🗑 Supprimer le groupe</button>`);
+      <div class="scga"><button class="btn" data-gx>Fermer</button><button class="btn gold" data-gmsg>💬 Écrire au groupe</button></div><button class="scgdel" data-gdel>${own ? '🗑 Supprimer le groupe' : '🚪 Quitter le groupe'}</button>`);
   $('#scgr').hidden = false; const el = $('#scgn'); if (el) { el.focus(); el.select(); el.onkeydown = e => { if (e.key === 'Enter') $('#scgw [data-gren="ok"]').click(); }; } }
 const grpClose = () => { $('#scgr').hidden = true; SOC.gid = null; SOC.ginv = null; SOC.gnew = null; SOC.gren = false; };
 const grpBack = () => { if (SOC.ginv) { SOC.ginv = null; return grpOpen(SOC.gid); } if (SOC.gren) { SOC.gren = false; return grpOpen(SOC.gid); } grpClose(); };
@@ -2949,17 +3005,19 @@ $('#scgr').addEventListener('click', e => { if (e.target.id === 'scgr') return g
   const n = SOC.gnew; if (n) {      // création
     if (e.target.closest('[data-gic]')) { n.ic = GIC[(GIC.indexOf(n.ic) + 1) % GIC.length]; e.target.closest('[data-gic]').textContent = n.ic; return; }
     const pk = e.target.closest('[data-gpick]'); if (pk) { const id = pk.dataset.gpick; n.m.includes(id) ? n.m.splice(n.m.indexOf(id), 1) : n.m.push(id); const c = pk.querySelector('.scck'), on = n.m.includes(id); c.classList.toggle('on', on); c.textContent = on ? '✓' : ''; document.querySelector('#scgw .mh').textContent = 'Inviter des copains' + (n.m.length ? ' · ' + n.m.length : ''); return; }
-    if (e.target.closest('[data-gcreate]')) { const nm = n.name.trim().slice(0, 40); if (!nm) return $('#scgn').focus(); const g = { id: 'g' + Date.now().toString(36), name: nm, ic: n.ic, m: [...n.m] }; grpAll().push(g); grpSave(); grpClose(); socRender(); try { navigator.vibrate && navigator.vibrate(30); } catch (x) {}
+    if (e.target.closest('[data-gcreate]')) { const nm = n.name.trim().slice(0, 40); if (!nm) return $('#scgn').focus(); if (!clOn()) return toast('☁️ Connectez-vous pour créer un groupe'); const g = { id: 'tmp' + Date.now().toString(36), name: nm, ic: n.ic, m: [...n.m], owner: CLD.s.user.id }; grpAll().push(g); grpClose(); socRender(); try { navigator.vibrate && navigator.vibrate(30); } catch (x) {}
+      soRpc('group_create', { name: nm, ic: g.ic, members: g.m }).then(id => { g.id = id; soSave(); soTick(true); }).catch(x => { SO.G = SO.G.filter(y => y !== g); socRender(); toast('⚠️ ' + x.message); });
       return toast(`👥 Groupe « ${nm} » créé` + (g.m.length ? ` · ${g.m.length} invitation${g.m.length > 1 ? 's' : ''}` : '')); }
     return; }
   const g = grpGet(SOC.gid); if (!g) return;
-  if (e.target.closest('[data-gic]')) { g.ic = GIC[(GIC.indexOf(g.ic) + 1) % GIC.length]; grpSave(); socRender(); e.target.closest('[data-gic]').textContent = g.ic; return; }
-  const rn = e.target.closest('[data-gren]'); if (rn) { if (rn.dataset.gren === 'go') { SOC.gren = true; return grpOpen(g.id); } const v = ($('#scgn').value || '').trim().slice(0, 40); if (v) { g.name = v; grpSave(); socRender(); } SOC.gren = false; return grpOpen(g.id); }
+  if (e.target.closest('[data-gic]')) { g.ic = GIC[(GIC.indexOf(g.ic) + 1) % GIC.length]; grpSave(); socRender(); e.target.closest('[data-gic]').textContent = g.ic; clearTimeout(SOC.gict); SOC.gict = setTimeout(() => soRpc('group_update', { g: g.id, name: null, ic: g.ic }).catch(x => toast('⚠️ ' + x.message)), 700); return; }
+  const rn = e.target.closest('[data-gren]'); if (rn) { if (rn.dataset.gren === 'go') { SOC.gren = true; return grpOpen(g.id); } const v = ($('#scgn').value || '').trim().slice(0, 40); if (v && v !== g.name) { g.name = v; grpSave(); socRender(); soRpc('group_update', { g: g.id, name: v, ic: null }).catch(x => toast('⚠️ ' + x.message)); } SOC.gren = false; return grpOpen(g.id); }
   const pk = e.target.closest('[data-gpick]'); if (pk) { const id = pk.dataset.gpick, L = SOC.ginv; L.includes(id) ? L.splice(L.indexOf(id), 1) : L.push(id); return grpOpen(g.id); }
-  const iv = e.target.closest('[data-ginv]'); if (iv) { const a = iv.dataset.ginv; if (a === 'go') SOC.ginv = []; else if (a === 'x') SOC.ginv = null; else { const k = SOC.ginv.length; g.m.push(...SOC.ginv.filter(i => !g.m.includes(i))); SOC.ginv = null; grpSave(); socRender(); toast(`📨 ${k} invitation${k > 1 ? 's' : ''} envoyée${k > 1 ? 's' : ''}`); } return grpOpen(g.id); }
-  const out = e.target.closest('[data-gout]'); if (out) { g.m = g.m.filter(i => i !== out.dataset.gout); grpSave(); socRender(); return grpOpen(g.id); }
+  const iv = e.target.closest('[data-ginv]'); if (iv) { const a = iv.dataset.ginv; if (a === 'go') SOC.ginv = []; else if (a === 'x') SOC.ginv = null; else { const k = SOC.ginv.length, add = SOC.ginv.filter(i => !g.m.includes(i)); g.m.push(...add); SOC.ginv = null; grpSave(); socRender(); soRpc('group_add', { g: g.id, members: add }).then(() => soTick(true)).catch(x => toast('⚠️ ' + x.message)); toast(`📨 ${k} invitation${k > 1 ? 's' : ''} envoyée${k > 1 ? 's' : ''}`); } return grpOpen(g.id); }
+  const out = e.target.closest('[data-gout]'); if (out) { const who_ = out.dataset.gout; g.m = g.m.filter(i => i !== who_); grpSave(); socRender(); soRpc('group_leave', { g: g.id, who: who_ }).catch(x => toast('⚠️ ' + x.message)); return grpOpen(g.id); }
   if (e.target.closest('[data-gmsg]')) { const id = g.id; grpClose(); return chatOpen(id); }
-  if (e.target.closest('[data-gdel]')) { const snap = JSON.stringify(grpAll()); SOC.G = grpAll().filter(x => x.id !== g.id); grpSave(); grpClose(); socRender(); return toast('Groupe supprimé', () => { SOC.G = JSON.parse(snap); grpSave(); socRender(); }); }
+  if (e.target.closest('[data-gdel]')) { const own = !!(CLD.s && g.owner === CLD.s.user.id); if (!confirm(own ? `Supprimer le groupe « ${g.name} » pour tous ses membres ?` : `Quitter le groupe « ${g.name} » ?`)) return; SO.G = SO.G.filter(x => x.id !== g.id); delete SO.th[g.id]; grpSave(); grpClose(); socRender();
+    (own ? soRpc('group_close', { g: g.id }) : soRpc('group_leave', { g: g.id, who: CLD.s.user.id })).then(() => soTick(true)).catch(x => toast('⚠️ ' + x.message)); return toast(own ? 'Groupe supprimé' : 'Vous avez quitté le groupe'); }
 });
 
 /* Clavier ouvert : les fenêtres du bas remontent au-dessus (navigateurs qui ne redimensionnent pas la page) */
@@ -2967,13 +3025,46 @@ if (window.visualViewport) { const kb = () => { const v = visualViewport, h = Ma
   visualViewport.addEventListener('resize', kb); visualViewport.addEventListener('scroll', kb); }
 function mqFit(root) {      // seul le nom de la balade défile (aller-retour) quand il ne tient pas en entier
   requestAnimationFrame(() => root.querySelectorAll('.mqn').forEach(el => { const sp = el.firstElementChild, d = sp.scrollWidth - el.clientWidth; el.classList.toggle('mq', d > 2); if (d > 2) { sp.style.setProperty('--d', -(d + 10) + 'px'); sp.style.animationDuration = Math.max(6, (d + 10) / 22 + 4) + 's'; } })); }
-const SOCREQ = 0;      // demandes d'amis en attente (arriveront avec les comptes en ligne)
-function socBadge() { let n = 0; try { n = msgUnread() + SOCREQ; } catch (e) {} const b = $('#socn'); b.hidden = !n; b.textContent = n > 9 ? '9+' : n; $('#socb').setAttribute('aria-label', 'Copains, messages et rendez-vous' + (n ? ' : ' + n + ' notification' + (n > 1 ? 's' : '') : '')); }
+function socBadge() { let n = 0; try { n = msgUnread() + SO.rin.length; } catch (e) {} const b = $('#socn'); b.hidden = !n; b.textContent = n > 9 ? '9+' : n; $('#socb').setAttribute('aria-label', 'Copains, messages et rendez-vous' + (n ? ' : ' + n + ' notification' + (n > 1 ? 's' : '') : '')); }
 setTimeout(socBadge, 300);
-function socOpen() { const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); socMe(); socRender(); $('#scsh').hidden = true; $('#soc').classList.add('open'); }
+function socOpen() { const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); faClose(); socMe(); socRender(); $('#scsh').hidden = true; $('#soc').classList.add('open'); soTick(true); }
 const socClose = () => { SOC.ed = false; $('#soc').classList.remove('open'); };
-const socSoon = () => toast('👀 Aperçu : disponible avec le compte en ligne');
-function socShow(k) { if (!k || !D.cells[k]) return socSoon(); socClose(); select(k); try { fitBal(k); } catch (e) {} }
+const socSoon = () => toast('🛠️ Bientôt disponible');
+function socShow(k) { if (!k || !D.cells[k]) return toast('📍 Cette balade n\'est pas sur votre carte'); socClose(); select(k); try { fitBal(k); } catch (e) {} }
+/* Ajouter un copain (par pseudo), demandes reçues / envoyées, nouveau message */
+function faOpen(mode, pre) {
+  if (!clOn()) return toast('☁️ Connectez-vous pour retrouver vos copains');
+  const w = $('#scfw'), pseudo = (accU().name || CLD.name || '').trim(), row = (f, x) => `<div class="scr"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}</b><small>${esc(f.h)}</small></span>${x}</div>`;
+  if (mode === 'add') w.innerHTML = `<div class="scgt">Ajouter un copain</div><div class="scgs">Demandez son pseudo à l'autre promeneur.</div>
+    <div class="scgh"><input id="scfq" maxlength="24" placeholder="Pseudo de votre copain" autocapitalize="none" autocomplete="off" spellcheck="false" enterkeyhint="send" value="${esc(pre || '')}" aria-label="Pseudo"></div><div class="clerr" id="scfe"></div>
+    <div class="scga"><button class="btn" data-fa="x">Annuler</button><button class="btn gold" data-fa="go">📨 Envoyer</button></div>
+    ${pseudo ? `<div class="scfme"><span>Votre pseudo : <b>${esc(pseudo)}</b></span><button class="cllink" data-fa="share">Partager</button></div>` : ''}`;
+  else if (mode === 'req') { const I = SO.rin.map(person).filter(Boolean), O = SO.rout.map(person).filter(Boolean);
+    w.innerHTML = `<div class="scgt">Demandes</div>` + (I.length ? `<div class="mh">Reçues · ${I.length}</div><div class="acg scgl">${I.map(f => row(f, `<button class="scok" data-fok="${f.id}">Accepter</button><button class="scmore" data-fno="${f.id}" aria-label="Refuser">✕</button>`)).join('')}</div>` : '<div class="hint" style="padding:10px 4px">Aucune demande reçue.</div>')
+      + (O.length ? `<div class="mh">Envoyées · ${O.length}</div><div class="acg scgl">${O.map(f => row(f, `<button class="scmore" data-fcx="${f.id}" aria-label="Annuler la demande">✕</button>`)).join('')}</div>` : '')
+      + `<div class="scga"><button class="btn" data-fa="x">Fermer</button><button class="btn gold" data-fa="add">＋ Ajouter</button></div>`; }
+  else { const L = [...grpAll().map(g => who(g.id)), ...FR_()].filter(Boolean);
+    w.innerHTML = `<div class="scgt">${SOC.shareK ? 'Proposer cette balade à…' : 'Nouveau message'}</div>` + (L.length ? `<div class="acg scgl">${L.map(f => `<button class="scr" data-fto="${f.id}"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}</b></span><i class="scgo">›</i></button>`).join('')}</div>` : '<div class="hint" style="padding:10px 4px">Ajoutez d\'abord un copain.</div>')
+      + `<div class="scga"><button class="btn" data-fa="x">Fermer</button>${FR_().length ? '' : '<button class="btn gold" data-fa="add">＋ Ajouter un copain</button>'}</div>`; }
+  SOC.fa = mode; $('#scfa').hidden = false; const q = $('#scfq'); if (q) { setTimeout(() => q.focus(), 60); q.onkeydown = e => { if (e.key === 'Enter') $('#scfw [data-fa="go"]').click(); }; }
+}
+const faClose = () => { $('#scfa').hidden = true; SOC.fa = null; SOC.shareK = null; };
+$('#scfa').addEventListener('click', async e => {
+  if (e.target.id === 'scfa') return faClose(); const b = e.target.closest('[data-fa],[data-fok],[data-fno],[data-fcx],[data-fto]'); if (!b) return; const a = b.dataset.fa;
+  if (a === 'x') return faClose(); if (a === 'add') return faOpen('add');
+  if (a === 'share') { const ps = (accU().name || CLD.name || '').trim(), txt = `Ajoute-moi en copain sur Cartodog 🐕 Mon pseudo : ${ps}`, url = location.origin + location.pathname + '#ami=' + encodeURIComponent(ps);
+    try { if (navigator.share) await navigator.share({ title: 'Cartodog', text: txt, url }); else { await navigator.clipboard.writeText(txt + '\n' + url); toast('📋 Lien copié'); } } catch (x) {} return; }
+  if (a === 'go') { const v = ($('#scfq').value || '').trim().replace(/^@/, ''), er = $('#scfe'); if (!v) return $('#scfq').focus(); b.disabled = true; er.textContent = '';
+    try { const r = await soRpc('friend_request', { handle: v });
+      const M = { sent: ['📨 Demande envoyée à ' + v, 1], accepted: ['🎉 Vous êtes maintenant copains avec ' + v, 1], already: ['Vous êtes déjà copains avec ' + v, 1], pending: ['⏳ Demande déjà envoyée, en attente', 1], notfound: ['Aucun promeneur avec ce pseudo', 0], self: ['C\'est votre propre pseudo 😄', 0] }[r] || ['📨 Demande envoyée', 1];
+      if (!M[1]) { er.textContent = M[0]; b.disabled = false; return; } faClose(); toast(M[0]); soTick(true); } catch (x) { er.textContent = x.message; b.disabled = false; } return; }
+  if (b.dataset.fok || b.dataset.fno) { const id = b.dataset.fok || b.dataset.fno, ok = !!b.dataset.fok; SO.rin = SO.rin.filter(x => x !== id); if (ok) SO.fr.push(id); soSave(); faOpen('req'); socRender();
+    try { await soRpc('friend_respond', { other: id, ok }); if (ok) toast('🎉 Nouveau copain !'); } catch (x) { toast('⚠️ ' + x.message); } return soTick(true); }
+  if (b.dataset.fcx) { const id = b.dataset.fcx; SO.rout = SO.rout.filter(x => x !== id); soSave(); faOpen('req'); try { await soRpc('friend_remove', { other: id }); } catch (x) { toast('⚠️ ' + x.message); } return soTick(true); }
+  if (b.dataset.fto) { const k = SOC.shareK; faClose(); chatOpen(b.dataset.fto); if (k && D.cells[k]) chatSend({ t: 'On se fait cette balade ? 🐕', k, kn: balName(k) }); return; }
+});
+function amiGo() { const v = SOC.ami; if (!v || !clOn()) return; SOC.ami = null; socOpen(); faOpen('add', v); }      // lien « #ami=pseudo » partagé par un copain
+{ const m = /^#ami=([^&]+)/.exec(location.hash); if (m) { try { SOC.ami = decodeURIComponent(m[1]).slice(0, 24); } catch (e) {} history.replaceState(null, '', location.pathname + location.search); } }
 $('#socb').onclick = socOpen; $('#socx').onclick = socClose;
 $('#soc').addEventListener('click', e => {
   const me = e.target.closest('[data-sme]'); if (me) { if (me.dataset.sme === 'bio') { SOC.ed = true; return socMe(); }
@@ -2981,20 +3072,23 @@ $('#soc').addEventListener('click', e => {
     $('#scst .scshh').textContent = 'Mon état'; if (BR.on) return toast('🐾 « En balade » s\'affiche tout seul pendant une sortie'); const cur = STS[accU().st] ? accU().st : 'on';
     $('#scstl').innerHTML = Object.entries(STS).map(([k, [ic, t, d]]) => `<button data-ss="${k}"${k === cur ? ' class="on"' : ''}><span>${ic}</span><span class="act"><b>${t}</b><small>${d}</small></span></button>`).join(''); $('#scst').hidden = false; return; }
   const spb = e.target.closest('[data-spc]'); if (spb) { $('#scst').hidden = true; D.prof.space = spb.dataset.spc; save(); socMe(); return; }
-  const ss = e.target.closest('[data-ss]'); if (ss) { $('#scst').hidden = true; if (ss.dataset.ss !== 'x') { accU().st = ss.dataset.ss; save(); socMe(); } return; }
+  const ss = e.target.closest('[data-ss]'); if (ss) { $('#scst').hidden = true; if (ss.dataset.ss !== 'x') { accU().st = ss.dataset.ss; save(); socMe(); soPresence(); } return; }
   if (e.target.id === 'scst') { $('#scst').hidden = true; return; }
   const t = e.target.closest('[data-st]'); if (t) { SOC.tab = t.dataset.st; return socRender(); }
   const gr = e.target.closest('[data-grp]'); if (gr) return grpOpen(gr.dataset.grp);
   if (e.target.closest('[data-grpnew]')) { SOC.gnew = null; return grpNew(); }
   const ch = e.target.closest('[data-chat]'); if (ch && !e.target.closest('[data-fmap],[data-fmore]')) return chatOpen(ch.dataset.chat);
   const fm = e.target.closest('[data-fmap]'); if (fm) { const f = SOC.F.find(x => x.id === fm.dataset.fmap); return socShow(f && f.at.k); }
-  const mo = e.target.closest('[data-fmore]'); if (mo) { const f = SOC.F.find(x => x.id === mo.dataset.fmore); SOC.who = f; $('#scshh').innerHTML = `${socAv(f)}<b>${esc(f.d)} & ${esc(f.n)}</b>`; $('#scsh [data-sa="map"]').hidden = f.st !== 'walk'; $('#scsh').hidden = false; return; }
-  const sa = e.target.closest('[data-sa]'); if (sa) { const a = sa.dataset.sa, f = SOC.who; $('#scsh').hidden = true; if (a === 'x') return; if (a === 'msg') return chatOpen(f.id); if (a === 'map') return socShow(f && f.at && f.at.k); return socSoon(); }
+  const mo = e.target.closest('[data-fmore]'); if (mo) { const f = SOC.F.find(x => x.id === mo.dataset.fmore); SOC.who = f; $('#scshh').innerHTML = `${socAv(f)}<b>${esc(f.d)}${f.n ? ' & ' + esc(f.n) : ''}</b>`; $('#scsh [data-sa="map"]').hidden = f.st !== 'walk'; $('#scsh').hidden = false; return; }
+  const sa = e.target.closest('[data-sa]'); if (sa) { const a = sa.dataset.sa, f = SOC.who; $('#scsh').hidden = true; if (a === 'x' || !f) return; if (a === 'msg') return chatOpen(f.id); if (a === 'map') return socShow(f && f.at && f.at.k);
+    if (a === 'prof') return toast(`🐕 ${f.d}${f.n ? ' & ' + f.n : ''} · ${f.h}${f.sp && SPC[f.sp] ? ' · ' + SPC[f.sp][0] + ' ' + SPC[f.sp][1] : ''}${f.bio ? ' — « ' + f.bio + ' »' : ''}`);
+    if (a === 'rm') { if (!confirm(`Retirer ${f.d}${f.n ? ' & ' + f.n : ''} de vos copains ?`)) return; SO.fr = SO.fr.filter(x => x !== f.id); delete SO.th[f.id]; soSave(); socRender(); soRpc('friend_remove', { other: f.id }).then(() => soTick(true)).catch(x => toast('⚠️ ' + x.message)); return toast('Retiré de vos copains'); }
+    return socSoon(); }
   if (e.target.id === 'scsh') { $('#scsh').hidden = true; return; }
   const eg = e.target.closest('[data-eg]'); if (eg) { const [id, v] = eg.dataset.eg.split(':'); SOC.go[id] = SOC.go[id] === v ? null : v; if (SOC.go[id] === 'y') try { navigator.vibrate && navigator.vibrate(30); } catch (x) {} return socRender(); }
   const er = e.target.closest('[data-erem]'); if (er) { const id = er.dataset.erem; SOC.rem[id] = !SOC.rem[id]; toast(SOC.rem[id] ? '🔔 Rappel 30 min avant le rendez-vous' : '🔕 Rappel retiré'); return socRender(); }
   const em = e.target.closest('[data-emap]'); if (em) return socShow(em.dataset.emap);
-  if (e.target.closest('[data-sx]')) return socSoon();
+  const sx = e.target.closest('[data-sx]'); if (sx) { const a = sx.dataset.sx; if (a === 'add') return faOpen('add'); if (a === 'req') return faOpen('req'); if (a === 'newmsg') return faOpen('new'); if (a === 'org') return toast('📅 Rendez-vous à plusieurs : bientôt disponible'); return socSoon(); }
 });
 
 /* ===== Recherche de balade par nom (loupe en haut à gauche) : suggestions au fil de la frappe, sans accents ni majuscules ===== */
@@ -3049,7 +3143,7 @@ async function sb(path, o = {}) {      // appel à la base (REST) ou au stockage
   const tok = await clToken(), r = await fetchT(SB.url + path, o.ms || 15000, { method: o.method || 'GET', headers: { apikey: SB.key, Authorization: 'Bearer ' + (tok || SB.key), ...(o.json !== undefined ? { 'Content-Type': 'application/json' } : {}), ...(o.headers || {}) }, body: o.json !== undefined ? JSON.stringify(o.json) : o.body });
   if (o.raw) return r; let j = null; const tx = await r.text(); try { j = tx ? JSON.parse(tx) : null; } catch (e) {} if (!r.ok) { const e = new Error(clMsg(j, r.status)); e.status = r.status; e.code = j && j.code; throw e; } return j; }
 const redir = () => location.origin + location.pathname;
-async function clSignUp(email, pw, name) { const j = await clAuth('signup?redirect_to=' + encodeURIComponent(redir()), { email, password: pw, data: { name } }); if (clSet(j)) { await clAfterLogin(true); return 'ok'; } return 'confirm'; }
+async function clSignUp(email, pw, name) { const j = await clAuth('signup?redirect_to=' + encodeURIComponent(redir()), { email, password: pw, data: { name, first: String(accU().first || '').trim().slice(0, 24) } }); if (clSet(j)) { await clAfterLogin(true); return 'ok'; } return 'confirm'; }
 async function clSignIn(email, pw) { clSet(await clAuth('token?grant_type=password', { email, password: pw })); await clAfterLogin(true); }
 async function clRecover(email) { await clAuth('recover?redirect_to=' + encodeURIComponent(redir()), { email }); }
 async function clSignOut(gone) {      // le carnet reste dans le compte et quitte ce téléphone : le compte suivant démarre vierge
@@ -3058,7 +3152,7 @@ async function clSignOut(gone) {      // le carnet reste dans le compte et quitt
 const OWK = 'cartodog-owner';      // compte à qui appartiennent les données de ce téléphone
 function localWipe() {
   D = { cells: {}, paths: [], marks: [], dog: '', prof: cleanProf({}, ''), user: cleanUser({}) }; sel = null;
-  [GRK, MSK, SYK, 'cartodog-socdemo'].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} }); SOC.G = null; SOC.M = null; SOC.Ms = null;
+  [GRK, MSK, SYK, 'cartodog-socdemo', 'cartodog-msgs'].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} }); SO = soNew(); SOT.sig = ''; clearTimeout(SOT.tm); try { socBadge(); } catch (e) {}
   try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) {} try { CGM.clear(); } catch (e) {} NG.sig = '';
   idb.then(db => { if (db) try { db.transaction('p', 'readwrite').objectStore('p').clear(); } catch (e) {} });
   try { $('#panel').hidden = true; } catch (e) {} try { hdrRender(); dogAvatar(); } catch (e) {} schedule();
@@ -3072,7 +3166,7 @@ async function clAfterLogin(first) {
   try { const p = await sb('/rest/v1/profiles?select=name,role&id=eq.' + CLD.s.user.id); if (p && p[0]) { CLD.role = p[0].role; CLD.name = p[0].name; }
     const u = accU(); if (!u.name.trim() && CLD.name) { u.name = CLD.name; save(); try { hdrRender(); } catch (e) {} } } catch (e) {}
   clUi(); if (first) toast('☁️ Connecté : vos données se synchronisent');
-  sync(true).then(() => { if (!first) return; if (!(D.prof && D.prof.name)) { if (window.welOpen) welOpen(); } else if (!$('#wel').hidden) { $('#wel').hidden = true; try { localStorage.setItem('cartodog-wel', '1'); } catch (e) {} } try { hdrRender(); dogAvatar(); } catch (e) {} });
+  sync(true).then(() => { soTick(true); amiGo(); if (!first) return; if (!(D.prof && D.prof.name)) { if (window.welOpen) welOpen(); } else if (!$('#wel').hidden) { $('#wel').hidden = true; try { localStorage.setItem('cartodog-wel', '1'); } catch (e) {} } try { hdrRender(); dogAvatar(); } catch (e) {} });
 }
 /* Retour d'un lien reçu par e-mail (confirmation d'inscription, mot de passe oublié) : #access_token=…&type=… */
 { const h = location.hash; if (/access_token=/.test(h)) { const q = new URLSearchParams(h.slice(1)); history.replaceState(null, '', location.pathname + location.search);
@@ -3244,7 +3338,7 @@ async function bkFile() { const photos = {}; if (D.prof.ph) { try { const u = aw
   return new File([JSON.stringify({ app: 'cartodog', version: 1, dog: D.dog, prof: D.prof, user: D.user, cells: D.cells, paths: D.paths || [], marks: D.marks || [], photos })], 'cartodog-' + today() + '.json', { type: 'application/json' }); }
 const bkMark = () => { try { localStorage.setItem('cartodog-bk', String(Date.now())); } catch (e) {} bkStat(); };
 const bkLast = () => { try { return +localStorage.getItem('cartodog-bk') || 0; } catch (e) { return 0; } };
-function bkStat() { const el = $('#bkst'); if (!el) return; const t = bkLast(), dd = t ? Math.floor((Date.now() - t) / 864e5) : -1; el.className = 'bkst' + (dd < 0 || dd > 7 ? ' old' : '');
+function bkStat() { const el = $('#bkst'); if (!el) return; if (clOn()) { el.className = 'bkst'; el.innerHTML = '✅ <b>Sauvegarde automatique</b> dans votre compte en ligne'; return; } const t = bkLast(), dd = t ? Math.floor((Date.now() - t) / 864e5) : -1; el.className = 'bkst' + (dd < 0 || dd > 7 ? ' old' : '');
   el.innerHTML = dd < 0 ? '⚠️ <b>Jamais sauvegardé</b> : vos sentiers ne sont que sur ce téléphone.' : `✅ Dernière sauvegarde : <b>${dd === 0 ? "aujourd'hui" : dd === 1 ? 'hier' : 'il y a ' + dd + ' jours'}</b>`; }
 async function bkShare() { const f = await bkFile();
   if (navigator.canShare && navigator.canShare({ files: [f] })) { try { await navigator.share({ files: [f], title: 'Sauvegarde Cartodog', text: 'Sauvegarde de mon carnet Cartodog' }); bkMark(); toast('☁️ Sauvegarde envoyée'); return; } catch (e) { if (e && e.name === 'AbortError') return; } }
@@ -3252,7 +3346,7 @@ async function bkShare() { const f = await bkFile();
 $('#exp').onclick = async () => { const f = await bkFile(), a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 10000); bkMark(); toast('💾 Exporté'); };
 setTimeout(() => { try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) {}      // demande au navigateur de ne pas effacer les données
   const has = (D.paths || []).length || Object.keys(D.cells).length, t = bkLast(); let asked = 0; try { asked = +localStorage.getItem('cartodog-bkask') || 0; } catch (e) {}
-  if (has && Date.now() - t > 7 * 864e5 && Date.now() - asked > 864e5) { try { localStorage.setItem('cartodog-bkask', String(Date.now())); } catch (e) {} toast(t ? '☁️ Dernière sauvegarde il y a plus d\'une semaine' : '☁️ Vos sentiers ne sont que sur ce téléphone', () => bkShare(), 'Sauvegarder'); } }, 6000);
+  if (has && !clOn() && $('#gate').hidden && Date.now() - t > 7 * 864e5 && Date.now() - asked > 864e5) { /* inutile avec un compte : tout est sauvegardé en ligne */ try { localStorage.setItem('cartodog-bkask', String(Date.now())); } catch (e) {} toast(t ? '☁️ Dernière sauvegarde il y a plus d\'une semaine' : '☁️ Vos sentiers ne sont que sur ce téléphone', () => bkShare(), 'Sauvegarder'); } }, 6000);
 /* ===== Profil du chien : photo, identité, âge, suivi du poids, vétérinaire ===== */
 const SXL = { m: 'Mâle', f: 'Femelle' };
 const ageTxt = bd => { if (!bd) return ''; const b = new Date(bd + 'T00:00'), n = new Date(); let m = (n.getFullYear() - b.getFullYear()) * 12 + n.getMonth() - b.getMonth() - (n.getDate() < b.getDate() ? 1 : 0); if (m < 0) return '';
