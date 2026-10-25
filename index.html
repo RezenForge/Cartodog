@@ -690,7 +690,7 @@ button.bdrow{cursor:pointer}.bdop>*+*{border-top:1px solid var(--rim)}
 #balm.sheet .bdgo{padding:12px 10px;font-size:16px}
 
 #lpgo.lpw{background:linear-gradient(#4d453a,#3a332b)!important;color:#f6ead0!important;text-shadow:1px 1px 0 #000!important}
-#lp .pmb button{font-size:22px;line-height:1;min-height:46px}#lpgo{flex:2!important}#lpx{flex:1!important;font-size:18px!important}
+#lp .pmb button{font-size:22px;line-height:1;min-height:46px}#lpgo{flex:2!important}#lpgo small{font:800 13px var(--num);margin-left:4px}#lpx{flex:1!important;font-size:18px!important}
 
 /* ===== Profil du chien : fiche de personnage sur un écran ===== */
 #dogm .win{padding:12px 14px 14px;max-height:94dvh}#dogm .lhd{margin-bottom:8px;align-items:center}#dgb{font-size:24px;line-height:1}#dgb[hidden]{display:none}
@@ -2335,7 +2335,7 @@ function lpUi() {
   const dzt = l.dz.length ? `<div class="lpz lim">⚠️ Passe près : ${esc(nm(l.dz))}${BL.avoid ? ' (impossible à éviter)' : ''}</div>` : av.length ? `<div class="lpz eon">✅ Évite : ${esc(nm(av))}</div>` : '';
   $('#lpe').textContent = BL.g.name;
   $('#lpv').textContent = VOX.on ? '🔊' : '🔇';
-  $('#lpt').innerHTML = BR.on && BR.bal ? `<div class="lpk"><b>${fmtDist(BR.m)}</b><small>/ ${fmtDist(l.tot)}</small></div>` + (VOX.next ? `<div class="lpnx"><i>${VOX.next.ic}</i><span>${VOX.next.d < 15 ? 'Maintenant' : 'Dans ' + fmtDist(Math.round(VOX.next.d / 5) * 5)}<b>${VOX.next.txt}</b></span></div>` : '<div class="lps">Suivez le tracé doré, les flèches indiquent le sens</div>') + dzt
+  $('#lpt').innerHTML = BR.on && BR.bal ? `<div class="lpk"><b>${fmtDist(BR.m)}</b><small>/ ${fmtDist(l.tot)}</small></div>` + (VOX.next ? `<div class="lpnx"><i>${VOX.next.ic}</i><span>${VOX.next.d < 15 ? 'Maintenant' : 'Dans ' + fmtDist(Math.round(VOX.next.d / 5) * 5)}<b>${VOX.next.txt}</b></span></div>` : '<div class="lps">Suivez le tracé doré, les flèches indiquent le sens</div>') + (AP.on && AP.tag === 'loop' && AP.poly ? `<div class="lps apon">${AP.mode === 'car' ? '🚗' : '🚶'} Rejoignez d\'abord le départ ${AP.mode === 'car' ? 'par la route' : 'par les rues'} : ${fmtDist(apLeft() || 0)}</div>` : '') + dzt
     : `<div class="lpk"><b>${fmtDist(l.tot)}</b><small>≈ ${fmtMin(Math.max(5, Math.round(min / 5) * 5))}</small></div>
       <div class="lps">${BL.park ? '🅿 ' + esc(BL.pname) : '📍 Retour au point de départ'}${rp >= 30 ? ` · ${rp} % en aller-retour` : ''}</div>${short ? '<div class="lpz lim">Les sentiers ne permettent pas plus long</div>' : ''}` + dzt;
   if (BL.wait && !BR.on) { const d = startDist(), q = BL.poly[0];
@@ -2343,7 +2343,7 @@ function lpUi() {
     const apl = AP.on && AP.tag === 'loop' && AP.poly ? apLeft() : null;
     $('#lpt').innerHTML = `<div class="lpk"><b>${me ? fmtDist(apl != null ? apl : d) : '…'}</b><small>${me ? (apl != null ? (AP.mode === 'car' ? '🚗 par la route' : '🚶 par les rues') : dir) : 'recherche du GPS'}</small></div>
       <div class="lps">En route vers ${BL.park ? '🅿 <b>' + esc(BL.pname) + '</b>' : 'le départ de la boucle'} · la sortie démarrera toute seule à l'arrivée</div>${AP.tag === 'loop' ? apBlock() : ''}`;
-    $('#lpgo').textContent = '▶'; $('#lpgo').setAttribute('aria-label', 'Démarrer ici sans attendre'); $('#lpgo').classList.add('lpw'); $('#lpn').hidden = true; $('#lpd').hidden = false; return draw(); }
+    $('#lpgo').innerHTML = '▶ <small>Démarrer ici</small>'; $('#lpgo').setAttribute('aria-label', 'Démarrer la sortie ici sans attendre d\'être au départ'); $('#lpgo').classList.add('lpw'); $('#lpn').hidden = true; $('#lpd').hidden = false; return draw(); }
   $('#lpgo').textContent = '▶'; $('#lpgo').setAttribute('aria-label', 'Partir'); $('#lpgo').classList.remove('lpw');
   $('#lpd').hidden = !!BR.on;
   $('#lpgo').hidden = $('#lpn').hidden = !!BR.on; $('#lpn').hidden = !!BR.on; draw();
@@ -2488,7 +2488,7 @@ function apTick() {      // à chaque position : itinéraire en attente du GPS, 
   if (!AP.on || !me) return; if (AP.pending) return apFetch(); if (!AP.poly || AP.busy) return; const here = [me.x, me.y], car = AP.mode === 'car';
   if (rdist(here, AP.to) < (car ? 60 : 30)) {
     if (car && AP.ft && rdist(here, AP.ft) > 120) { say('Vous êtes au parking. Garez-vous, puis je vous guide à pied jusqu\'au départ.'); toast('🅿 Arrivé au parking : la suite se fait à pied'); AP.mode = 'foot'; try { sessionStorage.setItem('cartodog-apm', 'foot'); } catch (e) {} return apFetch(); }
-    if (car) { say('Vous êtes au parking.'); toast('🅿 Arrivé au parking'); } AP.poly = null; return apRefresh(); }
+    if (car) { say('Vous êtes au parking.'); toast('🅿 Arrivé au parking'); } if (BR.on) { apClear(); return; } AP.poly = null; return apRefresh(); }
   let dmin = Infinity; for (let i = 1; i < AP.poly.length; i++) { const pr = segProj(here, AP.poly[i - 1], AP.poly[i]); if (pr.d < dmin) dmin = pr.d; }
   if (dmin * cosAt(me.y) > (car ? 80 : 45) && Date.now() - AP.t > (car ? 12000 : 20000) && me.acc < 50) return apFetch();
   AP.turns.forEach((t, i) => { const d = rdist(here, t.q), dir = t.l ? 'gauche' : 'droite';
@@ -2509,7 +2509,8 @@ function apBlock() {      // bloc d'infos commun (panneau « En route vers… »
   return `<div class="apb">${chips}<span class="aps">${car ? '🚗' : '🚶'} ${st}</span>${ext}</div>`;
 }
 document.addEventListener('click', e => { const b = e.target.closest('[data-apm]'); if (b) apSetMode(b.dataset.apm); });
-function balGo() { apClear('loop'); BL.wait = false; BR.bal0 = BL.g.name; brStart(); voxPlan(); say('C\u2019est parti pour ' + fmtDist(BL.tot).replace(' km', ' kilomètres').replace(' m', ' mètres') + '. Je vous indiquerai les changements de direction.'); lpUi(); }
+function balGo() { if (!(AP.on && AP.tag === 'loop' && me && BL.poly && rdist([me.x, me.y], BL.poly[0]) > 60)) apClear('loop');      // « Démarrer ici » loin du départ : le guidage jusqu'à la boucle continue
+  BL.wait = false; BR.bal0 = BL.g.name; brStart(); voxPlan(); say('C\u2019est parti pour ' + fmtDist(BL.tot).replace(' km', ' kilomètres').replace(' m', ' mètres') + '. Je vous indiquerai les changements de direction.'); lpUi(); }
 $('#lpgo').onclick = () => {
   if (BL.wait) return balGo();      // « Démarrer quand même »
   if (startDist() <= Math.max(START_R, me ? Math.min(me.acc, 100) : 0)) return balGo();
@@ -2783,7 +2784,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-104';
+const APP_V = '2026.10.25-105';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
