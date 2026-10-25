@@ -1125,6 +1125,17 @@ body:has(#menu.open) header.bar{z-index:23}
 .aps{flex:1 1 auto;min-width:0}.apext{flex:1 0 100%;font-size:12px;color:var(--mut)}.apext a{color:var(--ember2);font-weight:800}
 body.lpon #dock #found:not(.rec),body.lpon #dock #socb{display:none!important}body.lpon #dock:not(:has(#found.rec)):not(:has(#homeb:not([hidden]))){display:none}
 .hico{display:inline-block;width:17px;height:17px;margin:0 0 0 4px;vertical-align:top;position:relative;top:1px;border-radius:5px;box-shadow:0 1px 2px rgba(0,0,0,.6)}
+
+/* ===== Compte en ligne ===== */
+button.acon.acl{width:100%;text-align:left;cursor:pointer;background:none;border-style:solid;border-color:#6b5333;align-items:center}button.acon.acl>i{margin-left:auto;font-style:normal;font-size:22px;color:var(--ember2)}button.acon.acl.on{border-color:#3f5233;background:rgba(95,115,80,.12)}
+button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clseg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:3px;margin-bottom:12px;border:2px solid var(--edge);border-radius:6px;background:#14110e}.clseg button{padding:10px 4px;border:0;border-radius:4px;background:none;color:var(--mut);font:800 14px var(--num);cursor:pointer}.clseg button.on{background:linear-gradient(#4d453a,#3a332b);color:var(--ember2);box-shadow:inset 0 -2px 0 var(--ember)}
+.clerr{min-height:16px;margin:-4px 2px 8px;font:700 12.5px var(--num);color:#ff9a7e}
+.cllink{display:block;margin:10px auto 0;padding:6px;border:0;background:none;color:var(--ember2);font:700 13px var(--num);text-decoration:underline;cursor:pointer}.cllink.dgr{color:#ff8a6e}
+.clcard{padding:12px;border:2px solid var(--edge);border-radius:10px;background:linear-gradient(#3a3024,#211b14);box-shadow:inset 0 0 0 1px #6b5333}.clcard b{display:block;font:800 15px var(--num);color:#fff1cf;word-break:break-all}.clcard small{font:700 12.5px var(--num);color:var(--ember2)}
+.clstat{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0}.clstat span{display:flex;flex-direction:column;align-items:center;padding:8px 2px;border:2px solid var(--edge);border-radius:8px;background:var(--slot)}.clstat b{font:900 19px var(--num);color:#fff1cf}.clstat small{font:700 10.5px var(--num);color:var(--mut);text-align:center}
+.clsy{margin:0 0 8px;padding:8px 10px;border-radius:6px;font:700 12.5px var(--num);background:rgba(95,115,80,.16);border:1.5px solid #3f5233;color:#cfdcbf}.clsy.err{background:rgba(201,71,44,.14);border-color:#7a3a2a;color:#ffc2b0}.clsy.busy{color:var(--ember2)}
+#accl .btn{width:100%}
 </style></head><body>
 <header class="bar win dg"><button class="hdog" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span></button><button class="hbr brand" id="hbr" aria-label="Cartodog : profil de mon chien"><span class="hinf"><b>Cartodog<img class="hico" src="icon.svg" alt="" aria-hidden="true"></b><small id="hsub">Carnet de balade</small></span></button><button class="hset" id="mn" aria-label="Mon compte"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><circle cx="16" cy="16" r="14.5" fill="#2a2018" stroke="#8a6a3a" stroke-width="1"/><circle cx="16" cy="12.4" r="5.4" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2"/><path d="M6.6 26.2c1.3-5.2 5-8 9.4-8s8.1 2.8 9.4 8a14.4 14.4 0 0 1-18.8 0z" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2" stroke-linejoin="round"/></svg></button><b id="hnm" hidden></b>
 <small id="ssn" hidden></small>
@@ -1184,7 +1195,7 @@ body.lpon #dock #found:not(.rec),body.lpon #dock #socb{display:none!important}bo
   <div class="acp on" data-pg="main">
     <div class="ach"><h2>Mon compte<small>Profil et réglages</small></h2><button class="ib" id="mx" aria-label="Fermer">✕</button></div>
     <button class="acu" data-acp="me"><span class="acav" id="acav"></span><span class="act"><b id="acnm">Promeneur</b><small id="acsb">Compte local · sur ce téléphone</small></span><i>›</i></button>
-    <div class="acon"><span>☁️</span><span><b>Compte en ligne</b><small>Bientôt : copains et sorties. Tout reste sur ce téléphone.</small></span></div>
+    <button class="acon acl" id="acloud"></button>
     <div class="mh">Mon compte</div>
     <div class="acg"><button class="acr" data-acp="me"><span class="aci">👤</span><span class="act"><b>Mes infos</b><small id="acme">Pseudo, commune</small></span><i>›</i></button><button class="acr" id="acdog"><span class="aci">🐕</span><span class="act"><b>Mon chien</b><small id="acdgs">Profil, santé, niveau</small></span><i>›</i></button></div>
     <div class="mh">Confidentialité</div>
@@ -1192,6 +1203,7 @@ body.lpon #dock #found:not(.rec),body.lpon #dock #socb{display:none!important}bo
     <div class="mh">Application</div>
     <div class="acg"><button class="acr" data-acp="map"><span class="aci">🗺️</span><span class="act"><b>Carte et alertes</b><small>Routes, communes, boussole, écran</small></span><i>›</i></button><button class="acr" data-acp="off"><span class="aci">📶</span><span class="act"><b>Hors connexion</b><small>Enregistrer une zone de carte</small></span><i>›</i></button><button class="acr" data-acp="data"><span class="aci">💾</span><span class="act"><b>Mes données</b><small>Sauvegarde et restauration</small></span><i>›</i></button><button class="acr" data-acp="about"><span class="aci">ℹ️</span><span class="act"><b>À propos</b><small id="acver">Version, mise à jour</small></span><i>›</i></button></div>
   </div>
+  <div class="acp" data-pg="cloud"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Compte en ligne<small>Sauvegarde et partage</small></h2></div><div id="accl"></div></div>
   <div class="acp" data-pg="me"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Mes infos<small>Comment les autres vous verront</small></h2></div>
     <label class="acf"><span>Pseudo</span><input id="acpn" maxlength="24" placeholder="Ex. Dylan" autocomplete="nickname" enterkeyhint="done"></label>
     <label class="acf"><span>Commune</span><input id="acpc" maxlength="40" placeholder="Ex. Le Taillan-Médoc" autocomplete="address-level2" enterkeyhint="done"></label>
@@ -1352,7 +1364,7 @@ let D = { cells: {}, paths: [], marks: [], dog: '', prof: null }, sel = null, he
 let saveT = 0; const saveSoon = () => { clearTimeout(saveT); saveT = setTimeout(save, 400); };
 addEventListener('pagehide', () => { if (saveT) { clearTimeout(saveT); save(); } });
 const CGM = new Map();      // fiche → sentiers rattachés (cache, vidé à chaque enregistrement)
-function save() { clearTimeout(saveT); saveT = 0; CGM.clear(); try { if (syncBal()) CGM.clear(); } catch (e) {} try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) { toast('Stockage plein : exportez vos données'); } }
+function save() { clearTimeout(saveT); saveT = 0; CGM.clear(); try { if (syncBal()) CGM.clear(); } catch (e) {} try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) { toast('Stockage plein : exportez vos données'); } syncSoon(); }
 const cleanPts = a => Array.isArray(a) ? a.filter(q => Array.isArray(q) && isFinite(q[0]) && isFinite(q[1])).map(q => [+q[0], +q[1]]).slice(0, 6000) : [];
 function clean(c) { const ok = c && c.x != null && c.y != null && isFinite(c.x) && isFinite(c.y); return { ...(ok ? { x: +c.x, y: +c.y } : {}), name: String(c?.name || ''), note: String(c?.note || ''),
   ph: (Array.isArray(c?.ph) ? c.ph : []).filter(p => p && /^[\w-]+$/.test(String(p.id))).map(p => ({ id: String(p.id), d: /^\d{4}-\d\d-\d\d$/.test(p.d) ? p.d : '' })),
@@ -2065,8 +2077,8 @@ function dangerCheck() {
     $('#dzm').textContent = (m.d ? 'Signalé le ' + fmtD(m.d) + ' · ' : '') + '⏳ disparaît ' + dzLeft(m.exp) + (m.cf ? ' · confirmé ' + m.cf + ' fois' : '');
     $('#dzq').classList.add('open'); break; }
 }
-$('#dzy').onclick = () => { const m = DZQ; $('#dzq').classList.remove('open'); if (!m) return; m.cf = (m.cf || 0) + 1; m.exp = Date.now() + (isSt(m) ? 3 * DAY : DAY); save(); toast('⚠️ ' + MK[m.t][0] + ' : risque maintenu 24 h de plus'); };
-$('#dzno').onclick = () => { const m = DZQ; $('#dzq').classList.remove('open'); if (!m) return; const snap = JSON.stringify(D.marks); fxRing(m.x, m.y, 'rgba(158,224,112,.9)', 6, 34, 600);
+$('#dzy').onclick = () => { const m = DZQ; if (m && clOn()) sb('/rest/v1/rpc/confirm_mark', { method: 'POST', json: { mark_id: m.id, still: true } }).catch(() => {}); $('#dzq').classList.remove('open'); if (!m) return; m.cf = (m.cf || 0) + 1; m.exp = Date.now() + (isSt(m) ? 3 * DAY : DAY); save(); toast('⚠️ ' + MK[m.t][0] + ' : risque maintenu 24 h de plus'); };
+$('#dzno').onclick = () => { const m = DZQ; if (m && clOn()) sb('/rest/v1/rpc/confirm_mark', { method: 'POST', json: { mark_id: m.id, still: false } }).catch(() => {}); $('#dzq').classList.remove('open'); if (!m) return; const snap = JSON.stringify(D.marks); fxRing(m.x, m.y, 'rgba(158,224,112,.9)', 6, 34, 600);
   D.marks = D.marks.filter(x => x !== m); save(); draw(); if (sel) showNear(sel); toast('✅ Risque retiré de la carte', () => { D.marks = JSON.parse(snap); save(); draw(); }); };
 $('#dzl').onclick = () => $('#dzq').classList.remove('open');
 
@@ -2798,7 +2810,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-111';
+const APP_V = '2026.10.25-112';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3000,6 +3012,178 @@ $('#srq').oninput = () => { SRI = 0; srRender(); };
 $('#srq').onkeydown = e => { const L = [...document.querySelectorAll('#srl li[data-srk]')]; if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); SRI = (SRI + (e.key === 'ArrowDown' ? 1 : -1) + L.length) % Math.max(1, L.length); L.forEach((li, i) => li.classList.toggle('on', i === SRI)); }
   else if (e.key === 'Enter') { e.preventDefault(); srGo(L[SRI] || L[0]); } else if (e.key === 'Escape') srClose(); };
 $('#srl').onclick = e => srGo(e.target.closest('li[data-srk]'));
+var SYT = 0; function syncSoon() { if (!(typeof CLD === 'object' && CLD && CLD.s && CLD.s.access_token)) return; clearTimeout(SYT); SYT = setTimeout(() => sync(true), 8000); }
+/* ===== Compte en ligne (Supabase) : connexion par e-mail + mot de passe, synchronisation hors ligne ↔ serveur =====
+   Client léger fait main (fetch) : Auth, base (PostgREST) et photos (Storage). Les clés ci-dessous sont publiques par nature ;
+   la sécurité vient des règles côté serveur (chacun ne touche qu'à ses données, seuls les éditeurs valident les sentiers). */
+const SB = { url: 'https://mrwbpalbpczdkczcoven.supabase.co', key: 'sb_publishable_E3FSZASMM6JerGNrZ6ZYjw_a7YHyBXX' };
+var CLD = { s: null, role: '', name: '', busy: false, st: 'off', at: 0, err: '', t: 0, n: { up: 0, down: 0 } };
+const CLK = 'cartodog-sb', SYK = 'cartodog-sync';
+try { CLD.s = JSON.parse(localStorage.getItem(CLK) || 'null'); } catch (e) {}
+const clSave = () => { try { CLD.s ? localStorage.setItem(CLK, JSON.stringify(CLD.s)) : localStorage.removeItem(CLK); } catch (e) {} };
+const clOn = () => !!(CLD.s && CLD.s.access_token);
+const clMsg = (j, st) => { const m = (j && (j.msg || j.message || j.error_description || j.error)) || ''; const t = String(m).toLowerCase();
+  if (/invalid login|invalid_grant|invalid credentials/.test(t)) return 'E-mail ou mot de passe incorrect';
+  if (/not confirmed/.test(t)) return 'E-mail pas encore confirmé : ouvrez le lien reçu par e-mail';
+  if (/already registered|already exists/.test(t)) return 'Un compte existe déjà avec cet e-mail : connectez-vous';
+  if (/password.*(6|8|short|weak)|weak password/.test(t)) return 'Mot de passe trop court (8 caractères minimum)';
+  if (/rate limit|too many|security purposes/.test(t)) return 'Trop de tentatives : réessayez dans quelques minutes';
+  if (/email.*invalid|invalid.*email|unable to validate email/.test(t)) return 'Adresse e-mail invalide';
+  return m || (st ? 'Erreur du serveur (' + st + ')' : 'Pas de réseau'); };
+async function clAuth(path, body, tok) {
+  const r = await fetchT(SB.url + '/auth/v1/' + path, 12000, { method: 'POST', headers: { apikey: SB.key, 'Content-Type': 'application/json', ...(tok ? { Authorization: 'Bearer ' + tok } : {}) }, body: JSON.stringify(body || {}) });
+  let j = null; try { j = await r.json(); } catch (e) {} if (!r.ok) { const e = new Error(clMsg(j, r.status)); e.status = r.status; throw e; } return j || {}; }
+function clSet(j) {      // réponse de connexion → session gardée sur le téléphone
+  if (!j || !j.access_token) return false; CLD.s = { access_token: j.access_token, refresh_token: j.refresh_token, expires_at: Date.now() + (j.expires_in || 3600) * 1000, user: { id: j.user && j.user.id, email: j.user && j.user.email } }; clSave(); return true; }
+async function clToken() {      // jeton valide, rafraîchi si besoin
+  if (!clOn()) return null; if (CLD.s.expires_at - Date.now() > 60000) return CLD.s.access_token;
+  try { const j = await clAuth('token?grant_type=refresh_token', { refresh_token: CLD.s.refresh_token }); clSet(j); return CLD.s.access_token; }
+  catch (e) { if (e.status === 400 || e.status === 401) { CLD.s = null; clSave(); clUi(); toast('☁️ Session expirée : reconnectez-vous'); } return null; } }
+async function sb(path, o = {}) {      // appel à la base (REST) ou au stockage avec la session
+  const tok = await clToken(), r = await fetchT(SB.url + path, o.ms || 15000, { method: o.method || 'GET', headers: { apikey: SB.key, Authorization: 'Bearer ' + (tok || SB.key), ...(o.json !== undefined ? { 'Content-Type': 'application/json' } : {}), ...(o.headers || {}) }, body: o.json !== undefined ? JSON.stringify(o.json) : o.body });
+  if (o.raw) return r; let j = null; const tx = await r.text(); try { j = tx ? JSON.parse(tx) : null; } catch (e) {} if (!r.ok) { const e = new Error(clMsg(j, r.status)); e.status = r.status; e.code = j && j.code; throw e; } return j; }
+const redir = () => location.origin + location.pathname;
+async function clSignUp(email, pw, name) { const j = await clAuth('signup?redirect_to=' + encodeURIComponent(redir()), { email, password: pw, data: { name } }); if (clSet(j)) { await clAfterLogin(true); return 'ok'; } return 'confirm'; }
+async function clSignIn(email, pw) { clSet(await clAuth('token?grant_type=password', { email, password: pw })); await clAfterLogin(true); }
+async function clRecover(email) { await clAuth('recover?redirect_to=' + encodeURIComponent(redir()), { email }); }
+async function clSignOut() { const t = CLD.s && CLD.s.access_token; CLD.s = null; CLD.role = ''; clSave(); try { localStorage.removeItem(SYK); } catch (e) {} clUi(); if (t) try { await clAuth('logout', {}, t); } catch (e) {} }
+async function clAfterLogin(first) {
+  try { const p = await sb('/rest/v1/profiles?select=name,role&id=eq.' + CLD.s.user.id); if (p && p[0]) { CLD.role = p[0].role; CLD.name = p[0].name; }
+    const u = accU(); if (!u.name.trim() && CLD.name) { u.name = CLD.name; save(); try { hdrRender(); } catch (e) {} } } catch (e) {}
+  clUi(); if (first) toast('☁️ Connecté : vos données se synchronisent'); sync(true);
+}
+/* Retour d'un lien reçu par e-mail (confirmation d'inscription, mot de passe oublié) : #access_token=…&type=… */
+{ const h = location.hash; if (/access_token=/.test(h)) { const q = new URLSearchParams(h.slice(1)); history.replaceState(null, '', location.pathname + location.search);
+  if (clSet({ access_token: q.get('access_token'), refresh_token: q.get('refresh_token'), expires_in: +q.get('expires_in') || 3600, user: {} })) {
+    sb('/auth/v1/user').then(u => { if (u && u.id) { CLD.s.user = { id: u.id, email: u.email }; clSave(); } if (q.get('type') === 'recovery') { CLD.pwReset = true; setTimeout(() => { $('#mn').click(); accPage('cloud'); clUi(); }, 600); } else clAfterLogin(true); }).catch(() => {}); } }
+  else if (/error_description=/.test(h)) { const q = new URLSearchParams(h.slice(1)); history.replaceState(null, '', location.pathname + location.search); setTimeout(() => toast('☁️ ' + (q.get('error_description') || 'Lien expiré').replace(/\+/g, ' ')), 800); } }
+
+/* ===== Synchronisation =====
+   Sentiers et repères : partagés, une ligne par objet (dernière modification gagnante). Carnet (fiches, sorties, notes, profil) : privé, un document.
+   On garde l'empreinte de ce qui a été synchronisé pour savoir ce qui a changé de chaque côté. */
+const hsh = s => { let h = 5381; for (let i = 0; i < s.length; i++) h = (h * 33 + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36) + s.length.toString(36); };
+const syLoad = () => { let s = null; try { s = JSON.parse(localStorage.getItem(SYK) || 'null'); } catch (e) {} if (!s || !CLD.s || s.uid !== CLD.s.user.id) s = { uid: CLD.s && CLD.s.user.id, tp: '1970-01-01T00:00:00Z', mp: '1970-01-01T00:00:00Z', p: {}, m: {}, pst: {}, c: '', ca: '', ph: {} }; return s; };
+const sySave = s => { try { localStorage.setItem(SYK, JSON.stringify(s)); } catch (e) {} };
+const carnetOf = () => ({ v: 1, cells: D.cells, prof: D.prof, dog: D.dog, user: D.user || null });
+function carnetMerge(srv) {      // fusion des fiches : sorties et photos réunies, nom et notes du téléphone gardés s'ils existent
+  const cells = srv && srv.cells && typeof srv.cells === 'object' ? srv.cells : {};
+  Object.entries(cells).forEach(([k, c0]) => { if (!/^[\w,-]+$/.test(k)) return; const c = clean(c0); if (c.x == null) return; const l = D.cells[k];
+    if (!l) { D.cells[k] = c; return; }
+    const ids = new Set(l.v.map(v => v.id)); c.v.forEach(v => { if (!ids.has(v.id)) l.v.push(v); });
+    const pids = new Set(l.ph.map(p => p.id)); c.ph.forEach(p => { if (!pids.has(p.id)) l.ph.push(p); });
+    if (!l.name && c.name) l.name = c.name; if (!l.note && c.note) l.note = c.note; if (!l.cov && c.cov) l.cov = c.cov; if (!l.th && c.th) l.th = c.th; if ((!l.tags || !l.tags.length) && c.tags) l.tags = c.tags; });
+  if (srv && srv.prof && !D.prof.name) { D.prof = cleanProf(srv.prof, srv.dog); D.dog = D.prof.name; }
+  if (srv && srv.user && !(D.user && D.user.name)) D.user = cleanUser(srv.user);
+}
+async function sync(force) {
+  if (!clOn() || CLD.busy || navigator.onLine === false) return; if (!force && Date.now() - CLD.t < 20000) return;
+  CLD.busy = true; CLD.t = Date.now(); CLD.st = 'busy'; CLD.err = ''; clUi(); const S = syLoad(); let changed = false, up = 0, down = 0;
+  try {
+    const ed = CLD.role === 'editor' || CLD.role === 'admin';
+    /* 1. Sentiers : on récupère ce qui a changé sur le serveur */
+    const lp = new Map((D.paths || []).map(p => [p.id, p]));
+    for (let page = 0; page < 20; page++) { const rows = await sb(`/rest/v1/trails?select=id,data,status,deleted,updated_at&updated_at=gt.${encodeURIComponent(S.tp)}&order=updated_at.asc&limit=500`); if (!rows || !rows.length) break;
+      rows.forEach(r => { S.tp = r.updated_at; const loc = lp.get(r.id), locH = loc ? hsh(JSON.stringify(loc)) : null, mine = loc && S.p[r.id] && locH !== S.p[r.id];
+        if (r.deleted) { if (loc && !mine) { lp.delete(r.id); changed = true; down++; } delete S.p[r.id]; delete S.pst[r.id]; return; }
+        if (!loc && S.p[r.id]) return;      // supprimé sur ce téléphone depuis la dernière synchro : la suppression va repartir
+        const p = cleanPaths([{ ...(r.data || {}), id: r.id }])[0]; if (!p) return; S.pst[r.id] = r.status;
+        if (mine && ed) return;      // modifié ici aussi : la version du téléphone repartira
+        const h = hsh(JSON.stringify(p)); if (h !== locH) { lp.set(r.id, p); changed = true; down++; } S.p[r.id] = h; });
+      if (rows.length < 500) break; }
+    /* 2. Repères partagés */
+    const lm = new Map((D.marks || []).map(m => [m.id, m]));
+    for (let page = 0; page < 20; page++) { const rows = await sb(`/rest/v1/marks?select=id,data,deleted,updated_at,author&updated_at=gt.${encodeURIComponent(S.mp)}&order=updated_at.asc&limit=500`); if (!rows || !rows.length) break;
+      rows.forEach(r => { S.mp = r.updated_at; const loc = lm.get(r.id), locH = loc ? hsh(JSON.stringify(loc)) : null, mine = loc && S.m[r.id] && locH !== S.m[r.id];
+        if (r.deleted) { if (loc) { lm.delete(r.id); changed = true; down++; } delete S.m[r.id]; return; }
+        if (!loc && S.m[r.id]) return;
+        const m = cleanMarks([{ ...(r.data || {}), id: r.id }])[0]; if (!m) return;
+        if (mine && (r.author === CLD.s.user.id || ed)) return;
+        const h = hsh(JSON.stringify(m)); if (h !== locH) { lm.set(r.id, m); changed = true; down++; } S.m[r.id] = h; });
+      if (rows.length < 500) break; }
+    if (changed) { D.paths = [...lp.values()]; D.marks = [...lm.values()]; NG.sig = ''; }
+    /* 3. On envoie ce qui a changé sur le téléphone (nouveaux sentiers : publics pour un éditeur, proposés sinon) */
+    for (const p of D.paths || []) { const h = hsh(JSON.stringify(p)); if (S.p[p.id] === h) continue; const { id, ...data } = p;
+      try { const r = await sb('/rest/v1/trails?on_conflict=id&select=status', { method: 'POST', json: [{ id, data }], headers: { Prefer: 'resolution=merge-duplicates,return=representation' } }); S.p[id] = h; if (r && r[0]) S.pst[id] = r[0].status; up++; }
+      catch (e) { if (!(e.status >= 400 && e.status < 500)) throw e;      // refus (sentier public d'un autre) : on reprend la version du serveur
+        S.p[id] = h; try { const r = await sb('/rest/v1/trails?select=id,data,deleted&id=eq.' + encodeURIComponent(id)); const q = r && r[0] && !r[0].deleted && cleanPaths([{ ...(r[0].data || {}), id }])[0];
+          if (q) { const i = D.paths.findIndex(x => x.id === id); if (i >= 0) { D.paths[i] = q; S.p[id] = hsh(JSON.stringify(q)); changed = true; NG.sig = ''; } } } catch (x) {} } }
+    for (const id of Object.keys(S.p)) if (!lp.has(id) && !(D.paths || []).some(p => p.id === id)) { try { await sb('/rest/v1/trails?id=eq.' + encodeURIComponent(id), { method: 'PATCH', json: { deleted: true }, headers: { Prefer: 'return=minimal' } }); up++; } catch (e) {} delete S.p[id]; delete S.pst[id]; }
+    for (const m of D.marks || []) { const h = hsh(JSON.stringify(m)); if (S.m[m.id] === h) continue; const { id, ...data } = m;
+      try { await sb('/rest/v1/marks?on_conflict=id', { method: 'POST', json: [{ id, data }], headers: { Prefer: 'resolution=merge-duplicates,return=minimal' } }); S.m[id] = h; up++; }
+      catch (e) { if (e.status >= 400 && e.status < 500) S.m[id] = h; else throw e; } }
+    for (const id of Object.keys(S.m)) if (!(D.marks || []).some(m => m.id === id)) { try { await sb('/rest/v1/marks?id=eq.' + encodeURIComponent(id), { method: 'PATCH', json: { deleted: true }, headers: { Prefer: 'return=minimal' } }); } catch (e) {} delete S.m[id]; }
+    /* 4. Carnet personnel */
+    const cr = await sb('/rest/v1/carnets?select=data,updated_at'), srv = cr && cr[0];
+    let locH = hsh(JSON.stringify(carnetOf()));
+    if (srv && srv.updated_at !== S.ca) { if (locH === S.c && S.ca) { D.cells = {}; if (srv.data && srv.data.prof) { D.prof = cleanProf(srv.data.prof, srv.data.dog); D.dog = D.prof.name; } if (srv.data && srv.data.user) D.user = cleanUser(srv.data.user); } carnetMerge(srv.data); locH = hsh(JSON.stringify(carnetOf())); changed = true; down++; }
+    if (locH !== S.c || !srv) { const r = await sb('/rest/v1/carnets?on_conflict=user_id&select=updated_at', { method: 'POST', json: [{ user_id: CLD.s.user.id, data: carnetOf() }], headers: { Prefer: 'resolution=merge-duplicates,return=representation' } }); S.c = locH; S.ca = r && r[0] ? r[0].updated_at : S.ca; up++; }
+    else S.ca = srv.updated_at;
+    if (changed) { localStorage.setItem(KEY, JSON.stringify(D)); CGM.clear(); try { renderPanel(); hdrRender(); dogAvatar(); } catch (e) {} draw(); }
+    /* 5. Photos : on envoie les nouvelles, on récupère celles qui manquent (par petits paquets) */
+    const ids = [...new Set([...Object.values(D.cells).flatMap(c => c.ph.map(p => p.id)), D.prof.ph].filter(Boolean))]; let n = 0;
+    for (const id of ids) { if (n >= 12) break;
+      if (!S.ph[id]) { const u = await pGet(id).catch(() => null);
+        if (u) { const b = await (await fetch(u)).blob(); try { await sb(`/storage/v1/object/photos/${CLD.s.user.id}/${id}`, { method: 'POST', body: b, headers: { 'Content-Type': b.type || 'image/jpeg', 'x-upsert': 'true' }, ms: 30000 }); S.ph[id] = 1; n++; up++; } catch (e) { if (e.status === 400 || e.status === 413) S.ph[id] = 1; } }
+        else { try { const r = await sb(`/storage/v1/object/authenticated/photos/${CLD.s.user.id}/${id}`, { raw: true, ms: 30000 }); if (r.ok) { const b = await r.blob(); const d = await new Promise(res => { const f = new FileReader(); f.onload = () => res(f.result); f.readAsDataURL(b); }); await pPut(id, d); S.ph[id] = 1; n++; down++; } } catch (e) {} } } }
+    sySave(S); CLD.st = 'ok'; CLD.at = Date.now(); CLD.n = { up, down };
+  } catch (e) { sySave(S); CLD.st = 'err'; CLD.err = e.message || 'Pas de réseau'; }
+  CLD.busy = false; clUi();
+}
+
+addEventListener('online', () => sync(true));
+setInterval(() => { if (!document.hidden) sync(); }, 180000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) sync(); });
+if (clOn()) setTimeout(() => clAfterLogin(false), 2500);
+
+/* ===== Écrans du compte en ligne ===== */
+const fmtAgo = t => { const s = Math.round((Date.now() - t) / 1000); return s < 60 ? 'à l\'instant' : s < 3600 ? 'il y a ' + Math.round(s / 60) + ' min' : new Date(t).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }); };
+function clUi() {
+  const b = $('#acloud'); if (!b) return; const on = clOn();
+  b.innerHTML = on ? `<span>☁️</span><span><b>Compte en ligne · connecté</b><small>${esc(CLD.s.user.email || '')} · ${CLD.st === 'busy' ? '🔄 synchronisation…' : CLD.st === 'err' ? '⚠️ ' + esc(CLD.err) : CLD.at ? '✅ synchronisé ' + fmtAgo(CLD.at) : 'en attente'}</small></span><i>›</i>`
+    : `<span>☁️</span><span><b>Créer mon compte · Se connecter</b><small>Sauvegarde automatique, carnet sur tous vos appareils, sentiers partagés</small></span><i>›</i>`;
+  b.classList.toggle('on', on);
+  const c = $('#accl'); if (!c) return;
+  if (!on) { c.innerHTML = `<div class="clseg"><button data-clm="in" class="${CLD.mode !== 'up' ? 'on' : ''}">Se connecter</button><button data-clm="up" class="${CLD.mode === 'up' ? 'on' : ''}">Créer un compte</button></div>
+    ${CLD.mode === 'up' ? `<label class="acf"><span>Pseudo</span><input id="clname" maxlength="24" autocomplete="nickname" value="${esc(accU().name || '')}" placeholder="Ex. Dylan"></label>` : ''}
+    <label class="acf"><span>E-mail</span><input id="clmail" type="email" autocomplete="email" inputmode="email" value="${esc(CLD.mail || '')}" placeholder="vous@exemple.fr"></label>
+    <label class="acf"><span>Mot de passe</span><input id="clpw" type="password" minlength="8" autocomplete="${CLD.mode === 'up' ? 'new-password' : 'current-password'}" placeholder="8 caractères minimum"></label>
+    <div class="clerr" id="clerr"></div>
+    <button class="btn gold" id="clgo">${CLD.mode === 'up' ? '✨ Créer mon compte' : '☁️ Se connecter'}</button>
+    ${CLD.mode !== 'up' ? '<button class="cllink" id="clforgot">Mot de passe oublié ?</button>' : ''}
+    <div class="acnote">🔐 Vos données sont hébergées en Europe (Paris). Vos sentiers et repères deviennent visibles par les autres promeneurs ; votre carnet (sorties, notes, photos) reste privé. Sans compte, tout continue de marcher sur ce téléphone.</div>`;
+    return; }
+  if (CLD.pwReset) { c.innerHTML = `<div class="acnote">🔑 Choisissez un nouveau mot de passe.</div><label class="acf"><span>Nouveau mot de passe</span><input id="clnpw" type="password" minlength="8" autocomplete="new-password"></label><div class="clerr" id="clerr"></div><button class="btn gold" id="clnpwgo">Enregistrer</button>`; return; }
+  const S = syLoad(), np = Object.values(S.pst).filter(v => v === 'public').length, pp = Object.values(S.pst).filter(v => v === 'proposed').length;
+  c.innerHTML = `<div class="clcard"><b>${esc(CLD.s.user.email || '')}</b><small>${CLD.role === 'admin' ? '👑 Administrateur' : CLD.role === 'editor' ? '🧭 Éditeur des sentiers' : '🐾 Membre'}</small></div>
+    <div class="clstat"><span><b>${np}</b><small>sentiers publics</small></span><span><b>${pp}</b><small>sentiers proposés</small></span><span><b>${(D.marks || []).length}</b><small>repères</small></span></div>
+    <div class="clsy ${CLD.st}">${CLD.st === 'busy' ? '🔄 Synchronisation en cours…' : CLD.st === 'err' ? '⚠️ ' + esc(CLD.err) : CLD.at ? `✅ Synchronisé ${fmtAgo(CLD.at)}${CLD.n.up || CLD.n.down ? ` · ↑ ${CLD.n.up} ↓ ${CLD.n.down}` : ''}` : 'Pas encore synchronisé'}</div>
+    <button class="btn gold" id="clsync">🔄 Synchroniser maintenant</button>
+    <div class="hint">${CLD.role === 'admin' || CLD.role === 'editor' ? 'Vos sentiers sont publiés directement pour tous les promeneurs.' : 'Vos nouveaux sentiers sont envoyés comme « proposés » : ils deviennent publics une fois validés.'} La synchronisation se fait toute seule : au démarrage, après vos modifications et au retour du réseau.</div>
+    <button class="btn" id="clout">Se déconnecter</button><button class="cllink dgr" id="cldel">Supprimer mon compte</button>`;
+}
+document.addEventListener('click', async e => {
+  const t = e.target; if (!t.closest) return;
+  if (t.closest('#acloud')) { accPage('cloud'); return clUi(); }
+  const md = t.closest('[data-clm]'); if (md) { CLD.mail = ($('#clmail') || {}).value || CLD.mail; CLD.mode = md.dataset.clm; return clUi(); }
+  const err = m => { const el = $('#clerr'); if (el) el.textContent = m; };
+  if (t.closest('#clgo')) { const mail = $('#clmail').value.trim(), pw = $('#clpw').value; CLD.mail = mail;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) return err('Adresse e-mail invalide'); if (pw.length < 8) return err('Mot de passe trop court (8 caractères minimum)');
+    const b = t.closest('#clgo'); b.disabled = true; b.textContent = '…';
+    try { if (CLD.mode === 'up') { const nm = ($('#clname').value || '').trim().slice(0, 24); if (nm) { accU().name = nm; save(); }
+        const r = await clSignUp(mail, pw, nm); if (r === 'confirm') { CLD.mode = 'in'; clUi(); err(''); toast('📧 Compte créé : ouvrez le lien reçu par e-mail pour le confirmer, puis connectez-vous'); const n = $('#accl .acnote'); if (n) n.innerHTML = '📧 <b>Presque fini !</b> Un e-mail de confirmation vient de partir vers ' + esc(mail) + '. Ouvrez le lien, puis connectez-vous ici.'; return; } }
+      else await clSignIn(mail, pw);
+      accRender(); clUi();
+    } catch (x) { err(x.message); b.disabled = false; b.textContent = CLD.mode === 'up' ? '✨ Créer mon compte' : '☁️ Se connecter'; } return; }
+  if (t.closest('#clforgot')) { const mail = ($('#clmail').value || '').trim(); if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) return err('Saisissez d\'abord votre e-mail'); try { await clRecover(mail); err(''); toast('📧 E-mail envoyé : suivez le lien pour choisir un nouveau mot de passe'); } catch (x) { err(x.message); } return; }
+  if (t.closest('#clnpwgo')) { const pw = $('#clnpw').value; if (pw.length < 8) return err('8 caractères minimum'); try { const tok = await clToken(); const r = await fetchT(SB.url + '/auth/v1/user', 12000, { method: 'PUT', headers: { apikey: SB.key, Authorization: 'Bearer ' + tok, 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }) }); if (!r.ok) throw new Error(clMsg(await r.json().catch(() => null), r.status)); CLD.pwReset = false; toast('🔑 Mot de passe changé'); clAfterLogin(false); } catch (x) { err(x.message); } return; }
+  if (t.closest('#clsync')) return sync(true);
+  if (t.closest('#clout')) { await clSignOut(); toast('☁️ Déconnecté : vos données restent sur ce téléphone'); return; }
+  if (t.closest('#cldel')) { if (!confirm('Supprimer définitivement votre compte en ligne ? Vos sentiers publics restent sur la carte (sans votre nom) ; votre carnet en ligne et vos photos en ligne sont effacés. Les données de ce téléphone sont conservées.')) return;
+    try { const S = syLoad(); for (const id of Object.keys(S.ph)) { try { await sb(`/storage/v1/object/photos/${CLD.s.user.id}/${id}`, { method: 'DELETE' }); } catch (x) {} }
+      await sb('/rest/v1/rpc/delete_my_account', { method: 'POST', json: {} }); await clSignOut(); toast('Compte supprimé'); }
+    catch (x) { toast(x.status === 404 ? '⚠️ Suppression bientôt disponible : écrivez-nous pour supprimer votre compte' : '⚠️ ' + x.message); } return; }
+});
+
 $('#imp').onclick = () => $('#fi').click();
 const sdLabel = () => $('#socdm').innerHTML = sw('Aperçu social : exemples de promeneurs et copains sur les balades', socPrev); sdLabel();
 $('#socdm').onclick = () => { socPrev = !socPrev; try { localStorage.setItem('cartodog-socdemo', socPrev ? '1' : '0'); } catch (e) {} SLV.t = 0; sdLabel(); schedule(); };
@@ -3022,7 +3206,7 @@ function accRender() {
   $('#acpn').value = u.name; $('#acpc').value = u.city;
   document.querySelectorAll('#acvis [data-v]').forEach(b => b.classList.toggle('on', b.dataset.v === u.vis));
   $('#acpres').innerHTML = sw('Montrer ma présence sur les balades', u.pres); $('#acstat').innerHTML = sw('Partager mes stats (km, niveau) avec mes copains', u.stats);
-  $('#acver').textContent = 'Version ' + APP_V;
+  $('#acver').textContent = 'Version ' + APP_V; try { clUi(); } catch (e) {}
 }
 document.querySelectorAll('#menu [data-acp]').forEach(b => b.onclick = () => { accPage(b.dataset.acp); bkStat(); });
 $('#bksh').onclick = () => bkShare();
