@@ -2818,7 +2818,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-115';
+const APP_V = '2026.10.25-116';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2979,7 +2979,7 @@ function who(id) { const f = FR_().find(x => x.id === id); if (f) return f; cons
   return { id, grp: 1, ic: g.ic, d: g.name, n: ms.length + ' copain' + (ms.length > 1 ? 's' : ''), c: '#8a6a3a', st: ms.some(x => x.st === 'walk') ? 'walk' : ms.some(x => x.st === 'on') ? 'on' : 'off', ms }; }
 const grpStack = ms => `<span class="scps">${ms.slice(0, 4).map(f => socAv(f, 'sm')).join('')}${ms.length > 4 ? `<span class="scav sm more">+${ms.length - 4}</span>` : ''}</span>`;
 function grpRows() { const G = grpAll();
-  return `<div class="mh">👥 Groupes${G.length ? ' · ' + G.length : ''}</div><div class="acg">${G.map(g => { const w = who(g.id); return `<button class="scr scgrr" data-grp="${g.id}"><span class="scgi">${g.ic}</span><span class="act"><b>${esc(g.name)}</b><small>${w.ms.length ? grpStack(w.ms) : 'Aucun copain pour l\'instant'}</small></span><i class="scgo">›</i></button>`; }).join('')}<button class="scr scgnew" data-grpnew="1"><span class="scgi">＋</span><span class="act"><b>Nouveau groupe</b><small>Ex. « Balade du dimanche », « Les chiens du Taillan »</small></span></button></div>`; }
+  return `<div class="mh">👥 Groupes${G.length ? ' · ' + G.length : ''}</div><div class="acg">${G.map(g => { const w = who(g.id); return `<button class="scr scgrr" data-grp="${g.id}"><span class="scgi">${g.ic}</span><span class="act"><b>${esc(g.name)}</b><small>${w.ms.length ? grpStack(w.ms) : 'Aucun copain pour l\'instant'}</small></span><i class="scgo">›</i></button>`; }).join('')}<button class="scr scgnew" data-grpnew="1"><span class="scgi">＋</span><span class="act"><b>Nouveau groupe</b></span></button></div>`; }
 const grpPick = (L, sel) => L.length ? `<div class="acg scgl">${L.map(f => `<button class="scr" data-gpick="${f.id}"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}</b></span><i class="scck${sel.includes(f.id) ? ' on' : ''}">${sel.includes(f.id) ? '✓' : ''}</i></button>`).join('')}</div>` : '<div class="hint" style="padding:10px">Tous vos copains sont déjà dans ce groupe.</div>';
 function grpNew() {      // création : nom + icône + copains à inviter, puis « Créer le groupe »
   const n = SOC.gnew ||= { name: '', ic: GIC[grpAll().length % GIC.length], m: [] }, F = FR_();
