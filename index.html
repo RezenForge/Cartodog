@@ -1119,6 +1119,10 @@ body:has(#menu.open) header.bar{z-index:23}
 @media (prefers-reduced-motion:reduce){.mqn.mq>.mqi{animation:none}}
 
 .apon{color:var(--ember2)}.aperr{display:block;font-size:11px;color:#ffb0a0}.apcar{display:block;margin-top:6px;font:700 12.5px var(--num);color:var(--txt)}.apcar a{color:var(--ember2);font-weight:800}
+
+.apb{display:flex;flex-wrap:wrap;align-items:center;gap:5px 8px;margin-top:6px;font:600 12.5px var(--num);color:var(--txt)}.apb b{color:#fff1cf}
+.apm{display:inline-flex;gap:4px}.apm button{padding:4px 9px;border:2px solid var(--edge);border-radius:12px;background:#14110e;box-shadow:inset 0 0 0 1px #3a332a;color:var(--mut);font:800 12px var(--num);cursor:pointer}.apm button.on{background:linear-gradient(#f4c862,#c6862a);color:#2a1806;border-color:#0e0c09}
+.aps{flex:1 1 auto;min-width:0}.apext{flex:1 0 100%;font-size:12px;color:var(--mut)}.apext a{color:var(--ember2);font-weight:800}
 </style></head><body>
 <header class="bar win dg"><button class="hdog" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span></button><button class="hbr brand" id="hbr" aria-label="Cartodog : profil de mon chien"><span class="hinf"><b>Cartodog</b><small id="hsub">Carnet de balade</small></span></button><button class="hset" id="mn" aria-label="Mon compte"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><circle cx="16" cy="16" r="14.5" fill="#2a2018" stroke="#8a6a3a" stroke-width="1"/><circle cx="16" cy="12.4" r="5.4" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2"/><path d="M6.6 26.2c1.3-5.2 5-8 9.4-8s8.1 2.8 9.4 8a14.4 14.4 0 0 1-18.8 0z" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2" stroke-linejoin="round"/></svg></button><b id="hnm" hidden></b>
 <small id="ssn" hidden></small>
@@ -2336,9 +2340,9 @@ function lpUi() {
       <div class="lps">${BL.park ? '🅿 ' + esc(BL.pname) : '📍 Retour au point de départ'}${rp >= 30 ? ` · ${rp} % en aller-retour` : ''}</div>${short ? '<div class="lpz lim">Les sentiers ne permettent pas plus long</div>' : ''}` + dzt;
   if (BL.wait && !BR.on) { const d = startDist(), q = BL.poly[0];
     let dir = ''; if (me && isFinite(d)) { const bz = (Math.atan2(q[0] - me.x, q[1] - me.y) * 180 / Math.PI + 360) % 360, i = Math.round(bz / 45) % 8; dir = ' ' + ['↑', '↗', '→', '↘', '↓', '↙', '←', '↖'][i] + ' ' + ['nord', 'nord-est', 'est', 'sud-est', 'sud', 'sud-ouest', 'ouest', 'nord-ouest'][i]; }
-    const apl = AP.on && AP.poly && AP.tag === 'loop' ? apLeft() : null;
-    $('#lpt').innerHTML = `<div class="lpk"><b>${me ? fmtDist(apl != null ? apl : d) : '…'}</b><small>${me ? (apl != null ? '🚶 ≈ ' + Math.max(1, Math.round(apl / 75)) + ' min à pied' : dir) : 'recherche du GPS'}</small></div>
-      <div class="lps">En route vers ${BL.park ? '🅿 <b>' + esc(BL.pname) + '</b>' : 'le départ de la boucle'}${AP.on && AP.poly && AP.tag === 'loop' ? ' · <b class="apon">par les rues</b>' : AP.busy && AP.tag === 'loop' ? ' · <span class="apon">🚶 calcul de l\'itinéraire par les rues…</span>' : AP.err && AP.tag === 'loop' ? ` · itinéraire par les rues indisponible <small class="aperr">(${esc(AP.errm || 'réseau ?')})</small>` : ''} · la sortie démarrera toute seule à l'arrivée</div>${AP.on && AP.car && AP.tag === 'loop' && me ? apCarLinks() : ''}`;
+    const apl = AP.on && AP.tag === 'loop' && AP.poly ? apLeft() : null;
+    $('#lpt').innerHTML = `<div class="lpk"><b>${me ? fmtDist(apl != null ? apl : d) : '…'}</b><small>${me ? (apl != null ? (AP.mode === 'car' ? '🚗 par la route' : '🚶 par les rues') : dir) : 'recherche du GPS'}</small></div>
+      <div class="lps">En route vers ${BL.park ? '🅿 <b>' + esc(BL.pname) + '</b>' : 'le départ de la boucle'} · la sortie démarrera toute seule à l'arrivée</div>${AP.tag === 'loop' ? apBlock() : ''}`;
     $('#lpgo').textContent = '▶'; $('#lpgo').setAttribute('aria-label', 'Démarrer ici sans attendre'); $('#lpgo').classList.add('lpw'); $('#lpn').hidden = true; $('#lpd').hidden = false; return draw(); }
   $('#lpgo').textContent = '▶'; $('#lpgo').setAttribute('aria-label', 'Partir'); $('#lpgo').classList.remove('lpw');
   $('#lpd').hidden = !!BR.on;
@@ -2433,11 +2437,19 @@ $('#lpn').onclick = () => { if (BL.wait || !BL.net) return; const l = balPick(ba
 const START_R = 60;      // rayon autour du départ (parking ou début de boucle) où la sortie démarre
 const startDist = () => me && BL.poly ? rdist([me.x, me.y], BL.poly[0]) : Infinity;
 
-/* ===== Approche par les rues (IGN Géoplateforme, itinéraire piéton) : de chez vous jusqu'au parking / à l'entrée des sentiers =====
-   Au-delà de 3 km : proposé en voiture via Google Maps ou Waze. Les rues ne servent qu'à ce trajet ; les balades restent faites de vos sentiers. */
-const AP = { on: false, poly: null, to: null, tag: '', t: 0, turns: [], said: new Set(), car: false, busy: false, name: '' };
+/* ===== Approche jusqu'à la balade : à pied (par les rues) ou en voiture (jusqu'au parking choisi) =====
+   Itinéraire IGN Géoplateforme (valhalla, sinon pgRouting), secours OpenStreetMap (FOSSGIS). Les rues ne servent qu'à ce trajet ; les balades restent faites de vos sentiers. */
+const AP = { on: false, mode: 'foot', ft: null, ct: null, to: null, poly: null, tag: '', name: '', cname: '', t: 0, turns: [], said: new Set(), busy: false, err: false, errm: '', pending: false, dist: 0, dur: 0, seq: 0 };
 const AP_FOOT = 3000;
-function apClear(tag) { if (tag && AP.tag !== tag) return; Object.assign(AP, { on: false, poly: null, to: null, tag: '', turns: [], car: false, busy: false, err: false, errm: '' }); AP.said = new Set(); schedule(); }
+function apClear(tag) { if (tag && AP.tag !== tag) return; Object.assign(AP, { on: false, ft: null, ct: null, to: null, poly: null, tag: '', turns: [], busy: false, err: false, errm: '', pending: false, dist: 0, dur: 0 }); AP.seq++; AP.said = new Set(); schedule(); }
+function apStart(tag, ft, ct, name, cname) {      // ft = cible à pied (départ / entrée des sentiers), ct = cible en voiture (parking)
+  apClear(); Object.assign(AP, { on: true, tag, ft, ct: ct || null, name: name || '', cname: cname || '' });
+  let pref = ''; try { pref = sessionStorage.getItem('cartodog-apm') || ''; } catch (e) {}
+  AP.mode = pref === 'car' && AP.ct ? 'car' : pref === 'foot' ? 'foot' : me && rdist([me.x, me.y], ft) > AP_FOOT && AP.ct ? 'car' : 'foot';
+  apFetch();
+}
+function apSetMode(m) { if (!AP.on) return; AP.mode = m === 'car' && AP.ct ? 'car' : 'foot'; try { sessionStorage.setItem('cartodog-apm', AP.mode); } catch (e) {} apFetch(); }
+function apRefresh() { if (AP.tag === 'loop') lpUi(); if (AP.tag === 'rt') { try { rtUi(); } catch (x) {} } schedule(); }
 function apTurns(P) {      // virages : changement de cap > 35° mesuré sur ±12 m (évite le bruit des petits segments)
   const T = [], at = (i, dir) => { let j = i, d = 0; while (j + dir >= 0 && j + dir < P.length && d < 12) { d += rdist(P[j], P[j + dir]); j += dir; } return P[j]; };
   for (let i = 1; i < P.length - 1; i++) { const a = at(i, -1), c = at(i, 1), b = P[i], v1 = [b[0] - a[0], b[1] - a[1]], v2 = [c[0] - b[0], c[1] - b[1]], n1 = Math.hypot(...v1), n2 = Math.hypot(...v2); if (!n1 || !n2) continue;
@@ -2446,52 +2458,64 @@ function apTurns(P) {      // virages : changement de cap > 35° mesuré sur ±1
   return T;
 }
 const apLL = q => toLL(q[0], q[1]).map(v => +v.toFixed(6));
-async function apFetch(to, tag, name) {
-  if (!me || !to) return; const d = rdist([me.x, me.y], to); AP.tag = tag; AP.to = to; AP.name = name || ''; AP.t = Date.now();
-  if (d < 120) { apClear(); return; }
-  if (d > AP_FOOT) { Object.assign(AP, { on: true, car: true, poly: null, turns: [] }); schedule(); if (tag === 'loop') lpUi(); if (tag === 'rt') { try { rtUi(); } catch (x) {} } return; }
-  if (AP.busy) return; AP.busy = true; const [la0, lo0] = apLL([me.x, me.y]), [la1, lo1] = apLL(to);
-  AP.err = false; if (tag === 'loop') lpUi();
-  try { let j = null;
-    const why = []; AP.errm = '';
-    for (const res of ['bdtopo-valhalla', 'bdtopo-pgr']) {      // IGN (la ressource « osrm » a été retirée) : valhalla, sinon pgRouting
-      try { const r = await fetchT(`https://data.geopf.fr/navigation/itineraire?resource=${res}&profile=pedestrian&optimization=fastest&start=${lo0},${la0}&end=${lo1},${la1}&geometryFormat=geojson&getSteps=false&crs=EPSG:4326`, 12000);
-        if (r.ok) { j = await r.json(); if (j && j.geometry && j.geometry.coordinates && j.geometry.coordinates.length > 1) break; why.push('IGN ' + res.slice(7) + ' : réponse vide'); } else why.push('IGN ' + res.slice(7) + ' : erreur ' + r.status); j = null; } catch (x) { why.push('IGN ' + res.slice(7) + ' : ' + (x.name === 'AbortError' ? 'trop long' : 'bloqué')); j = null; } }
-    if (!j) try {      // secours : routeur piéton OpenStreetMap (FOSSGIS, utilisé par openstreetmap.org)
-      const r = await fetchT(`https://routing.openstreetmap.de/routed-foot/route/v1/foot/${lo0},${la0};${lo1},${la1}?overview=full&geometries=geojson&steps=false`, 12000);
-      if (r.ok) { const o = await r.json(), rt = o && o.routes && o.routes[0]; if (rt && rt.geometry && rt.geometry.coordinates.length > 1) j = { geometry: rt.geometry, distance: rt.distance }; else why.push('OSM : aucun trajet'); } else why.push('OSM : erreur ' + r.status);
-    } catch (x) { why.push('OSM : ' + (x.name === 'AbortError' ? 'trop long' : 'bloqué')); }
-    AP.errm = j ? '' : why.join(' · ');
-    const c = j && j.geometry && j.geometry.coordinates; if (!c || c.length < 2 || AP.tag !== tag) throw new Error('geo');
-    const P = c.map(([lo, la]) => toM(la, lo)); P.push(to); Object.assign(AP, { on: true, car: false, poly: P, turns: apTurns(P), dist: j.distance || P.reduce((a, q, i) => i ? a + rdist(P[i - 1], q) : 0, 0) }); AP.said = new Set();
-    say(`Itinéraire par les rues : ${fmtDist(AP.dist).replace(' km', ' kilomètres').replace(' m', ' mètres')} jusqu'${AP.name ? 'à ' + AP.name : 'au départ'}.`);
-  } catch (e) { if (AP.tag === tag) { AP.on = false; AP.poly = null; AP.err = true; } } finally { AP.busy = false; schedule(); if (tag === 'loop') lpUi(); if (tag === 'rt') { try { rtUi(); } catch (x) {} } }
+async function apRoute(from, to, car) {      // → { coords: [[lon, lat]…], distance, duration } ou { why }
+  const [la0, lo0] = apLL(from), [la1, lo1] = apLL(to), why = [];
+  for (const res of ['bdtopo-valhalla', 'bdtopo-pgr']) {
+    try { const r = await fetchT(`https://data.geopf.fr/navigation/itineraire?resource=${res}&profile=${car ? 'car' : 'pedestrian'}&optimization=fastest&start=${lo0},${la0}&end=${lo1},${la1}&geometryFormat=geojson&getSteps=false`, 12000);
+      if (r.ok) { const j = await r.json(), c = j && j.geometry && j.geometry.coordinates; if (c && c.length > 1) return { coords: c, distance: +j.distance || 0, duration: (j.timeUnit === 'minute' ? 60 : j.timeUnit === 'hour' ? 3600 : 1) * (+j.duration || 0) }; why.push('IGN ' + res.slice(7) + ' : vide'); }
+      else why.push('IGN ' + res.slice(7) + ' : erreur ' + r.status); } catch (x) { why.push('IGN ' + res.slice(7) + ' : ' + (x.name === 'AbortError' ? 'trop long' : 'bloqué')); } }
+  try { const r = await fetchT(`https://routing.openstreetmap.de/routed-${car ? 'car' : 'foot'}/route/v1/${car ? 'driving' : 'foot'}/${lo0},${la0};${lo1},${la1}?overview=full&geometries=geojson&steps=false`, 12000);
+    if (r.ok) { const o = await r.json(), rt = o && o.routes && o.routes[0]; if (rt && rt.geometry && rt.geometry.coordinates.length > 1) return { coords: rt.geometry.coordinates, distance: rt.distance, duration: rt.duration }; why.push('OSM : aucun trajet'); } else why.push('OSM : erreur ' + r.status);
+  } catch (x) { why.push('OSM : ' + (x.name === 'AbortError' ? 'trop long' : 'bloqué')); }
+  return { why: why.join(' · ') };
 }
-function apLeft() {      // distance restante par les rues
+async function apFetch() {
+  if (!AP.on) return; const car = AP.mode === 'car', to = car ? AP.ct || AP.ft : AP.ft; AP.to = to; AP.t = Date.now(); AP.poly = null; AP.turns = []; AP.said = new Set(); AP.err = false; AP.errm = '';
+  if (!me) { AP.pending = true; return apRefresh(); } AP.pending = false;
+  if (rdist([me.x, me.y], to) < (car ? 80 : 120)) { AP.poly = null; return apRefresh(); }      // déjà tout près : pas d'itinéraire
+  const seq = ++AP.seq; AP.busy = true; apRefresh();
+  const r = await apRoute([me.x, me.y], to, car); if (seq !== AP.seq || !AP.on) return; AP.busy = false;
+  if (r.coords) { const P = r.coords.map(([lo, la]) => toM(la, lo)); P.push(to); Object.assign(AP, { poly: P, turns: apTurns(P), dist: r.distance || P.reduce((a, q, i) => i ? a + rdist(P[i - 1], q) : 0, 0), dur: r.duration || 0 });
+    say(`Itinéraire ${car ? 'en voiture' : 'à pied'} : ${fmtDist(AP.dist).replace(' km', ' kilomètres').replace(' m', ' mètres')} jusqu'${car ? (AP.cname ? 'au parking ' + AP.cname : 'au parking') : (AP.name || 'au départ')}.`); }
+  else { AP.err = true; AP.errm = r.why; }
+  apRefresh();
+}
+function apLeft() {      // distance restante le long de l'itinéraire
   if (!AP.poly || !me) return null; const here = [me.x, me.y]; let bi = 1, bd = Infinity, bq = AP.poly[0];
   for (let i = 1; i < AP.poly.length; i++) { const pr = segProj(here, AP.poly[i - 1], AP.poly[i]); if (pr.d < bd) { bd = pr.d; bi = i; bq = pr.q; } }
   let L = rdist(here, bq) + rdist(bq, AP.poly[bi]); for (let i = bi + 1; i < AP.poly.length; i++) L += rdist(AP.poly[i - 1], AP.poly[i]); return L; }
-function apTick() {      // à chaque position : virages annoncés, arrivée, recalcul si on s'écarte
-  if (!AP.on || !me || AP.car || !AP.poly) return; const here = [me.x, me.y];
-  if (rdist(here, AP.to) < 30) { const tg = AP.tag; apClear(); if (tg === 'loop') lpUi(); return; }
-  let dmin = Infinity; for (let i = 1; i < AP.poly.length; i++) { const a = AP.poly[i - 1], b = AP.poly[i], pr = segProj(here, a, b); if (pr && pr.d < dmin) dmin = pr.d; }
-  if (dmin * cosAt(me.y) > 45 && Date.now() - AP.t > 20000 && me.acc < 40) { AP.t = Date.now(); return apFetch(AP.to, AP.tag, AP.name); }
-  AP.turns.forEach((t, i) => { const d = rdist(here, t.q); if (d < 35 && d > 6 && !AP.said.has(i)) { AP.said.add(i); say(`Dans ${Math.max(10, Math.round(d / 5) * 5)} mètres, tournez à ${t.l ? 'gauche' : 'droite'}.`); } });
+function apTick() {      // à chaque position : itinéraire en attente du GPS, virages annoncés, arrivée, recalcul si on s'écarte
+  if (!AP.on || !me) return; if (AP.pending) return apFetch(); if (!AP.poly || AP.busy) return; const here = [me.x, me.y], car = AP.mode === 'car';
+  if (rdist(here, AP.to) < (car ? 60 : 30)) {
+    if (car && AP.ft && rdist(here, AP.ft) > 120) { say('Vous êtes au parking. Garez-vous, puis je vous guide à pied jusqu\'au départ.'); toast('🅿 Arrivé au parking : la suite se fait à pied'); AP.mode = 'foot'; try { sessionStorage.setItem('cartodog-apm', 'foot'); } catch (e) {} return apFetch(); }
+    if (car) { say('Vous êtes au parking.'); toast('🅿 Arrivé au parking'); } AP.poly = null; return apRefresh(); }
+  let dmin = Infinity; for (let i = 1; i < AP.poly.length; i++) { const pr = segProj(here, AP.poly[i - 1], AP.poly[i]); if (pr.d < dmin) dmin = pr.d; }
+  if (dmin * cosAt(me.y) > (car ? 80 : 45) && Date.now() - AP.t > (car ? 12000 : 20000) && me.acc < 50) return apFetch();
+  AP.turns.forEach((t, i) => { const d = rdist(here, t.q), dir = t.l ? 'gauche' : 'droite';
+    if (car) { if (d < 220 && d > 70 && !AP.said.has(i + 'a')) { AP.said.add(i + 'a'); say(`Dans ${Math.round(d / 50) * 50} mètres, tournez à ${dir}.`); } else if (d < 45 && !AP.said.has(i + 'b')) { AP.said.add(i + 'b'); AP.said.add(i + 'a'); say(`Tournez à ${dir}.`); } }
+    else if (d < 35 && d > 6 && !AP.said.has(i)) { AP.said.add(i); say(`Dans ${Math.max(10, Math.round(d / 5) * 5)} mètres, tournez à ${dir}.`); } });
 }
 function drawAP(sx, sy) {
-  if (!AP.on || !AP.poly) return; g.save(); g.lineCap = 'round'; g.lineJoin = 'round'; const tr = (w, col, dash) => { g.beginPath(); g.setLineDash(dash); AP.poly.forEach((q, i) => i ? g.lineTo(sx(q[0]), sy(q[1])) : g.moveTo(sx(q[0]), sy(q[1]))); g.lineWidth = w; g.strokeStyle = col; g.stroke(); };
-  tr(9, 'rgba(14,11,8,.55)', []); tr(4.5, '#ffd27a', [2, 9]); g.setLineDash([]);
-  AP.turns.forEach(t => { const x = sx(t.q[0]), y = sy(t.q[1]); g.beginPath(); g.arc(x, y, 4.5, 0, 7); g.fillStyle = '#ffd27a'; g.fill(); g.lineWidth = 2; g.strokeStyle = '#1a1208'; g.stroke(); });
+  if (!AP.on || !AP.poly) return; const car = AP.mode === 'car'; g.save(); g.lineCap = 'round'; g.lineJoin = 'round'; const tr = (w, col, dash) => { g.beginPath(); g.setLineDash(dash); AP.poly.forEach((q, i) => i ? g.lineTo(sx(q[0]), sy(q[1])) : g.moveTo(sx(q[0]), sy(q[1]))); g.lineWidth = w; g.strokeStyle = col; g.stroke(); };
+  if (car) { tr(10, 'rgba(14,11,8,.6)', []); tr(5.5, '#ffd27a', []); tr(1.6, '#8a5a1a', [6, 8]); } else { tr(9, 'rgba(14,11,8,.55)', []); tr(4.5, '#ffd27a', [2, 9]); }
+  g.setLineDash([]); AP.turns.forEach(t => { const x = sx(t.q[0]), y = sy(t.q[1]); g.beginPath(); g.arc(x, y, 4.5, 0, 7); g.fillStyle = '#ffd27a'; g.fill(); g.lineWidth = 2; g.strokeStyle = '#1a1208'; g.stroke(); });
   g.restore();
 }
-const apCarLinks = () => { if (!AP.to) return ''; const [la, lo] = apLL(AP.to); return `<span class="apcar">🚗 À ${fmtDist(rdist([me.x, me.y], AP.to))} : <a href="https://www.google.com/maps/dir/?api=1&destination=${la},${lo}&travelmode=driving" target="_blank" rel="noopener">Google Maps</a> · <a href="https://waze.com/ul?ll=${la},${lo}&navigate=yes" target="_blank" rel="noopener">Waze</a></span>`; };
+function apBlock() {      // bloc d'infos commun (panneau « En route vers… » et itinéraire « Y aller »)
+  if (!AP.on) return ''; const car = AP.mode === 'car', left = AP.poly ? apLeft() : null;
+  const chips = `<span class="apm"><button data-apm="foot" class="${car ? '' : 'on'}">🚶 À pied</button>${AP.ct ? `<button data-apm="car" class="${car ? 'on' : ''}">🚗 En voiture</button>` : ''}</span>`;
+  let st = AP.pending ? 'en attente du GPS…' : AP.busy ? 'calcul de l\'itinéraire…' : AP.err ? `itinéraire indisponible <small class="aperr">(${esc(AP.errm || 'réseau ?')})</small>` : AP.poly && left != null ? `${AP.tag === 'loop' ? '' : '<b>' + fmtDist(left) + '</b> · '}≈ ${Math.max(1, Math.round(car ? (AP.dur && AP.dist ? left / AP.dist * AP.dur : left / 9) / 60 : left / 75))} min ${car ? 'en voiture' : 'à pied'}` : car ? 'vous êtes au parking' : 'vous y êtes presque';
+  let ext = ''; if (car && AP.to) { const [la, lo] = apLL(AP.ct || AP.to); ext = ` <span class="apext">Ouvrir dans <a href="https://www.google.com/maps/dir/?api=1&destination=${la},${lo}&travelmode=driving" target="_blank" rel="noopener">Maps</a> · <a href="https://waze.com/ul?ll=${la},${lo}&navigate=yes" target="_blank" rel="noopener">Waze</a></span>`; }
+  return `<div class="apb">${chips}<span class="aps">${car ? '🚗' : '🚶'} ${st}</span>${ext}</div>`;
+}
+document.addEventListener('click', e => { const b = e.target.closest('[data-apm]'); if (b) apSetMode(b.dataset.apm); });
 function balGo() { apClear('loop'); BL.wait = false; BR.bal0 = BL.g.name; brStart(); voxPlan(); say('C\u2019est parti pour ' + fmtDist(BL.tot).replace(' km', ' kilomètres').replace(' m', ' mètres') + '. Je vous indiquerai les changements de direction.'); lpUi(); }
 $('#lpgo').onclick = () => {
   if (BL.wait) return balGo();      // « Démarrer quand même »
   if (startDist() <= Math.max(START_R, me ? Math.min(me.acc, 100) : 0)) return balGo();
   BL.wait = true; if (watch === null) startLoc(); try { navigator.vibrate && navigator.vibrate(40); } catch (e) {}
   const q = BL.poly[0]; if (me) { const xs = [me.x, q[0]], ys = [me.y, q[1]], W = cv.clientWidth, H = cv.clientHeight; flyXY((xs[0] + xs[1]) / 2, (ys[0] + ys[1]) / 2, Math.max(1, Math.abs(xs[1] - xs[0]) / (W * .7), Math.abs(ys[1] - ys[0]) / (H * .5)), 700); }
-  lpUi(); toast('📍 La sortie démarrera toute seule en arrivant ' + (BL.park ? 'au parking' : 'au départ')); apFetch(q, 'loop', BL.park ? 'au parking ' + (BL.pname || '') : '');
+  lpUi(); toast('📍 La sortie démarrera toute seule en arrivant ' + (BL.park ? 'au parking' : 'au départ')); apStart('loop', q, BL.park ? [BL.park.x, BL.park.y] : null, BL.park ? 'au parking ' + (BL.pname || '') : '', BL.pname || '');
 };
 function balWaitTick() {      // appelé à chaque position GPS
   if (!BL.wait || !BL.poly || BR.on) return;
@@ -2620,17 +2644,18 @@ function rtCompute() {
   RT.tg.slice(RT.i).forEach((t, i) => { const l = legsFrom(cur, [t])[0]; RT.polys.push(l.direct ? [] : l.poly); RT.offs.push(...l.offs.map(o => [o, i])); RT.ld.push(l.d); RT.dir.push(l.direct); RT.tot += l.d; RT.off += l.off; if (!i) RT.offA = l.offA || 0; cur = [t.x, t.y]; });
 }
 function rtUi() {
-  const rest = RT.tg.slice(RT.i), mins = Math.max(1, Math.round(RT.tot / 55)), nm = (t, i) => t.name || 'Point ' + (RT.i + i + 1);
+  const rest = RT.tg.slice(RT.i), TOT = RT.tot + (AP.on && AP.tag === 'rt' && AP.poly && AP.mode === 'foot' ? (RT.dir[0] ? AP.dist - RT.tot : AP.dist - RT.offA) : 0), mins = Math.max(1, Math.round(TOT / 55)), nm = (t, i) => t.name || 'Point ' + (RT.i + i + 1);
   if (!rest.length) return;
-  $('#rtt').innerHTML = rest.length === 1 ? `🧭 <b>${esc(nm(rest[0], 0))}</b> · ${fmtDist(RT.tot)} · ≈ ${mins} min` : `🧭 <b>Tournée</b> · ${rest.length} points · ${fmtDist(RT.tot)} · ≈ ${mins} min`;
+  $('#rtt').innerHTML = rest.length === 1 ? `🧭 <b>${esc(nm(rest[0], 0))}</b> · ${fmtDist(TOT)} · ≈ ${mins} min` : `🧭 <b>Tournée</b> · ${rest.length} points · ${fmtDist(TOT)} · ≈ ${mins} min`;
   $('#rts').innerHTML = '<small>' + (rest.length > 1 ? `Prochain : ${esc(nm(rest[0], 0))} · ${fmtDist(RT.ld[0])}${rest[1] ? ' → ' + esc(nm(rest[1], 1)) : ''}${rest.length > 2 ? ' …' : ''}<br>` : '') + (RT.dir[0] ? 'Aucun sentier utile à proximité : ligne droite à travers bois (pointillés).' : RT.offA > 15 ? `Rejoignez d'abord le sentier à ${fmtDist(RT.offA)} (pointillés), puis suivez le tracé bleu.` : RT.off > 15 ? `Par vos sentiers, puis ${fmtDist(RT.off)} hors sentier jusqu'au point (pointillés).` : 'Par vos sentiers.') + '</small>';
   $('#rtn').hidden = rest.length < 2;
-  if (AP.err && AP.tag === 'rt') $('#rts').innerHTML += `<small class="aperr">🚶 Itinéraire par les rues indisponible (${esc(AP.errm || 'réseau ?')})</small>`;
-  if (AP.on && AP.tag === 'rt') { if (AP.car && me) $('#rts').innerHTML += apCarLinks(); else if (AP.poly) $('#rts').innerHTML = `<small>🚶 <b class="apon">Par les rues</b> jusqu'${RT.dir[0] ? 'à l\'arrivée' : 'au sentier'} (pointillés dorés), virages annoncés${RT.dir[0] ? '' : ', puis suivez le tracé bleu'}.</small>`; }
+  if (AP.on && AP.tag === 'rt') $('#rts').innerHTML = `<small>${AP.mode === 'car' ? '🚗 En voiture jusqu\'au parking ' + esc(AP.cname || '') + ', puis à pied' : RT.dir[0] ? '🚶 Par les rues jusqu\'à l\'arrivée' : '🚶 Par les rues jusqu\'au sentier (pointillés dorés), puis suivez le tracé bleu'}.</small>` + apBlock();
 }
 function startRoute(tg) {
   fxa({ k: 'route', key: 0, dur: 1100 }); RT.on = true; RT.tg = tg; RT.i = 0; RT.t = Date.now(); $('#rt').hidden = false; $('#rtb').classList.add('on'); rtCompute(); rtUi();
-  { const o = (RT.offs || []).find(x => x[1] === 0), ent = RT.dir[0] ? [tg[0].x, tg[0].y] : o && RT.offA > 120 ? o[0][1] : null; if (ent) apFetch(ent, 'rt', RT.dir[0] ? (tg[0].name || '') : 'à l\'entrée des sentiers'); else apClear('rt'); }
+  { const o = (RT.offs || []).find(x => x[1] === 0), ent = RT.dir[0] ? [tg[0].x, tg[0].y] : o && RT.offA > 120 ? o[0][1] : null;      // loin des sentiers : approche à pied par les rues, ou en voiture jusqu'au parking le plus proche
+    let pk = null; try { const gg = tg[0].k && cellGroup(tg[0].k), L = gg ? balParks(gg) : []; if (L.length && me) pk = L.reduce((a, b2) => rdist([me.x, me.y], [b2.m.x, b2.m.y]) < rdist([me.x, me.y], [a.m.x, a.m.y]) ? b2 : a); } catch (x) {}
+    if (ent || (pk && me && rdist([me.x, me.y], [pk.m.x, pk.m.y]) > AP_FOOT)) apStart('rt', ent || [pk.m.x, pk.m.y], pk ? [pk.m.x, pk.m.y] : null, RT.dir[0] ? (tg[0].name || '') : 'à l\'entrée des sentiers', pk ? pk.name : ''); else apClear('rt'); }
   const all = [...RT.polys.flat(), ...(RT.offs || []).flatMap(o => o[0])]; if (all.length) { const xs = all.map(q => q[0]), ys = all.map(q => q[1]), W = cv.clientWidth, H = cv.clientHeight;
     V.cx = (Math.min(...xs) + Math.max(...xs)) / 2; V.cy = (Math.min(...ys) + Math.max(...ys)) / 2; V.mpp = Math.max(1.5, (Math.max(...xs) - Math.min(...xs)) / (W * .8), (Math.max(...ys) - Math.min(...ys)) / (H * .7)); }
   draw();
@@ -2661,7 +2686,7 @@ function drawRoute(sx, sy) {
   if (!RT.on || !(RT.polys.length || (RT.offs || []).length)) return; g.save(); g.lineCap = 'round'; g.lineJoin = 'round';
   const tr = (poly, w, col, dash) => { g.beginPath(); g.setLineDash(dash || []); poly.forEach((q, i) => i ? g.lineTo(sx(q[0]), sy(q[1])) : g.moveTo(sx(q[0]), sy(q[1]))); g.lineWidth = w; g.strokeStyle = col; g.stroke(); };
   const rv = FX.length && fxOf('route', 0), rp = rv ? Math.min(1, Math.max(0, fxP(rv))) : 1;
-  g.globalAlpha = Math.min(1, rp * 2); (RT.offs || []).forEach(([[a, b], i]) => { if (!i && AP.on && AP.poly && AP.tag === 'rt' && rdist(a, [me ? me.x : a[0], me ? me.y : a[1]]) < 60) return; tr([a, b], 8, 'rgba(0,0,0,.4)', [1, 10]); tr([a, b], 4.5, i ? 'rgba(200,236,255,.8)' : '#d6f1ff', [1, 10]); }); g.globalAlpha = 1;      // raccords hors sentier : pointillés
+  g.globalAlpha = Math.min(1, rp * 2); (RT.offs || []).forEach(([[a, b], i]) => { if (!i && AP.on && AP.tag === 'rt' && (AP.poly || AP.busy) && rdist(a, [me ? me.x : a[0], me ? me.y : a[1]]) < 60) return; tr([a, b], 8, 'rgba(0,0,0,.4)', [1, 10]); tr([a, b], 4.5, i ? 'rgba(200,236,255,.8)' : '#d6f1ff', [1, 10]); }); g.globalAlpha = 1;      // raccords hors sentier : pointillés
   if (rp < 1) { const L = RT.polys.reduce((a, p) => a + p.reduce((s, q, i) => i ? s + Math.hypot(sx(q[0]) - sx(p[i - 1][0]), sy(q[1]) - sy(p[i - 1][1])) : 0, 0), 0); let left = L * EZ.out(rp);      // l'itinéraire se trace progressivement
     RT.polys.forEach(p => { const l = p.reduce((s, q, i) => i ? s + Math.hypot(sx(q[0]) - sx(p[i - 1][0]), sy(q[1]) - sy(p[i - 1][1])) : 0, 0), k = Math.max(0, Math.min(l, left)); left -= l; tr(p, 9, 'rgba(0,0,0,.45)', [k, l + 9]); tr(p, 5, '#19b5ff', [k, l + 9]); }); }
   else RT.polys.forEach((p, i) => { if (p.length < 2) return; tr(p, 9, 'rgba(0,0,0,.45)'); tr(p, 5, i ? 'rgba(160,225,255,.95)' : '#19b5ff', i ? [9, 8] : null); });
@@ -2758,7 +2783,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-103';
+const APP_V = '2026.10.25-104';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3867,7 +3892,7 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
     [op('balm'), () => { !$('#balb').hidden ? $('#balb').click() : balClose(); }],
     [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('srp'), () => srClose()], [op('soc'), () => { !$('#scgr').hidden ? grpBack() : !$('#scch').hidden ? chatClose() : !$('#scst').hidden ? ($('#scst').hidden = true) : !$('#scsh').hidden ? ($('#scsh').hidden = true) : socClose(); }], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
     [vis('shm'), () => shClose()], [() => RM, () => setRM(false)], [() => ED.on, () => edToggle(false)], [() => P.on && !RC.on, () => $('#pt').click()],
-    [() => !!BL.poly && !BR.on, () => { BL.wait = false; BL.poly = null; lpUi(); }], [() => !!sel, () => { const f = selFrom && selFrom.k === sel; const hub = f && selFrom.hub; selFrom = null; sel = null; collapse(); renderPanel(); draw(); if (f) hub ? balOpen() : $('#lb').click(); }]];
+    [() => !!BL.poly && !BR.on, () => { apClear('loop'); BL.wait = false; BL.poly = null; lpUi(); }], [() => !!sel, () => { const f = selFrom && selFrom.k === sel; const hub = f && selFrom.hub; selFrom = null; sel = null; collapse(); renderPanel(); draw(); if (f) hub ? balOpen() : $('#lb').click(); }]];
   let pushed = false, skip = 0, q = 0;
   const any = () => LAY.some(l => { try { return l[0](); } catch (e) { return false; } });
   const sync = () => { q = 0; const a = any(); if (a && !pushed) { pushed = true; try { history.pushState({ cdm: 1 }, ''); } catch (e) {} } else if (!a && pushed) { pushed = false; if (history.state && history.state.cdm) { skip++; history.back(); } } };
