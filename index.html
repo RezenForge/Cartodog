@@ -2406,7 +2406,8 @@ function voxPlan() {      // repère les carrefours de la boucle et la direction
     if (VOX.turns.length && i - VOX.turns[VOX.turns.length - 1].i < 2) continue; VOX.turns.push({ i, txt, ic, at: VOX.cum[i] }); }
 }
 function voxTick() {      // à chaque position GPS pendant une boucle guidée
-  if (!BR.on || !BR.bal || !BL.poly || !me || me.acc > 40 || !VOX.cum.length) return; const pts = BL.poly, k = cosAt(me.y), q = [me.x, me.y];
+  if (!BR.on || !BR.bal || !BL.poly || !me || me.acc > 40 || !VOX.cum.length) return; if (AP.on && AP.tag === 'loop' && AP.poly) return;      // encore en route vers la boucle : seules les indications d'approche parlent
+  const pts = BL.poly, k = cosAt(me.y), q = [me.x, me.y];
   let bi = -1, bd = Infinity; for (let i = Math.max(1, VOX.pi - 3); i < Math.min(pts.length, VOX.pi + 80); i++) { const d = segProj(q, pts[i - 1], pts[i]).d * k; if (d < bd) { bd = d; bi = i; } }
   if (bd > 40) { if (++VOX.off === 3) say('Vous vous éloignez du parcours'); return; } if (VOX.off >= 3) say('Vous êtes de retour sur le parcours'); VOX.off = 0;
   VOX.pi = Math.max(VOX.pi, bi - 1); const pos = VOX.cum[bi - 1] + rdist(pts[bi - 1], segProj(q, pts[bi - 1], pts[bi]).q), nx = VOX.turns.find(t => t.at > pos + 3); VOX.next = nx ? { ...nx, d: nx.at - pos } : null;
@@ -2441,7 +2442,7 @@ const startDist = () => me && BL.poly ? rdist([me.x, me.y], BL.poly[0]) : Infini
 /* ===== Approche jusqu'à la balade : à pied (par les rues) ou en voiture (jusqu'au parking choisi) =====
    Itinéraire IGN Géoplateforme (valhalla, sinon pgRouting), secours OpenStreetMap (FOSSGIS). Les rues ne servent qu'à ce trajet ; les balades restent faites de vos sentiers. */
 const AP = { on: false, mode: 'foot', ft: null, ct: null, to: null, poly: null, tag: '', name: '', cname: '', t: 0, turns: [], said: new Set(), busy: false, err: false, errm: '', pending: false, dist: 0, dur: 0, seq: 0 };
-const AP_FOOT = 3000;
+const AP_FOOT = 3000, apSay = t => { if (BR.on) say(t); };      // la voix reste muette tant que la sortie n'est pas lancée
 function apClear(tag) { if (tag && AP.tag !== tag) return; Object.assign(AP, { on: false, ft: null, ct: null, to: null, poly: null, tag: '', turns: [], busy: false, err: false, errm: '', pending: false, dist: 0, dur: 0 }); AP.seq++; AP.said = new Set(); schedule(); }
 function apStart(tag, ft, ct, name, cname) {      // ft = cible à pied (départ / entrée des sentiers), ct = cible en voiture (parking)
   apClear(); Object.assign(AP, { on: true, tag, ft, ct: ct || null, name: name || '', cname: cname || '' });
@@ -2477,7 +2478,7 @@ async function apFetch() {
   const seq = ++AP.seq; AP.busy = true; apRefresh();
   const r = await apRoute([me.x, me.y], to, car); if (seq !== AP.seq || !AP.on) return; AP.busy = false;
   if (r.coords) { const P = r.coords.map(([lo, la]) => toM(la, lo)); P.push(to); Object.assign(AP, { poly: P, turns: apTurns(P), dist: r.distance || P.reduce((a, q, i) => i ? a + rdist(P[i - 1], q) : 0, 0), dur: r.duration || 0 });
-    say(`Itinéraire ${car ? 'en voiture' : 'à pied'} : ${fmtDist(AP.dist).replace(' km', ' kilomètres').replace(' m', ' mètres')} jusqu'${car ? (AP.cname ? 'au parking ' + AP.cname : 'au parking') : (AP.name || 'au départ')}.`); }
+    /* pas d'annonce du trajet : la voix ne parle qu'une fois la sortie lancée (▶) */ }
   else { AP.err = true; AP.errm = r.why; }
   apRefresh();
 }
@@ -2488,13 +2489,13 @@ function apLeft() {      // distance restante le long de l'itinéraire
 function apTick() {      // à chaque position : itinéraire en attente du GPS, virages annoncés, arrivée, recalcul si on s'écarte
   if (!AP.on || !me) return; if (AP.pending) return apFetch(); if (!AP.poly || AP.busy) return; const here = [me.x, me.y], car = AP.mode === 'car';
   if (rdist(here, AP.to) < (car ? 60 : 30)) {
-    if (car && AP.ft && rdist(here, AP.ft) > 120) { say('Vous êtes au parking. Garez-vous, puis je vous guide à pied jusqu\'au départ.'); toast('🅿 Arrivé au parking : la suite se fait à pied'); AP.mode = 'foot'; try { sessionStorage.setItem('cartodog-apm', 'foot'); } catch (e) {} return apFetch(); }
-    if (car) { say('Vous êtes au parking.'); toast('🅿 Arrivé au parking'); } if (BR.on) { apClear(); return; } AP.poly = null; return apRefresh(); }
+    if (car && AP.ft && rdist(here, AP.ft) > 120) { apSay('Vous êtes au parking. Garez-vous, puis je vous guide à pied jusqu\'au départ.'); toast('🅿 Arrivé au parking : la suite se fait à pied'); AP.mode = 'foot'; try { sessionStorage.setItem('cartodog-apm', 'foot'); } catch (e) {} return apFetch(); }
+    if (car) { apSay('Vous êtes au parking.'); toast('🅿 Arrivé au parking'); } if (BR.on) { apClear(); return; } AP.poly = null; return apRefresh(); }
   let dmin = Infinity; for (let i = 1; i < AP.poly.length; i++) { const pr = segProj(here, AP.poly[i - 1], AP.poly[i]); if (pr.d < dmin) dmin = pr.d; }
   if (dmin * cosAt(me.y) > (car ? 80 : 45) && Date.now() - AP.t > (car ? 12000 : 20000) && me.acc < 50) return apFetch();
   AP.turns.forEach((t, i) => { const d = rdist(here, t.q), dir = t.l ? 'gauche' : 'droite';
-    if (car) { if (d < 220 && d > 70 && !AP.said.has(i + 'a')) { AP.said.add(i + 'a'); say(`Dans ${Math.round(d / 50) * 50} mètres, tournez à ${dir}.`); } else if (d < 45 && !AP.said.has(i + 'b')) { AP.said.add(i + 'b'); AP.said.add(i + 'a'); say(`Tournez à ${dir}.`); } }
-    else if (d < 35 && d > 6 && !AP.said.has(i)) { AP.said.add(i); say(`Dans ${Math.max(10, Math.round(d / 5) * 5)} mètres, tournez à ${dir}.`); } });
+    if (car) { if (d < 220 && d > 70 && !AP.said.has(i + 'a')) { AP.said.add(i + 'a'); apSay(`Dans ${Math.round(d / 50) * 50} mètres, tournez à ${dir}.`); } else if (d < 45 && !AP.said.has(i + 'b')) { AP.said.add(i + 'b'); AP.said.add(i + 'a'); apSay(`Tournez à ${dir}.`); } }
+    else if (d < 35 && d > 6 && !AP.said.has(i)) { AP.said.add(i); apSay(`Dans ${Math.max(10, Math.round(d / 5) * 5)} mètres, tournez à ${dir}.`); } });
 }
 function drawAP(sx, sy) {
   if (!AP.on || !AP.poly) return; const car = AP.mode === 'car'; g.save(); g.lineCap = 'round'; g.lineJoin = 'round'; const tr = (w, col, dash) => { g.beginPath(); g.setLineDash(dash); AP.poly.forEach((q, i) => i ? g.lineTo(sx(q[0]), sy(q[1])) : g.moveTo(sx(q[0]), sy(q[1]))); g.lineWidth = w; g.strokeStyle = col; g.stroke(); };
@@ -2785,7 +2786,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-106';
+const APP_V = '2026.10.25-107';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
