@@ -1148,6 +1148,16 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
 .clstat{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0}.clstat span{display:flex;flex-direction:column;align-items:center;padding:8px 2px;border:2px solid var(--edge);border-radius:8px;background:var(--slot)}.clstat b{font:900 19px var(--num);color:#fff1cf}.clstat small{font:700 10.5px var(--num);color:var(--mut);text-align:center}
 .clsy{margin:0 0 8px;padding:8px 10px;border-radius:6px;font:700 12.5px var(--num);background:rgba(95,115,80,.16);border:1.5px solid #3f5233;color:#cfdcbf}.clsy.err{background:rgba(201,71,44,.14);border-color:#7a3a2a;color:#ffc2b0}.clsy.busy{color:var(--ember2)}
 #accl .btn{width:100%}
+
+/* Fenêtre de bienvenue */
+#welm{position:fixed;inset:0;background:rgba(6,5,3,.72);display:none;align-items:center;justify-content:center;padding:16px;z-index:60}
+#welm.open{display:flex;animation:fadeIn .2s ease both}
+#welm .win{width:100%;max-width:380px;max-height:90dvh;overflow:auto;padding:20px 18px 16px;text-align:center}
+#welm.open .win{animation:pop .38s cubic-bezier(.2,.9,.3,1.15) both}
+#welm .wlg{width:72px;height:72px;border-radius:18px;box-shadow:0 4px 14px rgba(0,0,0,.6)}
+#welm h2{margin:10px 0 12px!important}
+#welm p{margin:0 0 10px;font:600 14.5px/1.5 var(--num);color:var(--txt)}
+#welm .wsg{margin:14px 0 16px;font:700 18px/1.2 var(--px);color:var(--ember2);font-style:italic}
 </style></head><body>
 <header class="bar win dg"><button class="hdog" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span></button><button class="hbr brand" id="hbr" aria-label="Cartodog : profil de mon chien"><span class="hinf"><b>Cartodog<img class="hico" src="icon.svg" alt="" aria-hidden="true"></b><small id="hsub">Carnet de balade</small></span></button><button class="hset" id="mn" aria-label="Mon compte"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><circle cx="16" cy="16" r="14.5" fill="#2a2018" stroke="#8a6a3a" stroke-width="1"/><circle cx="16" cy="12.4" r="5.4" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2"/><path d="M6.6 26.2c1.3-5.2 5-8 9.4-8s8.1 2.8 9.4 8a14.4 14.4 0 0 1-18.8 0z" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2" stroke-linejoin="round"/></svg></button><b id="hnm" hidden></b>
 <small id="ssn" hidden></small>
@@ -4565,4 +4575,19 @@ function zoomSmooth(f, px, py) {      // zoom animé qui garde le point touché 
   requestAnimationFrame(step);
 }
 renderPanel(); draw();
-</script></body></html>
+</script><div id="welm" role="dialog" aria-modal="true" aria-labelledby="welt"><div class="win dg">
+  <img class="wlg" src="icon.svg" alt="">
+  <h2 id="welt">Cartodog</h2>
+  <p>Merci de faire partie de l’aventure Cartodog&nbsp;! 🐾</p>
+  <p>Cartodog en est à ses débuts et est encore en plein développement&nbsp;: il peut y avoir des bugs ou des nouveautés d’un jour à l’autre. Vos retours sont précieux&nbsp;!</p>
+  <div class="wsg">Nova &amp; Dylan</div>
+  <button class="btn gold" id="welok">Ok</button>
+</div></div>
+<script>
+(function(){var m=document.getElementById('welm'),b=document.getElementById('welok');
+function cl(){m.classList.remove('open')}
+b.addEventListener('click',cl);m.addEventListener('click',function(e){if(e.target===m)cl()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&m.classList.contains('open'))cl()});
+m.classList.add('open');})();
+</script>
+</body></html>
