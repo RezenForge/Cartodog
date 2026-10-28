@@ -53,7 +53,7 @@ th{color:var(--gold);font-weight:700}
 <li><b>Comptes et données</b> (base de données, connexion, photos, notifications) : Supabase Pte. Ltd., 65 Chulia Street #38-02/03, OCBC Centre, Singapour 049513. Les données de Cartodog sont stockées dans la région de Paris (France).</li>
 </ul>
 <h3>Contenus et données cartographiques</h3>
-<p>Les balades publiques sont ajoutées par l'éditeur, notamment à partir des données ouvertes de Bordeaux Métropole (« Parcs, jardins et squares », Licence Ouverte). Les repères, avis, photos et équipements signalés sont ajoutés par les promeneurs. Fonds et données utilisés : imagerie satellite Esri (World Imagery), données de l'IGN (Géoplateforme : routes, forêts, altitude), API Découpage administratif (geo.api.gouv.fr), météo Open-Meteo, résumés Wikipédia. Chacune de ces sources reste soumise à ses propres conditions et licences.</p>
+<p>Cartodog est une carte collaborative. Les balades publiques sont ajoutées par l'éditeur, notamment à partir des données ouvertes de Bordeaux Métropole (« Parcs, jardins et squares », Licence Ouverte), et par les promeneurs. Les repères, avis, photos et équipements signalés sont ajoutés par les promeneurs. Fonds et données utilisés : imagerie satellite Esri (World Imagery), données de l'IGN (Géoplateforme : routes, forêts, altitude), API Découpage administratif (geo.api.gouv.fr), météo Open-Meteo, résumés Wikipédia. Chacune de ces sources reste soumise à ses propres conditions et licences.</p>
 </section>
 
 <section id="confidentialite">
@@ -70,7 +70,7 @@ th{color:var(--gold);font-weight:700}
 <tr><td>Pseudo, prénom, nom et photo du chien (photo de profil), sociabilité du chien, description</td><td>Vous retrouver et vous ajouter en copain</td><td>Les membres connectés</td></tr>
 <tr><td>Profil public du chien : nom, sexe, race, âge, niveau, nombre de balades découvertes, de visites et de copains, jusqu'à 3 photos réduites ; balade préférée et dernière sortie (nom et centre de la balade)</td><td>Présenter votre chien aux autres promeneurs</td><td>Les membres connectés ; la balade préférée et la dernière sortie : vos copains seulement</td></tr>
 <tr><td>Carnet : balades, visites (date, durée, note), photos, profil complet du chien (race, date de naissance, puce, vétérinaire, poids…) et sa photo, prénom, commune, description, visibilité, état, présence, réglages de l'application</td><td>Sauvegarder votre carnet et le retrouver sur vos appareils</td><td>Vous seul</td></tr>
-<tr><td>Repères que vous ajoutez (position, type, nom, description)</td><td>Les partager avec les autres promeneurs</td><td>Tout le monde, y compris sans compte. Un identifiant technique de leur auteur y reste rattaché, sans pseudo affiché</td></tr>
+<tr><td>Balades et repères que vous ajoutez (position, nom, type, description) ; nombre de balades ajoutées, affiché sur le profil de votre chien</td><td>Les partager avec les autres promeneurs</td><td>Tout le monde, y compris sans compte. Un identifiant technique de leur auteur y reste rattaché, sans pseudo affiché</td></tr>
 <tr><td>Publications de la Communauté (texte, photo, balade concernée), « j'aime » et commentaires</td><td>Partager des moments de balade avec les autres promeneurs</td><td>Les membres connectés</td></tr>
 <tr><td>Avis sur les balades (note, commentaire), photos et équipements signalés (parking, eau, baignade…)</td><td>Aider les autres promeneurs à choisir une balade</td><td>Les membres connectés, avec votre pseudo, votre prénom et le nom de votre chien</td></tr>
 <tr><td>Jours où vous êtes passé sur une balade (balade et date, pas de position précise), gardés 30 jours pour l'affichage</td><td>Montrer à vos copains qui est venu récemment</td><td>Vos copains seulement ; rien n'est partagé en mode « Invisible »</td></tr>
@@ -112,7 +112,7 @@ th{color:var(--gold);font-weight:700}
 <ul>
 <li>Jours de passage sur les balades : 31 jours au plus.</li>
 <li>Données du compte, carnet, messages, copains, groupes, rendez-vous et abonnements aux notifications : jusqu'à la suppression de votre compte.</li>
-<li>À la suppression du compte : le compte, le profil, le carnet, les photos, le profil public du chien, les publications de la Communauté avec leurs photos, vos « j'aime », commentaires et avis, vos visites, les messages, les liens de copains, la présence et les abonnements sont effacés ; les repères que vous avez publiés restent sur la carte, et vos signalements restent dans l'outil de modération, sans lien avec votre compte.</li>
+<li>À la suppression du compte : le compte, le profil, le carnet, les photos, le profil public du chien, les publications de la Communauté avec leurs photos, vos « j'aime », commentaires et avis, vos visites, les messages, les liens de copains, la présence et les abonnements sont effacés ; les balades et les repères que vous avez publiés restent sur la carte, et vos signalements restent dans l'outil de modération, sans lien avec votre compte.</li>
 <li>Sur votre téléphone : le carnet est retiré à la déconnexion ; une copie de vos réglages reste dans le navigateur jusqu'à ce que vous effaciez ses données.</li>
 <li>Données techniques : selon les règles propres à chaque hébergeur et prestataire.</li>
 </ul>
@@ -166,6 +166,7 @@ th{color:var(--gold);font-weight:700}
 
 <h3>4. Partager des informations vraies</h3>
 <ul>
+<li>N'ajoutez que des balades réelles, publiques et accessibles avec un chien, sous leur vrai nom, et vérifiez qu'elles ne sont pas déjà sur la carte. Pas de jardin privé, de terrain interdit ni de lieu inventé pour gagner de l'XP.</li>
 <li>Vos avis et vos notes reposent sur une vraie visite. Pas de fausses notes pour avantager ou nuire à un lieu.</li>
 <li>Ne signalez que les équipements et les dangers que vous avez constatés. Un faux danger peut faire peur ou détourner les promeneurs inutilement.</li>
 <li>Si une information devient fausse (danger disparu, équipement retiré), corrigez-la ou signalez-la.</li>
@@ -233,15 +234,16 @@ th{color:var(--gold);font-weight:700}
 <p>Les balades, repères, alertes de danger, avis, équipements signalés et informations météo sont fournis à titre indicatif. Ils peuvent être inexacts, incomplets ou dépassés : un lieu peut être fermé, privé ou réglementé, un équipement peut manquer, un danger peut avoir disparu ou être apparu. Restez attentif à votre environnement et à votre chien, respectez la signalisation, les propriétés privées, les règles locales (tenue en laisse, périodes de chasse, zones protégées, accès réglementés) et les consignes des autorités. Pour vous rendre à une balade (bouton « Y aller »), respectez le code de la route : ne manipulez pas votre téléphone en conduisant.</p>
 <h3>4. Contenus que vous publiez</h3>
 <ul>
-<li>Les repères que vous publiez sont visibles par tous. Vos publications, photos, commentaires, avis et équipements signalés sont visibles par les membres connectés. Les balades publiques sont ajoutées et gérées par l'éditeur.</li>
+<li>Les balades et les repères que vous ajoutez sont visibles par tous, dès leur ajout. Vos publications, photos, commentaires, avis et équipements signalés sont visibles par les membres connectés.</li>
+<li>Ajouter une balade manquante rapporte de l'expérience (XP) au profil de votre chien. Une balade retirée par la modération ne compte plus. L'éditeur peut renommer, déplacer ou retirer une balade, et limiter le nombre d'ajouts par jour.</li>
 <li>Vous garantissez avoir le droit de publier ces contenus et qu'ils sont, autant que vous le savez, exacts.</li>
-<li>Vous accordez à Cartodog, gratuitement et pour le monde entier, le droit de les afficher, de les reproduire et de les adapter (par exemple réduire une photo) au sein de l'application. Ce droit continue après la suppression de votre compte pour les repères, qui restent sur la carte sans lien avec votre compte.</li>
+<li>Vous accordez à Cartodog, gratuitement et pour le monde entier, le droit de les afficher, de les reproduire et de les adapter (par exemple réduire une photo) au sein de l'application. Ce droit continue après la suppression de votre compte pour les balades et les repères, qui restent sur la carte sans lien avec votre compte.</li>
 <li>Vos messages et votre carnet restent les vôtres : ils ne sont visibles que par les personnes à qui vous les adressez, ou par vous seul.</li>
 </ul>
 <h3>5. Règles de conduite</h3>
 <p>Vous vous engagez à respecter le <a href="#reglement">règlement de la communauté</a>. En particulier, il est interdit de publier ou d'envoyer des contenus illicites, injurieux, haineux, harcelants, trompeurs ou à caractère commercial non sollicité, de signaler de faux dangers, d'indiquer comme accessibles des terrains privés ou interdits, de porter atteinte à la vie privée d'autrui (notamment en publiant l'adresse d'un particulier), ou de tenter de contourner la sécurité du service.</p>
 <h3>6. Modération</h3>
-<p>Chaque publication, commentaire, avis ou profil peut être signalé avec le bouton « ⚑ Signaler ». L'éditeur peut masquer, modifier ou retirer un contenu (publication, commentaire, avis, description, photo, repère, balade), et suspendre ou supprimer un compte qui ne respecte pas ces conditions. Vous pouvez aussi écrire à <a href="mailto:contact@cartodog.fr">contact@cartodog.fr</a>.</p>
+<p>Chaque publication, commentaire, avis, balade ou profil peut être signalé avec le bouton « ⚑ Signaler ». L'éditeur peut masquer, modifier ou retirer un contenu (publication, commentaire, avis, description, photo, repère, balade), et suspendre ou supprimer un compte qui ne respecte pas ces conditions. Vous pouvez aussi écrire à <a href="mailto:contact@cartodog.fr">contact@cartodog.fr</a>.</p>
 <h3>7. Disponibilité et responsabilité</h3>
 <p>Cartodog est fourni gratuitement, en l'état, par un particulier. Le service peut évoluer, être interrompu ou s'arrêter, et dépend de prestataires externes (cartes, météo, réseau mobile). Dans les limites prévues par la loi, l'éditeur ne peut être tenu responsable des conséquences d'une information inexacte, d'une indisponibilité ou d'une perte de données ; pensez à exporter votre carnet de temps en temps.</p>
 <h3>8. Modification des conditions</h3>
