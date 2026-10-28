@@ -1135,6 +1135,10 @@ body.lpon #dock #found:not(.rec),body.lpon #dock #socb{display:none!important}bo
 .evtag{font:800 10.5px var(--num);font-style:normal;padding:2px 7px;border-radius:9px;background:#3f6a2c;color:#e9f6dc;vertical-align:2px;margin-left:4px}.evtag.x{background:#4a4236;color:var(--mut)}.sce.x,.sce.past{opacity:.6}
 #scen{position:absolute;top:3px;right:5px;display:inline-block;min-width:17px;padding:0 4px;border-radius:9px;background:#c9472c;color:#fff;font:900 10.5px/17px var(--num)}#scen[hidden]{display:none}
 .scpn{display:flex;align-items:center;gap:8px;margin:0 0 10px;padding:10px 10px 10px 12px;border-radius:12px;border:1.5px solid rgba(234,165,60,.45);background:rgba(234,165,60,.1);font:600 13px/1.35 var(--num);color:var(--txt)}.scpn span{flex:1}.scpn button{flex:none;height:34px;padding:0 12px;border-radius:9px;border:1.5px solid #0e0b08;background:linear-gradient(#f4c862,#c6862a);color:#2a1806;font:800 13px var(--num)}.scpn button[data-pn=x]{width:34px;padding:0;background:transparent;border-color:var(--rim);color:var(--mut)}
+#lgacc{position:fixed;inset:0;z-index:43;display:flex;flex-direction:column;overflow-y:auto;padding:calc(24px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom));border:0!important;border-radius:0!important}#lgacc[hidden],#lg[hidden]{display:none}#lgacc .gtc{gap:12px}
+#lg{position:fixed;inset:0;z-index:44;display:flex;flex-direction:column;background:#16130f}.lgbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(8px + env(safe-area-inset-top)) 12px 8px 16px;border-bottom:1px solid #4a4236;color:#fff1cf;font:800 17px var(--px,Georgia)}#lgf{flex:1;width:100%;border:0;background:#16130f}
+.gtleg{text-align:center;font:600 12.5px/1.6 var(--num);color:var(--mut);margin-top:4px}.gtleg a{color:var(--mut)}
+.clterm{display:flex;gap:10px;align-items:flex-start;font:600 13.5px/1.4 var(--num);color:var(--txt);padding:2px 2px}.clterm input{flex:none;width:22px!important;height:22px!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;background:none!important;appearance:auto!important;-webkit-appearance:checkbox!important;accent-color:#eaa53c}.clterm a{color:var(--ember2)}
 .scemp{display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;padding:26px 14px;font:700 15px/1.3 var(--num);color:var(--txt)}.scemp small{font:500 13px/1.4 var(--num);color:var(--mut);max-width:290px}
 .hico{display:inline-block;width:17px;height:17px;margin:0 0 0 4px;vertical-align:top;position:relative;top:1px;border-radius:5px;box-shadow:0 1px 2px rgba(0,0,0,.6)}
 
@@ -1183,7 +1187,9 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
   <div id="edm" class="dg" hidden><div id="edmt"></div><div class="edb"><button id="eddl">🗑 Supprimer</button><button id="eddt" hidden>✂ Détacher</button><button id="edsp">✂ Couper ici</button><button id="edx" aria-label="Fermer">✕</button></div></div>
   <div id="rt" class="dg" hidden><div class="eyb">Itinéraire</div><div id="rtt"></div><div id="rts"></div><div class="pmb"><button id="rtn" aria-label="Point suivant">Suivant ›</button><button id="rtg" aria-label="Ouvrir dans Maps">Ouvrir dans Maps</button><button id="rtx" aria-label="Fermer l'itinéraire" style="margin-left:auto">✕</button></div></div>
   <div id="shm" class="dg" hidden></div>
-  <div id="gate" class="dg" hidden><div class="gtc"><div class="gtl"><img src="icon.svg" alt="" aria-hidden="true"><h1>Cartodog</h1><p>Les balades des promeneurs de chiens, cartographiées sur le terrain.</p></div><div id="gatef"></div><button class="cllink" id="gtoff" hidden>Hors ligne : continuer sans me connecter</button></div></div>
+  <div id="gate" class="dg" hidden><div class="gtc"><div class="gtl"><img src="icon.svg" alt="" aria-hidden="true"><h1>Cartodog</h1><p>Les balades des promeneurs de chiens, cartographiées sur le terrain.</p></div><div id="gatef"></div><button class="cllink" id="gtoff" hidden>Hors ligne : continuer sans me connecter</button><div class="gtleg"><a href="legal.html#mentions" data-lg="mentions">Mentions légales</a> · <a href="legal.html#confidentialite" data-lg="confidentialite">Confidentialité</a> · <a href="legal.html#conditions" data-lg="conditions">Conditions d'utilisation</a></div></div></div>
+  <div id="lgacc" class="dg" hidden><div class="gtc"><div class="gtl"><img src="icon.svg" alt="" aria-hidden="true"><h1>Cartodog</h1></div><div class="acnote">📄 Cartodog publie ses conditions d'utilisation et sa politique de confidentialité. Merci de les lire et de les accepter pour continuer à utiliser votre compte.</div><button class="btn" data-lg="conditions">Lire les conditions d'utilisation</button><button class="btn" data-lg="confidentialite">Lire la politique de confidentialité</button><label class="clterm"><input type="checkbox" id="lgck"><span>J'ai 15 ans ou plus et j'accepte les conditions d'utilisation et la politique de confidentialité.</span></label><div class="clerr" id="lgerr"></div><button class="btn gold" id="lgok">J'accepte</button><button class="cllink" id="lgno">Me déconnecter</button></div></div>
+  <div id="lg" hidden><div class="lgbar"><b>Informations légales</b><button class="ib" id="lgx" aria-label="Fermer">✕</button></div><iframe id="lgf" title="Informations légales"></iframe></div>
   <div id="wel" class="dg" hidden><div class="obd" id="obd"></div><div class="obc" id="obc"></div></div>
   <div id="lp" class="dg" hidden><div class="eyb" id="lpe">Balade guidée</div><div id="lpt"></div><div class="pmb"><button id="lpgo" aria-label="Partir">▶</button><button id="lpn" aria-label="Proposer une autre boucle">↻</button><button id="lpd" aria-label="Changer la durée ou le départ">⏱</button><button id="lpv" aria-label="Guidage vocal"></button><button id="lpx" aria-label="Masquer la boucle">✕</button></div></div>
   <div id="rm" class="dg" hidden><div class="eyb">Poser un repère</div><div id="rmt">Touchez la carte pour poser un repère (point d'eau, danger, parking…), ou touchez un repère existant pour le modifier.</div><div class="pmb"><button id="rmg">À ma position</button><button id="rmx" aria-label="Quitter le mode repère">✕</button></div></div>
@@ -1229,7 +1235,7 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
     <div class="mh">Mon compte</div>
     <div class="acg"><button class="acr" data-acp="me"><span class="aci">👤</span><span class="act"><b>Mes infos</b><small id="acme">Pseudo, commune</small></span><i>›</i></button><button class="acr" id="acdog"><span class="aci">🐕</span><span class="act"><b>Mon chien</b><small id="acdgs">Profil, santé, niveau</small></span><i>›</i></button></div>
     <div class="mh">Confidentialité</div>
-    <div class="acg"><button class="acr" data-acp="priv"><span class="aci">🔒</span><span class="act"><b>Visibilité et partage</b><small id="acpv">Copains</small></span><i>›</i></button></div>
+    <div class="acg"><button class="acr" data-acp="priv"><span class="aci">🔒</span><span class="act"><b>Visibilité et partage</b><small id="acpv">Copains</small></span><i>›</i></button><button class="acr" data-lg="confidentialite"><span class="aci">📄</span><span class="act"><b>Informations légales</b><small>Mentions, confidentialité, conditions</small></span><i>›</i></button></div>
     <div class="mh">Application</div>
     <div class="acg"><button class="acr" data-acp="map"><span class="aci">🗺️</span><span class="act"><b>Carte et alertes</b><small>Routes, communes, boussole, écran</small></span><i>›</i></button><button class="acr" data-acp="off"><span class="aci">📶</span><span class="act"><b>Hors connexion</b><small>Enregistrer une zone de carte</small></span><i>›</i></button><button class="acr" data-acp="data"><span class="aci">💾</span><span class="act"><b>Mes données</b><small>Sauvegarde et restauration</small></span><i>›</i></button><button class="acr" data-acp="about"><span class="aci">ℹ️</span><span class="act"><b>À propos</b><small id="acver">Version, mise à jour</small></span><i>›</i></button></div>
   </div>
@@ -1247,7 +1253,7 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
     <div class="mh">Partage</div>
     <button class="btn" id="acpres"></button>
     <button class="btn" id="acstat"></button>
-    <div class="acnote">🔐 Jamais votre position exacte : seulement « présent sur cette balade ». Ces choix s'appliqueront dès que Cartodog sera en ligne ; aujourd'hui, rien ne quitte ce téléphone.</div>
+    <div class="acnote">🔐 Vos copains voient seulement « en balade sur… », jamais votre position exacte. « Personne » vous rend invisible. Votre pseudo, votre prénom, le nom de votre chien et votre description restent visibles des membres connectés, pour qu'on puisse vous retrouver.</div>
   </div>
   <div class="acp" data-pg="map"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Carte et alertes<small>Affichage et comportement</small></h2></div>
     <button class="btn" id="alb"></button>
@@ -2841,7 +2847,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.25-118';
+const APP_V = '2026.10.28-119';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2886,7 +2892,7 @@ function soIngest(x, first) {
 function soPresence() {      // mon état pour les copains ; en balade : le nom de la balade et son centre, jamais ma position exacte
   if (!clOn()) return; const u = accU(), walk = !!(BR.on && u.pres !== false), k = walk && BR.k && D.cells[BR.k] ? BR.k : null, c = k ? ctr(k) : null; SOT.pt = Date.now();
   let bal = ''; if (walk) try { bal = String(BR.bal || (k ? balName(k) : '') || ''); } catch (e) {}
-  soRpc('set_presence', { st: ['on', 'look', 'dnd', 'hid'].includes(u.st) ? u.st : 'on', walk, bal: bal.slice(0, 60), bx: c ? c[0] : null, by: c ? c[1] : null }).catch(() => {});
+  soRpc('set_presence', { st: u.vis === 'none' ? 'hid' : ['on', 'look', 'dnd', 'hid'].includes(u.st) ? u.st : 'on', walk, bal: bal.slice(0, 60), bx: c ? c[0] : null, by: c ? c[1] : null }).catch(() => {});
 }
 function soProfile() {      // ce que voient les autres promeneurs : pseudo, prénom, nom du chien, sociabilité, description
   if (!clOn() || !CLD.at) return; const u = accU(), nm = (u.name || '').trim().slice(0, 24), o = { first: (u.first || '').trim().slice(0, 24), dog: String(D.prof.name || '').slice(0, 30), sp: D.prof.space || '', bio: String(u.bio || '').slice(0, 80) }; if (nm) o.name = nm;
@@ -3289,7 +3295,7 @@ async function sb(path, o = {}) {      // appel à la base (REST) ou au stockage
   const tok = await clToken(), r = await fetchT(SB.url + path, o.ms || 15000, { method: o.method || 'GET', headers: { apikey: SB.key, Authorization: 'Bearer ' + (tok || SB.key), ...(o.json !== undefined ? { 'Content-Type': 'application/json' } : {}), ...(o.headers || {}) }, body: o.json !== undefined ? JSON.stringify(o.json) : o.body });
   if (o.raw) return r; let j = null; const tx = await r.text(); try { j = tx ? JSON.parse(tx) : null; } catch (e) {} if (!r.ok) { const e = new Error(clMsg(j, r.status)); e.status = r.status; e.code = j && j.code; throw e; } return j; }
 const redir = () => location.origin + location.pathname;
-async function clSignUp(email, pw, name) { const j = await clAuth('signup?redirect_to=' + encodeURIComponent(redir()), { email, password: pw, data: { name, first: String(accU().first || '').trim().slice(0, 24) } }); if (clSet(j)) { await clAfterLogin(true); return 'ok'; } return 'confirm'; }
+async function clSignUp(email, pw, name) { const j = await clAuth('signup?redirect_to=' + encodeURIComponent(redir()), { email, password: pw, data: { name, first: String(accU().first || '').trim().slice(0, 24), terms: TERMS_V, terms_at: new Date().toISOString() } }); if (clSet(j)) { await clAfterLogin(true); return 'ok'; } return 'confirm'; }
 async function clSignIn(email, pw) { clSet(await clAuth('token?grant_type=password', { email, password: pw })); await clAfterLogin(true); }
 async function clRecover(email) { await clAuth('recover?redirect_to=' + encodeURIComponent(redir()), { email }); }
 async function clSignOut(gone) {      // le carnet reste dans le compte et quitte ce téléphone : le compte suivant démarre vierge
@@ -3305,7 +3311,11 @@ function localWipe() {
   try { $('#panel').hidden = true; } catch (e) {} try { hdrRender(); dogAvatar(); } catch (e) {} schedule();
 }
 function gateSync() { const g = $('#gate'); if (!g) return; const show = !clOn() && !CLD.skip; if (g.hidden === show) g.hidden = !show; $('#gtoff').hidden = navigator.onLine !== false; }
+const TERMS_V = '2026-10-28';      // version des conditions et de la politique de confidentialité (legal.html)
+async function termsCheck() { try { const u = await sb('/auth/v1/user'); if (u && u.id && ((u.user_metadata || {}).terms !== TERMS_V)) { $('#lgck').checked = false; $('#lgerr').textContent = ''; $('#lgacc').hidden = false; } } catch (e) {} }
+function legalOpen(a) { $('#lgf').src = 'legal.html?v=' + TERMS_V + '#' + (a || 'mentions'); $('#lg').hidden = false; }
 async function clAfterLogin(first) {
+  termsCheck();
   const uid = CLD.s && CLD.s.user && CLD.s.user.id; let own = ''; try { own = localStorage.getItem(OWK) || ''; } catch (e) {}
   if (uid && own && own !== uid) localWipe();      // données d'un autre compte : on repart de zéro
   if (uid) try { localStorage.setItem(OWK, uid); } catch (e) {}
@@ -3412,10 +3422,11 @@ function clUi() {
     ${CLD.mode === 'up' ? `<label class="acf"><span>Prénom</span><input id="clfirst" maxlength="24" autocomplete="given-name" value="${esc(accU().first || '')}" placeholder="Ex. Dylan"></label><label class="acf"><span>Pseudo <em>visible par les autres promeneurs</em></span><input id="clname" maxlength="24" autocomplete="nickname" value="${esc(accU().name || '')}" placeholder="Ex. dylan_nova"></label>` : ''}
     <label class="acf"><span>E-mail</span><input id="clmail" type="email" autocomplete="email" inputmode="email" value="${esc(CLD.mail || '')}" placeholder="vous@exemple.fr"></label>
     <label class="acf"><span>Mot de passe</span><input id="clpw" type="password" minlength="8" autocomplete="${CLD.mode === 'up' ? 'new-password' : 'current-password'}" placeholder="8 caractères minimum"></label>
+    ${CLD.mode === 'up' ? `<label class="clterm"><input type="checkbox" id="clterms"><span>J'ai 15 ans ou plus et j'accepte les <a href="legal.html#conditions" data-lg="conditions">conditions d'utilisation</a> et la <a href="legal.html#confidentialite" data-lg="confidentialite">politique de confidentialité</a>.</span></label>` : ''}
     <div class="clerr" id="clerr"></div>
     <button class="btn gold" id="clgo">${CLD.mode === 'up' ? '✨ Créer mon compte' : '☁️ Se connecter'}</button>
     ${CLD.mode !== 'up' ? '<button class="cllink" id="clforgot">Mot de passe oublié ?</button>' : ''}
-    <div class="acnote">🔐 Vos données sont hébergées en Europe (Paris). Vos sentiers et repères deviennent visibles par les autres promeneurs ; votre carnet (chien, sorties, notes, photos) reste privé.</div>`;
+    <div class="acnote">🔐 Vos données sont stockées en France (Paris). Vos sentiers et repères deviennent visibles par les autres promeneurs ; votre carnet (chien, sorties, notes, photos) reste privé.</div>`;
     return; }
   if (CLD.pwReset) { c.innerHTML = `<div class="acnote">🔑 Choisissez un nouveau mot de passe.</div><label class="acf"><span>Nouveau mot de passe</span><input id="clnpw" type="password" minlength="8" autocomplete="new-password"></label><div class="clerr" id="clerr"></div><button class="btn gold" id="clnpwgo">Enregistrer</button>`; return; }
   const S = syLoad(), np = Object.values(S.pst).filter(v => v === 'public').length, pp = Object.values(S.pst).filter(v => v === 'proposed').length;
@@ -3431,10 +3442,16 @@ document.addEventListener('click', async e => {
   const t = e.target; if (!t.closest) return;
   if (t.closest('#acloud')) { if (!clOn()) { CLD.skip = false; return clUi(); } accPage('cloud'); return clUi(); }
   if (t.closest('#gtoff')) { CLD.skip = true; return gateSync(); }
+  const lgl = t.closest('[data-lg]'); if (lgl) { e.preventDefault(); return legalOpen(lgl.dataset.lg); }
+  if (t.closest('#lgx')) { $('#lg').hidden = true; $('#lgf').src = 'about:blank'; return; }
+  if (t.closest('#lgno')) { $('#lgacc').hidden = true; return clSignOut(); }
+  if (t.closest('#lgok')) { if (!$('#lgck').checked) return $('#lgerr').textContent = 'Cochez la case pour accepter'; const b = t.closest('#lgok'); b.disabled = true;
+    try { const tok = await clToken(), r = await fetchT(SB.url + '/auth/v1/user', 12000, { method: 'PUT', headers: { apikey: SB.key, Authorization: 'Bearer ' + tok, 'Content-Type': 'application/json' }, body: JSON.stringify({ data: { terms: TERMS_V, terms_at: new Date().toISOString() } }) });
+      if (!r.ok) throw new Error(clMsg(await r.json().catch(() => null), r.status)); $('#lgacc').hidden = true; toast('✅ Merci !'); } catch (x) { $('#lgerr').textContent = x.message; } b.disabled = false; return; }
   const md = t.closest('[data-clm]'); if (md) { CLD.mail = ($('#clmail') || {}).value || CLD.mail; CLD.mode = md.dataset.clm; return clUi(); }
   const err = m => { const el = $('#clerr'); if (el) el.textContent = m; };
   if (t.closest('#clgo')) { const mail = $('#clmail').value.trim(), pw = $('#clpw').value; CLD.mail = mail;
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) return err('Adresse e-mail invalide'); if (pw.length < 8) return err('Mot de passe trop court (8 caractères minimum)');
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) return err('Adresse e-mail invalide'); if (pw.length < 8) return err('Mot de passe trop court (8 caractères minimum)'); if (CLD.mode === 'up' && !($('#clterms') || {}).checked) return err('Cochez la case pour accepter les conditions');
     const b = t.closest('#clgo'); b.disabled = true; b.textContent = '…';
     try { if (CLD.mode === 'up') { const nm = ($('#clname').value || '').trim().slice(0, 24), fn = ($('#clfirst').value || '').trim().slice(0, 24); if (nm) accU().name = nm; if (fn) accU().first = fn; if (nm || fn) save();
         const r = await clSignUp(mail, pw, nm); if (r === 'confirm') { CLD.mode = 'in'; clUi(); err(''); toast('📧 Compte créé : ouvrez le lien reçu par e-mail pour le confirmer, puis connectez-vous'); const n = $('#gatef .acnote') || $('#accl .acnote'); if (n) n.innerHTML = '📧 <b>Presque fini !</b> Un e-mail de confirmation vient de partir vers ' + esc(mail) + '. Ouvrez le lien, puis connectez-vous ici.'; return; } }
