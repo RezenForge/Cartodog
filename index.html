@@ -2945,7 +2945,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-142';
+const APP_V = '2026.10.28-143';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2992,7 +2992,7 @@ function presHere() { if (!me) return null; let best = null, bd = 1000;      /* 
 function presDwell() {      // présent sur une balade après 5 minutes à moins d'1 km, et tant qu'on y est redétecté dans les 10 minutes
   const k = presHere(), now = Date.now(); let H = {}; try { H = JSON.parse(localStorage.getItem('cartodog-here') || '{}') || {}; } catch (e) {}
   if (!k) { if (H.k) try { localStorage.removeItem('cartodog-here'); } catch (e) {} return null; }
-  if (H.k !== k || now - (+H.last || 0) > 10 * 6e4) H = { k, t: now };      // revu dans les 10 min : toujours présent H.last = now; try { localStorage.setItem('cartodog-here', JSON.stringify(H)); } catch (e) {}
+  if (H.k !== k || now - (+H.last || 0) > 10 * 6e4) H = { k, t: now }; /* revu dans les 10 min : toujours présent */ H.last = now; try { localStorage.setItem('cartodog-here', JSON.stringify(H)); } catch (e) {}
   return now - H.t >= 5 * 6e4 ? k : null;
 }
 function presVisit(k) {      // 5 minutes sur place comptent comme une visite (une par jour et par balade)
