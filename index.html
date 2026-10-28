@@ -1185,6 +1185,7 @@ body.lpon #dock #found:not(.rec),body.lpon #dock #comb{display:none!important}
 
 .fbdg{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px;border-radius:6px;border:1px solid rgba(234,165,60,.55);background:rgba(234,165,60,.1);color:#e9c77a;font:800 9.5px/14px var(--num);letter-spacing:.02em;font-style:normal;white-space:nowrap;vertical-align:2px;text-shadow:none}.fbdg img{width:13px;height:13px;border-radius:3px;display:block}
 html.lite #pt,html.lite #homeb{display:none!important}
+.scav.img{padding:0;overflow:hidden;background:#1b1814}.scav.img img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
 .scemp{display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;padding:26px 14px;font:700 15px/1.3 var(--num);color:var(--txt)}.scemp small{font:500 13px/1.4 var(--num);color:var(--mut);max-width:290px}
 .hico{display:inline-block;width:17px;height:17px;margin:0 0 0 4px;vertical-align:top;position:relative;top:1px;border-radius:5px;box-shadow:0 1px 2px rgba(0,0,0,.6)}
 
@@ -2914,7 +2915,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-126';
+const APP_V = '2026.10.28-127';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2972,7 +2973,7 @@ async function soPoll() {
   if (!clOn() || SOT.busy || navigator.onLine === false) return; SOT.busy = true;
   try {
     soProfile(); if (Date.now() - SOT.pt > 6e4) soPresence();
-    if (Date.now() - SOT.bt > 6e5) { SOT.bt = Date.now(); soRpc('badges').then(b => { if (b && typeof b === 'object') { SO.B = b; soSave(); } }).catch(() => {}); }
+    metaLoad(() => { if ($('#soc').classList.contains('open')) socRender(); }); avSync();
     const r = await soRpc('social_poll', { since: SO.last || 0 }); if (!r || !clOn()) return;
     const first = !SO.init; SO.init = 1; (r.people || []).forEach(p => SO.P[p.id] = p); SO.fr = r.friends || []; SO.rin = r.reqin || []; SO.rout = r.reqout || [];
     SO.E = r.events || []; SO.G = (r.groups || []).map(g => ({ id: g.id, name: g.name, ic: g.ic, owner: g.owner, m: g.ms || [] }));
@@ -3000,7 +3001,31 @@ function socDemo() {
   const E = [{ id: 'e1', by: F[0], at: B(0), t: day(sat, 10), dur: '≈ 1 h', n: 4, who: [F[0], F[2], F[3]] }, { id: 'e2', by: F[1], at: B(1), t: day(sat + 1, 17), dur: '≈ 45 min', n: 2, who: [F[1]] }, { id: 'e3', by: F[3], at: B(2), t: day(sat + 4, 18), dur: '≈ 1 h 30', n: 6, who: [F[3], F[4], F[0]] }];
   E.forEach(e => e.pk = PK(e.at)); return { F, E };
 }
-const socAv = (f, cls = '') => f.grp ? `<span class="scav grp ${cls}">${f.ic}</span>` : `<span class="scav ${cls}" style="--c:${f.c}">${esc(f.d[0])}</span>`;
+/* Photos de profil : la photo du chien de chacun, en petit (192 px), visible des membres */
+const AVC = {};
+function avUrlOf(id) { if (!id) return ''; if (CLD.s && id === CLD.s.user.id && avUrl) return avUrl; const v = (SO.A || {})[id]; if (!v) return ''; const c = AVC[id]; if (c && c.v === v) return c.url; avLoad(id, v); return ''; }
+async function avLoad(id, v) {
+  if (AVC[id] && AVC[id].v === v) return; AVC[id] = { v, url: '' }; let url = '';
+  try { url = await pGet('av:' + id + ':' + v) || ''; } catch (e) {}
+  if (!url && clOn()) try { const r = await sb('/storage/v1/object/authenticated/avatars/' + id + '/a.jpg', { raw: true }); if (r.ok) { const b = await r.blob(); url = await new Promise(res => { const f = new FileReader(); f.onload = () => res(f.result); f.readAsDataURL(b); }); pPut('av:' + id + ':' + v, url).catch(() => {}); } } catch (e) {}
+  if (!url || !AVC[id] || AVC[id].v !== v) return; AVC[id].url = url;
+  document.querySelectorAll('[data-av="' + id + '"]').forEach(el => { el.classList.add('img'); el.innerHTML = '<img src="' + url + '" alt="">'; });
+}
+async function avSync() {      // envoie ma photo de profil quand elle change
+  if (!clOn() || !CLD.pulled || SOT.avb) return; const ph = D.prof.ph || ''; if ((SO.avk || '') === ph) return; SOT.avb = 1;
+  try { let ver = '';
+    if (ph) { const d = await pGet(ph); if (!d) return; const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = d; });
+      const Z = 192, c = document.createElement('canvas'), m = Math.min(im.width, im.height); c.width = c.height = Z; c.getContext('2d').drawImage(im, (im.width - m) / 2, (im.height - m) / 2, m, m, 0, 0, Z, Z);
+      const b = await new Promise(r => c.toBlob(r, 'image/jpeg', .8)); const r = await sb('/storage/v1/object/avatars/' + CLD.s.user.id + '/a.jpg', { method: 'POST', body: b, headers: { 'Content-Type': 'image/jpeg', 'x-upsert': 'true' }, raw: true }); if (!r.ok) return; ver = Date.now().toString(36); }
+    await sb('/rest/v1/profiles?id=eq.' + CLD.s.user.id, { method: 'PATCH', json: { avatar: ver }, headers: { Prefer: 'return=minimal' } }); SO.avk = ph; (SO.A ||= {})[CLD.s.user.id] = ver; soSave();
+  } catch (e) {} finally { SOT.avb = 0; }
+}
+function metaLoad(then) {      // badges et photos de profil (liste courte, relue toutes les 10 min)
+  if (!clOn() || Date.now() - SOT.bt < 6e5) return; SOT.bt = Date.now();
+  Promise.all([soRpc('badges').catch(() => null), soRpc('avatars').catch(() => null)]).then(([b, a]) => { if (b && typeof b === 'object') SO.B = b; if (a && typeof a === 'object') SO.A = a; soSave(); if (then) then(); });
+}
+const socAv = (f, cls = '') => { if (f.grp) return `<span class="scav grp ${cls}">${f.ic}</span>`; const id = f.id === 'me' && CLD.s ? CLD.s.user.id : f.id, u = avUrlOf(id);
+  return `<span class="scav ${cls}${u ? ' img' : ''}" style="--c:${f.c}" data-av="${esc(id || '')}">${u ? `<img src="${u}" alt="">` : esc((f.d || '?')[0])}</span>`; };
 /* ===== Rendez-vous : une balade, une date, des copains ou un groupe ; chacun répond « J'y vais », « Peut-être » ou « Non » ===== */
 const meP = () => ({ id: 'me', d: D.prof && D.prof.name || accU().first || 'Moi', n: '', c: '#e0861e' });
 const fmtDurM = m => m < 60 ? m + ' min' : Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + String(m % 60).padStart(2, '0') : '');
@@ -3324,7 +3349,7 @@ async function cmLoad() {
   try { const r = await soRpc('post_feed', { bx: c[0], by: c[1], r: 700 }); if (CM.k === k) CM.posts = Array.isArray(r) ? r : []; } catch (e) { toast('⚠️ ' + e.message); }
   CM.busy = false; cmRender();
 }
-function comOpen() { if (clOn() && Date.now() - SOT.bt > 6e5) { SOT.bt = Date.now(); soRpc('badges').then(b => { if (b && typeof b === 'object') { SO.B = b; soSave(); cmRender(); } }).catch(() => {}); }
+function comOpen() { metaLoad(() => cmRender());
  try { socClose(); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#com').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#cmsh').hidden = true; $('#com').classList.add('open'); cmRender(); cmLoad(); }
 const comClose = () => { $('#com').classList.remove('open'); $('#cmsh').hidden = true; };
 async function cmCompress(file) {      // photo réduite (1024 px max) et compressée en JPEG, ~100 à 200 Ko
