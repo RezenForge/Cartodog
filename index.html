@@ -1193,6 +1193,7 @@ html.lite #pt,html.lite #homeb{display:none!important}
 .pfbio{margin:11px 0 0;font:italic 500 13.5px/1.45 var(--num);color:#e8d8b8;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .pfa{display:flex;gap:8px;margin-top:13px}.pfa .btn{flex:1;margin:0}.pfa .pfmo{flex:0 0 48px}.pfw .pfrm{margin:8px 0 0;color:#ff8a6e}
 .pfme{margin-top:12px;font:600 12px var(--num);color:var(--mut);text-align:center}[data-pfu]{cursor:pointer}
+.acvis.two{grid-template-columns:1fr 1fr!important}
 /* listes qui défilent : une carte ne se tasse jamais (sinon, sur Safari notamment, son contenu déborde et chevauche la carte du dessus) */
 .cmls>*,.cmp>*,.scls>*,.scgl>*,.bprvl>*,.cmcl>*{flex-shrink:0}html,body{overscroll-behavior:none}
 body #dogm{align-items:flex-start!important;padding-top:calc(env(safe-area-inset-top,0px) + 80px)!important}body #dogm .win{max-height:calc(100dvh - env(safe-area-inset-top) - 96px)!important}
@@ -1357,31 +1358,29 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
   <div class="acp on" data-pg="main">
     <div class="ach"><h2>Mon compte<small>Profil et réglages</small></h2></div>
     <button class="acu" data-acp="me"><span class="acav" id="acav"></span><span class="act"><b id="acnm">Promeneur</b><small id="acsb">Compte local · sur ce téléphone</small></span><i>›</i></button>
-    <button class="acon acl" id="acloud"></button>
-    <div class="mh">Mon compte</div>
-    <div class="acg"><button class="acr" data-acp="me"><span class="aci">👤</span><span class="act"><b>Mes infos</b><small id="acme">Pseudo, commune</small></span><i>›</i></button><button class="acr" id="acdog"><span class="aci">🐕</span><span class="act"><b>Mon chien</b><small id="acdgs">Profil, santé, niveau</small></span><i>›</i></button></div>
+    <div class="acg" style="margin-top:8px"><span id="acme" hidden></span><button class="acr" id="acdog"><span class="aci">🐕</span><span class="act"><b>Mon chien</b><small id="acdgs">Profil, santé, niveau</small></span><i>›</i></button></div>
     <div class="mh">Confidentialité</div>
     <div class="acg"><button class="acr" data-acp="priv"><span class="aci">🔒</span><span class="act"><b>Visibilité et partage</b><small id="acpv">Copains</small></span><i>›</i></button><button class="acr" data-lg="confidentialite"><span class="aci">📄</span><span class="act"><b>Informations légales</b><small>Mentions, confidentialité, conditions</small></span><i>›</i></button></div>
     <div class="mh">Application</div>
-    <div class="acg"><button class="acr" data-acp="map"><span class="aci">🗺️</span><span class="act"><b>Carte et alertes</b><small>Routes, communes, boussole, écran</small></span><i>›</i></button><button class="acr" data-acp="off"><span class="aci">📶</span><span class="act"><b>Hors connexion</b><small>Enregistrer une zone de carte</small></span><i>›</i></button><button class="acr" data-acp="data"><span class="aci">💾</span><span class="act"><b>Mes données</b><small>Sauvegarde et restauration</small></span><i>›</i></button><button class="acr" data-acp="about"><span class="aci">ℹ️</span><span class="act"><b>À propos</b><small id="acver">Version, mise à jour</small></span><i>›</i></button></div>
+    <div class="acg"><button class="acr" data-acp="map"><span class="aci">🗺️</span><span class="act"><b>Carte et affichage</b><small>Alertes, écran, hors connexion</small></span><i>›</i></button><button class="acr" data-acp="data"><span class="aci">💾</span><span class="act"><b>Sauvegarde sur fichier</b><small>Copie de votre carnet (Drive, e-mail…)</small></span><i>›</i></button><button class="acr" id="acupd"><span class="aci">🔄</span><span class="act"><b>Actualiser l'application</b><small id="acver">Version</small></span></button></div>
   </div>
-  <div class="acp" data-pg="cloud"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Compte en ligne<small>Sauvegarde et partage</small></h2></div><div id="accl"></div></div>
-  <div class="acp" data-pg="me"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Mes infos<small>Comment les autres vous verront</small></h2></div>
+  <div class="acp" data-pg="me"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Mon compte<small>Profil et connexion</small></h2></div>
+    <div class="mh">Mon profil</div>
     <label class="acf"><span>Prénom</span><input id="acpf" maxlength="24" placeholder="Ex. Dylan" autocomplete="given-name" enterkeyhint="next"></label>
     <label class="acf"><span>Pseudo</span><input id="acpn" maxlength="24" placeholder="Ex. dylan_nova" autocomplete="nickname" enterkeyhint="done"></label>
     <label class="acf"><span>Commune</span><input id="acpc" maxlength="40" placeholder="Ex. Le Taillan-Médoc" autocomplete="address-level2" enterkeyhint="done"></label>
-    <label class="acf off"><span>E-mail du compte</span><input id="acpe" disabled placeholder="Non connecté"></label>
-    <div class="hint">Votre prénom, votre pseudo et le nom de votre chien sont visibles des membres connectés. La commune reste privée.</div>
+    <div class="hint">Votre prénom, votre pseudo et le nom de votre chien sont visibles des membres connectés. La commune reste privée. Votre description se modifie dans Copains.</div>
+    <div class="mh">Connexion</div><div id="accl"></div>
   </div>
   <div class="acp" data-pg="priv"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Visibilité et partage<small>Ce que les autres promeneurs voient</small></h2></div>
     <div class="mh">Qui peut me voir</div>
-    <div class="acvis" id="acvis"><button data-v="none"><span>🙈</span><b>Personne</b><small>Mode fantôme</small></button><button data-v="friends"><span>🤝</span><b>Copains</b><small>Mes amis seulement</small></button><button data-v="all"><span>🌍</span><b>Tout le monde</b><small>Promeneurs du coin</small></button></div>
+    <div class="acvis two" id="acvis"><button data-v="friends"><span>🤝</span><b>Visible</b><small>En ligne pour mes copains</small></button><button data-v="none"><span>🙈</span><b>Invisible</b><small>Mode fantôme</small></button></div>
     <div class="mh">Partage</div>
     <button class="btn" id="acpres"></button>
     <button class="btn" id="acstat"></button>
-    <div class="acnote">🔐 Vos copains voient seulement « en balade sur… », jamais votre position exacte. « Personne » vous rend invisible. Votre pseudo, votre prénom, le nom de votre chien et votre description restent visibles des membres connectés, pour qu'on puisse vous retrouver.</div>
+    <div class="acnote">🔐 Vos copains voient seulement « en balade à… », jamais votre position exacte ; les autres membres voient juste un nombre de promeneurs sur une balade. « Invisible » coupe tout cela. Votre pseudo, votre prénom, le nom de votre chien et votre description restent visibles des membres connectés, pour qu'on puisse vous retrouver.</div>
   </div>
-  <div class="acp" data-pg="map"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Carte et alertes<small>Affichage et comportement</small></h2></div>
+  <div class="acp" data-pg="map"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Carte et affichage<small>Alertes, écran, hors connexion</small></h2></div>
     <button class="btn" id="alb"></button>
     <button class="btn" id="fs" hidden></button>
     <button class="btn" id="wk"></button>
@@ -1389,18 +1388,17 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
     <button class="btn" id="rdb"></button>
     <button class="btn" id="cmb"></button>
     <button class="btn" id="compb"></button></details>
-  </div>
-  <div class="acp" data-pg="off"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Hors connexion<small>Pour les bois sans réseau</small></h2></div>
+    <div class="mh">Hors connexion</div>
     <button class="btn" id="dl">Enregistrer la zone affichée</button>
     <button class="btn" id="dl20">Zone de 20 km autour du centre</button>
     <div class="hint">La carte enregistrée reste disponible sans réseau.</div>
   </div>
-  <div class="acp" data-pg="data"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Mes données<small>Votre carnet vous appartient</small></h2></div>
+  <div class="acp" data-pg="data"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Sauvegarde sur fichier<small>Votre carnet vous appartient</small></h2></div>
     <div class="bkst" id="bkst"></div>
     <button class="btn gold" id="bksh">☁️ Sauvegarder maintenant <small>Drive, e-mail, fichiers…</small></button>
     <button class="btn" id="exp">Exporter le carnet (JSON)</button>
     <button class="btn" id="imp">Importer un carnet (JSON)</button>
-    <div class="hint">La sauvegarde contient tout : balades, sentiers, repères, photos et profils. Rangez-la sur Drive : en cas de perte du téléphone, « Importer » la restaure. Un rappel s'affiche si la dernière date de plus d'une semaine.</div>
+    <div class="hint">Votre compte se synchronise déjà tout seul. Ce fichier est une copie de secours de tout votre carnet (balades, repères, photos, profils), à ranger où vous voulez ; « Importer » la restaure.</div>
     <input type="file" id="fi" accept=".json,application/json" hidden>
   </div>
   <div class="acp" data-pg="about"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>À propos<small>Cartodog</small></h2></div>
@@ -3080,7 +3078,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-159';
+const APP_V = '2026.10.28-160';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3757,7 +3755,7 @@ async function clAfterLogin(first) {
 /* Retour d'un lien reçu par e-mail (confirmation d'inscription, mot de passe oublié) : #access_token=…&type=… */
 { const h = location.hash; if (/access_token=/.test(h)) { const q = new URLSearchParams(h.slice(1)); history.replaceState(null, '', location.pathname + location.search);
   if (clSet({ access_token: q.get('access_token'), refresh_token: q.get('refresh_token'), expires_in: +q.get('expires_in') || 3600, user: {} })) {
-    sb('/auth/v1/user').then(u => { if (u && u.id) { CLD.s.user = { id: u.id, email: u.email }; clSave(); } if (q.get('type') === 'recovery') { CLD.pwReset = true; setTimeout(() => { $('#mn').click(); accPage('cloud'); clUi(); }, 600); } else clAfterLogin(true); }).catch(() => {}); } }
+    sb('/auth/v1/user').then(u => { if (u && u.id) { CLD.s.user = { id: u.id, email: u.email }; clSave(); } if (q.get('type') === 'recovery') { CLD.pwReset = true; setTimeout(() => { $('#mn').click(); accPage('me'); clUi(); }, 600); } else clAfterLogin(true); }).catch(() => {}); } }
   else if (/error_description=/.test(h)) { const q = new URLSearchParams(h.slice(1)); history.replaceState(null, '', location.pathname + location.search); setTimeout(() => toast('☁️ ' + (q.get('error_description') || 'Lien expiré').replace(/\+/g, ' ')), 800); } }
 
 /* ===== Synchronisation =====
@@ -3887,10 +3885,7 @@ if (clOn()) setTimeout(() => clAfterLogin(false), 2500);
 /* ===== Écrans du compte en ligne ===== */
 const fmtAgo = t => { const s = Math.round((Date.now() - t) / 1000); return s < 60 ? 'à l\'instant' : s < 3600 ? 'il y a ' + Math.round(s / 60) + ' min' : new Date(t).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }); };
 function clUi() {
-  const b = $('#acloud'); if (!b) return; const on = clOn();
-  b.innerHTML = on ? `<span>☁️</span><span><b>Compte en ligne · connecté</b><small>${esc(CLD.s.user.email || '')} · ${CLD.st === 'busy' ? '🔄 synchronisation…' : CLD.st === 'err' ? '⚠️ ' + esc(CLD.err) : CLD.at ? '✅ synchronisé ' + fmtAgo(CLD.at) : 'en attente'}</small></span><i>›</i>`
-    : `<span>☁️</span><span><b>Créer mon compte · Se connecter</b><small>Sauvegarde automatique, carnet sur tous vos appareils, sentiers partagés</small></span><i>›</i>`;
-  b.classList.toggle('on', on);
+  const on = clOn(); try { const u = accU(), dog = D.prof && D.prof.name; if ($('#acsb')) $('#acsb').textContent = [dog && 'avec ' + dog, on ? (CLD.st === 'busy' ? '🔄 synchronisation…' : CLD.st === 'err' ? '⚠️ hors ligne' : CLD.at ? '✅ synchronisé ' + fmtAgo(CLD.at) : '☁️ connecté') : ''].filter(Boolean).join(' · ') || 'Mon compte'; } catch (e) {}
   gateSync(); let c = $('#accl'); if (!c) return;
   if (!on) { c.innerHTML = ''; c = $('#gatef'); c.innerHTML = `<div class="clseg"><button data-clm="in" class="${CLD.mode !== 'up' ? 'on' : ''}">Se connecter</button><button data-clm="up" class="${CLD.mode === 'up' ? 'on' : ''}">Créer un compte</button></div>
     ${CLD.mode === 'up' ? `<label class="acf"><span>Prénom</span><input id="clfirst" maxlength="24" autocomplete="given-name" value="${esc(accU().first || '')}" placeholder="Votre prénom"></label><label class="acf"><span>Pseudo <em>visible par les autres promeneurs</em></span><input id="clname" maxlength="24" autocomplete="nickname" value="${esc(accU().name || '')}" placeholder="Votre pseudo"></label>` : ''}
@@ -3903,18 +3898,16 @@ function clUi() {
     <div class="acnote">🔐 Vos données sont stockées en France (Paris). Vos sentiers et repères deviennent visibles par les autres promeneurs ; votre carnet (chien, sorties, notes, photos) reste privé.</div>`;
     return; }
   if (CLD.pwReset) { c.innerHTML = `<div class="acnote">🔑 Choisissez un nouveau mot de passe.</div><label class="acf"><span>Nouveau mot de passe</span><input id="clnpw" type="password" minlength="8" autocomplete="new-password"></label><div class="clerr" id="clerr"></div><button class="btn gold" id="clnpwgo">Enregistrer</button>`; return; }
-  const S = syLoad(), np = Object.values(S.pst).filter(v => v === 'public').length, pp = Object.values(S.pst).filter(v => v === 'proposed').length;
   c.innerHTML = `<div class="clcard"><b>${esc(CLD.s.user.email || '')}</b><small>${CLD.role === 'admin' ? '👑 Administrateur' : CLD.role === 'editor' ? '🧭 Éditeur des sentiers' : '🐾 Membre'}</small></div>
-    <div class="clstat"><span><b>${np}</b><small>sentiers publics</small></span><span><b>${pp}</b><small>sentiers proposés</small></span><span><b>${(D.marks || []).length}</b><small>repères</small></span></div>
     <div class="clsy ${CLD.st}">${CLD.st === 'busy' ? '🔄 Synchronisation en cours…' : CLD.st === 'err' ? '⚠️ ' + esc(CLD.err) : CLD.at ? `✅ Synchronisé ${fmtAgo(CLD.at)}${CLD.n.up || CLD.n.down ? ` · ↑ ${CLD.n.up} ↓ ${CLD.n.down}` : ''}` : 'Pas encore synchronisé'}</div>
     ${pushHtml()}
     <button class="btn gold" id="clsync">🔄 Synchroniser maintenant</button>
-    <div class="hint">${CLD.role === 'admin' || CLD.role === 'editor' ? 'Vos sentiers sont publiés directement pour tous les promeneurs.' : 'Vos nouveaux sentiers sont envoyés comme « proposés » : ils deviennent publics une fois validés.'} La synchronisation se fait toute seule : au démarrage, après vos modifications et au retour du réseau.</div>
+    <div class="hint">La synchronisation se fait toute seule : au démarrage, après vos modifications et au retour du réseau. Votre compte complet vous suit sur tous vos appareils.</div>
     <button class="btn" id="clout">Se déconnecter</button><button class="cllink dgr" id="cldel">Supprimer mon compte</button>`;
 }
 document.addEventListener('click', async e => {
   const t = e.target; if (!t.closest) return;
-  if (t.closest('#acloud')) { if (!clOn()) { CLD.skip = false; return clUi(); } accPage('cloud'); return clUi(); }
+  if (t.closest('#acupd')) return $('#rf').click();
   if (t.closest('#gtoff')) { CLD.skip = true; return gateSync(); }
   const lgl = t.closest('[data-lg]'); if (lgl) { e.preventDefault(); return legalOpen(lgl.dataset.lg); }
   if (t.closest('#lgx')) { $('#lg').hidden = true; $('#lgf').src = 'about:blank'; return; }
@@ -3947,7 +3940,7 @@ document.addEventListener('click', async e => {
 
 $('#imp').onclick = () => $('#fi').click();
 /* ===== Mon compte : tiroir à droite, pages qui glissent ===== */
-const ACV = { none: 'Personne · mode fantôme', friends: 'Copains', all: 'Tout le monde' };
+const ACV = { none: 'Invisible · mode fantôme', friends: 'Visible par mes copains', all: 'Visible par mes copains' };
 const accU = () => (D.user = Object.assign({ name: '', first: '', city: '', vis: 'friends', pres: true, stats: true, st: 'on', bio: '' }, D.user || {}));
 function accPage(pg, instant) {      // renvoie true si on a changé de page (sert au bouton retour)
   const cur = document.querySelector('#menu .acp.on'); if (cur && cur.dataset.pg === pg) return false;
@@ -3957,14 +3950,14 @@ function accPage(pg, instant) {      // renvoie true si on a changé de page (se
 function accRender() {
   const u = accU(), nm = u.name.trim(), dog = D.prof && D.prof.name ? D.prof.name : '';
   $('#acnm').textContent = nm || 'Promeneur';
-  $('#acsb').textContent = [u.city.trim(), dog && 'avec ' + dog].filter(Boolean).join(' · ') || 'Compte local · sur ce téléphone';
+  $('#acsb').textContent = [dog && 'avec ' + dog, clOn() ? (CLD.st === 'busy' ? '🔄 synchronisation…' : CLD.st === 'err' ? '⚠️ hors ligne' : CLD.at ? '✅ synchronisé ' + fmtAgo(CLD.at) : '☁️ connecté') : ''].filter(Boolean).join(' · ') || 'Mon compte';
   $('#acav').textContent = nm ? nm[0].toUpperCase() : ''; $('#acav').classList.toggle('ini', !!nm);
-  $('#acme').textContent = nm ? nm + (u.city ? ' · ' + u.city : '') : 'Pseudo, commune';
+  $('#acme').textContent = [nm && '@' + nm, clOn() && CLD.s.user.email].filter(Boolean).join(' · ') || 'Prénom, pseudo, e-mail, synchronisation';
   $('#acdgs').textContent = dog ? dog + ' · niveau ' + ($('#hlv').textContent || 1) : 'Créer son profil';
   $('#acpv').textContent = ACV[u.vis] || ACV.friends;
-  $('#acpn').value = u.name; $('#acpf').value = u.first || ''; $('#acpc').value = u.city; $('#acpe').value = (clOn() && CLD.s.user.email) || '';
-  document.querySelectorAll('#acvis [data-v]').forEach(b => b.classList.toggle('on', b.dataset.v === u.vis));
-  $('#acpres').innerHTML = sw('Montrer ma présence sur les balades', u.pres); $('#acstat').innerHTML = sw('Montrer le profil de mon chien aux membres (photos, niveau, balades)', u.stats);
+  $('#acpn').value = u.name; $('#acpf').value = u.first || ''; $('#acpc').value = u.city;
+  document.querySelectorAll('#acvis [data-v]').forEach(b => b.classList.toggle('on', b.dataset.v === (u.vis === 'none' ? 'none' : 'friends')));
+  $('#acpres').innerHTML = sw('Montrer à mes copains la balade où je suis', u.pres); $('#acstat').innerHTML = sw('Montrer le profil de mon chien aux membres (photos, niveau, balades)', u.stats);
   $('#acver').textContent = 'Version ' + APP_V; try { clUi(); } catch (e) {}
 }
 document.querySelectorAll('#menu [data-acp]').forEach(b => b.onclick = () => { accPage(b.dataset.acp); bkStat(); });
