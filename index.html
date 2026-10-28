@@ -1193,6 +1193,8 @@ html.lite #pt,html.lite #homeb{display:none!important}
 .pfbio{margin:11px 0 0;font:italic 500 13.5px/1.45 var(--num);color:#e8d8b8;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .pfa{display:flex;gap:8px;margin-top:13px}.pfa .btn{flex:1;margin:0}.pfa .pfmo{flex:0 0 48px}.pfw .pfrm{margin:8px 0 0;color:#ff8a6e}
 .pfme{margin-top:12px;font:600 12px var(--num);color:var(--mut);text-align:center}[data-pfu]{cursor:pointer}
+.scbal{align-self:flex-start;display:inline-flex;align-items:center;gap:3px;max-width:100%;margin-top:3px;padding:4px 9px;border-radius:999px;border:1.5px solid #c6862a;background:rgba(244,200,98,.12);color:#f0d9a8;font:700 12px/1.2 var(--num);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.scbal b{color:#ffc56b;font-weight:800;overflow:hidden;text-overflow:ellipsis}.scbal:active{transform:translateY(1px)}.pfn .scbal{margin-top:6px;margin-right:6px}
+
 /* Copains / Communauté ouverts : la fenêtre reste dans le cadre de la carte, les boutons du bas restent visibles ; le bouton touché devient une flèche pour refermer */
 html:not(.kbon) #soc,html:not(.kbon) #com{bottom:var(--socbt,0px)!important}html:not(.kbon) #soc .scw,html:not(.kbon) #com .scw{bottom:0!important}html:not(.kbon) #scch,html:not(.kbon) #soc .scsh,html:not(.kbon) #com .scsh{bottom:var(--socbt,0px)!important}
 body:has(#soc.open,#com.open) #dock #socb,body:has(#soc.open,#com.open) #dock #comb{display:flex!important}
@@ -2943,7 +2945,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-141';
+const APP_V = '2026.10.28-142';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2987,10 +2989,10 @@ function soIngest(x, first) {
   SO.last = Math.max(SO.last || 0, x.id); return th;
 }
 function presHere() { if (!me) return null; let best = null, bd = 1000;      /* la balade la plus proche à moins d'1 km */ try { Object.keys(D.cells).forEach(k => { const c = D.cells[k]; if (!rec(c) || c.x == null) return; const d = rdist(ctr(k), [me.x, me.y]); if (d < bd) { bd = d; best = k; } }); } catch (e) {} return best; }
-function presDwell() {      // présent sur une balade seulement après 5 minutes à moins d'1 km (le temps continue si l'appli est rouverte vite)
+function presDwell() {      // présent sur une balade après 5 minutes à moins d'1 km, et tant qu'on y est redétecté dans les 10 minutes
   const k = presHere(), now = Date.now(); let H = {}; try { H = JSON.parse(localStorage.getItem('cartodog-here') || '{}') || {}; } catch (e) {}
   if (!k) { if (H.k) try { localStorage.removeItem('cartodog-here'); } catch (e) {} return null; }
-  if (H.k !== k || now - (+H.last || 0) > 5 * 6e4) H = { k, t: now }; H.last = now; try { localStorage.setItem('cartodog-here', JSON.stringify(H)); } catch (e) {}
+  if (H.k !== k || now - (+H.last || 0) > 10 * 6e4) H = { k, t: now };      // revu dans les 10 min : toujours présent H.last = now; try { localStorage.setItem('cartodog-here', JSON.stringify(H)); } catch (e) {}
   return now - H.t >= 5 * 6e4 ? k : null;
 }
 function presVisit(k) {      // 5 minutes sur place comptent comme une visite (une par jour et par balade)
@@ -3146,7 +3148,7 @@ function socRender() {
   const { F, E } = socDemo(); SOC.F = F; SOC.E = E;
   document.querySelectorAll('#soc [data-st]').forEach(b => { b.classList.toggle('on', b.dataset.st === SOC.tab); b.setAttribute('aria-selected', b.dataset.st === SOC.tab); });
   document.querySelectorAll('#soc [data-sp]').forEach(x => x.classList.toggle('on', x.dataset.sp === SOC.tab));
-  const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw" data-pfu="${f.id}">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b><small>${f.st === 'walk' ? spTag(f.sp, 1) : spTag(f.sp)}${f.st === 'walk' ? `<u title="En balade">🐾 ${f.t} min</u><i class="mqs">·</i><span class="mqn"><span class="mqi">${esc(f.at.n)}</span></span>` : f.st === 'on' ? 'En ligne' : f.last ? 'Vu ' + esc(f.last) : 'Hors ligne'}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
+  const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw" data-pfu="${f.id}">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b><small>${f.st === 'walk' ? spTag(f.sp, 1) : spTag(f.sp)}${f.st === 'walk' ? '' : f.st === 'on' ? 'En ligne' : f.last ? 'Vu ' + esc(f.last) : 'Hors ligne'}</small>${f.st === 'walk' ? balChip(f) : ''}</span><button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
   const grp = (t, L) => L.length ? `<div class="mh">${t} · ${L.length}</div><div class="acg">${L.map(row).join('')}</div>` : '';
   $('#scfr').innerHTML = (pushAsk() ? `<div class="scpn"><span>${pushIosHint() ? '📲 Ajoutez Cartodog à l\'écran d\'accueil pour être prévenu des messages, même appli fermée.' : '🔔 Soyez prévenu des messages, demandes et rendez-vous, même appli fermée.'}</span><button data-pn="on">${pushIosHint() ? 'Comment ?' : 'Activer'}</button><button data-pn="x" aria-label="Plus tard">✕</button></div>` : '') + `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes${SO.rin.length ? ` <b>${SO.rin.length}</b>` : ''}</button></div><div class="scls">` + grpRows() +
     grp('🐾 En balade', F.filter(f => f.st === 'walk')) + grp('🟢 En ligne', F.filter(f => f.st === 'on')) + grp('Hors ligne', F.filter(f => f.st === 'off')) + (F.length ? '' : (clOn() ? '<div class="scemp">🐕 Pas encore de copains<small>Ajoutez les promeneurs que vous croisez avec leur pseudo : vous verrez qui se balade et pourrez discuter.</small></div>' : '<div class="scemp">☁️ Connectez-vous pour retrouver vos copains</div>')) + '</div>';
@@ -3156,6 +3158,7 @@ function socRender() {
 
 /* ===== Mon état et ma description (visibles par les copains) ===== */
 const SPC = { '': ['🐕', 'Pas précisé', 'Rien de particulier à signaler'], ok: ['👍', 'Sociable', 'Aime jouer avec les autres chiens'], space: ['🟡', 'Besoin d\'espace', 'Réactif : gardez vos distances, merci'], shy: ['🟠', 'Craintif', 'Approchez doucement, sans insister'], heat: ['🔴', 'En chaleur', 'Tenez les mâles à l\'écart'] };
+const balChip = (f, a = 'data-fmap') => `<button class="scbal" ${a}="${f.id}" aria-label="Voir ${esc(f.at.n)} sur la carte">📍 En balade à <b>${esc(f.at.n)}</b></button>`;
 const spTag = (sp, mini) => sp && SPC[sp] ? `<span class="sptg ${sp}${mini ? ' mini' : ''}" title="${SPC[sp][1]}">${SPC[sp][0]}${mini ? '' : ' ' + SPC[sp][1]}</span>` : '';
 const STS = { on: ['🟢', 'Disponible', 'En ligne, joignable'], look: ['👋', 'Cherche une balade', 'Partant pour marcher avec d\'autres chiens'], dnd: ['🌙', 'Ne pas déranger', 'En ligne, sans invitations'], hid: ['🙈', 'Invisible', 'Personne ne me voit en ligne'] };
 function socMe() {
@@ -3183,7 +3186,7 @@ function msgList() {
 function chatOpen(id) {
   const f = who(id); if (!f) return; SOC.chat = id; const M = msgAll();
   if ((M[id] || []).some(m => m.nw)) { M[id].forEach(m => m.nw = 0); msgSave(); }
-  $('#scchw').innerHTML = `<span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b><small>${f.grp ? esc(f.ms.map(x => x.d).join(', ') || 'Aucun membre') : spTag(f.sp) + (f.st === 'walk' ? '🐾 En balade · ' + esc(f.at.n) : f.st === 'on' ? 'En ligne' : f.last ? 'Vu ' + esc(f.last) : 'Hors ligne')}</small>${!f.grp && f.bio ? `<span class="scchbio">« ${esc(f.bio)} »</span>` : ''}</span>`;
+  $('#scchw').innerHTML = `<span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b><small>${f.grp ? esc(f.ms.map(x => x.d).join(', ') || 'Aucun membre') : spTag(f.sp) + (f.st === 'walk' ? '' : f.st === 'on' ? 'En ligne' : f.last ? 'Vu ' + esc(f.last) : 'Hors ligne')}</small>${!f.grp && f.st === 'walk' ? balChip(f) : ''}${!f.grp && f.bio ? `<span class="scchbio">« ${esc(f.bio)} »</span>` : ''}</span>`;
   if (f.grp) $('#scchw').removeAttribute('data-pfu'); else $('#scchw').dataset.pfu = f.id;
   chatRender(); $('#scch').hidden = false; msgList(); soTick();
 }
@@ -3316,17 +3319,18 @@ function pfRender() {
   const id = PF.id, uid = CLD.s.user.id, mine = id === uid, fr = SO.fr.includes(id), rin = SO.rin.includes(id), rout = SO.rout.includes(id), pp = fr ? person(id) : null;
   const u = accU(), raw = mine ? { name: u.name || CLD.name, first: u.first, dog: D.prof && D.prof.name, sp: D.prof && D.prof.space, bio: u.bio, full: 1 } : (fr && SO.P[id]) || PF.c[id] || SO.P[id] || {};
   const hu = (raw.first || '').trim() || (raw.name || '').trim(), dog = (raw.dog || '').trim(), f = { id, d: dog || hu || '…', n: dog ? hu : '', c: soCol(id) };
-  const st = pp ? (pp.st === 'walk' ? '🐾 En balade · ' + esc(pp.at.n) : pp.st === 'on' ? '🟢 En ligne' : pp.last ? 'Vu ' + esc(pp.last) : 'Hors ligne') : '';
+  const st = pp ? (pp.st === 'walk' ? '' : pp.st === 'on' ? '🟢 En ligne' : pp.last ? 'Vu ' + esc(pp.last) : 'Hors ligne') : '';
   const sp = ['space', 'shy', 'heat'].includes(raw.sp) ? SPC[raw.sp] : null, ok = !!(raw.name || '').trim();
   const act = mine ? '<div class="pfme">C\'est ainsi que les autres promeneurs vous voient</div>'
-    : fr ? `<div class="pfa"><button class="btn gold" data-pf="msg">💬 Message</button>${pp && pp.st === 'walk' && pp.at.k ? '<button class="btn" data-pf="map">📍 Où ?</button>' : ''}<button class="btn pfmo" data-pf="more" aria-label="Plus d'options" aria-expanded="${PF.more}">⋯</button></div>${PF.more ? '<button class="btn pfrm" data-pf="rm">➖ Retirer de mes copains</button>' : ''}`
+    : fr ? `<div class="pfa"><button class="btn gold" data-pf="msg">💬 Message</button><button class="btn pfmo" data-pf="more" aria-label="Plus d'options" aria-expanded="${PF.more}">⋯</button></div>${PF.more ? '<button class="btn pfrm" data-pf="rm">➖ Retirer de mes copains</button>' : ''}`
     : rin ? '<div class="pfa"><button class="btn gold" data-pf="ok">✓ Accepter en ami</button><button class="btn" data-pf="no">Refuser</button></div>'
     : rout ? '<div class="pfa"><button class="btn" disabled>⏳ Demande envoyée</button><button class="btn pfmo" data-pf="cx" aria-label="Annuler la demande">✕</button></div>'
     : `<div class="pfa"><button class="btn gold" data-pf="add"${ok ? '' : ' disabled'}>➕ Ajouter en ami</button></div>`;
-  $('#pfw').innerHTML = `<button class="ib pfx" data-pf="x" aria-label="Fermer">✕</button><div class="pfh">${socAv(f)}<div class="pfn"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(id)}</b><small>${ok ? '@' + esc(raw.name) : ''}${ok && st ? ' · ' : ''}${st}</small>${sp ? `<span class="pfsp">${sp[0]} ${esc(sp[1])}</span>` : ''}</div></div>${(raw.bio || '').trim() ? `<p class="pfbio">« ${esc(raw.bio.trim())} »</p>` : ''}${act}`;
+  $('#pfw').innerHTML = `<button class="ib pfx" data-pf="x" aria-label="Fermer">✕</button><div class="pfh">${socAv(f)}<div class="pfn"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(id)}</b><small>${ok ? '@' + esc(raw.name) : ''}${ok && st ? ' · ' : ''}${st}</small>${pp && pp.st === 'walk' ? balChip(pp, 'data-pfmap') : ''}${sp ? `<span class="pfsp">${sp[0]} ${esc(sp[1])}</span>` : ''}</div></div>${(raw.bio || '').trim() ? `<p class="pfbio">« ${esc(raw.bio.trim())} »</p>` : ''}${act}`;
 }
 $('#pfsh').addEventListener('click', async e => {
-  if (e.target.id === 'pfsh') return pfClose(); const b = e.target.closest('[data-pf]'); if (!b || b.disabled) return; const a = b.dataset.pf, id = PF.id; if (!id) return;
+  if (e.target.id === 'pfsh') return pfClose(); if (e.target.closest('[data-pfmap]')) { const pp = person(PF.id); pfClose(); try { comClose(); } catch (x) {} return socShow(pp && pp.at && pp.at.k); }
+  const b = e.target.closest('[data-pf]'); if (!b || b.disabled) return; const a = b.dataset.pf, id = PF.id; if (!id) return;
   if (a === 'x') return pfClose();
   if (a === 'more') { PF.more = !PF.more; return pfRender(); }
   if (a === 'msg') { pfClose(); if (SOC.chat === id && !$('#scch').hidden) return; try { comClose(); } catch (x) {} if (!$('#soc').classList.contains('open')) socOpen(); return chatOpen(id); }
@@ -3344,7 +3348,7 @@ $('#pfsh').addEventListener('click', async e => {
     try { await soRpc('friend_respond', { other: id, ok }); if (ok) toast('🎉 Nouveau copain !'); } catch (x) { toast('⚠️ ' + x.message); } return soTick(true); }
   if (a === 'cx') { SO.rout = SO.rout.filter(x => x !== id); soSave(); pfRender(); try { if (SOC.fa === 'req') faOpen('req'); } catch (x) {} try { await soRpc('friend_remove', { other: id }); } catch (x) { toast('⚠️ ' + x.message); } return soTick(true); }
 });
-document.addEventListener('click', e => { const u = e.target.closest && e.target.closest('[data-pfu]'); if (!u || !u.dataset.pfu || grpGet(u.dataset.pfu)) return; e.stopPropagation(); e.preventDefault(); pfOpen(u.dataset.pfu); }, true);
+document.addEventListener('click', e => { const u = e.target.closest && !e.target.closest('[data-fmap]') && e.target.closest('[data-pfu]'); if (!u || !u.dataset.pfu || grpGet(u.dataset.pfu)) return; e.stopPropagation(); e.preventDefault(); pfOpen(u.dataset.pfu); }, true);
 function amiGo() { const v = SOC.ami; if (!v || !clOn()) return; SOC.ami = null; socOpen(); faOpen('add', v); }      // lien « #ami=pseudo » partagé par un copain
 { const m = /^#ami=([^&]+)/.exec(location.hash); if (m) { try { SOC.ami = decodeURIComponent(m[1]).slice(0, 24); } catch (e) {} history.replaceState(null, '', location.pathname + location.search); } }
 /* ===== Notifications push : messages, demandes de copains et rendez-vous, même appli fermée (iPhone : appli ajoutée à l'écran d'accueil) ===== */
@@ -3500,7 +3504,7 @@ $('#soc').addEventListener('click', e => {
   const gr = e.target.closest('[data-grp]'); if (gr) return grpOpen(gr.dataset.grp);
   if (e.target.closest('[data-grpnew]')) { SOC.gnew = null; return grpNew(); }
   const ch = e.target.closest('[data-chat]'); if (ch && !e.target.closest('[data-fmap],[data-fmore]')) return chatOpen(ch.dataset.chat);
-  const fm = e.target.closest('[data-fmap]'); if (fm) { const f = SOC.F.find(x => x.id === fm.dataset.fmap); return socShow(f && f.at.k); }
+  const fm = e.target.closest('[data-fmap]'); if (fm) { const f = (SOC.F || []).find(x => x.id === fm.dataset.fmap) || person(fm.dataset.fmap); if (!$('#scch').hidden) chatClose(); return socShow(f && f.at && f.at.k); }
   const mo = e.target.closest('[data-fmore]'); if (mo) return pfOpen(mo.dataset.fmore);
   const eg = e.target.closest('[data-eg]'); if (eg) { const [id, v] = eg.dataset.eg.split(':'), uid = CLD.s && CLD.s.user.id, ev = (SO.E || []).find(x => x.id === id), gg = ev && (ev.gs || []).find(x => x.u === uid); if (!gg) return;
     const nv = gg.r === v ? '' : v; gg.r = nv; if (nv === 'y') { SO.rem[id] = 1; try { navigator.vibrate && navigator.vibrate(30); } catch (x) {} } soSave(); socRender(); soRpc('event_rsvp', { e: id, r: nv }).catch(x => toast('⚠️ ' + x.message)); return; }
