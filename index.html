@@ -1738,7 +1738,12 @@ new MutationObserver(() => repPos()).observe(document.body, { subtree: true, att
 let socPrev = false;      // l'aperçu fictif (faux copains, faux promeneurs) est retiré : les vrais copains arriveront avec la messagerie en ligne
 let SLV = { t: 0, m: new Map() };
 function socLive() {
-  if (!socPrev) return SLV.m.size ? (SLV = { t: 0, m: new Map() }).m : SLV.m;
+  if (!socPrev) {      // présence réelle : nombre de promeneurs détectés sur chaque balade (anonyme) + avatars des copains présents
+    const H = (typeof SO === 'object' && SO.H) || [], sig = Math.floor(Date.now() / 3e4) + '|' + JSON.stringify(H) + '|' + ((typeof SOT === 'object' && SOT.sig) || '').length + '|' + Object.keys(D.cells).length; if (SLV.t === sig) return SLV.m;
+    const m = new Map(), at = k => m.get(k) || m.set(k, { cnt: 0, fr: [] }).get(k);
+    try { H.forEach(h => { const k = soCell(h.bx, h.by); if (k) at(k).cnt += +h.n || 0; });
+      SO.fr.map(person).filter(f => f && f.st === 'walk' && f.at && f.at.k).forEach(f => { const o = at(f.at.k); o.fr.push(f); o.cnt = Math.max(o.cnt, o.fr.length); }); } catch (e) {}
+    SLV = { t: sig, m }; return m; }
   const sig = Math.floor(Date.now() / 6e4) + '|' + Object.keys(D.cells).length + '|' + (NG.sig || ''); if (SLV.t === sig) return SLV.m;
   const m = new Map(), hs = k => { let h = 7; for (const ch of k) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; };
   Object.keys(D.cells).forEach(k => { if (!rec(D.cells[k]) || !cellGroup(k)) return; const h = hs(k) % 7, a = h > 2 ? h - 1 : 0; if (a) m.set(k, { cnt: a, fr: [] }); });
@@ -1755,10 +1760,13 @@ function drawPaw(x, y, s, n) {      // la patte du bouton Signaler (sans le pann
   const gr = g.createRadialGradient(29, 19, 2, 32, 34, 36); gr.addColorStop(0, '#ffd27a'); gr.addColorStop(1, '#e0861e'); g.fillStyle = gr; shape(); g.fill(); g.fill(PADP);
   g.fillStyle = '#2a1806'; g.font = '900 ' + (n > 9 ? 17 : 21) + 'px system-ui,sans-serif'; g.fillText(n > 99 ? '99' : n, 32, 45.5); g.restore();
 }
+const AVIM = new Map(); function avImg(u) { let im = AVIM.get(u); if (!im) { im = new Image(); im.onload = () => schedule(); im.src = u; AVIM.set(u, im); } return im.complete && im.naturalWidth ? im : null; }
 function drawFr(x, y, r, L) {      // avatars des copains, empilés ; au-delà de 3 : deux avatars + « +N »
   const show = L.length > 3 ? L.slice(0, 2) : L, more = L.length - show.length, tot = show.length + (more ? 1 : 0), step = r * 1.25; let cx = x - (tot - 1) * step;
   const disc = (fill, txt, col) => { g.beginPath(); g.arc(cx, y, r + 1.8, 0, 7); g.fillStyle = '#1a1208'; g.fill(); g.beginPath(); g.arc(cx, y, r, 0, 7); g.fillStyle = fill; g.fill(); g.lineWidth = 1.4; g.strokeStyle = '#ffd27a'; g.stroke(); g.fillStyle = col; g.font = '900 ' + Math.round(r * 1.05) + 'px Georgia,serif'; g.fillText(txt, cx, y + .5); cx += step; };
-  show.forEach(f => disc(f.c, (f.d || '?')[0], '#1a1208')); if (more) disc('#2a2018', '+' + more, '#ffd27a');
+  show.forEach(f => { const u = typeof avUrlOf === 'function' ? avUrlOf(f.id) : '', im = u && avImg(u);
+    if (im) { g.beginPath(); g.arc(cx, y, r + 1.8, 0, 7); g.fillStyle = '#1a1208'; g.fill(); g.save(); g.beginPath(); g.arc(cx, y, r, 0, 7); g.clip(); g.drawImage(im, cx - r, y - r, r * 2, r * 2); g.restore(); g.beginPath(); g.arc(cx, y, r, 0, 7); g.lineWidth = 1.4; g.strokeStyle = '#ffd27a'; g.stroke(); cx += step; }
+    else disc(f.c, (f.d || '?')[0], '#1a1208'); }); if (more) disc('#2a2018', '+' + more, '#ffd27a');
 }
 function draw() {
   FR++;
@@ -2893,12 +2901,14 @@ function onPos(p) { setTimeout(() => P.on && pmUpdate(), 0); if (samp) { const [
   if (pending) { pending = false; addLieu(); }
   recTick(); brTick(); routeTick(); apTick(); dangerCheck(); balWaitTick(); voxTick(); balArrive();
   if (CAM.m) camKick();      // la vue ne suit la position que dans les modes « suivi » (touchez la boussole)
+  if (clOn() && (presHere() || '') !== SOT.here) soPresence();
   schedule();
 }
+try { navigator.permissions && navigator.permissions.query({ name: 'geolocation' }).then(r => { if (r.state === 'granted' && watch === null) startLoc(true); }).catch(() => {}); } catch (e) {}
 var gpsWarn = 0, lastPan = 0;
-function startLoc() {
-  if (!navigator.geolocation) return toast('Géolocalisation indisponible'); compStart();
-  $('#loc').classList.add('on'); toast('Recherche de votre position…');
+function startLoc(quiet) {
+  if (!navigator.geolocation) return quiet || toast('Géolocalisation indisponible'); if (!quiet) compStart();
+  $('#loc').classList.add('on'); if (!quiet) toast('Recherche de votre position…');
   wakeSync(); watch = navigator.geolocation.watchPosition(onPos, err => {
     if (err.code === 1) { stopLoc(); return toast('Position refusée : ouvrez la page en https:// et autorisez-la'); }
     if (Date.now() - gpsWarn > 60000) { gpsWarn = Date.now(); toast('📡 Signal GPS faible : la localisation continue de chercher'); } }, { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 });      // délai dépassé ou signal perdu : on continue d'écouter
@@ -2917,7 +2927,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-131';
+const APP_V = '2026.10.28-132';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2944,7 +2954,7 @@ const soAgo = t => { const s = (Date.now() - t) / 1000, d = new Date(t), n = new
   if (d.toDateString() === n.toDateString()) return 'à ' + d.getHours() + ' h ' + String(d.getMinutes()).padStart(2, '0'); n.setDate(n.getDate() - 1); if (d.toDateString() === n.toDateString()) return 'hier'; return 'le ' + d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); };
 function soCell(x, y) {      // la balade de ma carte la plus proche d'un point partagé (moins de 900 m)
   if (x == null || y == null) return null; let best = null, bd = 900;
-  try { Object.keys(D.cells).forEach(k => { if (!rec(D.cells[k]) || !cellGroup(k)) return; const d = rdist(ctr(k), [x, y]); if (d < bd) { bd = d; best = k; } }); } catch (e) {} return best; }
+  try { Object.keys(D.cells).forEach(k => { if (!rec(D.cells[k]) || D.cells[k].x == null || (!LITE && !cellGroup(k))) return; const d = rdist(ctr(k), [x, y]); if (d < bd) { bd = d; best = k; } }); } catch (e) {} return best; }
 function person(id) {      // un promeneur tel que l'affichent les listes : chien (d), prénom (n), état, balade en cours
   const p = SO.P[id]; if (!p) return null; const seen = p.seen ? Date.parse(p.seen) : 0, on = seen && Date.now() - seen < 3 * 6e4, walk = !!p.walk && seen && Date.now() - seen < 20 * 6e4, hu = (p.first || '').trim() || (p.name || '').trim();
   return { id, h: p.name || '', d: (p.dog || '').trim() || hu || '?', n: (p.dog || '').trim() ? hu : '', c: soCol(id), sp: p.sp || '', bio: p.bio || '',
@@ -2960,9 +2970,10 @@ function soIngest(x, first) {
   L.sort((a, b) => (a.id || 1e15) - (b.id || 1e15)); if (L.length > 300) L.splice(0, L.length - 300);
   SO.last = Math.max(SO.last || 0, x.id); return th;
 }
-function soPresence() {      // mon état pour les copains ; en balade : le nom de la balade et son centre, jamais ma position exacte
-  if (!clOn()) return; const u = accU(), walk = !!(BR.on && u.pres !== false), k = walk && BR.k && D.cells[BR.k] ? BR.k : null, c = k ? ctr(k) : null; SOT.pt = Date.now();
-  let bal = ''; if (walk) try { bal = String(BR.bal || (k ? balName(k) : '') || ''); } catch (e) {}
+function presHere() { if (!me) return null; let best = null, bd = 250; try { Object.keys(D.cells).forEach(k => { const c = D.cells[k]; if (!rec(c) || c.x == null) return; const d = rdist(ctr(k), [me.x, me.y]); if (d < bd) { bd = d; best = k; } }); } catch (e) {} return best; }
+function soPresence() {      // mon état pour les copains ; sur une balade : son nom et son centre, jamais ma position exacte
+  if (!clOn()) return; const u = accU(), here = BR.on && BR.k && D.cells[BR.k] ? BR.k : presHere(), walk = !!((BR.on || here) && u.pres !== false), k = walk && here ? here : null, c = k ? ctr(k) : null; SOT.pt = Date.now(); SOT.here = here || '';
+  let bal = ''; if (walk) try { bal = String((BR.on && BR.bal) || (k ? balName(k) : '') || ''); } catch (e) {}
   soRpc('set_presence', { st: u.vis === 'none' ? 'hid' : ['on', 'look', 'dnd', 'hid'].includes(u.st) ? u.st : 'on', walk, bal: bal.slice(0, 60), bx: c ? c[0] : null, by: c ? c[1] : null }).catch(() => {});
 }
 function soProfile() {      // ce que voient les autres promeneurs : pseudo, prénom, nom du chien, sociabilité, description
@@ -2974,7 +2985,8 @@ function soProfile() {      // ce que voient les autres promeneurs : pseudo, pr�
 async function soPoll() {
   if (!clOn() || SOT.busy || navigator.onLine === false) return; SOT.busy = true;
   try {
-    soProfile(); if (Date.now() - SOT.pt > 6e4) soPresence();
+    soProfile(); if (Date.now() - SOT.pt > 6e4 || (presHere() || '') !== SOT.here) soPresence();
+    soRpc('presence_here').then(h => { if (Array.isArray(h)) { SO.H = h; schedule(); } }).catch(() => {});
     metaLoad(() => { if ($('#soc').classList.contains('open')) socRender(); }); avSync();
     const r = await soRpc('social_poll', { since: SO.last || 0 }); if (!r || !clOn()) return;
     const first = !SO.init; SO.init = 1; (r.people || []).forEach(p => SO.P[p.id] = p); SO.fr = r.friends || []; SO.rin = r.reqin || []; SO.rout = r.reqout || [];
