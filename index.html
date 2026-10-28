@@ -2901,7 +2901,7 @@ function onPos(p) { setTimeout(() => P.on && pmUpdate(), 0); if (samp) { const [
   if (pending) { pending = false; addLieu(); }
   recTick(); brTick(); routeTick(); apTick(); dangerCheck(); balWaitTick(); voxTick(); balArrive();
   if (CAM.m) camKick();      // la vue ne suit la position que dans les modes « suivi » (touchez la boussole)
-  if (clOn() && (presHere() || '') !== SOT.here) soPresence();
+  if (clOn() && (presDwell() || '') !== SOT.here) soPresence();
   schedule();
 }
 try { navigator.permissions && navigator.permissions.query({ name: 'geolocation' }).then(r => { if (r.state === 'granted' && watch === null) startLoc(true); }).catch(() => {}); } catch (e) {}
@@ -2927,7 +2927,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-132';
+const APP_V = '2026.10.28-133';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2956,7 +2956,7 @@ function soCell(x, y) {      // la balade de ma carte la plus proche d'un point 
   if (x == null || y == null) return null; let best = null, bd = 900;
   try { Object.keys(D.cells).forEach(k => { if (!rec(D.cells[k]) || D.cells[k].x == null || (!LITE && !cellGroup(k))) return; const d = rdist(ctr(k), [x, y]); if (d < bd) { bd = d; best = k; } }); } catch (e) {} return best; }
 function person(id) {      // un promeneur tel que l'affichent les listes : chien (d), prénom (n), état, balade en cours
-  const p = SO.P[id]; if (!p) return null; const seen = p.seen ? Date.parse(p.seen) : 0, on = seen && Date.now() - seen < 3 * 6e4, walk = !!p.walk && seen && Date.now() - seen < 20 * 6e4, hu = (p.first || '').trim() || (p.name || '').trim();
+  const p = SO.P[id]; if (!p) return null; const seen = p.seen ? Date.parse(p.seen) : 0, on = seen && Date.now() - seen < 3 * 6e4, walk = !!p.walk && seen && Date.now() - seen < 10 * 6e4, hu = (p.first || '').trim() || (p.name || '').trim();
   return { id, h: p.name || '', d: (p.dog || '').trim() || hu || '?', n: (p.dog || '').trim() ? hu : '', c: soCol(id), sp: p.sp || '', bio: p.bio || '',
     st: walk ? 'walk' : on && p.st !== 'hid' ? 'on' : 'off', at: walk ? { k: soCell(p.bx, p.by), n: p.bal || 'Balade' } : null, t: walk && p.since ? Math.max(1, Math.round((Date.now() - Date.parse(p.since)) / 6e4)) : 0, last: seen ? soAgo(seen) : '' };
 }
@@ -2971,8 +2971,14 @@ function soIngest(x, first) {
   SO.last = Math.max(SO.last || 0, x.id); return th;
 }
 function presHere() { if (!me) return null; let best = null, bd = 250; try { Object.keys(D.cells).forEach(k => { const c = D.cells[k]; if (!rec(c) || c.x == null) return; const d = rdist(ctr(k), [me.x, me.y]); if (d < bd) { bd = d; best = k; } }); } catch (e) {} return best; }
+function presDwell() {      // présent sur une balade seulement après 10 minutes à moins de 250 m (le temps continue si l'appli est rouverte vite)
+  const k = presHere(), now = Date.now(); let H = {}; try { H = JSON.parse(localStorage.getItem('cartodog-here') || '{}') || {}; } catch (e) {}
+  if (!k) { if (H.k) try { localStorage.removeItem('cartodog-here'); } catch (e) {} return null; }
+  if (H.k !== k || now - (+H.last || 0) > 5 * 6e4) H = { k, t: now }; H.last = now; try { localStorage.setItem('cartodog-here', JSON.stringify(H)); } catch (e) {}
+  return now - H.t >= 10 * 6e4 ? k : null;
+}
 function soPresence() {      // mon état pour les copains ; sur une balade : son nom et son centre, jamais ma position exacte
-  if (!clOn()) return; const u = accU(), here = BR.on && BR.k && D.cells[BR.k] ? BR.k : presHere(), walk = !!((BR.on || here) && u.pres !== false), k = walk && here ? here : null, c = k ? ctr(k) : null; SOT.pt = Date.now(); SOT.here = here || '';
+  if (!clOn()) return; const u = accU(), here = BR.on && BR.k && D.cells[BR.k] ? BR.k : presDwell(), walk = !!((BR.on || here) && u.pres !== false), k = walk && here ? here : null, c = k ? ctr(k) : null; SOT.pt = Date.now(); SOT.here = here || '';
   let bal = ''; if (walk) try { bal = String((BR.on && BR.bal) || (k ? balName(k) : '') || ''); } catch (e) {}
   soRpc('set_presence', { st: u.vis === 'none' ? 'hid' : ['on', 'look', 'dnd', 'hid'].includes(u.st) ? u.st : 'on', walk, bal: bal.slice(0, 60), bx: c ? c[0] : null, by: c ? c[1] : null }).catch(() => {});
 }
@@ -2985,7 +2991,7 @@ function soProfile() {      // ce que voient les autres promeneurs : pseudo, pr�
 async function soPoll() {
   if (!clOn() || SOT.busy || navigator.onLine === false) return; SOT.busy = true;
   try {
-    soProfile(); if (Date.now() - SOT.pt > 6e4 || (presHere() || '') !== SOT.here) soPresence();
+    soProfile(); if (Date.now() - SOT.pt > 6e4 || (presDwell() || '') !== SOT.here) soPresence();
     soRpc('presence_here').then(h => { if (Array.isArray(h)) { SO.H = h; schedule(); } }).catch(() => {});
     metaLoad(() => { if ($('#soc').classList.contains('open')) socRender(); }); avSync();
     const r = await soRpc('social_poll', { since: SO.last || 0 }); if (!r || !clOn()) return;
