@@ -1193,6 +1193,8 @@ html.lite #pt,html.lite #homeb{display:none!important}
 .pfbio{margin:11px 0 0;font:italic 500 13.5px/1.45 var(--num);color:#e8d8b8;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .pfa{display:flex;gap:8px;margin-top:13px}.pfa .btn{flex:1;margin:0}.pfa .pfmo{flex:0 0 48px}.pfw .pfrm{margin:8px 0 0;color:#ff8a6e}
 .pfme{margin-top:12px;font:600 12px var(--num);color:var(--mut);text-align:center}[data-pfu]{cursor:pointer}
+/* listes qui défilent : une carte ne se tasse jamais (sinon, sur Safari notamment, son contenu déborde et chevauche la carte du dessus) */
+.cmls>*,.cmp>*,.scls>*,.scgl>*,.bprvl>*,.cmcl>*{flex-shrink:0}html,body{overscroll-behavior:none}
 body #dogm{align-items:flex-start!important;padding-top:calc(env(safe-area-inset-top,0px) + 80px)!important}body #dogm .win{max-height:calc(100dvh - env(safe-area-inset-top) - 96px)!important}
 /* fiche balade */
 #panel{max-height:52dvh!important;overflow-y:auto!important;overscroll-behavior:contain}
@@ -3078,7 +3080,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-157';
+const APP_V = '2026.10.28-158';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
