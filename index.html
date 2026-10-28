@@ -896,7 +896,7 @@ body{padding-top:env(safe-area-inset-top,0px)!important}      /* iPhone : le ban
 /* ===== Météo : bouton rond dans la colonne de droite, comme la boussole et le GPS ===== */
 #wxw{top:104px!important;right:12px!important;width:36px;height:36px;max-width:none!important;padding:0!important;display:grid!important;place-items:center;border-radius:50%!important;border:2px solid #d6ab55!important;background:rgba(14,12,9,.82)!important;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6));overflow:visible}
 #wxw[hidden]{display:none!important}
-#wxw .wxc{font-size:19px;line-height:1;margin-top:-3px}
+#wxw .wxc{font-size:19px;line-height:1;margin-top:-3px}#wxw .wxc.sq{width:32px;height:32px;margin:0;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-size:44px;line-height:32px}
 #wxw .wxt{position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);padding:0 4px;border-radius:6px;background:#1b1814;border:1.5px solid #0e0c09;box-shadow:inset 0 0 0 1px #5a4f40;color:#fff1cf;font:800 10px/14px var(--num);white-space:nowrap}
 #wxw .wxd{position:absolute;right:calc(100% + 7px);top:50%;transform:translateY(-50%);padding:2px 6px;border-radius:9px;background:linear-gradient(#ffd27a,#e9a53c);border:1.5px solid #0e0c09;color:#1f1408;font:800 11px/1.2 var(--num);text-decoration:none;font-variant-numeric:tabular-nums;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.6)}
 #wxw .wxm{position:absolute;top:-6px;right:-7px;min-width:16px;height:16px;padding:0 3px;border-radius:8px;background:#1b1814;border:1.5px solid #d6ab55;color:var(--ember2);font:800 9.5px/13px var(--num);font-style:normal;text-align:center}
@@ -3078,7 +3078,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-160';
+const APP_V = '2026.10.28-161';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -4968,7 +4968,7 @@ const inMin = ts => { const m = Math.max(1, Math.round((ts - Date.now()) / 6e4))
 function wxBadge() {      // température + logo de l'alerte ; pluie ou orage à venir : délai juste avant le logo (« ≈27m 🌧️ »)
   const r = WXX.r, w = $('#wxw'); if (!r || !w) return; const a = r.A[0], soon = a && a.ts > Date.now() + 6e4 && /^(pluie|orage)/.test(a.k);
   const lv = a ? a.lv : 0; w.className = lv ? 'l' + lv : ''; w.setAttribute('aria-label', 'Météo : ' + r.t + '°' + (a ? ', ' + a.t : ''));
-  w.innerHTML = `<span class="wxc">${a ? esc(a.t.trim().split(/\s+/)[0]) : r.ic}</span><b class="wxt">${r.t}°</b>${soon ? `<u class="wxd">${inMin(a.ts)}</u>` : ''}${r.A.length > 1 ? `<i class="wxm">+${r.A.length - 1}</i>` : ''}`;
+  const wic = a ? a.t.trim().split(/\s+/)[0] : r.ic; w.innerHTML = `<span class="wxc${/🌇|🌆|🌃|🌁|🌄|🌅|🏞|🌌/u.test(wic) ? ' sq' : ''}">${a ? esc(wic) : wic}</span><b class="wxt">${r.t}°</b>${soon ? `<u class="wxd">${inMin(a.ts)}</u>` : ''}${r.A.length > 1 ? `<i class="wxm">+${r.A.length - 1}</i>` : ''}`;
 }
 setInterval(() => { if (WXX.r && !$('#wxw').hidden) wxBadge(); }, 3e4);
 async function wxQuick(force) {
