@@ -1739,10 +1739,11 @@ let socPrev = false;      // l'aperçu fictif (faux copains, faux promeneurs) es
 let SLV = { t: 0, m: new Map() };
 function socLive() {
   if (!socPrev) {      // présence réelle : nombre de promeneurs détectés sur chaque balade (anonyme) + avatars des copains présents
-    const H = (typeof SO === 'object' && SO.H) || [], sig = Math.floor(Date.now() / 3e4) + '|' + JSON.stringify(H) + '|' + ((typeof SOT === 'object' && SOT.sig) || '').length + '|' + Object.keys(D.cells).length; if (SLV.t === sig) return SLV.m;
+    const H = (typeof SO === 'object' && SO.H) || [], mine = (typeof SOT === 'object' && SOT.mine) || '', sig = Math.floor(Date.now() / 3e4) + '|' + JSON.stringify(H) + '|' + ((typeof SOT === 'object' && SOT.sig) || '').length + '|' + Object.keys(D.cells).length + '|' + mine; if (SLV.t === sig) return SLV.m;
     const m = new Map(), at = k => m.get(k) || m.set(k, { cnt: 0, fr: [] }).get(k);
     try { H.forEach(h => { const k = soCell(h.bx, h.by); if (k) at(k).cnt += +h.n || 0; });
-      SO.fr.map(person).filter(f => f && f.st === 'walk' && f.at && f.at.k).forEach(f => { const o = at(f.at.k); o.fr.push(f); o.cnt = Math.max(o.cnt, o.fr.length); }); } catch (e) {}
+      SO.fr.map(person).filter(f => f && f.st === 'walk' && f.at && f.at.k).forEach(f => { const o = at(f.at.k); o.fr.push(f); o.cnt = Math.max(o.cnt, o.fr.length); });
+      if (mine && D.cells[mine]) at(mine).cnt += 1; } catch (e) {}      // moi aussi, quand je suis sur une balade
     SLV = { t: sig, m }; return m; }
   const sig = Math.floor(Date.now() / 6e4) + '|' + Object.keys(D.cells).length + '|' + (NG.sig || ''); if (SLV.t === sig) return SLV.m;
   const m = new Map(), hs = k => { let h = 7; for (const ch of k) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; };
@@ -2901,7 +2902,7 @@ function onPos(p) { setTimeout(() => P.on && pmUpdate(), 0); if (samp) { const [
   if (pending) { pending = false; addLieu(); }
   recTick(); brTick(); routeTick(); apTick(); dangerCheck(); balWaitTick(); voxTick(); balArrive();
   if (CAM.m) camKick();      // la vue ne suit la position que dans les modes « suivi » (touchez la boussole)
-  if (clOn() && (presDwell() || '') !== SOT.here) soPresence();
+  presTick();
   schedule();
 }
 try { navigator.permissions && navigator.permissions.query({ name: 'geolocation' }).then(r => { if (r.state === 'granted' && watch === null) startLoc(true); }).catch(() => {}); } catch (e) {}
@@ -2927,7 +2928,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-135';
+const APP_V = '2026.10.28-136';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2977,6 +2978,12 @@ function presDwell() {      // présent sur une balade seulement après 5 minute
   if (H.k !== k || now - (+H.last || 0) > 5 * 6e4) H = { k, t: now }; H.last = now; try { localStorage.setItem('cartodog-here', JSON.stringify(H)); } catch (e) {}
   return now - H.t >= 5 * 6e4 ? k : null;
 }
+function presVisit(k) {      // 5 minutes sur place comptent comme une visite (une par jour et par balade)
+  const c = D.cells[k]; if (!c) return; const d = new Date(), day = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  if (c.v.some(v => v.d === day)) return; c.v.push({ id: rid(), d: day, h: String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'), s: 0, m: 0, t: 'Présence détectée sur place', pts: [] });
+  save(); try { renderPanel(); hdrRender(); } catch (e) {} toast('🐾 Visite notée : ' + (balName(k) || 'balade')); schedule();
+}
+function presTick() { const k = presDwell(); if (k !== (SOT.mine || null)) { SOT.mine = k || ''; SLV.t = 0; schedule(); } if (k) presVisit(k); if (clOn() && (k || '') !== SOT.here) soPresence(); }
 function soPresence() {      // mon état pour les copains ; sur une balade : son nom et son centre, jamais ma position exacte
   if (!clOn()) return; const u = accU(), here = BR.on && BR.k && D.cells[BR.k] ? BR.k : presDwell(), walk = !!((BR.on || here) && u.pres !== false), k = walk && here ? here : null, c = k ? ctr(k) : null; SOT.pt = Date.now(); SOT.here = here || '';
   let bal = ''; if (walk) try { bal = String((BR.on && BR.bal) || (k ? balName(k) : '') || ''); } catch (e) {}
@@ -2991,7 +2998,7 @@ function soProfile() {      // ce que voient les autres promeneurs : pseudo, pr�
 async function soPoll() {
   if (!clOn() || SOT.busy || navigator.onLine === false) return; SOT.busy = true;
   try {
-    soProfile(); if (Date.now() - SOT.pt > 6e4 || (presDwell() || '') !== SOT.here) soPresence();
+    soProfile(); presTick(); if (Date.now() - SOT.pt > 6e4) soPresence();
     soRpc('presence_here').then(h => { if (Array.isArray(h)) { SO.H = h; schedule(); } }).catch(() => {});
     metaLoad(() => { if ($('#soc').classList.contains('open')) socRender(); }); avSync();
     const r = await soRpc('social_poll', { since: SO.last || 0 }); if (!r || !clOn()) return;
@@ -3119,6 +3126,7 @@ function evRemind() {      // rappel 30 min avant (appli ouverte) : petit messag
     toast(msg); try { navigator.vibrate && navigator.vibrate([60, 80, 60]); } catch (x) {} try { if (window.Notification && Notification.permission === 'granted') new Notification('Cartodog', { body: msg.slice(2), icon: 'icon.svg' }); } catch (x) {} });
 }
 setInterval(evRemind, 30000);
+setInterval(() => { try { if (me) presTick(); } catch (e) {} }, 30000);      // présence et visite même sans bouger (la position ne change pas)
 function socRender() {
   const { F, E } = socDemo(); SOC.F = F; SOC.E = E;
   document.querySelectorAll('#soc [data-st]').forEach(b => { b.classList.toggle('on', b.dataset.st === SOC.tab); b.setAttribute('aria-selected', b.dataset.st === SOC.tab); });
