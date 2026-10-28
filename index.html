@@ -1114,6 +1114,12 @@ body:has(#menu.open) header.bar{z-index:23}
 .srh{flex:none;display:flex;align-items:center;gap:8px;padding:8px 8px 8px 12px;border-bottom:1px solid #2e2820}.srh svg{flex:none;width:22px;height:22px}
 #srq{flex:1;min-width:0;padding:9px 10px;border:2px solid var(--edge);border-radius:8px;background:#14110e;box-shadow:inset 0 0 0 1px #3a332a;color:#fff1cf;font:700 16px var(--num);user-select:text;-webkit-user-select:text;color-scheme:dark}#srq::placeholder{color:#7d735f}
 #srx{flex:none;width:36px;height:36px;border:2px solid var(--edge);border-radius:50%;background:var(--stone);color:var(--txt);font:800 15px var(--num);cursor:pointer}
+#srf{flex:none;padding:6px 10px 8px;border-bottom:1px solid #2e2820;max-height:42%;overflow-y:auto;overscroll-behavior:contain}
+.srfh{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 0 4px}.srfh b{font:800 10.5px var(--num);letter-spacing:.12em;text-transform:uppercase;color:var(--ember)}.srfh small{font:600 11px var(--num);color:var(--mut)}
+.srfh button{border:0;background:none;padding:2px 0;color:var(--ember2);font:700 12px var(--num);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.srfg,.bpamg{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:2px 0 0}.srfg>span,.bpamg>span{flex:0 0 100%;margin:3px 0 -1px;font:800 10px var(--num);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.srfg .bpch{padding:3px 8px;font-size:11.5px}.srfg .bpch:disabled{opacity:.45}.bpch small{font-weight:600;font-size:10px;opacity:.75}.bpamg{width:100%}
+#srl .srn{padding:2px 12px 10px;font:600 12px/1.35 var(--num);color:var(--mut)}
 #srl{flex:1 1 auto;min-height:0;margin:0;padding:4px 0;list-style:none;overflow-y:auto;overscroll-behavior:contain}
 #srl li[data-srk]{display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer;border-top:1px solid #241f19}#srl li[data-srk]:first-of-type{border-top:0}#srl li.on,#srl li[data-srk]:active{background:rgba(234,165,60,.12)}
 #srl img,#srl .crest{flex:none;width:36px;height:36px;border-radius:9px;object-fit:cover;border:2px solid #0e0c09}
@@ -1322,7 +1328,7 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
 <header class="bar win dg"><button class="hdog" id="hdog" aria-label="Profil de mon chien"><span class="hav"><svg class="hring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" class="hr0"/><circle cx="24" cy="24" r="21.5" class="hr1" id="hring"/></svg><span class="emb" id="dogav"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#2f3d27" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="12.6" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><g transform="translate(6.4 6.2) scale(.6)"><path d="M16 15.2c-4.6 0-8.4 4.8-8.4 8.6 0 2.6 2 4.1 4.5 4.1 1.6 0 2.5-.9 3.9-.9s2.3.9 3.9.9c2.5 0 4.5-1.5 4.5-4.1 0-3.8-3.8-8.6-8.4-8.6z" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="6.4" cy="13.2" rx="2.9" ry="3.7" transform="rotate(-24 6.4 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="12" cy="7.2" rx="3" ry="3.9" transform="rotate(-8 12 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="20" cy="7.2" rx="3" ry="3.9" transform="rotate(8 20 7.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/><ellipse cx="25.6" cy="13.2" rx="2.9" ry="3.7" transform="rotate(24 25.6 13.2)" fill="#e2a44c" stroke="#2a1a0d" stroke-width="1.6"/></g></svg></span><b class="hlv" id="hlv">1</b></span></button><button class="hbr brand" id="hbr" aria-label="Cartodog : profil de mon chien"><span class="hinf"><b>Cartodog<img class="hico" src="icon.svg" alt="" aria-hidden="true"></b><small id="hsub">Carnet de balade</small></span></button><button class="hset" id="mn" aria-label="Mon compte"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><circle cx="16" cy="16" r="14.5" fill="#2a2018" stroke="#8a6a3a" stroke-width="1"/><circle cx="16" cy="12.4" r="5.4" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2"/><path d="M6.6 26.2c1.3-5.2 5-8 9.4-8s8.1 2.8 9.4 8a14.4 14.4 0 0 1-18.8 0z" fill="url(#hsg)" stroke="#1a1208" stroke-width="1.2" stroke-linejoin="round"/></svg><span class="dkar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 15.5l7-7 7 7"/></svg></span></button><b id="hnm" hidden></b>
 <small id="ssn" hidden></small>
 </header>
-<div id="mapBox"><canvas id="cv"></canvas><button id="srb" aria-label="Chercher une balade"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="srg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><circle cx="10.2" cy="10.2" r="6" fill="rgba(255,210,122,.12)" stroke="url(#srg)" stroke-width="2.6"/><path d="M14.6 14.6l5.6 5.6" stroke="url(#srg)" stroke-width="3.4" stroke-linecap="round"/><path d="M7.6 8.6a3 3 0 0 1 2.4-1.8" stroke="#fff1cf" stroke-width="1.3" stroke-linecap="round" fill="none" opacity=".7"/></svg></button><div id="srp" role="search"><div class="srh"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="srg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><circle cx="10.2" cy="10.2" r="6" fill="rgba(255,210,122,.12)" stroke="url(#srg)" stroke-width="2.6"/><path d="M14.6 14.6l5.6 5.6" stroke="url(#srg)" stroke-width="3.4" stroke-linecap="round"/><path d="M7.6 8.6a3 3 0 0 1 2.4-1.8" stroke="#fff1cf" stroke-width="1.3" stroke-linecap="round" fill="none" opacity=".7"/></svg><input id="srq" type="search" placeholder="Chercher une balade…" autocomplete="off" enterkeyhint="search" aria-label="Nom de la balade"><button id="srx" aria-label="Fermer la recherche">✕</button></div><ul id="srl" role="listbox"></ul></div><button id="loc" data-ic="loc" aria-label="Ma position (GPS)"></button><button id="rep" aria-label="Signaler un danger ou un point utile"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="repg" cx="45%" cy="30%" r="75%"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#e0861e"/></radialGradient></defs>
+<div id="mapBox"><canvas id="cv"></canvas><button id="srb" aria-label="Chercher une balade"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="srg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><circle cx="10.2" cy="10.2" r="6" fill="rgba(255,210,122,.12)" stroke="url(#srg)" stroke-width="2.6"/><path d="M14.6 14.6l5.6 5.6" stroke="url(#srg)" stroke-width="3.4" stroke-linecap="round"/><path d="M7.6 8.6a3 3 0 0 1 2.4-1.8" stroke="#fff1cf" stroke-width="1.3" stroke-linecap="round" fill="none" opacity=".7"/></svg></button><div id="srp" role="search"><div class="srh"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="srg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><circle cx="10.2" cy="10.2" r="6" fill="rgba(255,210,122,.12)" stroke="url(#srg)" stroke-width="2.6"/><path d="M14.6 14.6l5.6 5.6" stroke="url(#srg)" stroke-width="3.4" stroke-linecap="round"/><path d="M7.6 8.6a3 3 0 0 1 2.4-1.8" stroke="#fff1cf" stroke-width="1.3" stroke-linecap="round" fill="none" opacity=".7"/></svg><input id="srq" type="search" placeholder="Chercher une balade…" autocomplete="off" enterkeyhint="search" aria-label="Nom de la balade"><button id="srx" aria-label="Fermer la recherche">✕</button></div><div id="srf"></div><ul id="srl" role="listbox"></ul></div><button id="loc" data-ic="loc" aria-label="Ma position (GPS)"></button><button id="rep" aria-label="Signaler un danger ou un point utile"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="repg" cx="45%" cy="30%" r="75%"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#e0861e"/></radialGradient></defs>
   <g fill="#0e0b08" stroke="#0e0b08" stroke-width="5" stroke-linejoin="round"><ellipse cx="13" cy="27" rx="6" ry="8" transform="rotate(-22 13 27)"/><ellipse cx="24.5" cy="14" rx="6.4" ry="8.4" transform="rotate(-8 24.5 14)"/><ellipse cx="39.5" cy="14" rx="6.4" ry="8.4" transform="rotate(8 39.5 14)"/><ellipse cx="51" cy="27" rx="6" ry="8" transform="rotate(22 51 27)"/><path d="M32 28c8 0 20 11 20 21 0 7-6 10-12 9-4-.5-6-2-8-2s-4 1.5-8 2c-6 1-12-2-12-9 0-10 12-21 20-21z"/></g>
   <g fill="url(#repg)"><ellipse cx="13" cy="27" rx="6" ry="8" transform="rotate(-22 13 27)"/><ellipse cx="24.5" cy="14" rx="6.4" ry="8.4" transform="rotate(-8 24.5 14)"/><ellipse cx="39.5" cy="14" rx="6.4" ry="8.4" transform="rotate(8 39.5 14)"/><ellipse cx="51" cy="27" rx="6" ry="8" transform="rotate(22 51 27)"/><path d="M32 28c8 0 20 11 20 21 0 7-6 10-12 9-4-.5-6-2-8-2s-4 1.5-8 2c-6 1-12-2-12-9 0-10 12-21 20-21z"/></g>
   <path d="M32 32.5 19.5 53h25z" fill="#2a1806" stroke="#2a1806" stroke-width="2.4" stroke-linejoin="round"/><path d="M32 39.5v7" stroke="#ffd27a" stroke-width="3.2" stroke-linecap="round"/><circle cx="32" cy="50" r="1.9" fill="#ffd27a"/></svg></button><div id="sc"></div><div id="bh" hidden></div>
@@ -2050,22 +2056,24 @@ function renderPanel() {
     <div class="bpfr" id="bpfr"></div>
     <div class="bpme">${n ? `🐾 <b>${esc(dn || 'Vous')}</b> · ${n} visite${n > 1 ? 's' : ''} · dernière ${ago(last)}` : `🐾 Pas encore venus${dn ? ' avec ' + esc(dn) : ''}`}${lv ? ` <span class="bplv">· ${lv} ici maintenant</span>` : ''}</div>
     <div class="bpa"><button class="btn gold" data-act="maps">🧭 Y aller</button><button class="btn" data-act="addtoggle">＋ Visite</button><button class="btn bpi" data-act="invite" aria-label="Inviter des copains">👥</button></div>
-    <button id="pdzc" class="fdz" data-tab="nt" hidden></button>
+    <button id="pdzc" class="fdz" data-tab="dz" hidden></button>
     <div id="addv" class="row"><input type="date" id="vd" max="${today()}" value="${today()}"><input type="number" id="vn" min="0" step="1" placeholder="Durée min" inputmode="numeric"${LITE ? ' hidden' : ''}><input type="number" id="vw" min="0" step="0.1" placeholder="Distance km" inputmode="decimal"${LITE ? ' hidden' : ''}>
       <input class="full" id="vt" placeholder="Note : rencontres, état du chien, météo…"><button class="btn gold full" data-act="add">${LITE ? '🐾 Noter la visite' : 'Consigner la sortie'}</button></div>
     <div class="bprv" id="bprv"></div>
-    <div class="f4tab"><button data-tab="hs">Sorties${n ? ' <em>' + n + '</em>' : ''}</button><button data-tab="ph">Photos${np ? ' <em>' + np + '</em>' : ''}</button><button data-tab="nt">Notes${c.note ? ' <em>•</em>' : ''}</button></div>
+    <div class="f4tab"><button data-tab="hs">Visites${n ? ' <em>' + n + '</em>' : ''}</button><button data-tab="ph">Photos${np ? ' <em>' + np + '</em>' : ''}</button></div>
     <div class="tpw f3p">
-    <div class="tp" data-pane="hs"><ul>${hist || '<li class="hint">Aucune sortie pour l\'instant : « Partir ici », ou ＋ pour noter une sortie passée.</li>'}</ul></div>
+    <div class="tp" data-pane="hs"><ul>${hist || '<li class="hint">Aucune visite pour l\'instant : elles s\'ajoutent toutes seules quand vous restez 5 minutes sur place, ou avec ＋ Visite.</li>'}</ul>${rec(c) && !g ? `<div class="f3f"><span></span><button class="fdel" data-act="delcell">${ICO.trash} Supprimer cette balade</button></div>` : ''}</div>
     <div class="tp" data-pane="ph"><div class="gal f3g"><label class="f3add" aria-label="Ajouter une photo">${ICO.photo}<small>Ajouter</small><input type="file" accept="image/*" id="phf" multiple hidden></label><div id="gal" class="f3gi"></div></div></div>
-    <div class="tp" data-pane="nt"><div class="tgsel">${Object.entries(TAGS).map(([k, [ic, t]]) => `<button data-act="tag" data-tag="${k}" class="${(c.tags || []).includes(k) ? 'on' : ''}">${ic} ${t}</button>`).join('')}</div><textarea data-f="note" rows="3" placeholder="Accès, parking, ombre, points d'eau, chemins boueux…">${esc(c.note)}</textarea>
-      <div id="pdz" class="f3z"></div>
-      <div class="f3f"><span>📍 ${la.toFixed(5)}, ${lo.toFixed(5)}</span>${rec(c) ? `<button class="fdel" data-act="delcell">${ICO.trash} Supprimer</button>` : ''}</div></div>
+    <div class="tp" data-pane="dz"><div id="pdz" class="f3z"></div></div>
     </div>`;
   if (ptab === 'wx') ptab = ''; setTab(); pnMarquee(); showNear(sel); loadGal(sel); balInfo(sel); cityLoad(sel);
 }
 /* ===== Fiche balade : ville, avis, équipements, photos et copains (partagés entre membres) ===== */
-const AMEN = { pk: ['🅿️', 'Parking'], bain: ['🌊', 'Baignade'], wc: ['🚻', 'Toilettes'], eau: ['💧', 'Eau potable'], laisse: ['🦮', 'En laisse'], libre: ['🐕', 'Liberté'], ombre: ['🌳', 'Ombragé'], sacs: ['🛍️', 'Sacs à crottes'] };
+const AMEN = { petite: ['🐾', 'Petite balade', 'moins de 30 min'], grande: ['🥾', 'Grande balade', 'plus d\'1 h'], pk: ['🅿️', 'Parking'], pmr: ['♿', 'Accès PMR'], pous: ['👶', 'Poussette OK'],
+  libre: ['🐕', 'Liberté'], laisse: ['🦮', 'En laisse'], enclos: ['🦴', 'Parc à chiens'], bain: ['🌊', 'Baignade'], sacs: ['🛍️', 'Sacs à crottes'],
+  ombre: ['🌳', 'Ombragé'], eau: ['💧', 'Eau potable'], wc: ['🚻', 'Toilettes'], banc: ['🪑', 'Bancs'], jeux: ['🎠', 'Jeux d\'enfants'] };
+const AMG = [['Durée', ['petite', 'grande']], ['Accès', ['pk', 'pmr', 'pous']], ['Pour le chien', ['libre', 'laisse', 'enclos', 'bain', 'sacs']], ['Confort', ['ombre', 'eau', 'wc', 'banc', 'jeux']]];
+const AMX = { petite: 'grande', grande: 'petite' };      // l'un exclut l'autre
 const CITY = (() => { try { return JSON.parse(localStorage.getItem('cartodog-city') || '{}') || {}; } catch (e) { return {}; } })(), cityK = k => { const [x, y] = ctr(k); return Math.round(x / 300) + ',' + Math.round(y / 300); };
 const cityOf = k => CITY[cityK(k)] || '';
 async function cityLoad(k) { const key = cityK(k); if (CITY[key]) return;
@@ -2088,8 +2096,8 @@ function balDraw(k) {
   const rt = $('#bprt'); if (rt) rt.innerHTML = info && N(info.n) ? `${stars(info.avg)}<b>${String(+info.avg || 0).replace('.', ',')}</b><button class="bplk" data-act="rvall">${N(info.n)} avis</button>` : `${stars(0, 'off')}<span class="bpmu">${on ? 'Pas encore d\'avis' : 'Avis : connectez-vous'}</span>`;
   /* équipements */
   const am = $('#bpam'); if (am) { const ks = Object.keys(AMEN);
-    am.innerHTML = BIE.am ? `<div class="bpamh">Qu'y a-t-il sur place ? <small>touchez pour signaler</small></div>` + ks.map(t => `<button class="bpch ed${my.has(t) ? ' on' : ''}" data-am="${t}" aria-pressed="${my.has(t)}">${AMEN[t][0]} ${AMEN[t][1]}${N(T[t]) ? ` <em>${N(T[t])}</em>` : ''}</button>`).join('') + '<button class="bpch ok" data-act="amok">✓ Terminé</button>'
-      : ks.filter(t => N(T[t])).map(t => `<span class="bpch" title="Signalé par ${N(T[t])} promeneur${N(T[t]) > 1 ? 's' : ''}">${AMEN[t][0]} ${AMEN[t][1]}</span>`).join('') + (on ? `<button class="bpch add" data-act="amed">${Object.keys(T).length ? '✏️' : '＋ Parking, eau, baignade…'}</button>` : ''); }
+    am.innerHTML = BIE.am ? `<div class="bpamh">Qu'y a-t-il sur place ? <small>touchez pour signaler</small></div>` + AMG.map(([h, L]) => `<div class="bpamg"><span>${h}</span>${L.map(t => `<button class="bpch ed${my.has(t) ? ' on' : ''}" data-am="${t}" aria-pressed="${my.has(t)}">${AMEN[t][0]} ${AMEN[t][1]}${AMEN[t][2] ? ` <small>${AMEN[t][2]}</small>` : ''}${N(T[t]) ? ` <em>${N(T[t])}</em>` : ''}</button>`).join('')}</div>`).join('') + '<button class="bpch ok" data-act="amok">✓ Terminé</button>'
+      : ks.filter(t => N(T[t])).map(t => `<span class="bpch" title="Signalé par ${N(T[t])} promeneur${N(T[t]) > 1 ? 's' : ''}">${AMEN[t][0]} ${AMEN[t][1]}</span>`).join('') + (on ? `<button class="bpch add" data-act="amed">${ks.some(t => N(T[t])) ? '✏️' : '＋ Durée, accès, parking, eau…'}</button>` : ''); }
   /* copains ici ou venus récemment */
   const fr = $('#bpfr'); if (fr) { const here = (typeof SO === 'object' && SO.fr || []).map(person).filter(Boolean).filter(f => f.st === 'walk' && f.at && f.at.k === k), seen = new Set(here.map(f => f.id));
     const rec2 = (info && Array.isArray(info.friends) ? info.friends : []).filter(x => x && !seen.has(x.u)).map(x => [person(x.u), x.d]).filter(x => x[0]);
@@ -2119,7 +2127,7 @@ async function balSave(k, patch) {      // mon avis et mes équipements pour cet
   const old = JSON.parse(JSON.stringify(info)); info.mine = nx; BI[k] = { t: Date.now(), d: info };
   const T = info.tags || (info.tags = {}); (old.mine && old.mine.tags || []).forEach(t => T[t] = Math.max(0, (T[t] || 1) - 1)); nx.tags.forEach(t => T[t] = (T[t] || 0) + 1); Object.keys(T).forEach(t => { if (!T[t]) delete T[t]; });
   balDraw(k);
-  try { await soRpc('bal_review', { ...balXY(k), name: balName(k) || '', stars: nx.stars, body: nx.body, tags: nx.tags }); balInfo(k, true); } catch (e) { BI[k] = { t: 0, d: old }; balDraw(k); toast('⚠️ ' + (e.message || 'Avis non enregistré')); }
+  try { await soRpc('bal_review', { ...balXY(k), name: balName(k) || '', stars: nx.stars, body: nx.body, tags: nx.tags }); BT.t = 0; balInfo(k, true); } catch (e) { BI[k] = { t: 0, d: old }; balDraw(k); toast('⚠️ ' + (e.message || 'Avis non enregistré')); }
 }
 function balVisitPub(k, d) { if (!clOn() || !k || !D.cells[k]) return; const u = accU(); if (u.vis === 'none' || u.pres === false) return; soRpc('bal_visit', { ...balXY(k), d: d || today() }).catch(() => {}); }
 /* ===== Dangers signalés autour d'un lieu (vos repères « danger ») ===== */
@@ -2240,7 +2248,7 @@ $('#panel').addEventListener('click', e => {
   const po = e.target.closest('[data-bpo]'); if (po) { const im = po.querySelector('img'); if (!im || !im.src) return; pvId = po.dataset.bpo; $('#pvi').src = im.src; $('#pvc').classList.toggle('on', D.cells[sel] && D.cells[sel].cov === pvId); $('#pv').classList.add('open'); return; }
   const pc = e.target.closest('[data-bpc]'); if (pc) { const im = pc.querySelector('img'); if (!im || !im.src) return; pvId = null; $('#pvc').hidden = true; $('#pvd').hidden = true; $('#pvi').src = im.src; $('#pv').classList.add('open'); return; }
   const st = e.target.closest('[data-star]'); if (st && sel) { const k = sel, n = +st.dataset.star, cur = BI[k] && BI[k].d && BI[k].d.mine && BI[k].d.mine.stars; if (!clOn()) return toast('☁️ Connectez-vous pour donner votre avis'); if (n === cur) return; BIE.txt = !(BI[k] && BI[k].d && BI[k].d.mine && BI[k].d.mine.body); balSave(k, { stars: n }); if (BIE.txt) setTimeout(() => { const i = $('#bprvt'); if (i) i.focus(); }, 80); return toast('★'.repeat(n) + ' Merci pour votre avis'); }
-  const am = e.target.closest('[data-am]'); if (am && sel) { const k = sel, m = BI[k] && BI[k].d && BI[k].d.mine, L = new Set(m && Array.isArray(m.tags) ? m.tags : []); L.has(am.dataset.am) ? L.delete(am.dataset.am) : L.add(am.dataset.am); return balSave(k, { tags: Object.keys(AMEN).filter(x => L.has(x)) }); }
+  const am = e.target.closest('[data-am]'); if (am && sel) { const k = sel, m = BI[k] && BI[k].d && BI[k].d.mine, L = new Set(m && Array.isArray(m.tags) ? m.tags : []); const t = am.dataset.am; L.has(t) ? L.delete(t) : (L.add(t), AMX[t] && L.delete(AMX[t])); return balSave(k, { tags: Object.keys(AMEN).filter(x => L.has(x)) }); }
   const rvr = e.target.closest('[data-rvrep]'); if (rvr) return rpOpen('review', rvr.dataset.rvrep, 'cet avis');
   const b = e.target.closest('[data-act]'); if (!b || !sel) return; const a = b.dataset.act, c = D.cells[sel] ||= blank();
   if (a === 'delcell') { const g = cellGroup(sel); if (g && !confirm(`Supprimer la balade « ${g.name} » : sa fiche (sorties, photos, notes) et ${g.paths.length > 1 ? 'ses ' + g.paths.length + ' sentiers' : 'son sentier'} ?`)) return;
@@ -3107,7 +3115,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-164';
+const APP_V = '2026.10.28-165';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3786,18 +3794,39 @@ $('#soc').addEventListener('click', e => {
 
 /* ===== Recherche de balade par nom (loupe en haut à gauche) : suggestions au fil de la frappe, sans accents ni majuscules ===== */
 const nrm = t => String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+/* équipements signalés par les membres, pour toutes les balades d'un coup (anonymes) */
+const BT = (() => { try { const o = JSON.parse(localStorage.getItem('cartodog-bt') || 'null'); if (o && Array.isArray(o.r)) return { t: 0, r: o.r, busy: false }; } catch (e) {} return { t: 0, r: null, busy: false }; })();
+async function btLoad() {
+  if (!clOn() || BT.busy || Date.now() - BT.t < 6e4) return; BT.busy = true;
+  try { const r = await soRpc('bal_tags_all', {}); if (Array.isArray(r)) { BT.r = r; BT.t = Date.now(); try { localStorage.setItem('cartodog-bt', JSON.stringify({ r })); } catch (e) {} if ($('#srp').classList.contains('open')) srRender(); } } catch (e) {} BT.busy = false;
+}
+function btOf(k) {      // { tags: {pk: 2…}, n, avg } : même règle que la fiche (avis à moins de 450 m)
+  const { bx, by } = balXY(k), T = {}; let n = 0, s = 0; (BT.r || []).forEach(([x, y, st, tg]) => { if (Math.abs(x - bx) >= 450 || Math.abs(y - by) >= 450) return; if (st) { n++; s += +st; } (Array.isArray(tg) ? tg : []).forEach(t => T[t] = (T[t] || 0) + 1); });
+  return { tags: T, n, avg: n ? Math.round(s / n * 10) / 10 : 0 };
+}
+const SRF = (() => { try { const a = JSON.parse(localStorage.getItem('cartodog-srf') || '[]'); return new Set(Array.isArray(a) ? a.filter(t => AMEN[t]) : []); } catch (e) { return new Set(); } })();
+const srfSave = () => { try { localStorage.setItem('cartodog-srf', JSON.stringify([...SRF])); } catch (e) {} };
+function srFilters() {
+  const on = clOn(), el = $('#srf'); if (!el) return;
+  el.innerHTML = `<div class="srfh"><b>Filtres</b>${SRF.size ? `<button data-srfx>Tout effacer</button>` : `<small>${on ? 'selon ce que les promeneurs ont signalé' : 'connectez-vous pour filtrer'}</small>`}</div>`
+    + AMG.map(([h, L]) => `<div class="srfg"><span>${h}</span>${L.map(t => `<button class="bpch ed${SRF.has(t) ? ' on' : ''}" data-srf="${t}" aria-pressed="${SRF.has(t)}"${on ? '' : ' disabled'}>${AMEN[t][0]} ${AMEN[t][1]}</button>`).join('')}</div>`).join('');
+}
 function srRender() {
-  const q = nrm($('#srq').value.trim()), ref = me ? [me.x, me.y] : [V.cx, V.cy], L = walkPlaces().filter(x => x.label);
+  const q = nrm($('#srq').value.trim()), ref = me ? [me.x, me.y] : [V.cx, V.cy], L = walkPlaces().filter(x => x.label), F = clOn() ? [...SRF] : [];
   L.forEach(x => { const pts = x.g ? x.g.paths.flatMap(p => p.pts) : [ctr(x.k)]; x.dm = Math.min(...pts.map(p => rdist(p, ref))); const n = nrm(x.label);
-    x.sc = !q ? 0 : n.startsWith(q) ? 1 : n.split(/[\s'’-]+/).some(w => w.startsWith(q)) ? 2 : n.includes(q) ? 3 : q.split(/\s+/).every(w => n.includes(w)) ? 4 : 9; });
-  const R = L.filter(x => x.sc < 9).sort((a, b) => a.sc - b.sc || a.dm - b.dm).slice(0, 7);
+    x.sc = !q ? 0 : n.startsWith(q) ? 1 : n.split(/[\s'’-]+/).some(w => w.startsWith(q)) ? 2 : n.includes(q) ? 3 : q.split(/\s+/).every(w => n.includes(w)) ? 4 : 9;
+    x.bt = x.k ? btOf(x.k) : { tags: {}, n: 0, avg: 0 }; if (F.some(t => !x.bt.tags[t])) x.sc = 9; });
+  const R = L.filter(x => x.sc < 9).sort((a, b) => a.sc - b.sc || a.label.localeCompare(b.label, 'fr'));
+  srFilters();
   const hl = t => { if (!q) return esc(t); const n = nrm(t), i = n.indexOf(q); return i < 0 ? esc(t) : esc(t.slice(0, i)) + '<mark>' + esc(t.slice(i, i + q.length)) + '</mark>' + esc(t.slice(i + q.length)); };
-  $('#srl').innerHTML = (!q && R.length ? '<li class="srt">📍 Les plus proches</li>' : '') + (R.map((x, i) => { const th = x.k && D.cells[x.k] && D.cells[x.k].th, tg = (x.k && D.cells[x.k] && D.cells[x.k].tags) || [];
-    return `<li role="option" data-srk="${x.k || ''}" data-srg="${x.g ? esc(x.g.k) : ''}" class="${i === SRI ? 'on' : ''}">${th ? `<img src="${th}" alt="">` : crest(x.rk, 30)}<span class="act"><b>${hl(x.label)}</b><small>${x.g && !LITE ? '🥾 ' + fmtDist(x.g.len) : '📍 balade'}${tg.length ? ' · ' + tg.map(t => TAGS[t][0]).join('') : ''}</small></span><em>${fmtDist(x.dm)}</em></li>`; }).join('')
-    || `<li class="srt">Aucune balade ne correspond à « ${esc($('#srq').value.trim())} »</li>`);
+  $('#srl').innerHTML = (R.length ? `<li class="srt">${R.length} balade${R.length > 1 ? 's' : ''}${F.length ? ' avec ces critères' : ''}</li>` : '') + (R.slice(0, 200).map((x, i) => { const th = x.k && D.cells[x.k] && D.cells[x.k].th, ic = Object.keys(AMEN).filter(t => x.bt.tags[t]).map(t => AMEN[t][0]).join(''), ct = x.k ? cityOf(x.k) : '';
+    return `<li role="option" data-srk="${x.k || ''}" data-srg="${x.g ? esc(x.g.k) : ''}" class="${i === SRI && q ? 'on' : ''}">${th ? `<img src="${th}" alt="">` : crest(x.rk, 30)}<span class="act"><b>${hl(x.label)}</b><small>${[ct && '📍 ' + esc(ct), x.bt.n ? '★ ' + String(x.bt.avg).replace('.', ',') : '', ic].filter(Boolean).join(' · ') || '📍 balade'}</small></span><em>${fmtDist(x.dm)}</em></li>`; }).join('')
+    || `<li class="srt">${F.length ? 'Aucune balade avec ces critères pour l\'instant' : 'Aucune balade ne correspond'}${q ? ` à « ${esc($('#srq').value.trim())} »` : ''}</li>${F.length ? '<li class="srn">Les équipements sont signalés par les promeneurs dans la fiche de chaque balade (« Qu\'y a-t-il sur place ? »).</li>' : ''}`);
 }
 let SRI = 0;
-function srOpen() { SRI = 0; $('#srq').value = ''; $('#srp').classList.add('open'); srRender(); setTimeout(() => $('#srq').focus(), 30); }
+function srOpen() { SRI = 0; $('#srq').value = ''; $('#srp').classList.add('open'); srRender(); $('#srl').scrollTop = 0; btLoad(); }
+$('#srf').onclick = e => { if (e.target.closest('[data-srfx]')) { SRF.clear(); srfSave(); return srRender(); } const b = e.target.closest('[data-srf]'); if (!b) return; const t = b.dataset.srf;
+  SRF.has(t) ? SRF.delete(t) : (SRF.add(t), AMX[t] && SRF.delete(AMX[t])); srfSave(); SRI = 0; srRender(); };
 const srClose = () => { $('#srp').classList.remove('open'); $('#srq').blur(); };
 function srGo(li) { if (!li) return; const k = li.dataset.srk, gk = li.dataset.srg; srClose(); if (k && D.cells[k]) { select(k); try { fitBal(k); } catch (e) {} } else if (gk) openBal(gk); }
 $('#srb').onclick = srOpen; $('#srx').onclick = srClose;
