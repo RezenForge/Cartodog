@@ -1334,7 +1334,7 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
 </div></div>
 <div id="com"><div class="win dg scw" role="dialog" aria-label="Communauté">
   <button class="ib scx" id="comx" aria-label="Fermer">✕</button>
-  <div class="cmtop"><label class="cmlb" for="cmsel">📍 Balade</label><select id="cmsel" aria-label="Balade"></select><button class="btn gold" id="cmpub">＋ Publier ici</button></div>
+  <div class="cmtop"><label class="cmlb" for="cmsel">📍 Publier à la balade</label><select id="cmsel" aria-label="Balade"></select><button class="btn gold" id="cmpub">＋ Publier ici</button></div>
   <div class="scls cmls" id="cmls"></div>
   <div class="scsh" id="cmsh" hidden><div class="scgw" id="cmsw"></div></div>
   <input type="file" id="cmfile" accept="image/*" hidden>
@@ -2916,7 +2916,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-129';
+const APP_V = '2026.10.28-130';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3341,13 +3341,13 @@ function cmRender() {
   $('#cmpub').disabled = !CM.k;
   const L = CM.posts; $('#cmls').innerHTML = !clOn() ? '<div class="scemp">☁️ Connectez-vous pour voir la communauté</div>'
     : CM.busy && !L.length ? '<div class="scemp">Chargement…</div>'
-    : L.length ? L.map(cmCard).join('') : `<div class="scemp">📷 Pas encore de publication ici<small>Soyez le premier à partager un moment de balade à ${esc(CM.k ? balName(CM.k) : 'cette balade')}.</small></div>`;
+    : L.length ? L.map(cmCard).join('') : '<div class="scemp">📷 Pas encore de publication<small>Soyez le premier à partager un moment de balade.</small></div>';
   $('#cmls').querySelectorAll('img[data-cmsrc]').forEach(async im => { const u = await cmPhoto(im.dataset.cmsrc); if (u) { im.src = u; im.parentNode.classList.add('ok'); } });
 }
 async function cmLoad() {
-  if (!clOn() || !CM.k || !D.cells[CM.k]) { CM.posts = []; return cmRender(); }
-  const c = ctr(CM.k), k = CM.k; CM.busy = true; cmRender();
-  try { const r = await soRpc('post_feed', { bx: c[0], by: c[1], r: 700 }); if (CM.k === k) CM.posts = Array.isArray(r) ? r : []; } catch (e) { toast('⚠️ ' + e.message); }
+  if (!clOn()) { CM.posts = []; return cmRender(); }      // toutes les publications, quelle que soit la balade choisie (le menu sert à publier)
+  CM.busy = true; cmRender();
+  try { const r = await soRpc('post_feed', { bx: 0, by: 0, r: 0 }); CM.posts = Array.isArray(r) ? r : []; } catch (e) { toast('⚠️ ' + e.message); }
   CM.busy = false; cmRender();
 }
 function comOpen() { metaLoad(() => cmRender());
@@ -3376,7 +3376,7 @@ async function cmComments(id) {
   $('#cmcl').innerHTML = L.length ? L.map(c => { const f = cmPerson(c); return `<div class="cmcr"><span class="scaw">${socAv(f, 'sm')}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b> <small>${cmAgo(Date.parse(c.ts))}</small><span>${esc(c.body)}</span></span></div>`; }).join('') : '<div class="hint" style="padding:8px 2px">Aucun commentaire pour l\'instant.</div>';
   requestAnimationFrame(() => { const l = $('#cmcl'); if (l) l.scrollTop = l.scrollHeight; });
 }
-$('#cmsel').onchange = e => { CM.k = e.target.value || null; CM.posts = []; cmLoad(); };
+$('#cmsel').onchange = e => { CM.k = e.target.value || null; cmRender(); };
 $('#cmpub').onclick = () => { if (!clOn()) return toast('☁️ Connectez-vous pour publier'); if (!CM.k) return; CM.draft = null; cmCompose(); };
 $('#cmfile').onchange = async e => { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return; try { const b = await cmCompress(f); const d = CM.draft ||= { t: '' }; d.blob = b; if (d.url) URL.revokeObjectURL(d.url); d.url = URL.createObjectURL(b); d.t = $('#cmtx') ? $('#cmtx').value : d.t; cmCompose(); } catch (x) { toast('⚠️ Photo illisible'); } };
 $('#comb').onclick = comOpen; $('#comx').onclick = comClose;
