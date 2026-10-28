@@ -39,7 +39,7 @@ th{color:var(--gold);font-weight:700}
 <nav aria-label="Sections"><a href="#mentions">Mentions légales</a><a href="#confidentialite">Confidentialité</a><a href="#conditions">Conditions d'utilisation</a></nav>
 <main>
 <header><img src="icon.svg" alt=""><h1>Cartodog</h1></header>
-<p class="maj">Informations légales · version 1 · mise à jour le 28 octobre 2026</p>
+<p class="maj">Informations légales · version 2 · mise à jour le 28 octobre 2026</p>
 
 <section id="mentions">
 <h2>Mentions légales</h2>
@@ -53,7 +53,7 @@ th{color:var(--gold);font-weight:700}
 <li><b>Comptes et données</b> (base de données, connexion, photos, notifications) : Supabase Pte. Ltd., 65 Chulia Street #38-02/03, OCBC Centre, Singapour 049513. Les données de Cartodog sont stockées dans la région de Paris (France).</li>
 </ul>
 <h3>Contenus et données cartographiques</h3>
-<p>Les sentiers et repères sont ajoutés par les promeneurs. Fonds et données utilisés : imagerie satellite Esri (World Imagery), données de l'IGN (Géoplateforme : routes, forêts, altitude, itinéraires), API Découpage administratif (geo.api.gouv.fr), itinéraires OpenStreetMap (FOSSGIS), météo Open-Meteo, résumés Wikipédia. Chacune de ces sources reste soumise à ses propres conditions et licences.</p>
+<p>Les balades publiques sont ajoutées par l'éditeur, notamment à partir des données ouvertes de Bordeaux Métropole (« Parcs, jardins et squares », Licence Ouverte). Les repères, avis, photos et équipements signalés sont ajoutés par les promeneurs. Fonds et données utilisés : imagerie satellite Esri (World Imagery), données de l'IGN (Géoplateforme : routes, forêts, altitude), API Découpage administratif (geo.api.gouv.fr), météo Open-Meteo, résumés Wikipédia. Chacune de ces sources reste soumise à ses propres conditions et licences.</p>
 </section>
 
 <section id="confidentialite">
@@ -69,22 +69,22 @@ th{color:var(--gold);font-weight:700}
 <tr><td>Adresse e-mail, mot de passe (conservé uniquement sous une forme hachée, illisible, par le service de connexion)</td><td>Créer et sécuriser votre compte</td><td>Personne d'autre que vous</td></tr>
 <tr><td>Pseudo, prénom, nom et photo du chien (photo de profil), sociabilité du chien, description</td><td>Vous retrouver et vous ajouter en copain</td><td>Les membres connectés</td></tr>
 <tr><td>Profil public du chien : nom, sexe, race, âge, niveau, nombre de balades découvertes, de visites et de copains, jusqu'à 3 photos réduites ; balade préférée et dernière sortie (nom et centre de la balade)</td><td>Présenter votre chien aux autres promeneurs</td><td>Les membres connectés ; la balade préférée et la dernière sortie : vos copains seulement</td></tr>
-<tr><td>Carnet : balades, sorties et leurs tracés, notes, photos, profil complet du chien (race, date de naissance, puce, vétérinaire, poids…) et sa photo, prénom, commune, description, visibilité, état, présence, réglages de l'application</td><td>Sauvegarder votre carnet et le retrouver sur vos appareils</td><td>Vous seul</td></tr>
-<tr><td>Sentiers et repères que vous ajoutez (tracés, positions, nom, description)</td><td>Les partager avec les autres promeneurs</td><td>Tout le monde, y compris sans compte. Un identifiant technique de leur auteur y reste rattaché, sans pseudo affiché</td></tr>
+<tr><td>Carnet : balades, visites (date, durée, note), photos, profil complet du chien (race, date de naissance, puce, vétérinaire, poids…) et sa photo, prénom, commune, description, visibilité, état, présence, réglages de l'application</td><td>Sauvegarder votre carnet et le retrouver sur vos appareils</td><td>Vous seul</td></tr>
+<tr><td>Repères que vous ajoutez (position, type, nom, description)</td><td>Les partager avec les autres promeneurs</td><td>Tout le monde, y compris sans compte. Un identifiant technique de leur auteur y reste rattaché, sans pseudo affiché</td></tr>
 <tr><td>Publications de la Communauté (texte, photo, balade concernée), « j'aime » et commentaires</td><td>Partager des moments de balade avec les autres promeneurs</td><td>Les membres connectés</td></tr>
-<tr><td>Avis sur les balades (note, commentaire) et équipements signalés (parking, eau, baignade…)</td><td>Aider les autres promeneurs à choisir une balade</td><td>Les membres connectés, avec votre pseudo, votre prénom et le nom de votre chien</td></tr>
-<tr><td>Jours où vous êtes passé sur une balade (balade et date, pas de position précise), gardés 30 jours pour l'affichage</td><td>Montrer à vos copains qui est venu récemment</td><td>Vos copains seulement ; rien n'est partagé en mode « Personne »</td></tr>
+<tr><td>Avis sur les balades (note, commentaire), photos et équipements signalés (parking, eau, baignade…)</td><td>Aider les autres promeneurs à choisir une balade</td><td>Les membres connectés, avec votre pseudo, votre prénom et le nom de votre chien</td></tr>
+<tr><td>Jours où vous êtes passé sur une balade (balade et date, pas de position précise), gardés 30 jours pour l'affichage</td><td>Montrer à vos copains qui est venu récemment</td><td>Vos copains seulement ; rien n'est partagé en mode « Invisible »</td></tr>
 <tr><td>Copains, demandes, groupes, messages, rendez-vous et réponses</td><td>Les fonctions sociales</td><td>Les personnes concernées (votre copain, les membres du groupe, les invités)</td></tr>
-<tr><td>État (en ligne, en balade, invisible), dernière activité, et la balade où vous êtes : détectée sur votre téléphone quand la localisation est active et que vous êtes depuis au moins 5 minutes à moins de 500 m d'une balade (seuls son nom et son centre sont envoyés) ; elle disparaît 10 minutes après la dernière détection</td><td>Montrer qui se balade où</td><td>Vos copains voient votre nom sur la balade ; les autres membres voient seulement un nombre de promeneurs présents, sans identité. Jamais votre position exacte. Désactivable : « Montrer ma présence sur les balades » ou visibilité « Personne »</td></tr>
+<tr><td>État (en ligne, en balade, invisible), dernière activité, et la balade où vous êtes : détectée sur votre téléphone quand la localisation est active et que vous êtes depuis au moins 5 minutes à moins de 500 m d'une balade (seuls son nom et son centre sont envoyés) ; elle disparaît 10 minutes après la dernière détection</td><td>Montrer qui se balade où</td><td>Vos copains voient votre nom sur la balade ; les autres membres voient seulement un nombre de promeneurs présents, sans identité. Jamais votre position exacte. Désactivable : « Montrer à mes copains la balade où je suis » ou visibilité « Invisible »</td></tr>
 <tr><td>Signalements (contenu signalé, raison, membre qui signale) et journal des actions de modération</td><td>Modérer les contenus publics et garder une trace des décisions</td><td>L'administrateur seulement ; la personne signalée ne sait pas qui l'a signalée</td></tr>
 <tr><td>Abonnement aux notifications (adresse technique du téléphone, type d'appareil)</td><td>Vous envoyer les notifications que vous avez activées</td><td>Personne</td></tr>
 <tr><td>Données techniques (adresse IP, date et heure des requêtes)</td><td>Fonctionnement et sécurité des services</td><td>Les hébergeurs et prestataires listés plus bas</td></tr>
 </table></div>
-<p>Votre position GPS est utilisée sur votre téléphone pour la carte, le guidage et les alertes. Elle n'est pas envoyée à Cartodog, sauf dans les tracés de vos sorties (enregistrés dans votre carnet privé), dans les sentiers et repères que vous choisissez de publier, et sous forme de coordonnées envoyées aux services de carte, d'itinéraire et de météo décrits plus bas.</p>
+<p>Votre position GPS est utilisée sur votre téléphone pour afficher la carte, détecter la balade où vous êtes et vous prévenir à l'approche d'un danger signalé. Elle n'est pas envoyée à Cartodog : seuls partent le nom et le centre de la balade détectée (présence et visites), les repères que vous choisissez de publier, et des coordonnées envoyées aux services de carte et de météo décrits plus bas.</p>
 
 <h3>Bases légales</h3>
 <ul>
-<li><b>Exécution du contrat</b> (les conditions d'utilisation que vous acceptez) : compte, carnet, partage des sentiers et repères, copains, messages, rendez-vous.</li>
+<li><b>Exécution du contrat</b> (les conditions d'utilisation que vous acceptez) : compte, carnet, partage des repères, avis et publications, copains, messages, rendez-vous.</li>
 <li><b>Consentement</b>, demandé par votre téléphone et retirable à tout moment dans ses réglages : accès à la position, notifications.</li>
 <li><b>Intérêt légitime</b> : sécurité des services et modération des contenus publiés.</li>
 </ul>
@@ -97,22 +97,22 @@ th{color:var(--gold);font-weight:700}
 <tr><td>GitHub (GitHub, Inc.)</td><td>Hébergement de l'application</td><td>Adresse IP et données techniques de connexion</td></tr>
 <tr><td>Google Fonts (Google)</td><td>Polices de caractères</td><td>Adresse IP</td></tr>
 <tr><td>Esri</td><td>Images satellite de la carte</td><td>Adresse IP, zone de carte affichée</td></tr>
-<tr><td>IGN, Géoplateforme</td><td>Routes, forêts, altitude, calcul d'itinéraires</td><td>Adresse IP, coordonnées de la zone ou des points demandés</td></tr>
-<tr><td>FOSSGIS (routing.openstreetmap.de)</td><td>Itinéraire de secours</td><td>Adresse IP, points de départ et d'arrivée</td></tr>
+<tr><td>IGN, Géoplateforme</td><td>Routes, forêts, altitude</td><td>Adresse IP, coordonnées de la zone ou des points demandés</td></tr>
 <tr><td>Open-Meteo</td><td>Météo de balade</td><td>Adresse IP, coordonnées arrondies</td></tr>
 <tr><td>geo.api.gouv.fr</td><td>Limites des communes</td><td>Adresse IP, coordonnées</td></tr>
 <tr><td>Wikipédia (Wikimedia Foundation)</td><td>Descriptions de lieux</td><td>Adresse IP, nom du lieu consulté</td></tr>
 <tr><td>Google, Apple ou Mozilla, selon votre téléphone et votre navigateur</td><td>Acheminer les notifications</td><td>Le contenu chiffré de la notification et l'adresse technique de votre appareil</td></tr>
 </table></div>
-<p>Les liens « Ouvrir dans Maps » et « Waze » ouvrent les services de Google et de Waze uniquement si vous les touchez ; ces services appliquent alors leurs propres règles.</p>
+<p>Le bouton « Y aller » d'une balade ouvre Google Maps avec les coordonnées de la balade, uniquement si vous le touchez ; Google applique alors ses propres règles.</p>
 
 <h3>Transferts hors de l'Union européenne</h3>
 <p>Certains prestataires sont établis hors de l'Union européenne, notamment aux États-Unis et à Singapour. Pour Supabase, les transferts sont encadrés par les clauses contractuelles types de la Commission européenne prévues dans son accord de traitement des données. Les autres prestataires appliquent leurs propres garanties, décrites dans leurs politiques de confidentialité.</p>
 
 <h3>Durées de conservation</h3>
 <ul>
+<li>Jours de passage sur les balades : 31 jours au plus.</li>
 <li>Données du compte, carnet, messages, copains, groupes, rendez-vous et abonnements aux notifications : jusqu'à la suppression de votre compte.</li>
-<li>À la suppression du compte : le compte, le profil, le carnet, les photos, les publications de la Communauté avec leurs photos, vos « j'aime » et commentaires, les messages, les liens de copains, la présence et les abonnements sont effacés ; les sentiers non publiés sont retirés ; les sentiers publics et les repères restent sur la carte, sans lien avec votre compte.</li>
+<li>À la suppression du compte : le compte, le profil, le carnet, les photos, le profil public du chien, les publications de la Communauté avec leurs photos, vos « j'aime », commentaires et avis, vos visites, les messages, les liens de copains, la présence et les abonnements sont effacés ; les repères que vous avez publiés restent sur la carte, et vos signalements restent dans l'outil de modération, sans lien avec votre compte.</li>
 <li>Sur votre téléphone : le carnet est retiré à la déconnexion ; une copie de vos réglages reste dans le navigateur jusqu'à ce que vous effaciez ses données.</li>
 <li>Données techniques : selon les règles propres à chaque hébergeur et prestataire.</li>
 </ul>
@@ -129,9 +129,9 @@ th{color:var(--gold);font-weight:700}
 <h3>Vos droits</h3>
 <p>Vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité de vos données, ainsi que du droit de retirer votre consentement à tout moment et de définir des directives sur leur sort après votre décès. Dans l'application :</p>
 <ul>
-<li><b>Rectifier</b> : Mon compte › Mes infos, et le profil de votre chien ;</li>
-<li><b>Récupérer</b> votre carnet : Mon compte › Mes données › Exporter le carnet ;</li>
-<li><b>Effacer</b> : Mon compte › Compte en ligne › Supprimer mon compte.</li>
+<li><b>Rectifier</b> : Mon compte › Mon profil et mon compte, et Mon compte › Mon chien ;</li>
+<li><b>Récupérer</b> votre carnet : Mon compte › Sauvegarde sur fichier › Exporter le carnet ;</li>
+<li><b>Effacer</b> : Mon compte › Mon profil et mon compte › Supprimer mon compte.</li>
 </ul>
 <p>Pour toute autre demande : <a href="mailto:contact@cartodog.fr">contact@cartodog.fr</a>. Une réponse vous sera apportée dans un délai d'un mois. Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL : 3 place de Fontenoy, 75007 Paris, <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>.</p>
 </section>
@@ -139,7 +139,7 @@ th{color:var(--gold);font-weight:700}
 <section id="conditions">
 <h2>Conditions d'utilisation</h2>
 <h3>1. Objet</h3>
-<p>Ces conditions encadrent l'utilisation de Cartodog, application gratuite qui permet de cartographier des balades à faire avec son chien, d'être guidé, de partager des sentiers et des repères, et d'échanger avec d'autres promeneurs. Créer un compte vaut acceptation de ces conditions et de la politique de confidentialité.</p>
+<p>Ces conditions encadrent l'utilisation de Cartodog, application gratuite qui permet de trouver des balades à faire avec son chien (parcs, bois, forêts), de tenir le carnet de ses visites, de donner son avis, de partager des repères et des photos, et d'échanger avec d'autres promeneurs (copains, messages, rendez-vous, Communauté). Créer un compte vaut acceptation de ces conditions et de la politique de confidentialité.</p>
 <h3>2. Compte</h3>
 <ul>
 <li>Le compte est réservé aux personnes de 15 ans et plus (en dessous, avec l'accord d'un titulaire de l'autorité parentale).</li>
@@ -148,20 +148,20 @@ th{color:var(--gold);font-weight:700}
 <li>Vous pouvez supprimer votre compte à tout moment depuis l'application.</li>
 </ul>
 <h3>3. Sécurité pendant les balades</h3>
-<p>Les sentiers, boucles, itinéraires, repères, alertes de danger et informations météo sont fournis à titre indicatif. Ils peuvent être inexacts, incomplets ou dépassés : un sentier peut être fermé, privé ou modifié, un danger peut avoir disparu ou être apparu. Restez attentif à votre environnement et à votre chien, respectez la signalisation, les propriétés privées, les règles locales (tenue en laisse, périodes de chasse, zones protégées, accès réglementés) et les consignes des autorités. L'usage du guidage en voiture se fait dans le respect du code de la route : ne manipulez pas votre téléphone en conduisant.</p>
+<p>Les balades, repères, alertes de danger, avis, équipements signalés et informations météo sont fournis à titre indicatif. Ils peuvent être inexacts, incomplets ou dépassés : un lieu peut être fermé, privé ou réglementé, un équipement peut manquer, un danger peut avoir disparu ou être apparu. Restez attentif à votre environnement et à votre chien, respectez la signalisation, les propriétés privées, les règles locales (tenue en laisse, périodes de chasse, zones protégées, accès réglementés) et les consignes des autorités. Pour vous rendre à une balade (bouton « Y aller »), respectez le code de la route : ne manipulez pas votre téléphone en conduisant.</p>
 <h3>4. Contenus que vous publiez</h3>
 <ul>
-<li>Les sentiers et repères que vous ajoutez sont visibles par tous. Les sentiers des membres sont d'abord « proposés » puis publiés après validation.</li>
+<li>Les repères que vous publiez sont visibles par tous. Vos publications, photos, commentaires, avis et équipements signalés sont visibles par les membres connectés. Les balades publiques sont ajoutées et gérées par l'éditeur.</li>
 <li>Vous garantissez avoir le droit de publier ces contenus et qu'ils sont, autant que vous le savez, exacts.</li>
-<li>Vous accordez à Cartodog, gratuitement et pour le monde entier, le droit de les afficher, de les reproduire et de les adapter (par exemple pour calculer une boucle) au sein de l'application. Ce droit continue après la suppression de votre compte pour les sentiers publics et les repères, qui restent sur la carte sans lien avec votre compte.</li>
+<li>Vous accordez à Cartodog, gratuitement et pour le monde entier, le droit de les afficher, de les reproduire et de les adapter (par exemple réduire une photo) au sein de l'application. Ce droit continue après la suppression de votre compte pour les repères, qui restent sur la carte sans lien avec votre compte.</li>
 <li>Vos messages et votre carnet restent les vôtres : ils ne sont visibles que par les personnes à qui vous les adressez, ou par vous seul.</li>
 </ul>
 <h3>5. Règles de conduite</h3>
 <p>Il est interdit de publier ou d'envoyer des contenus illicites, injurieux, haineux, harcelants, trompeurs ou à caractère commercial non sollicité, de signaler de faux dangers, d'indiquer comme accessibles des terrains privés ou interdits, de porter atteinte à la vie privée d'autrui (notamment en publiant l'adresse d'un particulier), ou de tenter de contourner la sécurité du service.</p>
 <h3>6. Modération</h3>
-<p>L'éditeur peut refuser, modifier ou retirer un sentier ou un repère, et suspendre ou supprimer un compte qui ne respecte pas ces conditions. Pour signaler un contenu ou un comportement : <a href="mailto:contact@cartodog.fr">contact@cartodog.fr</a>.</p>
+<p>Chaque publication, commentaire, avis ou profil peut être signalé avec le bouton « ⚑ Signaler ». L'éditeur peut masquer, modifier ou retirer un contenu (publication, commentaire, avis, description, photo, repère, balade), et suspendre ou supprimer un compte qui ne respecte pas ces conditions. Vous pouvez aussi écrire à <a href="mailto:contact@cartodog.fr">contact@cartodog.fr</a>.</p>
 <h3>7. Disponibilité et responsabilité</h3>
-<p>Cartodog est fourni gratuitement, en l'état, par un particulier. Le service peut évoluer, être interrompu ou s'arrêter, et dépend de prestataires externes (cartes, itinéraires, météo, réseau mobile). Dans les limites prévues par la loi, l'éditeur ne peut être tenu responsable des conséquences d'une information inexacte, d'une indisponibilité ou d'une perte de données ; pensez à exporter votre carnet de temps en temps.</p>
+<p>Cartodog est fourni gratuitement, en l'état, par un particulier. Le service peut évoluer, être interrompu ou s'arrêter, et dépend de prestataires externes (cartes, météo, réseau mobile). Dans les limites prévues par la loi, l'éditeur ne peut être tenu responsable des conséquences d'une information inexacte, d'une indisponibilité ou d'une perte de données ; pensez à exporter votre carnet de temps en temps.</p>
 <h3>8. Modification des conditions</h3>
 <p>Ces conditions peuvent évoluer. En cas de changement important, l'application vous demandera de les accepter à nouveau.</p>
 <h3>9. Droit applicable</h3>
