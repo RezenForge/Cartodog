@@ -1193,6 +1193,19 @@ html.lite #pt,html.lite #homeb{display:none!important}
 .pfbio{margin:11px 0 0;font:italic 500 13.5px/1.45 var(--num);color:#e8d8b8;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .pfa{display:flex;gap:8px;margin-top:13px}.pfa .btn{flex:1;margin:0}.pfa .pfmo{flex:0 0 48px}.pfw .pfrm{margin:8px 0 0;color:#ff8a6e}
 .pfme{margin-top:12px;font:600 12px var(--num);color:var(--mut);text-align:center}[data-pfu]{cursor:pointer}
+/* profil du chien, version compacte */
+#dgmain .dghero{position:relative}.dged{position:absolute;top:-4px;right:-4px;width:34px!important;height:34px!important;font-size:15px}#dgmain .dgnm{padding-right:30px}#dgmain .dgav{width:86px;height:86px}#dgmain .dgnm>b{font-size:23px}#dgmain .dgnm>small{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.3}
+.dggal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 10px}.dgg{position:relative;aspect-ratio:1;padding:0;border:2px solid var(--edge);border-radius:8px;background:#14110e;overflow:hidden;cursor:pointer;box-shadow:inset 0 0 0 1px var(--rim)}
+.dgg img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .3s}.dgg.ok img{opacity:1}.dgg.add{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;border-style:dashed;border-color:#6b5a40;color:var(--ember2);background:rgba(0,0,0,.18)}
+.dgg.add span{font:800 24px/1 var(--num)}.dgg.add small{font:700 11px var(--num);color:var(--mut)}
+.dgx1{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:2px solid var(--edge);border-radius:8px;background:var(--slot);box-shadow:inset 0 0 0 1px var(--rim);color:var(--txt);text-align:left;cursor:pointer}
+.dgxi{font-size:24px}.dgxt{flex:1;min-width:0}.dgxt b{font:800 22px/1 var(--num);color:#fff3d6}.dgxt b small{font-size:14px;color:var(--mut);font-weight:700}.dgxt>small{display:block;margin-top:2px;font:700 11.5px var(--num);color:var(--mut)}
+.dgbar{display:block;height:6px;margin-top:6px;border-radius:3px;background:#0d0b08;border:1px solid #3a332a;overflow:hidden}.dgbar i{display:block;height:100%;width:var(--w);background:linear-gradient(90deg,#c6862a,#ffd27a)}.dgx1 em{font:800 15px var(--num);font-style:normal;color:var(--ember2)}
+.dgs3{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}.dgs3 div{padding:7px 2px 6px;text-align:center;background:var(--slot);border:2px solid var(--edge);border-radius:6px;box-shadow:inset 0 0 0 1px var(--rim)}
+.dgs3 b{display:block;font:800 18px/1.15 var(--num);color:#fff3d6;white-space:nowrap}.dgs3 small{display:block;font:700 10px var(--num);color:var(--mut);text-transform:uppercase;letter-spacing:.03em}.dgs3 .hot{border-color:#7a3a10}.dgs3 .hot b{color:#ffb070}
+.dgli{display:flex;flex-direction:column;gap:6px;margin-top:8px}.dgli button{display:flex;align-items:center;gap:10px;width:100%;padding:8px 12px;border:2px solid var(--edge);border-radius:8px;background:var(--slot);color:var(--txt);text-align:left;cursor:pointer}
+.dgli button>span:first-child{font-size:18px}.dgli .act small{font:700 10.5px var(--num);color:var(--mut);text-transform:uppercase;letter-spacing:.05em}.dgli .act b{font:800 14.5px var(--num);color:#fff1cf;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dgli em{font:700 12px var(--num);font-style:normal;color:var(--ember2);white-space:nowrap}
+
 /* fenêtres du bas dans Copains / Communauté : jamais sous le bandeau ni le logo, tout défile, boutons d'action toujours visibles */
 #soc .scsh,#com .scsh{top:var(--soct,0px)!important;padding-top:26px!important}#soc .scgw,#com .scgw{max-height:100%!important}#scfw .scgl{max-height:none}
 #soc .scgw .scga,#com .scgw .scga{position:sticky;bottom:-12px;z-index:1;margin-bottom:-12px;padding:12px 0;background:linear-gradient(rgba(30,24,18,0),#1e1812 28%)}
@@ -1288,7 +1301,7 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
 <div id="balm"><div class="win dg"><div class="lhd"><button class="ib" id="balb" aria-label="Toutes les balades" hidden>‹</button><h2 id="balh">Partir en balade</h2><button class="shb" id="bals" aria-label="Partager cette balade" hidden><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="18" cy="5.5" r="2.8" fill="currentColor" fill-opacity=".25"/><circle cx="6" cy="12" r="2.8" fill="currentColor" fill-opacity=".25"/><circle cx="18" cy="18.5" r="2.8" fill="currentColor" fill-opacity=".25"/><path d="M8.5 10.7l7-3.9M8.5 13.3l7 3.9"/></svg><span>Partager</span></button><button class="ib" id="balx" aria-label="Fermer">✕</button></div><div id="balc"></div></div></div>
 <div id="dogm"><div class="win dg">
   <div class="lhd"><button class="ib" id="dgb" aria-label="Retour au profil" hidden>‹</button><h2 id="dgh">Profil<small id="dgsub">Mon chien</small></h2><button class="ib" id="dgx" aria-label="Fermer">✕</button></div>
-  <div class="dgp on" data-p="main"><div id="dgmain"></div>
+  <div class="dgp on" data-p="main"><div id="dgmain"></div><input type="file" accept="image/*" id="dggf" hidden>
     <div class="dgnav"><button data-go="id">🐕<small>Fiche</small></button><button data-go="w">⚖️<small>Poids</small></button><button data-go="h">🩺<small>Santé</small></button></div></div>
   <div class="dgp" data-p="id">
     <div class="dgtop"><label class="dgph"><input type="file" accept="image/*" id="dgf" hidden><span id="dgimg"></span><small>📷 Photo</small></label>
@@ -1605,7 +1618,7 @@ const snapC = () => JSON.stringify({ cells: D.cells });
 function restoreSnap(snap) { const o = JSON.parse(snap); D.cells = o.cells; if (sel && !D.cells[sel]) sel = null; }      // annuler une action du carnet ne touche ni aux sentiers ni aux repères
 const cleanProf = (p, nm) => { p = p && typeof p === 'object' ? p : {}; const st = (k, n) => String(p[k] || '').slice(0, n);
   return { ...(+p._t > 0 ? { _t: +p._t } : {}), name: st('name', 30) || String(nm || '').slice(0, 30), breed: st('breed', 60), sx: p.sx === 'm' || p.sx === 'f' ? p.sx : '', bd: /^\d{4}-\d\d-\d\d$/.test(p.bd) ? p.bd : '', st: !!p.st, chip: st('chip', 60), vet: st('vet', 60), vtel: st('vtel', 30), note: st('note', 1000),
-    ph: /^[\w-]+$/.test(String(p.ph || '')) ? String(p.ph) : '', space: ['ok', 'space', 'shy', 'heat'].includes(p.space) ? p.space : '', w: (Array.isArray(p.w) ? p.w : []).filter(x => x && /^\d{4}-\d\d-\d\d$/.test(x.d) && +x.kg > 0 && +x.kg < 150).map(x => ({ d: x.d, kg: Math.round(+x.kg * 10) / 10 })) }; };
+    ph: /^[\w-]+$/.test(String(p.ph || '')) ? String(p.ph) : '', gal: (Array.isArray(p.gal) ? p.gal : []).map(String).filter(x => /^[\w-]+$/.test(x)).slice(0, 3), space: ['ok', 'space', 'shy', 'heat'].includes(p.space) ? p.space : '', w: (Array.isArray(p.w) ? p.w : []).filter(x => x && /^\d{4}-\d\d-\d\d$/.test(x.d) && +x.kg > 0 && +x.kg < 150).map(x => ({ d: x.d, kg: Math.round(+x.kg * 10) / 10 })) }; };
 D.prof = cleanProf(null);
 function load() {
   try { const d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && d.cells) { D = { cells: {}, paths: cleanPaths(d.paths), marks: cleanMarks(d.marks), dog: String(d.dog || '').slice(0, 30), prof: cleanProf(d.prof, d.dog), user: cleanUser(d.user) }; D.dog = D.prof.name || D.dog; Object.entries(d.cells).forEach(([k, c]) => { if (/^[\w,-]+$/.test(k)) { const x = clean(c); if (x.x != null) D.cells[k] = x; } }); } } catch (e) {}
@@ -1912,7 +1925,7 @@ function thImg(k, c) {      // image de la vignette (créée une fois) ; une bal
   if (!c.th) { if (c.ph && c.ph.length && !thBusy.has(k)) { thBusy.add(k); setCover(k, c.cov && c.ph.some(p => p.id === c.cov) ? c.cov : c.ph[0].id).finally(() => thBusy.delete(k)); } return null; }
   let o = THI.get(k); if (!o || o.src !== c.th) { o = new Image(); o.onload = () => schedule(); o.src = c.th; THI.set(k, o); } return o.complete && o.naturalWidth ? o : null;
 }
-function shrink(f) { return new Promise((res, rej) => { const u = URL.createObjectURL(f), im = new Image(); im.onload = () => { const s = Math.min(1, 1280 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * s); c.height = Math.round(im.height * s); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(u); res(c.toDataURL('image/jpeg', .72)); }; im.onerror = () => { URL.revokeObjectURL(u); rej(new Error('img')); }; im.src = u; }); }
+function shrink(f, mx = 1280, q = .72) { return new Promise((res, rej) => { const u = URL.createObjectURL(f), im = new Image(); im.onload = () => { const s = Math.min(1, mx / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * s); c.height = Math.round(im.height * s); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(u); res(c.toDataURL('image/jpeg', q)); }; im.onerror = () => { URL.revokeObjectURL(u); rej(new Error('img')); }; im.src = u; }); }
 async function loadGal(k) {
   const el = $('#gal'); if (!el) return; const c = D.cells[k];
   if (!c || !c.ph.length) { el.innerHTML = '<div class="hint" style="grid-column:1/-1">Aucune photo.</div>'; return; }
@@ -1920,11 +1933,12 @@ async function loadGal(k) {
   for (const p of c.ph) { let u = null; try { u = await pGet(p.id); } catch (e) {} if (sel !== k || !$('#gal')) return;
     if (u) { const im = document.createElement('img'); im.src = u; im.alt = 'Photo'; im.dataset.id = p.id; el.appendChild(im); } else { const d = document.createElement('div'); d.className = 'ph0'; d.textContent = '🖼️?'; el.appendChild(d); } }
 }
-let pvId = null;
-const closePh = () => { $('#pv').classList.remove('open'); $('#pvi').removeAttribute('src'); pvId = null; };
+let pvId = null, pvDog = false;
+const closePh = () => { $('#pv').classList.remove('open'); $('#pvi').removeAttribute('src'); pvId = null; pvDog = false; $('#pvc').hidden = false; };
 $('#pvx').onclick = closePh;
 $('#pvc').onclick = async () => { const k = sel; if (!k || !pvId) return; await setCover(k, pvId); $('#pvc').classList.add('on'); toast('★ Photo de couverture : elle s\u2019affiche sur la carte'); };
-$('#pvd').onclick = () => { const k = sel, id = pvId, c = k && D.cells[k], i = c ? c.ph.findIndex(p => p.id === id) : -1; if (i < 0) return closePh();
+$('#pvd').onclick = () => { if (pvDog) { const id = pvId; if (!id || !confirm('Supprimer cette photo ?')) return; D.prof.gal = (D.prof.gal || []).filter(x => x !== id); save(); pDel(id).catch(() => {}); closePh(); dogGal(); return toast('Photo supprimée'); }
+  const k = sel, id = pvId, c = k && D.cells[k], i = c ? c.ph.findIndex(p => p.id === id) : -1; if (i < 0) return closePh();
   const snap = snapC(); c.ph.splice(i, 1); if (c.cov === id) setCover(k, c.ph[0] ? c.ph[0].id : null); save(); closePh(); draw(); renderPanel();
   setTimeout(() => { if (!D.cells[k]?.ph.some(p => p.id === id)) pDel(id).catch(() => {}); }, 8000);
   toast('Photo supprimée', () => { restoreSnap(snap); save(); draw(); renderPanel(); }); };
@@ -2953,7 +2967,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-146';
+const APP_V = '2026.10.28-147';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3721,11 +3735,11 @@ async function sync(force) {
     S.c = locH; S.cb = carnetBase(); CLD.pulled = true;
     if (changed) { localStorage.setItem(KEY, JSON.stringify(D)); CGM.clear(); try { renderPanel(); hdrRender(); dogAvatar(); } catch (e) {} draw(); }
     /* 5. Photos : on envoie les nouvelles, on récupère celles qui manquent (par petits paquets) */
-    const ids = [...new Set([...Object.values(D.cells).flatMap(c => c.ph.map(p => p.id)), D.prof.ph].filter(Boolean))]; let n = 0;
+    const ids = [...new Set([...Object.values(D.cells).flatMap(c => c.ph.map(p => p.id)), D.prof.ph, ...(D.prof.gal || [])].filter(Boolean))]; let n = 0;
     for (const id of ids) { if (n >= 12) break;
       if (!S.ph[id]) { const u = await pGet(id).catch(() => null);
         if (u) { const b = await (await fetch(u)).blob(); try { await sb(`/storage/v1/object/photos/${CLD.s.user.id}/${id}`, { method: 'POST', body: b, headers: { 'Content-Type': b.type || 'image/jpeg', 'x-upsert': 'true' }, ms: 30000 }); S.ph[id] = 1; n++; up++; } catch (e) { if (e.status === 400 || e.status === 413) S.ph[id] = 1; } }
-        else { try { const r = await sb(`/storage/v1/object/authenticated/photos/${CLD.s.user.id}/${id}`, { raw: true, ms: 30000 }); if (r.ok) { const b = await r.blob(); const d = await new Promise(res => { const f = new FileReader(); f.onload = () => res(f.result); f.readAsDataURL(b); }); await pPut(id, d); S.ph[id] = 1; n++; down++; try { if (id === D.prof.ph) dogAvatar(); else renderPanel(); } catch (e) {} } } catch (e) {} } } }
+        else { try { const r = await sb(`/storage/v1/object/authenticated/photos/${CLD.s.user.id}/${id}`, { raw: true, ms: 30000 }); if (r.ok) { const b = await r.blob(); const d = await new Promise(res => { const f = new FileReader(); f.onload = () => res(f.result); f.readAsDataURL(b); }); await pPut(id, d); S.ph[id] = 1; n++; down++; try { if (id === D.prof.ph) dogAvatar(); else if ((D.prof.gal || []).includes(id)) dogGal(); else renderPanel(); } catch (e) {} } } catch (e) {} } } }
     sySave(S); CLD.st = 'ok'; CLD.at = Date.now(); CLD.n = { up, down };
   } catch (e) { sySave(S); CLD.st = 'err'; CLD.err = e.message || 'Pas de réseau'; }
   CLD.busy = false; clUi();
@@ -3829,7 +3843,7 @@ $('#acpres').onclick = () => { const u = accU(); u.pres = !u.pres; save(); accRe
 $('#acstat').onclick = () => { const u = accU(); u.stats = !u.stats; save(); accRender(); };
 
 $('#fi').onchange = e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { importData(JSON.parse(r.result)); $('#menu').classList.remove('open'); } catch (x) { toast('Fichier illisible'); } }; r.readAsText(f); e.target.value = ''; };
-async function bkFile() { const photos = {}; if (D.prof.ph) { try { const u = await pGet(D.prof.ph); if (u) photos[D.prof.ph] = u; } catch (e) {} } for (const c of Object.values(D.cells)) for (const p of c.ph) { try { const u = await pGet(p.id); if (u) photos[p.id] = u; } catch (e) {} }
+async function bkFile() { const photos = {}; for (const id of [D.prof.ph, ...(D.prof.gal || [])].filter(Boolean)) { try { const u = await pGet(id); if (u) photos[id] = u; } catch (e) {} } for (const c of Object.values(D.cells)) for (const p of c.ph) { try { const u = await pGet(p.id); if (u) photos[p.id] = u; } catch (e) {} }
   return new File([JSON.stringify({ app: 'cartodog', version: 1, dog: D.dog, prof: D.prof, user: D.user, cells: D.cells, paths: D.paths || [], marks: D.marks || [], photos })], 'cartodog-' + today() + '.json', { type: 'application/json' }); }
 const bkMark = () => { try { localStorage.setItem('cartodog-bk', String(Date.now())); } catch (e) {} bkStat(); };
 const bkLast = () => { try { return +localStorage.getItem('cartodog-bk') || 0; } catch (e) { return 0; } };
@@ -3889,37 +3903,43 @@ function dogRender() {
 const lvNeed = L => Math.round(200 * Math.pow(L - 1, 1.6));      // XP cumulée pour atteindre le niveau L
 function dogStats() {
   const cs = Object.values(D.cells).filter(rec), W = cs.flatMap(c => c.v), m = W.reduce((a, v) => a + v.m, 0), s = W.reduce((a, v) => a + v.s, 0), K = m / 1000;
-  const xp = Math.round(K * 100 + W.length * 25); let L = 1; while (lvNeed(L + 1) <= xp) L++;
+  const disc = cs.filter(c => c.v.length).length, xp = Math.round(K * 100 + W.length * 25 + disc * 75); let L = 1; while (lvNeed(L + 1) <= xp) L++;
   const days = new Set(W.map(v => v.d)); let st = 0; { const d = new Date(); if (!days.has(dayOf(d))) d.setDate(d.getDate() - 1); while (days.has(dayOf(d))) { st++; d.setDate(d.getDate() - 1); } }
   let best = 0, run = 0; [...days].sort().forEach((d, i, a) => { run = i && (new Date(d + 'T12:00') - new Date(a[i - 1] + 'T12:00')) < 1.5 * 864e5 ? run + 1 : 1; best = Math.max(best, run); });
   const wk = [...Array(7)].map((_, i) => { const d = dayOf(new Date(Date.now() - (6 - i) * 864e5)); const V = W.filter(v => v.d === d); return { d, m: V.reduce((a, v) => a + v.m, 0), s: V.reduce((a, v) => a + v.s, 0) }; });
   const hr = v => +String(v.h || '12').slice(0, 2), lng = W.reduce((a, v) => Math.max(a, v.m), 0), trails = (D.paths || []).reduce((a, p) => a + pathLen(p), 0);
-  const T = [[0, 'Chiot curieux'], [10, 'Baladeur'], [50, 'Randonneur'], [150, 'Pisteur'], [400, 'Coureur des bois'], [1000, 'Maître des sentiers']], rank = T.filter(x => K >= x[0]).pop()[1];
+  const T = [[0, 'Chiot curieux'], [3, 'Baladeur'], [8, 'Explorateur'], [15, 'Pisteur'], [30, 'Coureur des bois'], [60, 'Maître des balades']], rank = T.filter(x => disc >= x[0]).pop()[1];
   const nb = cs.filter(c => c.v.length).length, pr = (v, n) => [v >= n, Math.min(1, v / n)];      // [obtenu, progression 0 → 1]
   const B = [['🐾', 'Premiers pas', 'Une première sortie', ...pr(W.length, 1)], ['🥾', 'Marcheur', '10 km parcourus', ...pr(K, 10)], ['🏔️', 'Grand marcheur', '50 km parcourus', ...pr(K, 50)], ['👑', 'Légende', '200 km parcourus', ...pr(K, 200)],
     ['🔟', 'Habitué', '10 sorties', ...pr(W.length, 10)], ['🔥', 'En feu', '3 jours de suite', ...pr(best, 3)], ['⚡', 'Inarrêtable', '7 jours de suite', ...pr(best, 7)], ['🌅', 'Lève-tôt', 'Une sortie avant 8 h', ...pr(+W.some(v => hr(v) < 8), 1)],
     ['🌙', 'Noctambule', 'Une sortie après 20 h', ...pr(+W.some(v => hr(v) >= 20), 1)], ['🏃', 'Endurant', 'Une sortie de 5 km', ...pr(lng, 5000)], ['🗺️', 'Explorateur', '5 balades différentes', ...pr(nb, 5)], ['🧭', 'Cartographe', '3 km de sentiers tracés', ...pr(trails, 3000)]];
   return { W, m, s, K, xp, L, st, best, wk, lng, rank, B, act: wk.filter(x => x.m > 0).length };
 }
-function dogMain() {
+function dogMain() {      // profil du chien : photo et niveau, 3 photos, chiffres de la carte
   const S = dogStats(), p = D.prof, a0 = lvNeed(S.L), a1 = lvNeed(S.L + 1), pc = (S.xp - a0) / (a1 - a0), C = 2 * Math.PI * 47;
-  let seen = {}; try { seen = JSON.parse(localStorage.getItem('cartodog-seen') || '{}'); } catch (e) {}
-  const first = !seen.b, newB = first ? [] : S.B.filter(b => b[3] && !seen.b.includes(b[1])).map(b => b[1]), up = seen.L && S.L > seen.L;
-  try { localStorage.setItem('cartodog-seen', JSON.stringify({ L: S.L, b: S.B.filter(b => b[3]).map(b => b[1]) })); } catch (e) {}
-  const mx = Math.max(1800, ...S.wk.map(x => x.s)), jl = ['D', 'L', 'M', 'M', 'J', 'V', 'S'], nb = S.B.filter(b => b[3]).length, nxt = S.B.filter(b => !b[3]).sort((a, b) => b[4] - a[4])[0];      // le succès le plus proche
-  const bits = [p.sx === 'm' ? '♂' : p.sx === 'f' ? '♀' : '', p.breed, ageTxt(p.bd), lastW() ? fkg(lastW().kg) : ''].filter(Boolean).map(esc).join(' · ');
+  let seen = {}; try { seen = JSON.parse(localStorage.getItem('cartodog-seen') || '{}'); } catch (e) {} const up = seen.L && S.L > seen.L;
+  try { localStorage.setItem('cartodog-seen', JSON.stringify({ ...seen, L: S.L })); } catch (e) {}
+  const bits = [p.sx === 'm' ? '♂' : p.sx === 'f' ? '♀' : '', p.breed, ageTxt(p.bd), lastW() ? fkg(lastW().kg) : ''].filter(Boolean).map(x => esc(x).replace(/ /g, '\u00a0')).join(' · ');
+  const ks = Object.keys(D.cells).filter(k => rec(D.cells[k])), tot = ks.length, disc = ks.filter(k => visited(k)).length, V = ks.flatMap(k => D.cells[k].v.map(v => ({ ...v, k })));
+  const ym = today().slice(0, 7), mon = V.filter(v => (v.d || '').startsWith(ym)).length;
+  const fav = ks.map(k => [k, D.cells[k].v.length]).filter(x => x[1] > 0).sort((a, b) => b[1] - a[1])[0], last = V.slice().sort((a, b) => ((b.d || '') + (b.h || '')).localeCompare((a.d || '') + (a.h || '')))[0];
+  const ago = d => { const n = Math.round((new Date(today() + 'T12:00') - new Date(d + 'T12:00')) / 864e5); return n <= 0 ? "aujourd'hui" : n === 1 ? 'hier' : n < 30 ? `il y a ${n} jours` : new Date(d + 'T12:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); };
+  const pct = tot ? Math.round(disc / tot * 100) : 0, nf = (typeof SO === 'object' && SO.fr || []).length;
   $('#dgmain').innerHTML = `<div class="dghero"><button class="dgav" data-go="id" aria-label="Modifier la fiche"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="47" class="xr0"/><circle cx="50" cy="50" r="47" class="xr1" style="stroke-dasharray:${C.toFixed(1)};--o:${(C * (1 - pc)).toFixed(1)}"/></svg>
       <span class="dgpic">${avUrl ? `<img src="${avUrl}" alt="">` : SLOT.paw}</span><b class="dglv${up ? ' up' : ''}">Niv. ${S.L}</b></button>
     <div class="dgnm"><b>${esc(p.name || 'Mon chien')}</b><small>${bits || 'Touchez la photo pour compléter la fiche'}</small><span class="dgrk">${S.rank}</span>
-      <div class="dgxp"><i style="--w:${Math.round(pc * 100)}%"></i></div><small class="dgxpt">${S.xp - a0} / ${a1 - a0} XP · niveau ${S.L + 1}</small></div></div>
-    <div class="dgst">
-      <div><b>${(S.K).toFixed(S.K < 10 ? 1 : 0).replace('.', ',')}</b><small>km parcourus</small></div><div><b>${S.W.length}</b><small>sortie${S.W.length > 1 ? 's' : ''}</small></div><div><b>${fmtDur(S.s)}</b><small>de balade</small></div>
-      <div class="${S.st ? 'hot' : ''}"><b>${S.st ? '🔥 ' : ''}${S.st}</b><small>jour${S.st > 1 ? 's' : ''} de suite</small></div><div><b>${fmtDist(S.lng)}</b><small>record</small></div><div><b>${S.best}</b><small>meilleure série</small></div></div>
-    <div class="dgwk"><div class="dgwh"><span>Cette semaine</span><span><b>${S.act}</b>/7 jours actifs · ${fmtDist(S.wk.reduce((a, x) => a + x.m, 0))}</span></div>
-      <div class="dgbars">${S.wk.map((x, i) => `<div${i === 6 ? ' class="td"' : ''}><i style="--h:${x.s ? Math.max(8, Math.round(x.s / mx * 100)) : 0}%;animation-delay:${i * 50}ms"></i><small>${jl[new Date(x.d + 'T12:00').getDay()]}</small></div>`).join('')}</div></div>
-    <div class="dgbh"><span>Succès <b>${nb}</b>/${S.B.length}</span>${nxt ? `<small>Prochain : ${nxt[0]} ${nxt[2]}${nxt[4] > 0 && nxt[4] < 1 ? ' · ' + Math.round(nxt[4] * 100) + ' %' : ''}</small>` : '<small>Tous débloqués !</small>'}</div>
-    <div class="dgbg">${S.B.map(b => `<button class="${b[3] ? 'ok' : ''}${newB.includes(b[1]) ? ' new' : ''}" data-bd="${esc(b[1] + ' : ' + b[2])}" aria-label="${esc(b[1] + (b[3] ? ' (obtenu)' : ' (à débloquer)') + ' : ' + b[2])}">${b[3] ? b[0] : '🔒'}${!b[3] && b[4] > 0 ? `<i style="--p:${Math.round(b[4] * 100)}%"></i>` : ''}</button>`).join('')}</div>`;
-  if (up) setTimeout(() => toast(`🎉 ${esc(p.name || 'Votre chien')} passe au niveau ${S.L} !`), 500); else if (newB.length) setTimeout(() => toast('🏅 Nouveau succès : ' + newB.join(', ')), 500);
+      <div class="dgxp" title="${S.xp - a0} / ${a1 - a0} XP"><i style="--w:${Math.round(pc * 100)}%"></i></div></div><button class="ib dged" data-go="id" aria-label="Modifier la fiche">✏️</button></div>
+    <div class="dggal" id="dggal"></div>
+    <button class="dgx1" data-dgmap><span class="dgxi">🗺️</span><span class="dgxt"><b>${disc}<small> / ${tot}</small></b><small>balades découvertes sur la carte</small><i class="dgbar"><i style="--w:${pct}%"></i></i></span><em>${pct} %</em></button>
+    <div class="dgs3"><div><b>${V.length}</b><small>visite${V.length > 1 ? 's' : ''}</small></div><div class="${S.st ? 'hot' : ''}"><b>${S.st ? '🔥 ' : ''}${S.st}</b><small>série</small></div><div><b>${mon}</b><small>ce mois-ci</small></div><div><b>${nf}</b><small>copain${nf > 1 ? 's' : ''}</small></div></div>
+    ${fav || last ? `<div class="dgli">${fav ? `<button data-dgk="${fav[0]}"><span>⭐</span><span class="act"><small>Balade préférée</small><b>${esc(balName(fav[0]) || 'Balade')}</b></span><em>${fav[1]} visite${fav[1] > 1 ? 's' : ''}</em></button>` : ''}${last ? `<button data-dgk="${last.k}"><span>🕓</span><span class="act"><small>Dernière sortie</small><b>${esc(balName(last.k) || 'Balade')}</b></span><em>${ago(last.d)}</em></button>` : ''}</div>` : ''}`;
+  dogGal();
+  if (up) setTimeout(() => toast(`🎉 ${esc(p.name || 'Votre chien')} passe au niveau ${S.L} !`), 500);
+}
+async function dogGal() {      // 3 photos du chien, compressées, rangées avec les autres photos du compte
+  const g = $('#dggal'); if (!g) return; const L = D.prof.gal || [];
+  g.innerHTML = [0, 1, 2].map(i => L[i] ? `<button class="dgg" data-gal="${L[i]}" aria-label="Voir la photo ${i + 1}"><img alt=""></button>` : `<button class="dgg add" data-gadd aria-label="Ajouter une photo"><span>＋</span><small>Photo</small></button>`).join('');
+  for (const b of g.querySelectorAll('[data-gal]')) { try { const u = await pGet(b.dataset.gal); if (u) { b.querySelector('img').src = u; b.classList.add('ok'); } } catch (e) {} }
 }
 function dogPane(k) { document.querySelectorAll('#dogm .dgp').forEach(x => x.classList.toggle('on', x.dataset.p === k)); $('#dgb').hidden = k === 'main';
   $('#dgh').firstChild.textContent = { main: 'Profil', id: 'Fiche', w: 'Poids', h: 'Santé' }[k]; $('#dgsub').style.display = k === 'main' ? 'none' : ''; $('#dogm .win').scrollTop = 0; if (k === 'main') dogMain(); }
@@ -3929,6 +3949,10 @@ $('#hdog').onclick = dogOpen; $('#hbr').onclick = dogOpen; $('#dgx').onclick = d
 $('#dogm').onclick = e => { if (e.target.id === 'dogm') return dogClose();
   const go = e.target.closest('[data-go]'); if (go) return dogPane(go.dataset.go);
   const bd = e.target.closest('[data-bd]'); if (bd) return toast((bd.classList.contains('ok') ? '🏅 ' : '🔒 ') + bd.dataset.bd);
+  if (e.target.closest('[data-gadd]')) return $('#dggf').click();
+  const gl = e.target.closest('[data-gal]'); if (gl) { const im = gl.querySelector('img'); if (!im || !im.src) return; pvId = gl.dataset.gal; pvDog = true; $('#pvc').hidden = true; $('#pvi').src = im.src; $('#pv').classList.add('open'); return; }
+  const dk = e.target.closest('[data-dgk]'); if (dk) { const k = dk.dataset.dgk; if (!D.cells[k]) return; dogClose(); select(k); try { fitBal(k); } catch (x) {} return; }
+  if (e.target.closest('[data-dgmap]')) { dogClose(); try { $('#lb').click(); } catch (x) {} return; }
   const sx = e.target.closest('[data-sx]'); if (sx) { D.prof.sx = D.prof.sx === sx.dataset.sx ? '' : sx.dataset.sx; save(); return dogRender(); }
   if (e.target.closest('#dgst')) { D.prof.st = !D.prof.st; save(); return dogRender(); }
   const wd = e.target.closest('[data-wd]'); if (wd) { const snap = JSON.stringify(D.prof.w); D.prof.w = D.prof.w.filter(x => x.d !== wd.dataset.wd); save(); dogRender(); return toast('Pesée supprimée', () => { D.prof.w = JSON.parse(snap); save(); dogRender(); }); } };
@@ -3938,6 +3962,8 @@ $('#dgkgs').onclick = () => { const kg = +String($('#dgkg').value).replace(',', 
   const d = $('#dgkd').value && $('#dgkd').value <= today() ? $('#dgkd').value : today(), prev = lastW();
   D.prof.w = D.prof.w.filter(x => x.d !== d); D.prof.w.push({ d, kg: Math.round(kg * 10) / 10 }); save(); $('#dgkg').value = ''; dogRender();
   toast('⚖️ ' + fkg(kg) + ' enregistré' + (prev && prev.d !== d ? ` (${kg >= prev.kg ? '+' : '−'}${fkg(Math.abs(kg - prev.kg))})` : '')); };
+$('#dggf').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if (!f) return; if ((D.prof.gal || []).length >= 3) return toast('3 photos maximum : supprimez-en une');
+  try { const url = await shrink(f, 1024, .7), id = 'dgal' + Date.now().toString(36); await pPut(id, url); D.prof.gal = [...(D.prof.gal || []), id].slice(0, 3); save(); dogGal(); toast('📷 Photo ajoutée'); } catch (x) { toast('Photo impossible à enregistrer'); } };
 $('#dgf').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if (!f) return;
   try { const url = await shrink(f), id = 'dog' + Date.now().toString(36), old = D.prof.ph; await pPut(id, url); D.prof.ph = id; save(); if (old) pDel(old).catch(() => {}); await dogAvatar(); dogLabel(); toast('📷 Photo du chien mise à jour'); } catch (x) { toast('Photo impossible à enregistrer'); } };
 $('#dgkd').max = today(); $('#dgkd').value = today();
