@@ -1193,6 +1193,12 @@ html.lite #pt,html.lite #homeb{display:none!important}
 .pfbio{margin:11px 0 0;font:italic 500 13.5px/1.45 var(--num);color:#e8d8b8;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .pfa{display:flex;gap:8px;margin-top:13px}.pfa .btn{flex:1;margin:0}.pfa .pfmo{flex:0 0 48px}.pfw .pfrm{margin:8px 0 0;color:#ff8a6e}
 .pfme{margin-top:12px;font:600 12px var(--num);color:var(--mut);text-align:center}[data-pfu]{cursor:pointer}
+#dogm.ro .dgnav{display:none}#dogm.ro .dgav{cursor:default}.dgown{display:block;margin-top:1px;font:700 12.5px var(--num)!important;color:#e8d8b8!important}
+.dgpub{margin:10px 2px 0;font:600 11px/1.4 var(--num);color:var(--mut)}
+.pfdog{display:flex;align-items:center;gap:10px;width:100%;margin-top:11px;padding:9px 12px;border:2px solid var(--edge);border-radius:8px;background:var(--slot);box-shadow:inset 0 0 0 1px var(--rim);color:var(--txt);text-align:left;cursor:pointer}
+.pfdog>span:first-child{font-size:20px}.pfdog .act b{font:800 14px var(--num);color:#fff1cf}.pfdog .act small{font:600 11.5px var(--num);color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pfdog i{font-style:normal;font-size:20px;color:var(--ember2)}
+#dogm{z-index:25}
+
 /* profil du chien, version compacte */
 #dgmain .dghero{position:relative}.dged{position:absolute;top:-4px;right:-4px;width:34px!important;height:34px!important;font-size:15px}#dgmain .dgnm{padding-right:30px}#dgmain .dgav{width:86px;height:86px}#dgmain .dgnm>b{font-size:23px}#dgmain .dgnm>small{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.3}
 .dggal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 10px}.dgg{position:relative;aspect-ratio:1;padding:0;border:2px solid var(--edge);border-radius:8px;background:#14110e;overflow:hidden;cursor:pointer;box-shadow:inset 0 0 0 1px var(--rim)}
@@ -1934,7 +1940,7 @@ async function loadGal(k) {
     if (u) { const im = document.createElement('img'); im.src = u; im.alt = 'Photo'; im.dataset.id = p.id; el.appendChild(im); } else { const d = document.createElement('div'); d.className = 'ph0'; d.textContent = '🖼️?'; el.appendChild(d); } }
 }
 let pvId = null, pvDog = false;
-const closePh = () => { $('#pv').classList.remove('open'); $('#pvi').removeAttribute('src'); pvId = null; pvDog = false; $('#pvc').hidden = false; };
+const closePh = () => { $('#pv').classList.remove('open'); $('#pvi').removeAttribute('src'); pvId = null; pvDog = false; $('#pvc').hidden = false; $('#pvd').hidden = false; };
 $('#pvx').onclick = closePh;
 $('#pvc').onclick = async () => { const k = sel; if (!k || !pvId) return; await setCover(k, pvId); $('#pvc').classList.add('on'); toast('★ Photo de couverture : elle s\u2019affiche sur la carte'); };
 $('#pvd').onclick = () => { if (pvDog) { const id = pvId; if (!id || !confirm('Supprimer cette photo ?')) return; D.prof.gal = (D.prof.gal || []).filter(x => x !== id); save(); pDel(id).catch(() => {}); closePh(); dogGal(); return toast('Photo supprimée'); }
@@ -2967,7 +2973,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-147';
+const APP_V = '2026.10.28-148';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3037,7 +3043,7 @@ function soProfile() {      // ce que voient les autres promeneurs : pseudo, pr�
 async function soPoll() {
   if (!clOn() || SOT.busy || navigator.onLine === false) return; SOT.busy = true;
   try {
-    soProfile(); presTick(); if (Date.now() - SOT.pt > 6e4) soPresence();
+    soProfile(); presTick(); if (Date.now() - SOT.pt > 6e4) soPresence(); dogPub();
     soRpc('presence_here').then(h => { if (Array.isArray(h)) { SO.H = h; schedule(); } }).catch(() => {});
     metaLoad(() => { if ($('#soc').classList.contains('open')) socRender(); }); avSync();
     const r = await soRpc('social_poll', { since: SO.last || 0 }); if (!r || !clOn()) return;
@@ -3076,6 +3082,20 @@ async function avLoad(id, v) {
   if (!url && clOn()) try { const r = await sb('/storage/v1/object/authenticated/avatars/' + id + '/a.jpg', { raw: true }); if (r.ok) { const b = await r.blob(); url = await new Promise(res => { const f = new FileReader(); f.onload = () => res(f.result); f.readAsDataURL(b); }); pPut('av:' + id + ':' + v, url).catch(() => {}); } } catch (e) {}
   if (!url || !AVC[id] || AVC[id].v !== v) return; AVC[id].url = url;
   document.querySelectorAll('[data-av="' + id + '"]').forEach(el => { el.classList.add('img'); el.innerHTML = '<img src="' + url + '" alt="">'; });
+}
+async function dogPub() {      // profil public du chien : envoyé quand il change ; photos réduites à 720 px dans le dossier des photos de profil
+  if (!clOn() || !CLD.pulled || SOT.dgb) return; SOT.dgb = 1; const uid = CLD.s.user.id;
+  try { const up = SO.gup ||= [], gal = (D.prof.gal || []).slice(0, 3);
+    for (const id of gal.filter(x => !up.includes(x))) { const d = await pGet(id).catch(() => null); if (!d) continue;
+      const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = d; }), s = Math.min(1, 720 / Math.max(im.width, im.height)), c = document.createElement('canvas');
+      c.width = Math.round(im.width * s); c.height = Math.round(im.height * s); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); const b = await new Promise(r => c.toBlob(r, 'image/jpeg', .7));
+      const r = await sb('/storage/v1/object/avatars/' + uid + '/g-' + id + '.jpg', { method: 'POST', body: b, headers: { 'Content-Type': 'image/jpeg', 'x-upsert': 'true' }, raw: true }); if (r.ok) up.push(id); }
+    for (const id of up.filter(x => !gal.includes(x))) { try { await sb('/storage/v1/object/avatars/' + uid + '/g-' + id + '.jpg', { method: 'DELETE', raw: true }); } catch (e) {} up.splice(up.indexOf(id), 1); }
+    const d = dogData(), P = x => x && { n: String(x.n).slice(0, 60), bx: x.bx, by: x.by, ...(x.c ? { c: x.c } : {}), ...(x.d ? { d: x.d } : {}) };
+    const card = { v: 1, name: d.name.slice(0, 30), sx: d.sx, breed: d.breed.slice(0, 60), age: d.age, lv: d.lv, pc: Math.round(d.pc * 100) / 100, rank: d.rank, tot: d.tot, disc: d.disc, nv: d.nv, st: d.st, mon: d.mon, nf: d.nf, gal: gal.filter(x => up.includes(x)) };
+    const priv = { ...(d.fav ? { fav: P(d.fav) } : {}), ...(d.last ? { last: P(d.last) } : {}) }, h = JSON.stringify([card, priv]);
+    if (h !== SO.dgh) { await soRpc('dog_card_set', { card, priv }); SO.dgh = h; } soSave();
+  } catch (e) {} finally { SOT.dgb = 0; }
 }
 async function avSync() {      // envoie ma photo de profil quand elle change
   if (!clOn() || !CLD.pulled || SOT.avb) return; const ph = D.prof.ph || ''; if ((SO.avk || '') === ph) return; SOT.avb = 1;
@@ -3334,6 +3354,7 @@ function pfOpen(id) {
   if (!id || !clOn() || grpGet(id)) return; PF.id = id; PF.more = false;
   const uid = CLD.s.user.id; if (id !== uid && !PF.c[id]) { const p = (CM.posts || []).find(x => x.author === id); if (p) PF.c[id] = { name: p.name, first: p.first, dog: p.dog }; }
   pfRender(); $('#pfsh').hidden = false;
+  PF.dog = null; soRpc('dog_card', { u: id }).then(c => { if (c && typeof c === 'object' && c.v && PF.id === id) { PF.dog = c; if (!$('#pfsh').hidden) pfRender(); } }).catch(() => {});
   if (id !== uid && !SO.fr.includes(id)) sb('/rest/v1/profiles?select=name,first,dog,sp,bio&id=eq.' + encodeURIComponent(id)).then(r => { if (r && r[0]) { PF.c[id] = { ...r[0], full: 1 }; if (PF.id === id && !$('#pfsh').hidden) pfRender(); } }).catch(() => {});
 }
 const pfClose = () => { $('#pfsh').hidden = true; PF.id = null; };
@@ -3348,13 +3369,15 @@ function pfRender() {
     : rin ? '<div class="pfa"><button class="btn gold" data-pf="ok">✓ Accepter en ami</button><button class="btn" data-pf="no">Refuser</button></div>'
     : rout ? '<div class="pfa"><button class="btn" disabled>⏳ Demande envoyée</button><button class="btn pfmo" data-pf="cx" aria-label="Annuler la demande">✕</button></div>'
     : `<div class="pfa"><button class="btn gold" data-pf="add"${ok ? '' : ' disabled'}>➕ Ajouter en ami</button></div>`;
-  $('#pfw').innerHTML = `<button class="ib pfx" data-pf="x" aria-label="Fermer">✕</button><div class="pfh">${socAv(f)}<div class="pfn"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(id)}</b><small>${ok ? '@' + esc(raw.name) : ''}${ok && st ? ' · ' : ''}${st}</small>${pp && pp.st === 'walk' ? balChip(pp, 'data-pfmap') : ''}${sp ? `<span class="pfsp">${sp[0]} ${esc(sp[1])}</span>` : ''}</div></div>${(raw.bio || '').trim() ? `<p class="pfbio">« ${esc(raw.bio.trim())} »</p>` : ''}${act}`;
+  const dgb = PF.dog || mine ? `<button class="pfdog" data-pf="dog"><span>🐾</span><span class="act"><b>Profil de ${esc(String((PF.dog && PF.dog.name) || dog || 'son chien').slice(0, 30))}</b><small>${PF.dog ? `Niv. ${Math.max(1, Math.round(+PF.dog.lv || 1))} · ${esc(String(PF.dog.rank || '').slice(0, 30))} · ${Math.round(+PF.dog.disc || 0)} balade${+PF.dog.disc > 1 ? 's' : ''} découverte${+PF.dog.disc > 1 ? 's' : ''}` : 'Photos et chiffres'}</small></span><i>›</i></button>` : '';
+  $('#pfw').innerHTML = `<button class="ib pfx" data-pf="x" aria-label="Fermer">✕</button><div class="pfh">${socAv(f)}<div class="pfn"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(id)}</b><small>${ok ? '@' + esc(raw.name) : ''}${ok && st ? ' · ' : ''}${st}</small>${pp && pp.st === 'walk' ? balChip(pp, 'data-pfmap') : ''}${sp ? `<span class="pfsp">${sp[0]} ${esc(sp[1])}</span>` : ''}</div></div>${(raw.bio || '').trim() ? `<p class="pfbio">« ${esc(raw.bio.trim())} »</p>` : ''}${dgb}${act}`;
 }
 $('#pfsh').addEventListener('click', async e => {
   if (e.target.id === 'pfsh') return pfClose(); if (e.target.closest('[data-pfmap]')) { const pp = person(PF.id); pfClose(); try { comClose(); } catch (x) {} return socShow(pp && pp.at && pp.at.k); }
   const b = e.target.closest('[data-pf]'); if (!b || b.disabled) return; const a = b.dataset.pf, id = PF.id; if (!id) return;
   if (a === 'x') return pfClose();
   if (a === 'more') { PF.more = !PF.more; return pfRender(); }
+  if (a === 'dog') { const c = PF.dog, f = person(id) || {}, raw = PF.c[id] || SO.P[id] || {}; pfClose(); if (id === CLD.s.user.id) return dogOpen(); if (!c) return; return dogView(id, c, ((raw.first || '').trim() || (raw.name || '').trim() || f.n || '')); }
   if (a === 'msg') { pfClose(); if (SOC.chat === id && !$('#scch').hidden) return; try { comClose(); } catch (x) {} if (!$('#soc').classList.contains('open')) socOpen(); return chatOpen(id); }
   if (a === 'map') { const pp = person(id); pfClose(); try { comClose(); } catch (x) {} return socShow(pp && pp.at && pp.at.k); }
   if (a === 'rm') { const f = person(id), nm = f ? f.d + (f.n ? ' & ' + f.n : '') : 'ce copain'; if (!confirm(`Retirer ${nm} de vos copains ?`)) return;
@@ -3807,6 +3830,7 @@ document.addEventListener('click', async e => {
   if (t.closest('#cldel')) { if (!confirm('Supprimer définitivement votre compte en ligne ? Vos sentiers publics restent sur la carte (sans votre nom) ; votre carnet en ligne et vos photos en ligne sont effacés. Tout est aussi retiré de ce téléphone.')) return;
     try { const S = syLoad(); for (const id of Object.keys(S.ph)) { try { await sb(`/storage/v1/object/photos/${CLD.s.user.id}/${id}`, { method: 'DELETE' }); } catch (x) {} }
       try { const L = await sb('/storage/v1/object/list/posts', { method: 'POST', json: { prefix: CLD.s.user.id + '/', limit: 1000 } }); if (Array.isArray(L) && L.length) await sb('/storage/v1/object/posts', { method: 'DELETE', json: { prefixes: L.map(o => CLD.s.user.id + '/' + o.name) } }); } catch (x) {}      // photos de la Communauté
+      try { const u = CLD.s.user.id, L = await sb('/storage/v1/object/list/avatars', { method: 'POST', json: { prefix: u + '/', limit: 100 } }); if (Array.isArray(L) && L.length) await sb('/storage/v1/object/avatars', { method: 'DELETE', json: { prefixes: L.map(o => u + '/' + o.name) } }); } catch (x) {}      // photo de profil et photos publiques du chien
       await sb('/rest/v1/rpc/delete_my_account', { method: 'POST', json: {} }); await clSignOut(true); toast('Compte supprimé'); }
     catch (x) { toast(x.status === 404 ? '⚠️ Suppression bientôt disponible : écrivez-nous pour supprimer votre compte' : '⚠️ ' + x.message); } return; }
 });
@@ -3915,42 +3939,66 @@ function dogStats() {
     ['🌙', 'Noctambule', 'Une sortie après 20 h', ...pr(+W.some(v => hr(v) >= 20), 1)], ['🏃', 'Endurant', 'Une sortie de 5 km', ...pr(lng, 5000)], ['🗺️', 'Explorateur', '5 balades différentes', ...pr(nb, 5)], ['🧭', 'Cartographe', '3 km de sentiers tracés', ...pr(trails, 3000)]];
   return { W, m, s, K, xp, L, st, best, wk, lng, rank, B, act: wk.filter(x => x.m > 0).length };
 }
-function dogMain() {      // profil du chien : photo et niveau, 3 photos, chiffres de la carte
-  const S = dogStats(), p = D.prof, a0 = lvNeed(S.L), a1 = lvNeed(S.L + 1), pc = (S.xp - a0) / (a1 - a0), C = 2 * Math.PI * 47;
-  let seen = {}; try { seen = JSON.parse(localStorage.getItem('cartodog-seen') || '{}'); } catch (e) {} const up = seen.L && S.L > seen.L;
-  try { localStorage.setItem('cartodog-seen', JSON.stringify({ ...seen, L: S.L })); } catch (e) {}
-  const bits = [p.sx === 'm' ? '♂' : p.sx === 'f' ? '♀' : '', p.breed, ageTxt(p.bd), lastW() ? fkg(lastW().kg) : ''].filter(Boolean).map(x => esc(x).replace(/ /g, '\u00a0')).join(' · ');
-  const ks = Object.keys(D.cells).filter(k => rec(D.cells[k])), tot = ks.length, disc = ks.filter(k => visited(k)).length, V = ks.flatMap(k => D.cells[k].v.map(v => ({ ...v, k })));
-  const ym = today().slice(0, 7), mon = V.filter(v => (v.d || '').startsWith(ym)).length;
+function dogData() {      // chiffres du profil du chien : ma page et la carte publique vue par les autres
+  const S = dogStats(), p = D.prof, a0 = lvNeed(S.L), a1 = lvNeed(S.L + 1);
+  const ks = Object.keys(D.cells).filter(k => rec(D.cells[k])), V = ks.flatMap(k => D.cells[k].v.map(v => ({ ...v, k }))), ym = today().slice(0, 7);
   const fav = ks.map(k => [k, D.cells[k].v.length]).filter(x => x[1] > 0).sort((a, b) => b[1] - a[1])[0], last = V.slice().sort((a, b) => ((b.d || '') + (b.h || '')).localeCompare((a.d || '') + (a.h || '')))[0];
-  const ago = d => { const n = Math.round((new Date(today() + 'T12:00') - new Date(d + 'T12:00')) / 864e5); return n <= 0 ? "aujourd'hui" : n === 1 ? 'hier' : n < 30 ? `il y a ${n} jours` : new Date(d + 'T12:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); };
-  const pct = tot ? Math.round(disc / tot * 100) : 0, nf = (typeof SO === 'object' && SO.fr || []).length;
-  $('#dgmain').innerHTML = `<div class="dghero"><button class="dgav" data-go="id" aria-label="Modifier la fiche"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="47" class="xr0"/><circle cx="50" cy="50" r="47" class="xr1" style="stroke-dasharray:${C.toFixed(1)};--o:${(C * (1 - pc)).toFixed(1)}"/></svg>
-      <span class="dgpic">${avUrl ? `<img src="${avUrl}" alt="">` : SLOT.paw}</span><b class="dglv${up ? ' up' : ''}">Niv. ${S.L}</b></button>
-    <div class="dgnm"><b>${esc(p.name || 'Mon chien')}</b><small>${bits || 'Touchez la photo pour compléter la fiche'}</small><span class="dgrk">${S.rank}</span>
-      <div class="dgxp" title="${S.xp - a0} / ${a1 - a0} XP"><i style="--w:${Math.round(pc * 100)}%"></i></div></div><button class="ib dged" data-go="id" aria-label="Modifier la fiche">✏️</button></div>
-    <div class="dggal" id="dggal"></div>
-    <button class="dgx1" data-dgmap><span class="dgxi">🗺️</span><span class="dgxt"><b>${disc}<small> / ${tot}</small></b><small>balades découvertes sur la carte</small><i class="dgbar"><i style="--w:${pct}%"></i></i></span><em>${pct} %</em></button>
-    <div class="dgs3"><div><b>${V.length}</b><small>visite${V.length > 1 ? 's' : ''}</small></div><div class="${S.st ? 'hot' : ''}"><b>${S.st ? '🔥 ' : ''}${S.st}</b><small>série</small></div><div><b>${mon}</b><small>ce mois-ci</small></div><div><b>${nf}</b><small>copain${nf > 1 ? 's' : ''}</small></div></div>
-    ${fav || last ? `<div class="dgli">${fav ? `<button data-dgk="${fav[0]}"><span>⭐</span><span class="act"><small>Balade préférée</small><b>${esc(balName(fav[0]) || 'Balade')}</b></span><em>${fav[1]} visite${fav[1] > 1 ? 's' : ''}</em></button>` : ''}${last ? `<button data-dgk="${last.k}"><span>🕓</span><span class="act"><small>Dernière sortie</small><b>${esc(balName(last.k) || 'Balade')}</b></span><em>${ago(last.d)}</em></button>` : ''}</div>` : ''}`;
-  dogGal();
-  if (up) setTimeout(() => toast(`🎉 ${esc(p.name || 'Votre chien')} passe au niveau ${S.L} !`), 500);
+  const ce = k => { const c = ctr(k); return { bx: Math.round(c[0]), by: Math.round(c[1]) }; };
+  return { S, name: p.name || '', sx: p.sx || '', breed: p.breed || '', age: ageTxt(p.bd), kg: lastW() ? fkg(lastW().kg) : '', lv: S.L, pc: Math.max(0, Math.min(1, (S.xp - a0) / (a1 - a0))), xpt: `${S.xp - a0} / ${a1 - a0} XP`, rank: S.rank,
+    tot: ks.length, disc: ks.filter(k => visited(k)).length, nv: V.length, st: S.st, mon: V.filter(v => (v.d || '').startsWith(ym)).length, nf: (typeof SO === 'object' && SO.fr || []).length,
+    fav: fav ? { k: fav[0], n: balName(fav[0]) || 'Balade', c: fav[1], ...ce(fav[0]) } : null, last: last ? { k: last.k, n: balName(last.k) || 'Balade', d: last.d, ...ce(last.k) } : null };
 }
+const dgAgo = d => { if (!/^\d{4}-\d\d-\d\d$/.test(d || '')) return ''; const n = Math.round((new Date(today() + 'T12:00') - new Date(d + 'T12:00')) / 864e5); return n <= 0 ? "aujourd'hui" : n === 1 ? 'hier' : n < 30 ? `il y a ${n} jours` : new Date(d + 'T12:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); };
+function dogHtml(d, o) {      // o : { mine, pic, own (maître), up }
+  const C = 2 * Math.PI * 47, N = x => Math.max(0, Math.round(+x || 0)), pc = Math.max(0, Math.min(1, +d.pc || 0)), tot = N(d.tot), disc = Math.min(N(d.disc), tot || N(d.disc)), pct = tot ? Math.round(disc / tot * 100) : 0, nv = N(d.nv), st = N(d.st), nf = N(d.nf);
+  const bits = [d.sx === 'm' ? '♂' : d.sx === 'f' ? '♀' : '', d.breed, d.age, o.mine ? d.kg : ''].filter(Boolean).map(x => esc(String(x).slice(0, 60)).replace(/ /g, ' ')).join(' · ');
+  const go = (x, ic, lb, em) => x ? `<button ${o.mine ? `data-dgk="${esc(x.k)}"` : `data-dgxy="${N(x.bx)},${N(x.by)}"`}><span>${ic}</span><span class="act"><small>${lb}</small><b>${esc(String(x.n || 'Balade').slice(0, 60))}</b></span><em>${em}</em></button>` : '';
+  const fav = d.fav, last = d.last, li = go(fav, '⭐', 'Balade préférée', fav ? N(fav.c) + ' visite' + (N(fav.c) > 1 ? 's' : '') : '') + go(last, '🕓', 'Dernière sortie', last ? dgAgo(last.d) : '');
+  return `<div class="dghero"><button class="dgav" ${o.mine ? 'data-go="id" aria-label="Modifier la fiche"' : 'tabindex="-1"'}><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="47" class="xr0"/><circle cx="50" cy="50" r="47" class="xr1" style="stroke-dasharray:${C.toFixed(1)};--o:${(C * (1 - pc)).toFixed(1)}"/></svg>
+      <span class="dgpic">${o.pic ? `<img src="${o.pic}" alt="">` : SLOT.paw}</span><b class="dglv${o.up ? ' up' : ''}">Niv. ${Math.max(1, N(d.lv))}</b></button>
+    <div class="dgnm"><b>${esc(String(d.name || (o.mine ? 'Mon chien' : 'Chien')).slice(0, 30))}</b>${o.own ? `<small class="dgown">avec ${esc(o.own)}</small>` : ''}<small>${bits || (o.mine ? 'Touchez la photo pour compléter la fiche' : '')}</small><span class="dgrk">${esc(String(d.rank || 'Chiot curieux').slice(0, 30))}</span>
+      <div class="dgxp"${o.mine ? ` title="${esc(d.xpt || '')}"` : ''}><i style="--w:${Math.round(pc * 100)}%"></i></div></div>${o.mine ? '<button class="ib dged" data-go="id" aria-label="Modifier la fiche">✏️</button>' : ''}</div>
+    <div class="dggal" id="dggal"></div>
+    <${o.mine ? 'button data-dgmap' : 'div'} class="dgx1"><span class="dgxi">🗺️</span><span class="dgxt"><b>${disc}<small> / ${tot}</small></b><small>balades découvertes sur ${o.mine ? 'la' : 'sa'} carte</small><i class="dgbar"><i style="--w:${pct}%"></i></i></span><em>${pct} %</em></${o.mine ? 'button' : 'div'}>
+    <div class="dgs3"><div><b>${nv}</b><small>visite${nv > 1 ? 's' : ''}</small></div><div class="${st ? 'hot' : ''}"><b>${st ? '🔥 ' : ''}${st}</b><small>série</small></div><div><b>${N(d.mon)}</b><small>ce mois-ci</small></div><div><b>${nf}</b><small>copain${nf > 1 ? 's' : ''}</small></div></div>
+    ${li ? `<div class="dgli">${li}</div>` : ''}${o.mine ? '<div class="dgpub">👁️ Ce profil est visible des membres. La balade préférée et la dernière sortie : vos copains seulement.</div>' : ''}`;
+}
+let DOGV = null;      // profil d'un autre promeneur affiché (lecture seule)
+function dogMain() {
+  if (DOGV) { $('#dgmain').innerHTML = dogHtml(DOGV.c, { pic: avUrlOf(DOGV.id), own: DOGV.own }); return dogGal(); }
+  const d = dogData(); let seen = {}; try { seen = JSON.parse(localStorage.getItem('cartodog-seen') || '{}'); } catch (e) {} const up = seen.L && d.lv > seen.L;
+  try { localStorage.setItem('cartodog-seen', JSON.stringify({ ...seen, L: d.lv })); } catch (e) {}
+  $('#dgmain').innerHTML = dogHtml(d, { mine: 1, pic: avUrl, up }); dogGal();
+  if (up) setTimeout(() => toast(`🎉 ${esc(d.name || 'Votre chien')} passe au niveau ${d.lv} !`), 500);
+}
+async function dogView(id, c, own) {      // ouvrir le profil du chien d'un autre promeneur
+  const pv = c.priv && typeof c.priv === 'object' ? c.priv : {}, ok = x => x && typeof x === 'object' ? x : null;
+  DOGV = { id, c: { ...c, fav: ok(pv.fav), last: ok(pv.last) }, own }; $('#dogm').classList.add('ro'); dogPane('main'); $('#dogm').classList.add('open');
+}
+const DGC = {};      // photos publiques des autres chiens, gardées le temps de la visite
+async function dgPhoto(uid, id) { const key = uid + '/' + id; if (DGC[key]) return DGC[key];
+  try { const r = await sb('/storage/v1/object/authenticated/avatars/' + uid + '/g-' + id + '.jpg', { raw: true }); if (r.ok) return DGC[key] = URL.createObjectURL(await r.blob()); } catch (e) {} return ''; }
 async function dogGal() {      // 3 photos du chien, compressées, rangées avec les autres photos du compte
-  const g = $('#dggal'); if (!g) return; const L = D.prof.gal || [];
+  const g = $('#dggal'); if (!g) return;
+  if (DOGV) { const L = (Array.isArray(DOGV.c.gal) ? DOGV.c.gal : []).map(String).filter(x => /^[\w-]+$/.test(x)).slice(0, 3), v = DOGV;
+    if (!L.length) { g.hidden = true; return; } g.hidden = false; g.innerHTML = L.map((id, i) => `<button class="dgg" data-gro="${id}" aria-label="Voir la photo ${i + 1}"><img alt=""></button>`).join('');
+    for (const b of g.querySelectorAll('[data-gro]')) { const u = await dgPhoto(v.id, b.dataset.gro); if (u && DOGV === v) { b.querySelector('img').src = u; b.classList.add('ok'); } } return; }
+  g.hidden = false; const L = D.prof.gal || [];
   g.innerHTML = [0, 1, 2].map(i => L[i] ? `<button class="dgg" data-gal="${L[i]}" aria-label="Voir la photo ${i + 1}"><img alt=""></button>` : `<button class="dgg add" data-gadd aria-label="Ajouter une photo"><span>＋</span><small>Photo</small></button>`).join('');
   for (const b of g.querySelectorAll('[data-gal]')) { try { const u = await pGet(b.dataset.gal); if (u) { b.querySelector('img').src = u; b.classList.add('ok'); } } catch (e) {} }
 }
 function dogPane(k) { document.querySelectorAll('#dogm .dgp').forEach(x => x.classList.toggle('on', x.dataset.p === k)); $('#dgb').hidden = k === 'main';
   $('#dgh').firstChild.textContent = { main: 'Profil', id: 'Fiche', w: 'Poids', h: 'Santé' }[k]; $('#dgsub').style.display = k === 'main' ? 'none' : ''; $('#dogm .win').scrollTop = 0; if (k === 'main') dogMain(); }
-function dogOpen() { $('#menu').classList.remove('open'); $('#vgm').innerHTML = vigil(); dogRender(); dogPane('main'); dogAvatar().then(() => dogMain()); $('#dogm').classList.add('open'); }
-const dogClose = () => { $('#dogm').classList.remove('open'); dogLabel(); hdrRender(); };
+function dogOpen() { DOGV = null; $('#dogm').classList.remove('ro'); $('#menu').classList.remove('open'); $('#vgm').innerHTML = vigil(); dogRender(); dogPane('main'); dogAvatar().then(() => dogMain()); $('#dogm').classList.add('open'); }
+const dogClose = () => { $('#dogm').classList.remove('open'); const v = DOGV; DOGV = null; $('#dogm').classList.remove('ro'); if (!v) { dogLabel(); hdrRender(); } };
 $('#hdog').onclick = dogOpen; $('#hbr').onclick = dogOpen; $('#dgx').onclick = dogClose; $('#dgb').onclick = () => dogPane('main');
 $('#dogm').onclick = e => { if (e.target.id === 'dogm') return dogClose();
   const go = e.target.closest('[data-go]'); if (go) return dogPane(go.dataset.go);
   const bd = e.target.closest('[data-bd]'); if (bd) return toast((bd.classList.contains('ok') ? '🏅 ' : '🔒 ') + bd.dataset.bd);
   if (e.target.closest('[data-gadd]')) return $('#dggf').click();
   const gl = e.target.closest('[data-gal]'); if (gl) { const im = gl.querySelector('img'); if (!im || !im.src) return; pvId = gl.dataset.gal; pvDog = true; $('#pvc').hidden = true; $('#pvi').src = im.src; $('#pv').classList.add('open'); return; }
+  const gr = e.target.closest('[data-gro]'); if (gr) { const im = gr.querySelector('img'); if (!im || !im.src) return; pvId = null; pvDog = false; $('#pvc').hidden = true; $('#pvd').hidden = true; $('#pvi').src = im.src; $('#pv').classList.add('open'); return; }
+  const xy = e.target.closest('[data-dgxy]'); if (xy) { const [x, y] = xy.dataset.dgxy.split(',').map(Number), k = soCell(x, y); if (!k || !D.cells[k]) return toast('📍 Cette balade n\'est pas sur votre carte'); dogClose(); try { socClose(); comClose(); } catch (z) {} select(k); try { fitBal(k); } catch (z) {} return; }
   const dk = e.target.closest('[data-dgk]'); if (dk) { const k = dk.dataset.dgk; if (!D.cells[k]) return; dogClose(); select(k); try { fitBal(k); } catch (x) {} return; }
   if (e.target.closest('[data-dgmap]')) { dogClose(); try { $('#lb').click(); } catch (x) {} return; }
   const sx = e.target.closest('[data-sx]'); if (sx) { D.prof.sx = D.prof.sx === sx.dataset.sx ? '' : sx.dataset.sx; save(); return dogRender(); }
