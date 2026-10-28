@@ -1109,8 +1109,8 @@ body:has(#menu.open) header.bar{z-index:23}
 .scga .btn:disabled{opacity:.45}
 
 /* ===== Loupe : recherche de balade ===== */
-#mff{position:absolute;left:8px;top:72px;z-index:4;display:flex;align-items:center;gap:8px;max-width:calc(100% - 70px);padding:6px 8px 6px 11px;border:2px solid #d6ab55;border-radius:999px;background:rgba(14,12,9,.88);color:#ffe6a6;font:800 12.5px var(--num);cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.5)}#mff[hidden]{display:none}
-#mff i{font-style:normal;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#3a2c1c;color:#f0d9a8;font-size:12px}
+#mff{position:absolute;left:8px;top:74px;z-index:4;width:40px;height:40px;padding:8px;border-radius:50%;border:2px solid #d6ab55;background:rgba(14,12,9,.82);cursor:pointer;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6))}#mff[hidden]{display:none}#mff svg{display:block;width:100%;height:100%}
+#mff b{position:absolute;right:-6px;top:-5px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:linear-gradient(#f4c862,#c6862a);color:#2a1806;font:900 11px/18px var(--num);text-align:center;box-shadow:0 0 0 1.5px #0e0b08}
 #srb{position:absolute;left:8px;top:26px;z-index:4;width:40px;height:40px;padding:7px;border-radius:50%;border:2px solid #d6ab55;background:rgba(14,12,9,.82);cursor:pointer;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}#srb svg{width:100%;height:100%;display:block}#srb:active{transform:scale(.92)}
 #srp{position:absolute;left:8px;right:8px;top:44px;z-index:8;display:none;flex-direction:column;max-height:calc(100% - 56px);border:2px solid var(--edge);border-radius:12px;background:linear-gradient(#2a2119,#1e1812);box-shadow:0 0 0 1.5px #8a6a3a,0 10px 28px rgba(0,0,0,.65);overflow:hidden;animation:pop .25s cubic-bezier(.2,.9,.3,1.15) both}#srp.open{display:flex}
 .srh{flex:none;display:flex;align-items:center;gap:8px;padding:8px 8px 8px 12px;border-bottom:1px solid #2e2820}.srh svg{flex:none;width:22px;height:22px}
@@ -3171,7 +3171,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-171';
+const APP_V = '2026.10.28-172';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3909,7 +3909,7 @@ function mapFlt() {
   try { if (!clOn() || !SRF.size) { mfUi(0); return null; } const sig = [...SRF].join() + '|' + BT.t + '|' + (BT.r || []).length + '|' + Object.keys(D.cells).length; if (MF.sig === sig) return MF.set;
     const F = [...SRF], S = new Set(); Object.keys(D.cells).forEach(k => { if (!rec(D.cells[k])) return; const t = btOf(k).tags; if (F.every(f => t[f])) S.add(k); }); MF = { sig, set: S }; mfUi(S.size); return S; } catch (e) { return null; }
 }
-function mfUi(n) { const b = $('#mff'); if (!b) return; const on = clOn() && SRF.size > 0; b.hidden = !on; if (on) b.innerHTML = `<span>🔎 ${SRF.size} filtre${SRF.size > 1 ? 's' : ''} · ${n} balade${n > 1 ? 's' : ''}</span><i data-mffx aria-label="Effacer les filtres">✕</i>`; }
+function mfUi(n) { const b = $('#mff'); if (!b) return; const on = clOn() && SRF.size > 0; b.hidden = !on; if (on) { b.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5h17l-6.6 7.6v5.6l-3.8 2V12.6z" fill="rgba(255,210,122,.15)" stroke="#ffd27a" stroke-width="2.2" stroke-linejoin="round"/></svg><b>${n}</b>`; b.setAttribute('aria-label', `${SRF.size} filtre${SRF.size > 1 ? 's' : ''} actif${SRF.size > 1 ? 's' : ''} : ${n} balade${n > 1 ? 's' : ''} affichée${n > 1 ? 's' : ''}. Modifier les filtres`); } }
 const srfSave = () => { MF.sig = ''; try { draw(); } catch (e) {} try { localStorage.setItem('cartodog-srf', JSON.stringify([...SRF])); } catch (e) {} try { save(); } catch (e) {} };
 function srFilters() {
   const on = clOn(), el = $('#srf'); if (!el) return;
@@ -3934,7 +3934,7 @@ $('#srf').onclick = e => { if (e.target.closest('[data-srfx]')) { SRF.clear(); s
   SRF.has(t) ? SRF.delete(t) : (SRF.add(t), AMX(t).forEach(x => SRF.delete(x))); srfSave(); SRI = 0; srRender(); };
 const srClose = () => { $('#srp').classList.remove('open'); $('#srq').blur(); };
 function srGo(li) { if (!li) return; const k = li.dataset.srk, gk = li.dataset.srg; srClose(); if (k && D.cells[k]) { select(k); try { fitBal(k); } catch (e) {} } else if (gk) openBal(gk); }
-$('#srb').onclick = srOpen; $('#mff').onclick = e => { if (e.target.closest('[data-mffx]')) { SRF.clear(); srfSave(); if ($('#srp').classList.contains('open')) srRender(); return toast('Filtres effacés : toutes les balades sont affichées'); } srOpen(); }; $('#srx').onclick = srClose;
+$('#srb').onclick = srOpen; $('#mff').onclick = () => srOpen(); $('#srx').onclick = srClose;
 $('#srq').oninput = () => { SRI = 0; srRender(); };
 $('#srq').onkeydown = e => { const L = [...document.querySelectorAll('#srl li[data-srk]')]; if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); SRI = (SRI + (e.key === 'ArrowDown' ? 1 : -1) + L.length) % Math.max(1, L.length); L.forEach((li, i) => li.classList.toggle('on', i === SRI)); }
   else if (e.key === 'Enter') { e.preventDefault(); srGo(L[SRI] || L[0]); } else if (e.key === 'Escape') srClose(); };
