@@ -2,7 +2,7 @@
   "id": "cartodog-v1",
   "name": "Cartodog",
   "short_name": "Cartodog",
-  "description": "Carnet de balade canine : sentiers, repères, dangers pour les chiens et météo de promenade.",
+  "description": "Balades avec son chien : explorez de nouveaux lieux, partagez vos aventures et promenez-vous ensemble.",
   "lang": "fr",
   "start_url": "./index.html?app=cartodog",
   "scope": "./",
