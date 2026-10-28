@@ -985,7 +985,7 @@ body{padding-top:env(safe-area-inset-top,0px)!important}      /* iPhone : le ban
 .scea{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.scea button{white-space:nowrap}.scea [data-erem],.scea [data-emap]{width:36px;padding:7px 0!important}.scea .evr{display:flex;gap:6px;width:100%}.scea .evr button{flex:1;padding:7px 4px}.scea button:last-child:not([data-eg]){margin-left:0!important}.scea button{padding:7px 11px;border:2px solid var(--edge);border-radius:16px;background:#14110e;box-shadow:inset 0 0 0 1px #3a332a;color:var(--txt);font:800 12.5px var(--num);cursor:pointer}
 .scea button.on{background:linear-gradient(#f4c862,#c6862a);color:#2a1806;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}.scea button:last-child:not([data-eg]){margin-left:auto;width:36px;padding:7px 0}
 .scsh{position:fixed;inset:0;z-index:2;display:flex;align-items:flex-end;justify-content:center;max-width:none!important;background:rgba(6,5,3,.6);padding:8px}.scsh[hidden]{display:none}
-.scshw{width:100%;max-width:440px;padding:12px;border:2px solid var(--edge);border-radius:12px;background:linear-gradient(#2a2119,#1e1812);box-shadow:0 -10px 30px rgba(0,0,0,.6);animation:rise .3s cubic-bezier(.2,.85,.25,1) both}
+.scshw,.pfw{width:100%;max-width:440px;padding:12px;border:2px solid var(--edge);border-radius:12px;background:linear-gradient(#2a2119,#1e1812);box-shadow:0 -10px 30px rgba(0,0,0,.6);animation:rise .3s cubic-bezier(.2,.85,.25,1) both}
 .scshh{display:flex;align-items:center;gap:10px;margin:0 0 8px;font:800 15px var(--num);color:#fff1cf}
 .scshw button{display:block;width:100%;margin-top:6px;padding:12px;border:2px solid var(--edge);border-radius:8px;background:var(--slot);box-shadow:inset 0 0 0 1px var(--rim);color:var(--txt);font:700 14px var(--num);text-align:left;cursor:pointer}.scshw button[hidden]{display:none}
 .scshw button.dgr{color:#ff8a6e}.scshw button.cx{text-align:center;color:var(--mut)}
@@ -1185,6 +1185,14 @@ body.lpon #dock #found:not(.rec),body.lpon #dock #comb{display:none!important}
 
 .fbdg{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px;border-radius:6px;border:1px solid rgba(234,165,60,.55);background:rgba(234,165,60,.1);color:#e9c77a;font:800 9.5px/14px var(--num);letter-spacing:.02em;font-style:normal;white-space:nowrap;vertical-align:2px;text-shadow:none}.fbdg img{width:13px;height:13px;border-radius:3px;display:block}
 html.lite #pt,html.lite #homeb{display:none!important}
+#pfsh{z-index:24;background:rgba(6,5,3,.62);padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}.pfw{position:relative;padding:14px 14px 12px}.pfw .pfx{position:absolute;top:6px;right:6px}
+.pfh{display:flex;align-items:center;gap:12px;padding-right:34px}.pfh .scav{width:58px;height:58px;font-size:24px}.pfn{min-width:0;flex:1}
+.pfn b{display:block;font:800 17px/1.2 var(--px);color:#fff1cf;overflow-wrap:anywhere}.pfn b em{font:600 14px var(--num);font-style:normal;color:var(--mut)}
+.pfn small{display:block;margin-top:4px;font:600 12.5px/1.3 var(--num);color:var(--mut);overflow-wrap:anywhere}
+.pfsp{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:999px;border:1px solid #5a4a36;background:rgba(0,0,0,.25);font:700 11.5px var(--num);color:#f0d9a8}
+.pfbio{margin:11px 0 0;font:italic 500 13.5px/1.45 var(--num);color:#e8d8b8;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.pfa{display:flex;gap:8px;margin-top:13px}.pfa .btn{flex:1;margin:0}.pfa .pfmo{flex:0 0 48px}.pfw .pfrm{margin:8px 0 0;color:#ff8a6e}
+.pfme{margin-top:12px;font:600 12px var(--num);color:var(--mut);text-align:center}[data-pfu]{cursor:pointer}
 .scav.img{padding:0;overflow:hidden;background:#1b1814}.scav.img img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
 #mkm,#encm,#pls,#balm,#dzq,#dogm,#welm,#cmv{padding-top:max(12px,calc(env(safe-area-inset-top,0px) + 6px))!important;padding-bottom:max(12px,calc(env(safe-area-inset-bottom,0px) + 6px))!important}#rqm{padding-bottom:max(6px,env(safe-area-inset-bottom,0px))!important}
 .scchbio{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-top:2px;font:italic 500 12.5px/1.3 var(--num);color:var(--mut);overflow:hidden;overflow-wrap:anywhere}
@@ -1341,6 +1349,7 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
   <input type="file" id="cmfile" accept="image/*" hidden>
 </div></div>
 <div id="cmv" hidden><img id="cmvi" alt="Photo de la publication"></div>
+<div class="scsh" id="pfsh" hidden><div class="pfw dg" id="pfw" role="dialog" aria-label="Profil"></div></div>
 <div id="soc"><div class="win dg scw" role="dialog" aria-label="Copains, messages et rendez-vous">
   <button class="ib scx" id="socx" aria-label="Fermer">✕</button>
   <div class="scme" id="scme"></div>
@@ -1348,7 +1357,6 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
   <div class="scp" data-sp="fr" id="scfr"></div>
   <div class="scp" data-sp="ms" id="scms"></div>
   <div class="scp" data-sp="ev" id="scev"></div>
-  <div class="scsh" id="scsh" hidden><div class="scshw"><div class="scshh" id="scshh"></div><button data-sa="msg">💬 Envoyer un message</button><button data-sa="map">📍 Voir où il se balade</button><button data-sa="prof">🐕 Voir son profil</button><button data-sa="rm">➖ Retirer de mes copains</button><button data-sa="x" class="cx">Annuler</button></div></div>
   <div class="scch" id="scch" hidden><div class="scchh"><button class="ib" id="scchb" aria-label="Retour">‹</button><span id="scchw"></span></div><div class="scchl" id="scchl"></div>
     <div class="scchq"><button data-q="🐾 On se balade ?">🐾 On se balade ?</button><button data-q="bal">📍 Ma balade</button><button data-q="👋 Tu es où ?">👋 Tu es où ?</button><button data-q="🕙 J'arrive dans 10 min">🕙 J'arrive</button></div>
     <form class="scchf" id="scchf"><input id="scchi" maxlength="300" placeholder="Écrire un message…" autocomplete="off" enterkeyhint="send"><button type="submit" aria-label="Envoyer">➤</button></form></div>
@@ -2928,7 +2936,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-138';
+const APP_V = '2026.10.28-139';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3131,7 +3139,7 @@ function socRender() {
   const { F, E } = socDemo(); SOC.F = F; SOC.E = E;
   document.querySelectorAll('#soc [data-st]').forEach(b => { b.classList.toggle('on', b.dataset.st === SOC.tab); b.setAttribute('aria-selected', b.dataset.st === SOC.tab); });
   document.querySelectorAll('#soc [data-sp]').forEach(x => x.classList.toggle('on', x.dataset.sp === SOC.tab));
-  const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b><small>${f.st === 'walk' ? spTag(f.sp, 1) : spTag(f.sp)}${f.st === 'walk' ? `<u title="En balade">🐾 ${f.t} min</u><i class="mqs">·</i><span class="mqn"><span class="mqi">${esc(f.at.n)}</span></span>` : f.st === 'on' ? 'En ligne' : f.last ? 'Vu ' + esc(f.last) : 'Hors ligne'}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
+  const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw" data-pfu="${f.id}">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b><small>${f.st === 'walk' ? spTag(f.sp, 1) : spTag(f.sp)}${f.st === 'walk' ? `<u title="En balade">🐾 ${f.t} min</u><i class="mqs">·</i><span class="mqn"><span class="mqi">${esc(f.at.n)}</span></span>` : f.st === 'on' ? 'En ligne' : f.last ? 'Vu ' + esc(f.last) : 'Hors ligne'}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
   const grp = (t, L) => L.length ? `<div class="mh">${t} · ${L.length}</div><div class="acg">${L.map(row).join('')}</div>` : '';
   $('#scfr').innerHTML = (pushAsk() ? `<div class="scpn"><span>${pushIosHint() ? '📲 Ajoutez Cartodog à l\'écran d\'accueil pour être prévenu des messages, même appli fermée.' : '🔔 Soyez prévenu des messages, demandes et rendez-vous, même appli fermée.'}</span><button data-pn="on">${pushIosHint() ? 'Comment ?' : 'Activer'}</button><button data-pn="x" aria-label="Plus tard">✕</button></div>` : '') + `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes${SO.rin.length ? ` <b>${SO.rin.length}</b>` : ''}</button></div><div class="scls">` + grpRows() +
     grp('🐾 En balade', F.filter(f => f.st === 'walk')) + grp('🟢 En ligne', F.filter(f => f.st === 'on')) + grp('Hors ligne', F.filter(f => f.st === 'off')) + (F.length ? '' : (clOn() ? '<div class="scemp">🐕 Pas encore de copains<small>Ajoutez les promeneurs que vous croisez avec leur pseudo : vous verrez qui se balade et pourrez discuter.</small></div>' : '<div class="scemp">☁️ Connectez-vous pour retrouver vos copains</div>')) + '</div>';
@@ -3169,6 +3177,7 @@ function chatOpen(id) {
   const f = who(id); if (!f) return; SOC.chat = id; const M = msgAll();
   if ((M[id] || []).some(m => m.nw)) { M[id].forEach(m => m.nw = 0); msgSave(); }
   $('#scchw').innerHTML = `<span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b><small>${f.grp ? esc(f.ms.map(x => x.d).join(', ') || 'Aucun membre') : spTag(f.sp) + (f.st === 'walk' ? '🐾 En balade · ' + esc(f.at.n) : f.st === 'on' ? 'En ligne' : f.last ? 'Vu ' + esc(f.last) : 'Hors ligne')}</small>${!f.grp && f.bio ? `<span class="scchbio">« ${esc(f.bio)} »</span>` : ''}</span>`;
+  if (f.grp) $('#scchw').removeAttribute('data-pfu'); else $('#scchw').dataset.pfu = f.id;
   chatRender(); $('#scch').hidden = false; msgList(); soTick();
 }
 function chatRender() {
@@ -3247,7 +3256,7 @@ function mqFit(root) {      // seul le nom de la balade défile (aller-retour) q
   requestAnimationFrame(() => root.querySelectorAll('.mqn').forEach(el => { const sp = el.firstElementChild, d = sp.scrollWidth - el.clientWidth; el.classList.toggle('mq', d > 2); if (d > 2) { sp.style.setProperty('--d', -(d + 10) + 'px'); sp.style.animationDuration = Math.max(6, (d + 10) / 22 + 4) + 's'; } })); }
 function socBadge() { let n = 0; try { n = msgUnread() + SO.rin.length + evNew(); } catch (e) {} const b = $('#socn'); b.hidden = !n; b.textContent = n > 9 ? '9+' : n; $('#socb').setAttribute('aria-label', 'Copains, messages et rendez-vous' + (n ? ' : ' + n + ' notification' + (n > 1 ? 's' : '') : '')); }
 setTimeout(socBadge, 300);
-function socOpen() { try { comClose(); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); faClose(); socMe(); socRender(); $('#scsh').hidden = true; $('#soc').classList.add('open'); soTick(true); }
+function socOpen() { try { comClose(); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); faClose(); socMe(); socRender(); $('#soc').classList.add('open'); soTick(true); }
 const socClose = () => { SOC.ed = false; $('#soc').classList.remove('open'); };
 const socSoon = () => toast('🛠️ Bientôt disponible');
 function socShow(k) { if (!k || !D.cells[k]) return toast('📍 Cette balade n\'est pas sur votre carte'); socClose(); select(k); try { fitBal(k); } catch (e) {} }
@@ -3267,6 +3276,7 @@ function faOpen(mode, pre) {
   else { const L = [...grpAll().map(g => who(g.id)), ...FR_()].filter(Boolean);
     w.innerHTML = `<div class="scgt">${SOC.shareK ? 'Proposer cette balade à…' : 'Nouveau message'}</div>` + (SOC.shareK ? `<button class="btn gold evfrom" data-evk="${SOC.shareK}">📅 Organiser un rendez-vous ici</button>` : '') + (L.length ? `<div class="acg scgl">${L.map(f => `<button class="scr" data-fto="${f.id}"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b></span><i class="scgo">›</i></button>`).join('')}</div>` : '<div class="hint" style="padding:10px 4px">Ajoutez d\'abord un copain.</div>')
       + `<div class="scga"><button class="btn" data-fa="x">Fermer</button>${FR_().length ? '' : '<button class="btn gold" data-fa="add">＋ Ajouter un copain</button>'}</div>`; }
+  if (mode === 'req') w.querySelectorAll('.scr').forEach(r => { const b = r.querySelector('[data-fok],[data-fcx]'); if (b) r.querySelector('.scaw').dataset.pfu = b.dataset.fok || b.dataset.fcx; });
   SOC.fa = mode; $('#scfa').hidden = false; const q = $('#scfq'); if (q) { setTimeout(() => q.focus(), 60); q.onkeydown = e => { if (e.key === 'Enter') $('#scfw [data-fa="go"]').click(); }; }
 }
 const faClose = () => { $('#scfa').hidden = true; SOC.fa = null; SOC.shareK = null; };
@@ -3286,6 +3296,48 @@ $('#scfa').addEventListener('click', async e => {
   if (b.dataset.fcx) { const id = b.dataset.fcx; SO.rout = SO.rout.filter(x => x !== id); soSave(); faOpen('req'); try { await soRpc('friend_remove', { other: id }); } catch (x) { toast('⚠️ ' + x.message); } return soTick(true); }
   if (b.dataset.fto) { const k = SOC.shareK; faClose(); chatOpen(b.dataset.fto); if (k && D.cells[k]) chatSend({ t: 'On se fait cette balade ? 🐕', k, kn: balName(k) }); return; }
 });
+/* ===== Profil public : une fiche courte quand on touche un promeneur (Communauté, copains, demandes, conversation) ===== */
+const PF = { id: null, more: false, c: {} };
+function pfOpen(id) {
+  if (!id || !clOn() || grpGet(id)) return; PF.id = id; PF.more = false;
+  const uid = CLD.s.user.id; if (id !== uid && !PF.c[id]) { const p = (CM.posts || []).find(x => x.author === id); if (p) PF.c[id] = { name: p.name, first: p.first, dog: p.dog }; }
+  pfRender(); $('#pfsh').hidden = false;
+  if (id !== uid && !SO.fr.includes(id)) sb('/rest/v1/profiles?select=name,first,dog,sp,bio&id=eq.' + encodeURIComponent(id)).then(r => { if (r && r[0]) { PF.c[id] = { ...r[0], full: 1 }; if (PF.id === id && !$('#pfsh').hidden) pfRender(); } }).catch(() => {});
+}
+const pfClose = () => { $('#pfsh').hidden = true; PF.id = null; };
+function pfRender() {
+  const id = PF.id, uid = CLD.s.user.id, mine = id === uid, fr = SO.fr.includes(id), rin = SO.rin.includes(id), rout = SO.rout.includes(id), pp = fr ? person(id) : null;
+  const u = accU(), raw = mine ? { name: u.name || CLD.name, first: u.first, dog: D.prof && D.prof.name, sp: D.prof && D.prof.space, bio: u.bio, full: 1 } : (fr && SO.P[id]) || PF.c[id] || SO.P[id] || {};
+  const hu = (raw.first || '').trim() || (raw.name || '').trim(), dog = (raw.dog || '').trim(), f = { id, d: dog || hu || '…', n: dog ? hu : '', c: soCol(id) };
+  const st = pp ? (pp.st === 'walk' ? '🐾 En balade · ' + esc(pp.at.n) : pp.st === 'on' ? '🟢 En ligne' : pp.last ? 'Vu ' + esc(pp.last) : 'Hors ligne') : '';
+  const sp = ['space', 'shy', 'heat'].includes(raw.sp) ? SPC[raw.sp] : null, ok = !!(raw.name || '').trim();
+  const act = mine ? '<div class="pfme">C\'est ainsi que les autres promeneurs vous voient</div>'
+    : fr ? `<div class="pfa"><button class="btn gold" data-pf="msg">💬 Message</button>${pp && pp.st === 'walk' && pp.at.k ? '<button class="btn" data-pf="map">📍 Où ?</button>' : ''}<button class="btn pfmo" data-pf="more" aria-label="Plus d'options" aria-expanded="${PF.more}">⋯</button></div>${PF.more ? '<button class="btn pfrm" data-pf="rm">➖ Retirer de mes copains</button>' : ''}`
+    : rin ? '<div class="pfa"><button class="btn gold" data-pf="ok">✓ Accepter en ami</button><button class="btn" data-pf="no">Refuser</button></div>'
+    : rout ? '<div class="pfa"><button class="btn" disabled>⏳ Demande envoyée</button><button class="btn pfmo" data-pf="cx" aria-label="Annuler la demande">✕</button></div>'
+    : `<div class="pfa"><button class="btn gold" data-pf="add"${ok ? '' : ' disabled'}>➕ Ajouter en ami</button></div>`;
+  $('#pfw').innerHTML = `<button class="ib pfx" data-pf="x" aria-label="Fermer">✕</button><div class="pfh">${socAv(f)}<div class="pfn"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(id)}</b><small>${ok ? '@' + esc(raw.name) : ''}${ok && st ? ' · ' : ''}${st}</small>${sp ? `<span class="pfsp">${sp[0]} ${esc(sp[1])}</span>` : ''}</div></div>${(raw.bio || '').trim() ? `<p class="pfbio">« ${esc(raw.bio.trim())} »</p>` : ''}${act}`;
+}
+$('#pfsh').addEventListener('click', async e => {
+  if (e.target.id === 'pfsh') return pfClose(); const b = e.target.closest('[data-pf]'); if (!b || b.disabled) return; const a = b.dataset.pf, id = PF.id; if (!id) return;
+  if (a === 'x') return pfClose();
+  if (a === 'more') { PF.more = !PF.more; return pfRender(); }
+  if (a === 'msg') { pfClose(); if (SOC.chat === id && !$('#scch').hidden) return; try { comClose(); } catch (x) {} if (!$('#soc').classList.contains('open')) socOpen(); return chatOpen(id); }
+  if (a === 'map') { const pp = person(id); pfClose(); try { comClose(); } catch (x) {} return socShow(pp && pp.at && pp.at.k); }
+  if (a === 'rm') { const f = person(id), nm = f ? f.d + (f.n ? ' & ' + f.n : '') : 'ce copain'; if (!confirm(`Retirer ${nm} de vos copains ?`)) return;
+    SO.fr = SO.fr.filter(x => x !== id); delete SO.th[id]; soSave(); if (SOC.chat === id) chatClose(); pfClose(); try { socRender(); } catch (x) {}
+    soRpc('friend_remove', { other: id }).then(() => soTick(true)).catch(x => toast('⚠️ ' + x.message)); return toast('Retiré de vos copains'); }
+  if (a === 'add') { const h = ((PF.c[id] || SO.P[id] || {}).name || '').trim(); if (!h) return; b.disabled = true;
+    try { const r = await soRpc('friend_request', { handle: h });
+      if (r === 'accepted' || r === 'already') { SO.rin = SO.rin.filter(x => x !== id); if (!SO.fr.includes(id)) SO.fr.push(id); toast('🎉 Vous êtes maintenant copains'); }
+      else if (r === 'sent' || r === 'pending') { if (!SO.rout.includes(id)) SO.rout.push(id); toast('📨 Demande envoyée'); }
+      else toast('⚠️ Ce promeneur est introuvable'); soSave(); } catch (x) { toast('⚠️ ' + x.message); }
+    if (PF.id === id) pfRender(); try { socRender(); } catch (x) {} return soTick(true); }
+  if (a === 'ok' || a === 'no') { const ok = a === 'ok'; SO.rin = SO.rin.filter(x => x !== id); if (ok && !SO.fr.includes(id)) SO.fr.push(id); soSave(); pfRender(); try { socRender(); if (SOC.fa === 'req') faOpen('req'); } catch (x) {}
+    try { await soRpc('friend_respond', { other: id, ok }); if (ok) toast('🎉 Nouveau copain !'); } catch (x) { toast('⚠️ ' + x.message); } return soTick(true); }
+  if (a === 'cx') { SO.rout = SO.rout.filter(x => x !== id); soSave(); pfRender(); try { if (SOC.fa === 'req') faOpen('req'); } catch (x) {} try { await soRpc('friend_remove', { other: id }); } catch (x) { toast('⚠️ ' + x.message); } return soTick(true); }
+});
+document.addEventListener('click', e => { const u = e.target.closest && e.target.closest('[data-pfu]'); if (!u || !u.dataset.pfu || grpGet(u.dataset.pfu)) return; e.stopPropagation(); e.preventDefault(); pfOpen(u.dataset.pfu); }, true);
 function amiGo() { const v = SOC.ami; if (!v || !clOn()) return; SOC.ami = null; socOpen(); faOpen('add', v); }      // lien « #ami=pseudo » partagé par un copain
 { const m = /^#ami=([^&]+)/.exec(location.hash); if (m) { try { SOC.ami = decodeURIComponent(m[1]).slice(0, 24); } catch (e) {} history.replaceState(null, '', location.pathname + location.search); } }
 /* ===== Notifications push : messages, demandes de copains et rendez-vous, même appli fermée (iPhone : appli ajoutée à l'écran d'accueil) ===== */
@@ -3355,7 +3407,7 @@ async function cmPhoto(path) {      // photo lue avec la session (dossier privé
 function cmCard(p) {
   const f = cmPerson(p), uid = CLD.s && CLD.s.user.id, lc = p.last;
   return `<article class="cmp" data-post="${p.id}">
-    <div class="cmh"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)} <small>· ${cmAgo(Date.parse(p.ts))}</small></b></span>${p.author === uid ? `<button class="cmx" data-cmdel="${p.id}" aria-label="Supprimer ma publication">⋯</button>` : ''}</div>
+    <div class="cmh"><span class="scaw" data-pfu="${f.id}">${socAv(f)}</span><span class="act"><b data-pfu="${f.id}">${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)} <small>· ${cmAgo(Date.parse(p.ts))}</small></b></span>${p.author === uid ? `<button class="cmx" data-cmdel="${p.id}" aria-label="Supprimer ma publication">⋯</button>` : ''}</div>
     <button class="cmloc" data-cmloc="${p.id}">📍 ${esc(p.bal)}</button>
     ${p.body ? `<p class="cmt">${esc(p.body)}</p>` : ''}
     ${p.photo ? `<button class="cmimg" data-cmimg="${esc(p.photo)}" aria-label="Agrandir la photo"><img alt="" data-cmsrc="${esc(p.photo)}"></button>` : ''}
@@ -3401,7 +3453,7 @@ async function cmComments(id) {
   $('#cmsh').hidden = false; $('#cmci').onkeydown = e => { if (e.key === 'Enter') $('#cmsw [data-cmsend]').click(); };
   let L = []; try { L = await soRpc('post_comments', { post: id }) || []; } catch (e) {}
   if (CM.open !== id) return;
-  $('#cmcl').innerHTML = L.length ? L.map(c => { const f = cmPerson(c); return `<div class="cmcr"><span class="scaw">${socAv(f, 'sm')}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b> <small>${cmAgo(Date.parse(c.ts))}</small><span>${esc(c.body)}</span></span></div>`; }).join('') : '<div class="hint" style="padding:8px 2px">Aucun commentaire pour l\'instant.</div>';
+  $('#cmcl').innerHTML = L.length ? L.map(c => { const f = cmPerson(c); return `<div class="cmcr"><span class="scaw" data-pfu="${f.id}">${socAv(f, 'sm')}</span><span class="act"><b data-pfu="${f.id}">${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b> <small>${cmAgo(Date.parse(c.ts))}</small><span>${esc(c.body)}</span></span></div>`; }).join('') : '<div class="hint" style="padding:8px 2px">Aucun commentaire pour l\'instant.</div>';
   requestAnimationFrame(() => { const l = $('#cmcl'); if (l) l.scrollTop = l.scrollHeight; });
 }
 $('#cmsel').onchange = e => { CM.k = e.target.value || null; cmRender(); };
@@ -3442,12 +3494,7 @@ $('#soc').addEventListener('click', e => {
   if (e.target.closest('[data-grpnew]')) { SOC.gnew = null; return grpNew(); }
   const ch = e.target.closest('[data-chat]'); if (ch && !e.target.closest('[data-fmap],[data-fmore]')) return chatOpen(ch.dataset.chat);
   const fm = e.target.closest('[data-fmap]'); if (fm) { const f = SOC.F.find(x => x.id === fm.dataset.fmap); return socShow(f && f.at.k); }
-  const mo = e.target.closest('[data-fmore]'); if (mo) { const f = SOC.F.find(x => x.id === mo.dataset.fmore); SOC.who = f; $('#scshh').innerHTML = `${socAv(f)}<b>${esc(f.d)}${f.n ? ' & ' + esc(f.n) : ''}${bdg(f.id)}</b>`; $('#scsh [data-sa="map"]').hidden = f.st !== 'walk'; $('#scsh').hidden = false; return; }
-  const sa = e.target.closest('[data-sa]'); if (sa) { const a = sa.dataset.sa, f = SOC.who; $('#scsh').hidden = true; if (a === 'x' || !f) return; if (a === 'msg') return chatOpen(f.id); if (a === 'map') return socShow(f && f.at && f.at.k);
-    if (a === 'prof') return toast(`🐕 ${f.d}${f.n ? ' & ' + f.n : ''} · ${f.h}${f.sp && SPC[f.sp] ? ' · ' + SPC[f.sp][0] + ' ' + SPC[f.sp][1] : ''}${f.bio ? ' — « ' + f.bio + ' »' : ''}`);
-    if (a === 'rm') { if (!confirm(`Retirer ${f.d}${f.n ? ' & ' + f.n : ''} de vos copains ?`)) return; SO.fr = SO.fr.filter(x => x !== f.id); delete SO.th[f.id]; soSave(); socRender(); soRpc('friend_remove', { other: f.id }).then(() => soTick(true)).catch(x => toast('⚠️ ' + x.message)); return toast('Retiré de vos copains'); }
-    return socSoon(); }
-  if (e.target.id === 'scsh') { $('#scsh').hidden = true; return; }
+  const mo = e.target.closest('[data-fmore]'); if (mo) return pfOpen(mo.dataset.fmore);
   const eg = e.target.closest('[data-eg]'); if (eg) { const [id, v] = eg.dataset.eg.split(':'), uid = CLD.s && CLD.s.user.id, ev = (SO.E || []).find(x => x.id === id), gg = ev && (ev.gs || []).find(x => x.u === uid); if (!gg) return;
     const nv = gg.r === v ? '' : v; gg.r = nv; if (nv === 'y') { SO.rem[id] = 1; try { navigator.vibrate && navigator.vibrate(30); } catch (x) {} } soSave(); socRender(); soRpc('event_rsvp', { e: id, r: nv }).catch(x => toast('⚠️ ' + x.message)); return; }
   const er = e.target.closest('[data-erem]'); if (er) { const id = er.dataset.erem; SO.rem[id] = SO.rem[id] ? 0 : 1; soSave(); toast(SO.rem[id] ? '🔔 Rappel 30 min avant le rendez-vous' : '🔕 Rappel retiré'); if (SO.rem[id]) try { window.Notification && Notification.permission === 'default' && Notification.requestPermission(); } catch (x) {} return socRender(); }
@@ -4636,11 +4683,11 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
 { const op = id => () => { const e = document.getElementById(id); return !!e && e.classList.contains('open'); }, vis = id => () => { const e = document.getElementById(id); return !!e && !e.hidden; };
   /* couches, de la plus haute à la plus basse : [ouverte ?, retour (sous-page, sinon fermeture)] */
   const LAY = [
-    [op('pv'), () => closePh()], [op('rqm'), () => rqClose()], [op('dzq'), () => $('#dzl').click()], [op('mkm'), () => closeMk()],
+    [vis('pfsh'), () => pfClose()], [op('pv'), () => closePh()], [op('rqm'), () => rqClose()], [op('dzq'), () => $('#dzl').click()], [op('mkm'), () => closeMk()],
     [op('encm'), () => { const b = !$('#encv').hidden && !(encFrom && !encStack.length) && $('#encbk'); b ? b.click() : encClose(); }],      // ouvert directement sur une fiche depuis une autre fenêtre : retour = revenir à cette fenêtre
     [op('dogm'), () => { const p = document.querySelector('#dogm .dgp.on'); p && p.dataset.p !== 'main' ? dogPane('main') : dogClose(); }],
     [op('balm'), () => { !$('#balb').hidden ? $('#balb').click() : balClose(); }],
-    [op('com'), () => { !$('#cmsh').hidden ? ($('#cmsh').hidden = true) : comClose(); }], [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('srp'), () => srClose()], [op('soc'), () => { !$('#scgr').hidden ? grpBack() : !$('#scch').hidden ? chatClose() : !$('#scst').hidden ? ($('#scst').hidden = true) : !$('#scsh').hidden ? ($('#scsh').hidden = true) : socClose(); }], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
+    [op('com'), () => { !$('#cmsh').hidden ? ($('#cmsh').hidden = true) : comClose(); }], [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('srp'), () => srClose()], [op('soc'), () => { !$('#scgr').hidden ? grpBack() : !$('#scch').hidden ? chatClose() : !$('#scst').hidden ? ($('#scst').hidden = true) : socClose(); }], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
     [vis('shm'), () => shClose()], [() => RM, () => setRM(false)], [() => ED.on, () => edToggle(false)], [() => P.on && !RC.on, () => $('#pt').click()],
     [() => !!BL.poly && !BR.on, () => { apClear('loop'); BL.wait = false; BL.poly = null; lpUi(); }], [() => !!sel, () => { const f = selFrom && selFrom.k === sel; const hub = f && selFrom.hub; selFrom = null; sel = null; collapse(); renderPanel(); draw(); if (f) hub ? balOpen() : $('#lb').click(); }]];
   let pushed = false, skip = 0, q = 0;
