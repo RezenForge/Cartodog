@@ -1193,6 +1193,32 @@ html.lite #pt,html.lite #homeb{display:none!important}
 .pfbio{margin:11px 0 0;font:italic 500 13.5px/1.45 var(--num);color:#e8d8b8;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .pfa{display:flex;gap:8px;margin-top:13px}.pfa .btn{flex:1;margin:0}.pfa .pfmo{flex:0 0 48px}.pfw .pfrm{margin:8px 0 0;color:#ff8a6e}
 .pfme{margin-top:12px;font:600 12px var(--num);color:var(--mut);text-align:center}[data-pfu]{cursor:pointer}
+/* fiche balade */
+#panel{max-height:52dvh!important;overflow-y:auto!important;overscroll-behavior:contain}
+.bpph{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:repeat(2,52px);gap:5px;margin:0 0 9px}.bpph.n0{grid-template-rows:46px;grid-template-columns:1fr}.bpph:has(.bpp:only-child){grid-template-columns:1fr}
+.bpp{position:relative;padding:0;border:2px solid var(--edge);border-radius:9px;overflow:hidden;background:#14110e;cursor:pointer}.bpp.big{grid-row:span 2}.bpph.n0 .bpp.big{grid-row:auto}
+.bpp img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .3s}.bpp.ok img{opacity:1}
+.bpp.add{display:flex;align-items:center;justify-content:center;gap:6px;border-style:dashed;border-color:#6b5a40;color:var(--ember2);font-size:17px;background:rgba(0,0,0,.18)}.bpp.add small{font:700 12px var(--num);color:var(--mut)}
+.bph{display:flex;align-items:flex-start;gap:8px}.bph .f3t{flex:1;min-width:0}.bph .pname{font-size:22px!important;min-height:28px}
+.bpsub{display:flex;flex-wrap:wrap;gap:4px;margin-top:1px;font:600 12.5px/1.35 var(--num);color:var(--mut)}#bpcity{color:#f0d9a8;font-weight:700}
+.bpic{flex:none;width:38px;height:38px;display:grid;place-items:center;padding:0;border:2px solid var(--edge);border-radius:50%;background:linear-gradient(#3a3024,#211b14);color:var(--ember2);cursor:pointer}.bpic svg{width:18px;height:18px}
+.bprt{display:flex;align-items:center;gap:6px;margin:7px 0 0;font:800 14px var(--num);color:#fff1cf}.bpst{display:inline-flex;gap:1px;font-size:16px;line-height:1;color:#4a4035;letter-spacing:0}.bpst i{font-style:normal}.bpst i.on{color:#f4c862}.bpst i.half{background:linear-gradient(90deg,#f4c862 50%,#4a4035 50%);-webkit-background-clip:text;background-clip:text;color:transparent}.bpst.sm{font-size:12px;margin:0 6px}.bpst.off i{color:#3a332a}
+.bplk{padding:0;border:0;background:none;color:var(--ember2);font:700 12.5px var(--num);text-decoration:underline;text-underline-offset:2px;cursor:pointer}.bpmu{font:600 12.5px var(--num);color:var(--mut)}
+.bpam{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 0}.bpch{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border:1.5px solid #5a4a36;border-radius:999px;background:rgba(244,200,98,.08);color:#f0d9a8;font:700 12px/1.2 var(--num);white-space:nowrap}
+button.bpch{cursor:pointer}.bpch.add{border-style:dashed;color:var(--ember2);background:none}.bpch.ed{color:var(--mut);background:none}.bpch.ed.on{color:#2a1806;background:linear-gradient(#f4c862,#c6862a);border-color:#c6862a}.bpch em{font-style:normal;font-size:10.5px;opacity:.75}.bpch.ok{border-color:#c6862a;color:#f4c862}
+.bpamh{width:100%;font:800 12px var(--num);color:#fff1cf}.bpamh small{font-weight:600;color:var(--mut)}
+.bpfr{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0 0}.bpfr[hidden]{display:none}.bpfh{font:800 11px var(--num);letter-spacing:.06em;text-transform:uppercase;color:var(--ember)}
+.bpfp{display:inline-flex;align-items:center;gap:5px;padding:2px 9px 2px 2px;border:1.5px solid var(--edge);border-radius:999px;background:var(--slot);color:var(--txt);font:600 12px var(--num);cursor:pointer}.bpfp .scav.sm{width:24px;height:24px;margin:0;font-size:11px}.bpfp b{color:#7be08a}
+.bpme{margin:8px 0 0;font:600 12.5px/1.35 var(--num);color:var(--mut)}.bpme b{color:#fff1cf}.bplv{color:#7be08a;font-weight:800}
+.bpa{display:flex;gap:6px;margin:9px 0 6px}.bpa .btn{margin:0;padding:11px 6px;font-weight:800}.bpa .btn.gold{flex:1.4;font-size:15.5px!important}.bpa .btn:not(.gold){flex:1}.bpa .bpi{flex:0 0 48px!important;font-size:18px}
+.bprv{margin:4px 0 6px;padding:8px 10px;border:2px solid var(--edge);border-radius:10px;background:var(--slot);box-shadow:inset 0 0 0 1px var(--rim)}.bprv:empty{display:none}
+.bprvh{display:flex;align-items:center;justify-content:space-between;gap:8px;font:800 11.5px var(--num);letter-spacing:.06em;text-transform:uppercase;color:var(--ember)}
+.bpmy{display:flex;gap:2px}.bpmy button{padding:0 2px;border:0;background:none;font-size:25px;line-height:1;color:#4a4035;cursor:pointer;transition:transform .12s}.bpmy button.on{color:#f4c862;text-shadow:0 0 6px rgba(244,200,98,.4)}.bpmy button:active{transform:scale(1.25)}
+.bprvf{display:flex;gap:6px;margin-top:7px}.bprvf input{flex:1;min-width:0}.bprvf .btn{margin:0;flex:0 0 56px;padding:8px 4px}
+.bpmine{display:block;width:100%;margin-top:6px;padding:0;border:0;background:none;text-align:left;font:italic 600 13px/1.4 var(--num);color:#e8d8b8;cursor:pointer}.bpmine small{font-style:normal}
+.bprv>.bplk{margin-top:6px}.bprvl{margin-top:8px;border-top:1px solid #2e2820}.bprvi{display:flex;gap:8px;padding:7px 0 2px}.bprvi .scav.sm{width:28px;height:28px;margin:0;font-size:12px}.bprvi>div{min-width:0;flex:1}
+.bprvi b{font:800 13px var(--num);color:#fff1cf;cursor:pointer}.bprvi small{font:600 11px var(--num);color:var(--mut)}.bprvi p{margin:2px 0 0;font:500 13px/1.4 var(--num);color:#e8d8b8;overflow-wrap:anywhere}.bprvl>.bplk{margin:6px 0 2px}
+
 #dogm.ro .dgnav{display:none}#dogm.ro .dgav{cursor:default}.dgown{display:block;margin-top:1px;font:700 12.5px var(--num)!important;color:#e8d8b8!important}
 .dgpub{margin:10px 2px 0;font:600 11px/1.4 var(--num);color:var(--mut)}
 .pfdog{display:flex;align-items:center;gap:10px;width:100%;margin-top:11px;padding:9px 12px;border:2px solid var(--edge);border-radius:8px;background:var(--slot);box-shadow:inset 0 0 0 1px var(--rim);color:var(--txt);text-align:left;cursor:pointer}
@@ -1949,9 +1975,9 @@ $('#pvd').onclick = () => { if (pvDog) { const id = pvId; if (!id || !confirm('S
   setTimeout(() => { if (!D.cells[k]?.ph.some(p => p.id === id)) pDel(id).catch(() => {}); }, 8000);
   toast('Photo supprimée', () => { restoreSnap(snap); save(); draw(); renderPanel(); }); };
 $('#panel').addEventListener('change', async e => {
-  if (e.target.id !== 'phf') return; const files = [...e.target.files]; e.target.value = ''; if (!files.length || !sel) return; const k = sel; let n = 0;
+  if (e.target.id !== 'phf' && e.target.id !== 'phf2') return; const files = [...e.target.files]; e.target.value = ''; if (!files.length || !sel) return; const k = sel; let n = 0;
   for (const f of files) { try { const url = await shrink(f), id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7); await pPut(id, url); (D.cells[k] ||= blank()).ph.push({ id, d: today() }); n++; } catch (x) { toast('Photo impossible à enregistrer'); } }
-  if (n) { const c = D.cells[k]; if (!c.cov || !c.ph.some(p => p.id === c.cov)) await setCover(k, c.ph[c.ph.length - n].id); save(); draw(); if (sel === k) { ptab = 'ph'; renderPanel(); } toast('📷 ' + n + ' photo' + (n > 1 ? 's ajoutées' : ' ajoutée') + (c.cov ? ' · ★ la couverture s\u2019affiche sur la carte' : '')); }
+  if (n) { const c = D.cells[k]; if (!c.cov || !c.ph.some(p => p.id === c.cov)) await setCover(k, c.ph[c.ph.length - n].id); save(); draw(); if (sel === k) { if (e.target.id === 'phf') ptab = 'ph'; renderPanel(); } toast('📷 ' + n + ' photo' + (n > 1 ? 's ajoutées' : ' ajoutée') + (c.cov ? ' · ★ la couverture s\u2019affiche sur la carte' : '')); }
 });
 
 /* ===== Fiche d'une case ===== */
@@ -1984,12 +2010,20 @@ function renderPanel() {
   const g = cellGroup(sel), TH = [1, 5, 15, 40], nx = rk < 4 ? TH[rk] : 0, prv = rk ? TH[rk - 1] : 0, pct = nx ? Math.round((n - prv) / (nx - prv) * 100) : 100;
   const chip = (ic, v, t) => `<span title="${t}">${ic}<b>${v}</b></span>`;
   const dn = D.prof && D.prof.name || '', av = $('#dogav') ? $('#dogav').innerHTML : '', np = c.ph.length;
-  p.innerHTML = `<div class="f4h"><span class="f4cv" style="--rk:${RK.c}">${typeof c.th === 'string' && c.th.startsWith('data:image/') ? `<img src="${c.th}" alt="">` : crest(rk, 30)}</span><div class="f3t"><div class="pnw"><input class="pname" data-f="name" placeholder="${esc(g ? g.name : 'Nommer cette balade…')}" value="${esc(c.name)}" aria-label="Nom de la balade"><span class="pnm" aria-hidden="true"><span></span></span></div><span class="f4sub">${g ? `<b>${fmtDist(g.len)}</b> · ≈ ${fmtDur(g.len / 1.1)}` : 'Balade sans sentier'}${(c.tags || []).length ? `<span class="f4tg" title="${c.tags.map(t => TAGS[t][1]).join(', ')}">${c.tags.map(t => TAGS[t][0]).join('')}</span>` : ''}<span id="nvt" class="nv">${navSub(sel)}</span></span></div>${g ? `<button class="shb" data-act="share" aria-label="Partager cette balade"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="18" cy="5.5" r="2.8" fill="currentColor" fill-opacity=".25"/><circle cx="6" cy="12" r="2.8" fill="currentColor" fill-opacity=".25"/><circle cx="18" cy="18.5" r="2.8" fill="currentColor" fill-opacity=".25"/><path d="M8.5 10.7l7-3.9M8.5 13.3l7 3.9"/></svg><span>Partager</span></button>` : ''}</div>
-    <div class="f4soc"><span class="f4av">${av}</span><span class="f4st"><b>${n ? `${esc(dn || 'Vous')} · <i data-cu="${n}">${n}</i> passage${n > 1 ? 's' : ''}` : 'Pas encore venus ici'}</b><small>${n ? 'Dernier : ' + ago(last) : dn ? 'Première balade avec ' + esc(dn) + ' ?' : 'Première balade ?'}</small></span><button class="f4inv" data-act="invite" aria-label="Inviter des copains">👥 Inviter</button></div>
+  const dme = me ? rdist(ctr(sel), [me.x, me.y]) : null, lv = (() => { try { const o = socLive().get(sel); return o ? o.cnt : 0; } catch (e) { return 0; } })();
+  p.innerHTML = `<div class="bpph" id="bpph"></div>
+    <div class="bph"><div class="f3t"><div class="pnw"><input class="pname" data-f="name" placeholder="${esc(g ? g.name : 'Nommer cette balade…')}" value="${esc(c.name)}" aria-label="Nom de la balade"><span class="pnm" aria-hidden="true"><span></span></span></div>
+      <span class="bpsub"><span id="bpcity">📍 ${esc(cityOf(sel) || '…')}</span>${dme != null ? `<span>· à ${fmtDist(dme)}</span>` : ''}${g ? `<span>· ${fmtDist(g.len)} de sentier</span>` : ''}</span></div>
+      ${g ? `<button class="bpic" data-act="share" aria-label="Partager cette balade"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="18" cy="5.5" r="2.8"/><circle cx="6" cy="12" r="2.8"/><circle cx="18" cy="18.5" r="2.8"/><path d="M8.5 10.7l7-3.9M8.5 13.3l7 3.9"/></svg></button>` : ''}</div>
+    <div class="bprt" id="bprt"></div>
+    <div class="bpam" id="bpam"></div>
+    <div class="bpfr" id="bpfr"></div>
+    <div class="bpme">${n ? `🐾 <b>${esc(dn || 'Vous')}</b> · ${n} visite${n > 1 ? 's' : ''} · dernière ${ago(last)}` : `🐾 Pas encore venus${dn ? ' avec ' + esc(dn) : ''}`}${lv ? ` <span class="bplv">· ${lv} ici maintenant</span>` : ''}</div>
+    <div class="bpa"><button class="btn gold" data-act="maps">🧭 Y aller</button><button class="btn" data-act="addtoggle">＋ Visite</button><button class="btn bpi" data-act="invite" aria-label="Inviter des copains">👥</button></div>
     <button id="pdzc" class="fdz" data-tab="nt" hidden></button>
-    <div class="f4a">${LITE ? `<button class="btn gold f4go" data-act="addtoggle">＋ Noter une visite</button>` : `<button class="btn gold f4go" data-act="walk">${walkLbl()}</button><button class="btn f4i" data-act="go" aria-label="Y aller (itinéraire)">${ICO.compass}</button><button class="btn f4i" data-act="addtoggle" aria-label="Noter une sortie passée">＋</button>`}</div>
     <div id="addv" class="row"><input type="date" id="vd" max="${today()}" value="${today()}"><input type="number" id="vn" min="0" step="1" placeholder="Durée min" inputmode="numeric"><input type="number" id="vw" min="0" step="0.1" placeholder="Distance km" inputmode="decimal">
       <input class="full" id="vt" placeholder="Note : rencontres, état du chien, météo…"><button class="btn gold full" data-act="add">Consigner la sortie</button></div>
+    <div class="bprv" id="bprv"></div>
     <div class="f4tab"><button data-tab="hs">Sorties${n ? ' <em>' + n + '</em>' : ''}</button><button data-tab="ph">Photos${np ? ' <em>' + np + '</em>' : ''}</button><button data-tab="nt">Notes${c.note ? ' <em>•</em>' : ''}</button></div>
     <div class="tpw f3p">
     <div class="tp" data-pane="hs"><ul>${hist || '<li class="hint">Aucune sortie pour l\'instant : « Partir ici », ou ＋ pour noter une sortie passée.</li>'}</ul></div>
@@ -1998,8 +2032,66 @@ function renderPanel() {
       <div id="pdz" class="f3z"></div>
       <div class="f3f"><span>📍 ${la.toFixed(5)}, ${lo.toFixed(5)}</span>${rec(c) ? `<button class="fdel" data-act="delcell">${ICO.trash} Supprimer</button>` : ''}</div></div>
     </div>`;
-  if (ptab === 'wx') ptab = ''; setTab(); pnMarquee(); showNear(sel); loadGal(sel);
+  if (ptab === 'wx') ptab = ''; setTab(); pnMarquee(); showNear(sel); loadGal(sel); balInfo(sel); cityLoad(sel);
 }
+/* ===== Fiche balade : ville, avis, équipements, photos et copains (partagés entre membres) ===== */
+const AMEN = { pk: ['🅿️', 'Parking'], bain: ['🌊', 'Baignade'], wc: ['🚻', 'Toilettes'], eau: ['💧', 'Eau potable'], laisse: ['🦮', 'En laisse'], libre: ['🐕', 'Liberté'], ombre: ['🌳', 'Ombragé'], sacs: ['🛍️', 'Sacs à crottes'] };
+const CITY = (() => { try { return JSON.parse(localStorage.getItem('cartodog-city') || '{}') || {}; } catch (e) { return {}; } })(), cityK = k => { const [x, y] = ctr(k); return Math.round(x / 300) + ',' + Math.round(y / 300); };
+const cityOf = k => CITY[cityK(k)] || '';
+async function cityLoad(k) { const key = cityK(k); if (CITY[key]) return;
+  try { const [la, lo] = toLL(...ctr(k)), r = await fetchT(`https://geo.api.gouv.fr/communes?lat=${la.toFixed(5)}&lon=${lo.toFixed(5)}&fields=nom&format=json`); if (!r.ok) return; const j = await r.json(), n = j && j[0] && j[0].nom; if (!n) return;
+    CITY[key] = String(n).slice(0, 60); const ks = Object.keys(CITY); if (ks.length > 800) delete CITY[ks[0]]; try { localStorage.setItem('cartodog-city', JSON.stringify(CITY)); } catch (e) {}
+    if (sel === k && $('#bpcity')) $('#bpcity').textContent = '📍 ' + CITY[key]; } catch (e) {} }
+const BI = {}, BIE = { k: null, am: false, txt: false, all: false };      // infos partagées par balade (relues après 1 min)
+const balXY = k => { const [x, y] = ctr(k); return { bx: Math.round(x), by: Math.round(y) }; };
+async function balInfo(k, force) {
+  if (BIE.k !== k) { BIE.k = k; BIE.am = false; BIE.txt = false; BIE.all = false; } balDraw(k);
+  if (!clOn()) return; const o = BI[k]; if (!force && o && Date.now() - o.t < 6e4) return;
+  try { const d = await soRpc('bal_info', balXY(k)); if (d && typeof d === 'object') { BI[k] = { t: Date.now(), d }; if (sel === k) balDraw(k); } } catch (e) {}
+}
+const stars = (n, cls = '') => { const v = Math.max(0, Math.min(5, +n || 0)); return `<span class="bpst ${cls}" aria-label="${String(v).replace('.', ',')} sur 5">${[1, 2, 3, 4, 5].map(i => `<i class="${v >= i - .25 ? 'on' : v >= i - .75 ? 'half' : ''}">★</i>`).join('')}</span>`; };
+const rvAgo = ts => { const t = Date.parse(ts); return t ? cmAgo(t) : ''; };
+function balDraw(k) {
+  if (sel !== k) return; const c = D.cells[k] || blank(), info = BI[k] && BI[k].d || null, on = clOn(), mine = info && info.mine || null, my = new Set(mine && Array.isArray(mine.tags) ? mine.tags : []);
+  const T = info && info.tags && typeof info.tags === 'object' ? info.tags : {}, N = x => Math.max(0, Math.round(+x || 0));
+  /* note */
+  const rt = $('#bprt'); if (rt) rt.innerHTML = info && N(info.n) ? `${stars(info.avg)}<b>${String(+info.avg || 0).replace('.', ',')}</b><button class="bplk" data-act="rvall">${N(info.n)} avis</button>` : `${stars(0, 'off')}<span class="bpmu">${on ? 'Pas encore d\'avis' : 'Avis : connectez-vous'}</span>`;
+  /* équipements */
+  const am = $('#bpam'); if (am) { const ks = Object.keys(AMEN);
+    am.innerHTML = BIE.am ? `<div class="bpamh">Qu'y a-t-il sur place ? <small>touchez pour signaler</small></div>` + ks.map(t => `<button class="bpch ed${my.has(t) ? ' on' : ''}" data-am="${t}" aria-pressed="${my.has(t)}">${AMEN[t][0]} ${AMEN[t][1]}${N(T[t]) ? ` <em>${N(T[t])}</em>` : ''}</button>`).join('') + '<button class="bpch ok" data-act="amok">✓ Terminé</button>'
+      : ks.filter(t => N(T[t])).map(t => `<span class="bpch" title="Signalé par ${N(T[t])} promeneur${N(T[t]) > 1 ? 's' : ''}">${AMEN[t][0]} ${AMEN[t][1]}</span>`).join('') + (on ? `<button class="bpch add" data-act="amed">${Object.keys(T).length ? '✏️' : '＋ Parking, eau, baignade…'}</button>` : ''); }
+  /* copains ici ou venus récemment */
+  const fr = $('#bpfr'); if (fr) { const here = (typeof SO === 'object' && SO.fr || []).map(person).filter(Boolean).filter(f => f.st === 'walk' && f.at && f.at.k === k), seen = new Set(here.map(f => f.id));
+    const rec2 = (info && Array.isArray(info.friends) ? info.friends : []).filter(x => x && !seen.has(x.u)).map(x => [person(x.u), x.d]).filter(x => x[0]);
+    const L = [...here.map(f => [f, '<b>est ici</b>']), ...rec2.map(([f, d]) => [f, dgAgo(d)])];
+    fr.hidden = !L.length; fr.innerHTML = L.length ? `<span class="bpfh">👥 Copains</span>` + L.slice(0, 4).map(([f, t]) => `<button class="bpfp" data-pfu="${f.id}">${socAv(f, 'sm')}<span>${esc(f.n || f.d)} · ${t}</span></button>`).join('') + (L.length > 4 ? `<span class="bpmu">+${L.length - 4}</span>` : '') : ''; }
+  /* avis */
+  const rv = $('#bprv'); if (rv) { if (!on) { rv.innerHTML = ''; } else {
+    const R2 = info && Array.isArray(info.reviews) ? info.reviews : [], ms = mine && mine.stars ? N(mine.stars) : 0, mb = mine && mine.body || '';
+    const one = r => { const f = cmPerson({ author: r.u, name: r.name, first: r.first, dog: r.dog }); return `<div class="bprvi"><span data-pfu="${esc(r.u)}">${socAv(f, 'sm')}</span><div><b data-pfu="${esc(r.u)}">${esc(f.n || f.d)}</b>${r.stars ? stars(r.stars, 'sm') : ''}<small>${rvAgo(r.ts)}</small>${r.body ? `<p>${esc(r.body)}</p>` : ''}</div></div>`; };
+    rv.innerHTML = `<div class="bprvh"><span>Votre avis</span><span class="bpmy">${[1, 2, 3, 4, 5].map(i => `<button data-star="${i}" class="${i <= ms ? 'on' : ''}" aria-label="${i} étoile${i > 1 ? 's' : ''}">★</button>`).join('')}</span></div>`
+      + (BIE.txt ? `<div class="bprvf"><input id="bprvt" maxlength="300" placeholder="Un mot sur cette balade (facultatif)" value="${esc(mb)}" enterkeyhint="send"><button class="btn gold" data-act="rvsend">OK</button></div>`
+        : mb ? `<button class="bpmine" data-act="rvtxt">« ${esc(mb)} » <small>✏️</small></button>` : ms ? `<button class="bplk" data-act="rvtxt">＋ Ajouter un commentaire</button>` : '')
+      + (R2.length ? `<div class="bprvl">${R2.slice(0, BIE.all ? 20 : 2).map(one).join('')}${R2.length > 2 && !BIE.all ? `<button class="bplk" data-act="rvall">Voir les ${R2.length} avis</button>` : ''}</div>` : ''); } }
+  balPhotos(k, info);
+}
+async function balPhotos(k, info) {      // 3 photos : les miennes d'abord (couverture en tête), puis celles de la Communauté
+  const el = $('#bpph'); if (!el) return; const c = D.cells[k] || blank(), mine = [...(c.cov ? c.ph.filter(p => p.id === c.cov) : []), ...c.ph.filter(p => p.id !== c.cov)].slice(0, 3).map(p => ({ id: p.id })),
+    com = (info && Array.isArray(info.photos) ? info.photos : []).filter(x => x && typeof x.p === 'string').map(x => ({ cp: x.p })), L = [...mine, ...com].slice(0, 3);
+  const sig = JSON.stringify(L); if (el.dataset.sig === sig && el.childElementCount) return; el.dataset.sig = sig;
+  el.innerHTML = L.map((x, i) => `<button class="bpp${i === 0 ? ' big' : ''}" ${x.id ? `data-bpo="${esc(x.id)}"` : `data-bpc="${esc(x.cp)}"`} aria-label="Agrandir la photo"><img alt=""></button>`).join('')
+    + (L.length < 3 ? `<label class="bpp add${L.length ? '' : ' big solo'}" aria-label="Ajouter une photo">📷<small>${L.length ? 'Ajouter' : 'Ajouter la première photo'}</small><input type="file" accept="image/*" id="phf2" multiple hidden></label>` : '');
+  el.classList.toggle('n0', !L.length);
+  for (const b of el.querySelectorAll('.bpp[data-bpo],.bpp[data-bpc]')) { let u = ''; try { u = b.dataset.bpo ? await pGet(b.dataset.bpo) : await cmPhoto(b.dataset.bpc); } catch (e) {} if (sel !== k) return; if (u) { b.querySelector('img').src = u; b.classList.add('ok'); } }
+}
+async function balSave(k, patch) {      // mon avis et mes équipements pour cette balade
+  const info = BI[k] && BI[k].d || { tags: {} }, m = info.mine || {}, nx = { stars: m.stars || null, body: m.body || '', tags: Array.isArray(m.tags) ? m.tags : [], ...patch };
+  const old = JSON.parse(JSON.stringify(info)); info.mine = nx; BI[k] = { t: Date.now(), d: info };
+  const T = info.tags || (info.tags = {}); (old.mine && old.mine.tags || []).forEach(t => T[t] = Math.max(0, (T[t] || 1) - 1)); nx.tags.forEach(t => T[t] = (T[t] || 0) + 1); Object.keys(T).forEach(t => { if (!T[t]) delete T[t]; });
+  balDraw(k);
+  try { await soRpc('bal_review', { ...balXY(k), name: balName(k) || '', stars: nx.stars, body: nx.body, tags: nx.tags }); balInfo(k, true); } catch (e) { BI[k] = { t: 0, d: old }; balDraw(k); toast('⚠️ ' + (e.message || 'Avis non enregistré')); }
+}
+function balVisitPub(k, d) { if (!clOn() || !k || !D.cells[k]) return; const u = accU(); if (u.vis === 'none' || u.pres === false) return; soRpc('bal_visit', { ...balXY(k), d: d || today() }).catch(() => {}); }
 /* ===== Dangers signalés autour d'un lieu (vos repères « danger ») ===== */
 function showNear(k) {
   const el = $('#pdz'); if (!el) return; const p = ctr(k), L = (D.marks || []).filter(m => MK[m.t] && MK[m.t][2]).map(m => [m, rdist(p, [m.x, m.y])]).filter(a => a[1] < 800).sort((a, b) => a[1] - b[1]).slice(0, 8);
@@ -2109,11 +2201,16 @@ async function showWx(k) {
   } catch (e) { put('<div class="hint">Météo indisponible (connexion ?)</div>', '<span class="vdc">?</span><span class="vdt"><span class="vdl">Confort de balade</span>' + gauge(0) + 'Météo indisponible (connexion ?)</span>'); }
 }
 
+$('#panel').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'bprvt') { e.preventDefault(); const b = document.querySelector('#panel [data-act="rvsend"]'); if (b) b.click(); } });
 $('#panel').addEventListener('focusout', e => { if (e.target.matches && e.target.matches('.pnw input')) pnMarquee(); });
 $('#panel').addEventListener('input', e => { const f = e.target.dataset.f; if (!f || !sel) return; if (f === 'name') setBalName(cellGroup(sel), e.target.value); (D.cells[sel] ||= blank())[f] = e.target.value; saveSoon(); if (f === 'name') schedule(); });
 $('#panel').addEventListener('click', e => {
   const gi = e.target.closest('#gal img'); if (gi) { pvId = gi.dataset.id; $('#pvi').src = gi.src; $('#pvc').classList.toggle('on', D.cells[sel] && D.cells[sel].cov === pvId); $('#pv').classList.add('open'); return; }
   const t = e.target.closest('[data-tab]'); if (t) { ptab = ptab === t.dataset.tab ? '' : t.dataset.tab; return setTab(); }
+  const po = e.target.closest('[data-bpo]'); if (po) { const im = po.querySelector('img'); if (!im || !im.src) return; pvId = po.dataset.bpo; $('#pvi').src = im.src; $('#pvc').classList.toggle('on', D.cells[sel] && D.cells[sel].cov === pvId); $('#pv').classList.add('open'); return; }
+  const pc = e.target.closest('[data-bpc]'); if (pc) { const im = pc.querySelector('img'); if (!im || !im.src) return; pvId = null; $('#pvc').hidden = true; $('#pvd').hidden = true; $('#pvi').src = im.src; $('#pv').classList.add('open'); return; }
+  const st = e.target.closest('[data-star]'); if (st && sel) { const k = sel, n = +st.dataset.star, cur = BI[k] && BI[k].d && BI[k].d.mine && BI[k].d.mine.stars; if (!clOn()) return toast('☁️ Connectez-vous pour donner votre avis'); if (n === cur) return; BIE.txt = !(BI[k] && BI[k].d && BI[k].d.mine && BI[k].d.mine.body); balSave(k, { stars: n }); if (BIE.txt) setTimeout(() => { const i = $('#bprvt'); if (i) i.focus(); }, 80); return toast('★'.repeat(n) + ' Merci pour votre avis'); }
+  const am = e.target.closest('[data-am]'); if (am && sel) { const k = sel, m = BI[k] && BI[k].d && BI[k].d.mine, L = new Set(m && Array.isArray(m.tags) ? m.tags : []); L.has(am.dataset.am) ? L.delete(am.dataset.am) : L.add(am.dataset.am); return balSave(k, { tags: Object.keys(AMEN).filter(x => L.has(x)) }); }
   const b = e.target.closest('[data-act]'); if (!b || !sel) return; const a = b.dataset.act, c = D.cells[sel] ||= blank();
   if (a === 'delcell') { const g = cellGroup(sel); if (g && !confirm(`Supprimer la balade « ${g.name} » : sa fiche (sorties, photos, notes) et ${g.paths.length > 1 ? 'ses ' + g.paths.length + ' sentiers' : 'son sentier'} ?`)) return;
     const snap = snapC(), pj = JSON.stringify(D.paths), k = sel; if (c.x != null) fxRing(c.x, c.y, 'rgba(171,159,132,.9)', 6, 34, 550);
@@ -2121,6 +2218,12 @@ $('#panel').addEventListener('click', e => {
     return toast('Balade supprimée', () => { restoreSnap(snap); D.paths = JSON.parse(pj); NG.sig = ''; sel = k; save(); draw(); renderPanel(); }); }
   if (a === 'tag') { const t = b.dataset.tag, L = new Set(c.tags || []); L.has(t) ? L.delete(t) : L.add(t); c.tags = Object.keys(TAGS).filter(x => L.has(x)); save(); b.classList.toggle('on', L.has(t)); const st = document.querySelector('#panel .f4tg'); const ic = c.tags.map(x => TAGS[x][0]).join(''); if (st) st.textContent = ic; else if (ic) { const sp = document.createElement('span'); sp.className = 'f4tg'; sp.textContent = ic; const n = document.querySelector('#panel .f4sub #nvt'); n && n.before(sp); } return; }
   if (a === 'go') return goTo(sel);
+  if (a === 'maps') { const [la, lo] = toLL(...ctr(sel)); return window.open(`https://www.google.com/maps/dir/?api=1&destination=${la.toFixed(6)},${lo.toFixed(6)}`, '_blank'); }
+  if (a === 'amed') { BIE.am = true; return balDraw(sel); }
+  if (a === 'amok') { BIE.am = false; return balDraw(sel); }
+  if (a === 'rvall') { BIE.all = !BIE.all; balDraw(sel); const r = $('#bprv'); if (r && BIE.all) r.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); return; }
+  if (a === 'rvtxt') { BIE.txt = true; balDraw(sel); const i = $('#bprvt'); if (i) i.focus(); return; }
+  if (a === 'rvsend') { const k = sel, v = ($('#bprvt').value || '').trim(); BIE.txt = false; const m = BI[k] && BI[k].d && BI[k].d.mine; if (v === ((m && m.body) || '')) return balDraw(k); if (!(m && m.stars) && !v) return balDraw(k); balSave(k, { body: v }); return toast('💬 Avis publié'); }
   if (a === 'invite') { if (!clOn()) return toast('☁️ Connectez-vous pour inviter vos copains'); const k = sel; socOpen(); SOC.shareK = k; return faOpen('new'); }
   if (a === 'walk') { if (BR.on) return brStop(); BR.k0 = sel; const g = cellGroup(sel); return g ? openBal(g.k, 'panel') : balOpen(); }
   if (a === 'bal') { const g = cellGroup(sel); if (g) openBal(g.k, 'panel'); return; }
@@ -2137,10 +2240,10 @@ $('#panel').addEventListener('click', e => {
     f.querySelector('[data-act=add]').textContent = 'Mettre à jour la sortie'; f.scrollIntoView({ block: 'nearest' }); $('#vd').focus(); return; }
   if (a === 'del') { const snap = snapC(), v = c.v[+b.dataset.i]; if (v && v.id === BSEL) BSEL = null; c.v.splice(+b.dataset.i, 1); save(); draw(); renderPanel(); return toast('Sortie supprimée', () => { restoreSnap(snap); save(); draw(); renderPanel(); }); }
   if (a === 'add') { const d = $('#vd').value || today(); if (d > today()) return toast('La date est dans le futur');
-    const mn = Math.max(0, +$('#vn').value || 0), km = Math.max(0, +String($('#vw').value).replace(',', '.') || 0); if (!mn && !km) return toast('Indiquez au moins une durée ou une distance');
+    const mn = Math.max(0, +$('#vn').value || 0), km = Math.max(0, +String($('#vw').value).replace(',', '.') || 0); if (!mn && !km && !LITE) return toast('Indiquez au moins une durée ou une distance');
     const old = editI !== null ? c.v[editI] : null, nv = { id: old ? old.id : rid(), d, h: old ? old.h : '', s: Math.round(mn * 60), m: Math.round(km * 1000), t: $('#vt').value.trim(), pts: old ? old.pts : [] };
     if (old) { const snap = snapC(); c.v[editI] = nv; save(); draw(); renderPanel(); return toast('Sortie modifiée ✏️', () => { restoreSnap(snap); save(); draw(); renderPanel(); }); }
-    c.v.push(nv); save(); draw(); renderPanel(); toast('🐾 Sortie consignée'); }
+    c.v.push(nv); save(); draw(); renderPanel(); toast('🐾 ' + (LITE ? 'Visite notée' : 'Sortie consignée')); balVisitPub(sel, d); }
 });
 
 /* ===== Balades : enregistrement GPS d'une promenade (durée, distance, tracé), rattachée au lieu de départ ===== */
@@ -2973,7 +3076,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-148';
+const APP_V = '2026.10.28-149';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3026,7 +3129,7 @@ function presDwell() {      // présent sur une balade après 5 minutes à moins
 function presVisit(k) {      // 5 minutes sur place comptent comme une visite (une par jour et par balade)
   const c = D.cells[k]; if (!c) return; const d = new Date(), day = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
   if (c.v.some(v => v.d === day)) return; c.v.push({ id: rid(), d: day, h: String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'), s: 0, m: 0, t: 'Présence détectée sur place', pts: [] });
-  save(); try { renderPanel(); hdrRender(); } catch (e) {} toast('🐾 Visite notée : ' + (balName(k) || 'balade')); schedule();
+  save(); try { renderPanel(); hdrRender(); } catch (e) {} toast('🐾 Visite notée : ' + (balName(k) || 'balade')); schedule(); balVisitPub(k, day);
 }
 function presTick() { const k = presDwell(); if (k !== (SOT.mine || null)) { SOT.mine = k || ''; SLV.t = 0; schedule(); } if (k) presVisit(k); if (clOn() && (k || '') !== SOT.here) soPresence(); }
 function soPresence() {      // mon état pour les copains ; sur une balade : son nom et son centre, jamais ma position exacte
