@@ -2095,48 +2095,35 @@ async function balSave(k, patch) {      // mon avis et mes équipements pour cet
   try { await soRpc('bal_review', { ...balXY(k), name: balName(k) || '', stars: nx.stars, body: nx.body, tags: nx.tags }); balInfo(k, true); } catch (e) { BI[k] = { t: 0, d: old }; balDraw(k); toast('⚠️ ' + (e.message || 'Avis non enregistré')); }
 }
 function balVisitPub(k, d) { if (!clOn() || !k || !D.cells[k]) return; const u = accU(); if (u.vis === 'none' || u.pres === false) return; soRpc('bal_visit', { ...balXY(k), d: d || today() }).catch(() => {}); }
-/* ===== Test : chemins du lieu d'après son nom (OpenStreetMap, service Overpass) =====
-   « Parc de Tanaïs » → on cherche à moins de 3 km de la balade un parc, un bois, une réserve… portant ce nom, puis tous les sentiers à l'intérieur */
-const OSM = { by: {}, busy: {} }, OSMK = 'cartodog-osm';
+/* ===== Test : chemins autour de la balade (BD TOPO de l'IGN : sentiers, chemins, pistes cyclables, escaliers), en doré quand la fiche est ouverte ===== */
+const OSM = { by: {}, busy: {} }, OSMK = 'cartodog-chemins', OSM_NAT = /sentier|chemin|escalier|piste cyclable|empierr/i;
 try { Object.assign(OSM.by, JSON.parse(localStorage.getItem(OSMK) || '{}') || {}); } catch (e) {}
-const osmKey = k => { const n = (balName(k) || '').trim().toLowerCase(), [x, y] = ctr(k); return n ? n + '|' + Math.round(x / 2000) + ',' + Math.round(y / 2000) : ''; };
-function osmRx(t) {      // nom → expression tolérante, en ASCII seulement (le serveur lit les accents octet par octet) : « Tanaïs » ≈ « Tanais »
-  return t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim().split('').map(ch => /[aeiouyc]/.test(ch) ? '.{1,2}' : /[a-z0-9]/.test(ch) ? ch : '.{1,3}').join('');
-}
-async function osmFetch(q) {      // serveur principal, puis deux miroirs ; l'erreur garde le dernier code reçu
-  let last = 'réseau';
-  for (const u of ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter', 'https://overpass.private.coffee/api/interpreter']) {
-    try { const r = await fetchT(u + '?data=' + encodeURIComponent(q), 30000); if (r.ok) return await r.json(); last = 'erreur ' + r.status; if (r.status === 400) break; } catch (e) { last = e.name === 'AbortError' ? 'trop lent' : 'réseau'; } }
-  const e = new Error(last); throw e;
-}
+const osmKey = k => { const [x, y] = ctr(k); return Math.round(x / 200) + ',' + Math.round(y / 200); };
 async function osmLoad(k, force) {
-  const key = osmKey(k); if (!key || OSM.busy[key]) return; if (!force && OSM.by[key] && Date.now() - OSM.by[key].t < 30 * 864e5) return osmShow(k);
+  const key = osmKey(k); if (OSM.busy[key]) return; if (!force && OSM.by[key] && !OSM.by[key].err && Date.now() - OSM.by[key].t < 30 * 864e5) return osmShow(k);
+  if (!force && OSM.by[key] && OSM.by[key].err && Date.now() - OSM.by[key].t < 6e4) return osmShow(k);
   OSM.busy[key] = 1; osmShow(k);
-  const [la, lo] = toLL(...ctr(k)), name = balName(k).trim(), words = name.split(/[\s'’-]+/).filter(w => w.length >= 5 && !/^(foret|forêt|parc|bois|jardin|domaine|chemin|sentier|balade)$/i.test(w)).sort((a, b) => b.length - a.length);
-  const qOf = rx => `[out:json][timeout:25];(way["name"~"${rx}",i](around:3000,${la.toFixed(5)},${lo.toFixed(5)});relation["name"~"${rx}",i](around:3000,${la.toFixed(5)},${lo.toFixed(5)}););->.n;
-(way.n[~"^(leisure|landuse|natural|boundary|tourism|place)$"~"."];relation.n[~"^(leisure|landuse|natural|boundary|tourism|place)$"~"."];)->.p;.p out geom;.p map_to_area->.a;
-way(area.a)["highway"~"^(path|footway|track|pedestrian|bridleway|cycleway|steps|living_street)$"];out geom;`;
-  let res = null;
-  try { for (const rx of ['^' + osmRx(name) + '$', ...(words[0] ? [osmRx(words[0])] : [])]) { const j = await osmFetch(qOf(rx)); if ((j.elements || []).some(e => e.tags && e.tags.highway)) { res = j; break; } if (!res) res = j; } }
-  catch (e) { delete OSM.busy[key]; OSM.by[key] = { t: Date.now() - 30 * 864e5 + 6e4, err: String(e.message || 'réseau').slice(0, 30) }; return osmShow(k); }
-  const P = pts => (pts || []).map(p => { const m = toM(p.lat, p.lon); return [Math.round(m[0] * 10) / 10, Math.round(m[1] * 10) / 10]; });
-  const out = { t: Date.now(), area: [], ways: [], nm: '' };
-  for (const e of res.elements || []) {
-    if (e.tags && e.tags.highway && e.geometry) out.ways.push({ h: e.tags.highway, p: P(e.geometry) });
-    else if (e.type === 'way' && e.geometry) { out.area.push(P(e.geometry)); out.nm ||= e.tags && e.tags.name || ''; }
-    else if (e.type === 'relation' && e.members) { e.members.filter(m => m.role === 'outer' && m.geometry).forEach(m => out.area.push(P(m.geometry))); out.nm ||= e.tags && e.tags.name || ''; } }
+  const [cx, cy] = ctr(k), r = 800 / cosAt(cy), gp = cellGroup(k); let bb = [cx - r, cy - r, cx + r, cy + r];
+  if (gp && gp.paths) gp.paths.forEach(p => { const b = pathBB(p), m = 250 / cosAt(cy); bb = [Math.min(bb[0], b[0] - m), Math.min(bb[1], b[1] - m), Math.max(bb[2], b[2] + m), Math.max(bb[3], b[3] + m)]; });
+  const out = { t: Date.now(), area: [], ways: [], len: 0 };
+  try { const res = await fetchT(`https://data.geopf.fr/wfs/ows?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${encodeURIComponent('BDTOPO_V3:troncon_de_route')}&OUTPUTFORMAT=${encodeURIComponent('application/json')}&SRSNAME=EPSG:3857&COUNT=5000&BBOX=${bb.map(v => v.toFixed(1)).join(',')},EPSG:3857`, 25000);
+    if (!res.ok) throw new Error('erreur ' + res.status); const j = await res.json();
+    for (const f of j.features || []) { const nat = String((f.properties || {}).nature || ''); if (!f.geometry || !OSM_NAT.test(nat)) continue;
+      const lines = f.geometry.type === 'LineString' ? [f.geometry.coordinates] : f.geometry.type === 'MultiLineString' ? f.geometry.coordinates : [];
+      for (const ln of lines) if (ln.length > 1) out.ways.push({ h: /sentier|escalier/i.test(nat) ? 'path' : /cyclable/i.test(nat) ? 'cycleway' : 'track', p: ln.map(q => [Math.round(q[0] * 10) / 10, Math.round(q[1] * 10) / 10]) }); } }
+  catch (e) { delete OSM.busy[key]; OSM.by[key] = { t: Date.now(), err: e.name === 'AbortError' ? 'trop lent' : String(e.message || 'réseau').slice(0, 30) }; return osmShow(k); }
   out.len = out.ways.reduce((a, w) => a + w.p.reduce((s2, q, i) => i ? s2 + rdist(w.p[i - 1], q) : 0, 0), 0);
   OSM.by[key] = out; delete OSM.busy[key];
-  try { const ks = Object.keys(OSM.by).sort((a, b) => OSM.by[b].t - OSM.by[a].t).slice(0, 12), keep = {}; ks.forEach(x => keep[x] = OSM.by[x]); localStorage.setItem(OSMK, JSON.stringify(keep)); } catch (e) {}
+  try { const ks = Object.keys(OSM.by).filter(x => !OSM.by[x].err).sort((a, b) => OSM.by[b].t - OSM.by[a].t).slice(0, 15), keep = {}; ks.forEach(x => keep[x] = OSM.by[x]); localStorage.setItem(OSMK, JSON.stringify(keep)); } catch (e) {}
   osmShow(k); if (sel === k && out.ways.length) osmFit(k); draw();
 }
 function osmFit(k) { const o = OSM.by[osmKey(k)]; if (!o || !o.ways.length) return; const P = [...o.area.flat(), ...o.ways.flatMap(w => w.p)], xs = P.map(q => q[0]), ys = P.map(q => q[1]), W = cv.clientWidth, H = cv.clientHeight;
   flyXY((Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2, Math.max(.6, (Math.max(...xs) - Math.min(...xs)) / (W * .85), (Math.max(...ys) - Math.min(...ys)) / (H * .8)), 650); }
 function osmShow(k) {
   const el = $('#bposm'); if (!el || sel !== k) return; const key = osmKey(k), o = OSM.by[key];
-  el.innerHTML = !key ? '' : OSM.busy[key] ? '🗺️ Recherche des chemins du lieu…' : !o ? '' : o.err ? `🗺️ Chemins indisponibles (${esc(o.err === 1 ? 'réseau' : o.err)}) <button class="bplk" data-act="osm">Réessayer</button>`
-    : !o.ways.length ? `🗺️ Aucun chemin trouvé pour « ${esc(balName(k))} » <small>(OpenStreetMap)</small>`
-    : `<button class="bposb" data-act="osmfit">🗺️ <b>${o.ways.length} chemin${o.ways.length > 1 ? 's' : ''}</b> · ${fmtDist(o.len)}${o.nm ? ' · ' + esc(o.nm) : ''}</button> <small>© OpenStreetMap</small>`;
+  el.innerHTML = OSM.busy[key] ? '🗺️ Recherche des chemins autour…' : !o ? '' : o.err ? `🗺️ Chemins indisponibles (${esc(String(o.err))}) <button class="bplk" data-act="osm">Réessayer</button>`
+    : !o.ways.length ? '🗺️ Aucun chemin répertorié autour <small>(IGN)</small>'
+    : `<button class="bposb" data-act="osmfit">🗺️ <b>${o.ways.length} chemin${o.ways.length > 1 ? 's' : ''}</b> autour · ${fmtDist(o.len)}</button> <small>© IGN</small>`;
 }
 function drawOsm(sx, sy, mpp) {
   if (!sel || !D.cells[sel]) return; const o = OSM.by[osmKey(sel)]; if (!o || !o.ways || !o.ways.length) return;
@@ -2144,7 +2131,7 @@ function drawOsm(sx, sy, mpp) {
   for (const a of o.area) { if (a.length < 3) continue; g.beginPath(); a.forEach((q, i) => i ? g.lineTo(sx(q[0]), sy(q[1])) : g.moveTo(sx(q[0]), sy(q[1]))); g.closePath(); g.fillStyle = 'rgba(244,200,98,.08)'; g.fill(); g.setLineDash([6, 5]); g.lineWidth = 2; g.strokeStyle = 'rgba(244,200,98,.55)'; g.stroke(); g.setLineDash([]); }
   const wd = Math.max(2, Math.min(5, 6 / Math.sqrt(mpp)));
   for (const pass of [0, 1]) for (const w of o.ways) { if (w.p.length < 2) continue; g.beginPath(); w.p.forEach((q, i) => i ? g.lineTo(sx(q[0]), sy(q[1])) : g.moveTo(sx(q[0]), sy(q[1])));
-    if (!pass) { g.lineWidth = wd + 3; g.strokeStyle = 'rgba(14,11,8,.55)'; } else { g.lineWidth = wd; g.strokeStyle = w.h === 'track' ? '#d9a35a' : /cycleway|pedestrian|living_street/.test(w.h) ? '#f0e2b8' : '#ffd27a'; } g.stroke(); }
+    if (!pass) { g.lineWidth = wd + 3; g.strokeStyle = 'rgba(14,11,8,.55)'; } else { g.lineWidth = w.h === 'path' ? wd : wd + 1; g.strokeStyle = w.h === 'path' ? '#ffd27a' : '#f0b84a'; } g.stroke(); }
   g.restore();
 }
 /* ===== Dangers signalés autour d'un lieu (vos repères « danger ») ===== */
@@ -3133,7 +3120,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-154';
+const APP_V = '2026.10.28-155';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
