@@ -1193,6 +1193,10 @@ html.lite #pt,html.lite #homeb{display:none!important}
 .pfbio{margin:11px 0 0;font:italic 500 13.5px/1.45 var(--num);color:#e8d8b8;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .pfa{display:flex;gap:8px;margin-top:13px}.pfa .btn{flex:1;margin:0}.pfa .pfmo{flex:0 0 48px}.pfw .pfrm{margin:8px 0 0;color:#ff8a6e}
 .pfme{margin-top:12px;font:600 12px var(--num);color:var(--mut);text-align:center}[data-pfu]{cursor:pointer}
+/* fenêtres du bas dans Copains / Communauté : jamais sous le bandeau ni le logo, tout défile, boutons d'action toujours visibles */
+#soc .scsh,#com .scsh{top:var(--soct,0px)!important;padding-top:26px!important}#soc .scgw,#com .scgw{max-height:100%!important}#scfw .scgl{max-height:none}
+#soc .scgw .scga,#com .scgw .scga{position:sticky;bottom:-12px;z-index:1;margin-bottom:-12px;padding:12px 0;background:linear-gradient(rgba(30,24,18,0),#1e1812 28%)}
+
 html:not(.kbon) #menu{bottom:var(--socbt,0px)!important;padding-bottom:0!important}#menu .ach{padding-right:0}
 body:has(#menu.open) #mn>svg{display:none}body:has(#menu.open) #mn .dkar{display:grid;place-items:center;width:100%;height:100%}#mn .dkar svg{width:26px!important;height:26px!important}
 body:has(#menu.open) #mn{border-radius:50%;box-shadow:inset 0 0 0 2px #c6862a,0 0 10px rgba(244,200,98,.25)}
@@ -2949,7 +2953,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-144';
+const APP_V = '2026.10.28-145';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
