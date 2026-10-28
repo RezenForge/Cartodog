@@ -2118,11 +2118,11 @@ function renderPanel() {
   if (ptab === 'wx') ptab = ''; setTab(); pnMarquee(); showNear(sel); loadGal(sel); balInfo(sel); cityLoad(sel);
 }
 /* ===== Fiche balade : ville, avis, équipements, photos et copains (partagés entre membres) ===== */
-const AMEN = { petite: ['🐾', 'Petite balade', 'moins de 30 min'], grande: ['🥾', 'Grande balade', 'plus d\'1 h'], pk: ['🅿️', 'Parking'], pmr: ['♿', 'Accès PMR'], pous: ['👶', 'Poussette OK'],
+const AMEN = { tpetite: ['🐾', 'Très petite', 'moins de 15 min'], petite: ['🚶', 'Petite balade', '15 à 30 min'], grande: ['🥾', 'Grande balade', 'plus d\'1 h'], pk: ['🅿️', 'Parking'], pmr: ['♿', 'Accès PMR'], pous: ['👶', 'Poussette OK'],
   libre: ['🐕', 'Liberté'], laisse: ['🦮', 'En laisse'], enclos: ['🦴', 'Parc à chiens'], bain: ['🌊', 'Baignade'], sacs: ['🛍️', 'Sacs à crottes'],
   ombre: ['🌳', 'Ombragé'], eau: ['💧', 'Eau potable'], wc: ['🚻', 'Toilettes'], banc: ['🪑', 'Bancs'], jeux: ['🎠', 'Jeux d\'enfants'] };
-const AMG = [['Durée', ['petite', 'grande']], ['Accès', ['pk', 'pmr', 'pous']], ['Pour le chien', ['libre', 'laisse', 'enclos', 'bain', 'sacs']], ['Confort', ['ombre', 'eau', 'wc', 'banc', 'jeux']]];
-const AMX = { petite: 'grande', grande: 'petite' };      // l'un exclut l'autre
+const AMG = [['Durée', ['tpetite', 'petite', 'grande']], ['Accès', ['pk', 'pmr', 'pous']], ['Pour le chien', ['libre', 'laisse', 'enclos', 'bain', 'sacs']], ['Confort', ['ombre', 'eau', 'wc', 'banc', 'jeux']]];
+const DUR = ['tpetite', 'petite', 'grande'], AMX = t => DUR.includes(t) ? DUR.filter(x => x !== t) : [];      // une seule durée à la fois
 const CITY = (() => { try { return JSON.parse(localStorage.getItem('cartodog-city') || '{}') || {}; } catch (e) { return {}; } })(), cityK = k => { const [x, y] = ctr(k); return Math.round(x / 300) + ',' + Math.round(y / 300); };
 const cityOf = k => CITY[cityK(k)] || '';
 async function cityLoad(k) { const key = cityK(k); if (CITY[key]) return;
@@ -2299,7 +2299,7 @@ $('#panel').addEventListener('click', e => {
   const pv2 = e.target.closest('[data-bpv]'); if (pv2) { const im = pv2.querySelector('img'); if (!im || !im.src) return; pvId = null; $('#pvc').hidden = true; $('#pvd').hidden = true; $('#pvi').src = im.src; $('#pv').classList.add('open'); return; }
   const pc = e.target.closest('[data-bpc]'); if (pc) { const im = pc.querySelector('img'); if (!im || !im.src) return; pvId = null; $('#pvc').hidden = true; $('#pvd').hidden = true; $('#pvi').src = im.src; $('#pv').classList.add('open'); return; }
   const st = e.target.closest('[data-star]'); if (st && sel) { const k = sel, n = +st.dataset.star, cur = BI[k] && BI[k].d && BI[k].d.mine && BI[k].d.mine.stars; if (!clOn()) return toast('☁️ Connectez-vous pour donner votre avis'); if (n === cur) return; BIE.txt = !(BI[k] && BI[k].d && BI[k].d.mine && BI[k].d.mine.body); balSave(k, { stars: n }); if (BIE.txt) setTimeout(() => { const i = $('#bprvt'); if (i) i.focus(); }, 80); return toast('★'.repeat(n) + ' Merci pour votre avis'); }
-  const am = e.target.closest('[data-am]'); if (am && sel) { const k = sel, m = BI[k] && BI[k].d && BI[k].d.mine, L = new Set(m && Array.isArray(m.tags) ? m.tags : []); const t = am.dataset.am; L.has(t) ? L.delete(t) : (L.add(t), AMX[t] && L.delete(AMX[t])); return balSave(k, { tags: Object.keys(AMEN).filter(x => L.has(x)) }); }
+  const am = e.target.closest('[data-am]'); if (am && sel) { const k = sel, m = BI[k] && BI[k].d && BI[k].d.mine, L = new Set(m && Array.isArray(m.tags) ? m.tags : []); const t = am.dataset.am; L.has(t) ? L.delete(t) : (L.add(t), AMX(t).forEach(x => L.delete(x))); return balSave(k, { tags: Object.keys(AMEN).filter(x => L.has(x)) }); }
   const rvr = e.target.closest('[data-rvrep]'); if (rvr) return rpOpen('review', rvr.dataset.rvrep, 'cet avis');
   const b = e.target.closest('[data-act]'); if (!b || !sel) return; const a = b.dataset.act, c = D.cells[sel] ||= blank();
   if (a === 'bcon_') { b.disabled = true; toast('🌍 Envoi de la photo…'); bcShare(sel).then(ok => { if (ok) toast('★ Photo du badge : visible sur la carte par tous les promeneurs'); }).catch(x => toast('⚠️ ' + (x.message || 'Photo non partagée'))).finally(() => { if (sel) balPhotos(sel, BI[sel] && BI[sel].d); }); return; }
@@ -3169,7 +3169,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-169';
+const APP_V = '2026.10.28-170';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3901,7 +3901,7 @@ function btOf(k) {      // { tags: {pk: 2…}, n, avg } : même règle que la fi
   return { tags: T, n, avg: n ? Math.round(s / n * 10) / 10 : 0 };
 }
 const SRF = (() => { try { const a = JSON.parse(localStorage.getItem('cartodog-srf') || '[]'); return new Set(Array.isArray(a) ? a.filter(t => AMEN[t]) : []); } catch (e) { return new Set(); } })();
-const srfSave = () => { try { localStorage.setItem('cartodog-srf', JSON.stringify([...SRF])); } catch (e) {} };
+const srfSave = () => { try { localStorage.setItem('cartodog-srf', JSON.stringify([...SRF])); } catch (e) {} try { save(); } catch (e) {} };
 function srFilters() {
   const on = clOn(), el = $('#srf'); if (!el) return;
   el.innerHTML = `<div class="srfh"><b>Filtres</b>${SRF.size ? `<button data-srfx>Tout effacer</button>` : `<small>${on ? 'selon ce que les promeneurs ont signalé' : 'connectez-vous pour filtrer'}</small>`}</div>`
@@ -3922,7 +3922,7 @@ function srRender() {
 let SRI = 0;
 function srOpen() { SRI = 0; $('#srq').value = ''; $('#srp').classList.add('open'); srRender(); $('#srl').scrollTop = 0; btLoad(); }
 $('#srf').onclick = e => { if (e.target.closest('[data-srfx]')) { SRF.clear(); srfSave(); return srRender(); } const b = e.target.closest('[data-srf]'); if (!b) return; const t = b.dataset.srf;
-  SRF.has(t) ? SRF.delete(t) : (SRF.add(t), AMX[t] && SRF.delete(AMX[t])); srfSave(); SRI = 0; srRender(); };
+  SRF.has(t) ? SRF.delete(t) : (SRF.add(t), AMX(t).forEach(x => SRF.delete(x))); srfSave(); SRI = 0; srRender(); };
 const srClose = () => { $('#srp').classList.remove('open'); $('#srq').blur(); };
 function srGo(li) { if (!li) return; const k = li.dataset.srk, gk = li.dataset.srg; srClose(); if (k && D.cells[k]) { select(k); try { fitBal(k); } catch (e) {} } else if (gk) openBal(gk); }
 $('#srb').onclick = srOpen; $('#srx').onclick = srClose;
@@ -4015,9 +4015,10 @@ const carnetOf = () => ({ v: 2, cells: D.cells, prof: D.prof, dog: D.dog, user: 
 /* Fusion à trois du carnet : la dernière synchro sert de référence ; ce qui n'a changé que d'un côté est repris tel quel,
    ce qui a changé des deux côtés est réuni (sorties et photos) ou départagé par la date ; les suppressions sont respectées. */
 const hj = o => hsh(JSON.stringify(o === undefined ? null : o, (k, v) => k === '_t' ? undefined : v));
-const PREFK = ['cartodog-grid', 'cartodog-roads', 'cartodog-alert', 'cartodog-wake', 'cartodog-comp', 'cartodog-comm', 'cartodog-mag', 'cartodog-dur', 'cartodog-rqt', 'cartodog-pushno', 'cartodog-seen'];
+const PREFK = ['cartodog-grid', 'cartodog-roads', 'cartodog-alert', 'cartodog-wake', 'cartodog-comp', 'cartodog-comm', 'cartodog-mag', 'cartodog-dur', 'cartodog-rqt', 'cartodog-pushno', 'cartodog-seen', 'cartodog-srf'];
 function prefsOf() { const o = { _t: (D.prefs && D.prefs._t) || 0 }; PREFK.forEach(k => { try { const v = localStorage.getItem(k); if (v !== null) o[k] = v; } catch (e) {} }); o.rem = SO.rem || {}; o.evs = SO.evs || {}; return o; }
 function prefsApply(p) { if (!p || typeof p !== 'object') return; PREFK.forEach(k => { if (typeof p[k] === 'string') try { localStorage.setItem(k, p[k]); } catch (e) {} });
+  if (typeof p['cartodog-srf'] === 'string') try { const a = JSON.parse(p['cartodog-srf']); SRF.clear(); (Array.isArray(a) ? a : []).filter(t => AMEN[t]).forEach(t => SRF.add(t)); if ($('#srp').classList.contains('open')) srRender(); } catch (e) {}
   if (p.rem && typeof p.rem === 'object') SO.rem = { ...p.rem, ...(SO.rem || {}) }; if (p.evs && typeof p.evs === 'object') SO.evs = { ...p.evs, ...(SO.evs || {}) }; soSave(); }
 const filled = o => o ? Object.entries(o).filter(([k, v]) => k !== '_t' && v !== '' && v !== false && v != null && !(Array.isArray(v) && !v.length)).length : 0;
 function m3sec(b, loc, sv) {      // une section (profil, chien, réglages) : renvoie [valeur retenue, vient du serveur ?]
