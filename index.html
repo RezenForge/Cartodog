@@ -1183,6 +1183,7 @@ body.lpon #dock #found:not(.rec),body.lpon #dock #comb{display:none!important}
 .cmin{display:flex;gap:8px}.cmin input{flex:1;min-width:0;height:42px;border-radius:9px;border:2px solid var(--edge);background:var(--slot);color:var(--txt);font:500 15px var(--num);padding:0 10px}.cmin .btn{flex:none;margin:0;height:42px;padding:0 14px;width:auto}
 #cmv{position:fixed;inset:0;z-index:40;background:rgba(6,5,3,.94);display:flex;align-items:center;justify-content:center;padding:12px}#cmv[hidden]{display:none}#cmv img{max-width:100%;max-height:100%;border-radius:8px}
 
+.fbdg{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:1px 4px 1px 6px;border-radius:9px;border:1px solid rgba(234,165,60,.55);background:rgba(234,165,60,.1);color:#e9c77a;font:800 9.5px/14px var(--num);letter-spacing:.02em;font-style:normal;white-space:nowrap;vertical-align:2px;text-shadow:none}.fbdg img{width:11px;height:11px;border-radius:3px;display:block}
 .scemp{display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;padding:26px 14px;font:700 15px/1.3 var(--num);color:var(--txt)}.scemp small{font:500 13px/1.4 var(--num);color:var(--mut);max-width:290px}
 .hico{display:inline-block;width:17px;height:17px;margin:0 0 0 4px;vertical-align:top;position:relative;top:1px;border-radius:5px;box-shadow:0 1px 2px rgba(0,0,0,.6)}
 
@@ -2901,7 +2902,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-121';
+const APP_V = '2026.10.28-122';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2918,7 +2919,8 @@ $('#mx').onclick = () => $('#menu').classList.remove('open'); $('#menu').onclick
 /* ===== Copains en ligne : la base garde amis, présence, groupes et messages ; le téléphone relève les nouveautés (4 s dans une conversation, 8 s dans Copains, 20 s sinon) ===== */
 const soNew = () => ({ P: {}, fr: [], rin: [], rout: [], G: [], E: [], th: {}, last: 0, ph: '', init: 0, rem: {}, evs: {} });
 let SO = (() => { try { const o = JSON.parse(localStorage.getItem('cartodog-msgs') || 'null'); if (o && o.th) return Object.assign(soNew(), o); } catch (e) {} return soNew(); })();
-const SOT = { tm: 0, busy: false, sig: '', pt: 0 };
+const SOT = { tm: 0, busy: false, sig: '', pt: 0, bt: 0 };
+const bdg = id => { if (id === 'me' && CLD.s) id = CLD.s.user.id; return (SO.B || {})[id] === 'founder' ? '<span class="fbdg" title="Fondateur de Cartodog">Fondateur Cartodog<img src="icon.svg" alt=""></span>' : ''; };
 const soSave = () => { try { localStorage.setItem('cartodog-msgs', JSON.stringify(SO)); } catch (e) {} };
 const soRpc = (fn, args) => sb('/rest/v1/rpc/' + fn, { method: 'POST', json: args || {} });
 const PAL = ['#c6862a', '#5f7350', '#466f9a', '#8a4f7d', '#6b5b44', '#9a5a3a', '#3f7a74', '#7a6a2a'];
@@ -2958,6 +2960,7 @@ async function soPoll() {
   if (!clOn() || SOT.busy || navigator.onLine === false) return; SOT.busy = true;
   try {
     soProfile(); if (Date.now() - SOT.pt > 6e4) soPresence();
+    if (Date.now() - SOT.bt > 6e5) { SOT.bt = Date.now(); soRpc('badges').then(b => { if (b && typeof b === 'object') { SO.B = b; soSave(); } }).catch(() => {}); }
     const r = await soRpc('social_poll', { since: SO.last || 0 }); if (!r || !clOn()) return;
     const first = !SO.init; SO.init = 1; (r.people || []).forEach(p => SO.P[p.id] = p); SO.fr = r.friends || []; SO.rin = r.reqin || []; SO.rout = r.reqout || [];
     SO.E = r.events || []; SO.G = (r.groups || []).map(g => ({ id: g.id, name: g.name, ic: g.ic, owner: g.owner, m: g.ms || [] }));
@@ -3001,7 +3004,7 @@ function evRender(E) {
     const past = e.t.getTime() + e.durM * 6e4 < now, live = !past && e.t.getTime() <= now;
     return `<div class="sce${e.x ? ' x' : ''}${past ? ' past' : ''}"><div class="scd"><small>${fmt(e.t, { weekday: 'short' })}</small><b>${e.t.getDate()}</b><small>${fmt(e.t, { month: 'short' })}</small></div><div class="act">
       <b>${esc(e.at.n)}${e.x ? ' <em class="evtag x">Annulé</em>' : live ? ' <em class="evtag">En cours</em>' : past ? ' <em class="evtag x">Terminé</em>' : ''}</b>
-      <small>${e.mine ? 'Organisé par <em>vous</em>' : `Organisé par <em>${esc(e.by.d)}${e.by.n ? ' & ' + esc(e.by.n) : ''}</em>`}${e.grp ? ' · ' + esc(e.grp) : ''}</small>
+      <small>${e.mine ? 'Organisé par <em>vous</em>' : `Organisé par <em>${esc(e.by.d)}${e.by.n ? ' & ' + esc(e.by.n) : ''}</em>${bdg(e.by.id)}`}${e.grp ? ' · ' + esc(e.grp) : ''}</small>
       <small>🕙 ${e.t.getHours()} h ${String(e.t.getMinutes()).padStart(2, '0')} · ${e.dur} · ${e.n} chien${e.n > 1 ? 's' : ''}${e.mb ? ` · ${e.mb} peut-être` : ''}</small>
       ${e.pk ? `<small>🅿 Rendez-vous : <em>${esc(e.pk)}</em></small>` : ''}${e.note ? `<small>💬 ${esc(e.note)}</small>` : ''}
       <span class="scps">${e.who.slice(0, 6).map(f => socAv(f, 'sm')).join('')}${e.who.length > 6 ? `<span class="scav sm more">+${e.who.length - 6}</span>` : ''}</span>
@@ -3026,7 +3029,7 @@ function evForm() {
     <div class="evrow"><span class="evl">Durée</span>${[30, 60, 90, 120].map(m => `<button class="evc${v.dur === m ? ' on' : ''}" data-evm="${m}">${fmtDurM(m)}</button>`).join('')}</div>
     <div class="mh">Inviter</div>
     ${G.length ? `<div class="evrow">${G.map(g => `<button class="evc${v.grp === g.id ? ' on' : ''}" data-evg="${g.id}">${g.ic} ${esc(g.name)}</button>`).join('')}</div>` : ''}
-    ${F.length ? `<div class="acg scgl">${F.filter(f => !(v.grp && (grpGet(v.grp) || { m: [] }).m.includes(f.id))).map(f => `<button class="scr" data-evf="${f.id}"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}</b></span><i class="scck${v.fr.includes(f.id) ? ' on' : ''}">${v.fr.includes(f.id) ? '✓' : ''}</i></button>`).join('')}</div>` : '<div class="hint" style="padding:6px 4px">Ajoutez d\'abord des copains pour les inviter.</div>'}
+    ${F.length ? `<div class="acg scgl">${F.filter(f => !(v.grp && (grpGet(v.grp) || { m: [] }).m.includes(f.id))).map(f => `<button class="scr" data-evf="${f.id}"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b></span><i class="scck${v.fr.includes(f.id) ? ' on' : ''}">${v.fr.includes(f.id) ? '✓' : ''}</i></button>`).join('')}</div>` : '<div class="hint" style="padding:6px 4px">Ajoutez d\'abord des copains pour les inviter.</div>'}
     ${v.grp ? `<div class="hint" style="padding:6px 4px">Tout le groupe « ${esc((grpGet(v.grp) || {}).name || '')} » est invité.</div>` : ''}
     <label class="acf"><span>Petit mot <em>facultatif</em></span><input id="evnote" maxlength="200" placeholder="Ex. On se retrouve au portail" value="${esc(v.note)}" enterkeyhint="done"></label>
     <div class="clerr" id="eve"></div>
@@ -3063,7 +3066,7 @@ function socRender() {
   const { F, E } = socDemo(); SOC.F = F; SOC.E = E;
   document.querySelectorAll('#soc [data-st]').forEach(b => { b.classList.toggle('on', b.dataset.st === SOC.tab); b.setAttribute('aria-selected', b.dataset.st === SOC.tab); });
   document.querySelectorAll('#soc [data-sp]').forEach(x => x.classList.toggle('on', x.dataset.sp === SOC.tab));
-  const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}</b><small>${f.st === 'walk' ? spTag(f.sp, 1) : spTag(f.sp)}${f.st === 'walk' ? `<u title="En balade">🐾 ${f.t} min</u><i class="mqs">·</i><span class="mqn"><span class="mqi">${esc(f.at.n)}</span></span>` : f.st === 'on' ? 'En ligne' : f.last ? 'Vu ' + esc(f.last) : 'Hors ligne'}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
+  const row = f => `<div class="scr" data-chat="${f.id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b><small>${f.st === 'walk' ? spTag(f.sp, 1) : spTag(f.sp)}${f.st === 'walk' ? `<u title="En balade">🐾 ${f.t} min</u><i class="mqs">·</i><span class="mqn"><span class="mqi">${esc(f.at.n)}</span></span>` : f.st === 'on' ? 'En ligne' : f.last ? 'Vu ' + esc(f.last) : 'Hors ligne'}</small></span>${f.st === 'walk' ? `<button class="scmap" data-fmap="${f.id}" aria-label="Voir où">📍</button>` : ''}<button class="scmore" data-fmore="${f.id}" aria-label="Options">⋯</button></div>`;
   const grp = (t, L) => L.length ? `<div class="mh">${t} · ${L.length}</div><div class="acg">${L.map(row).join('')}</div>` : '';
   $('#scfr').innerHTML = (pushAsk() ? `<div class="scpn"><span>${pushIosHint() ? '📲 Ajoutez Cartodog à l\'écran d\'accueil pour être prévenu des messages, même appli fermée.' : '🔔 Soyez prévenu des messages, demandes et rendez-vous, même appli fermée.'}</span><button data-pn="on">${pushIosHint() ? 'Comment ?' : 'Activer'}</button><button data-pn="x" aria-label="Plus tard">✕</button></div>` : '') + `<div class="scbar"><button class="scadd" data-sx="add">＋ Ajouter un copain</button><button class="screq" data-sx="req">Demandes${SO.rin.length ? ` <b>${SO.rin.length}</b>` : ''}</button></div><div class="scls">` + grpRows() +
     grp('🐾 En balade', F.filter(f => f.st === 'walk')) + grp('🟢 En ligne', F.filter(f => f.st === 'on')) + grp('Hors ligne', F.filter(f => f.st === 'off')) + (F.length ? '' : (clOn() ? '<div class="scemp">🐕 Pas encore de copains<small>Ajoutez les promeneurs que vous croisez avec leur pseudo : vous verrez qui se balade et pourrez discuter.</small></div>' : '<div class="scemp">☁️ Connectez-vous pour retrouver vos copains</div>')) + '</div>';
@@ -3078,7 +3081,7 @@ const STS = { on: ['🟢', 'Disponible', 'En ligne, joignable'], look: ['👋', 
 function socMe() {
   const u = accU(), st = STS[u.st] ? u.st : 'on', walk = !!BR.on, ic = walk ? '🐾' : STS[st][0], lb = walk ? 'En balade' : STS[st][1], dn = D.prof && D.prof.name || '';
   $('#scme').innerHTML = `<span class="scaw"><span class="scmav">${$('#dogav') ? $('#dogav').innerHTML : ''}</span><i class="scdot ${walk ? 'walk' : st}"></i></span>
-    <span class="act"><b>${esc((u.first || '').trim() || u.name.trim() || 'Moi')}${dn ? ` <em>& ${esc(dn)}</em>` : ''}</b>
+    <span class="act"><b>${esc((u.first || '').trim() || u.name.trim() || 'Moi')}${dn ? ` <em>& ${esc(dn)}</em>` : ''}${bdg('me')}</b>
     <span class="scchips"><button class="scst" data-sme="st">${ic} ${lb}${walk ? ' <small>auto</small>' : ''} <i>▾</i></button><button class="scst scsp ${D.prof.space || 'none'}" data-sme="sp">${(SPC[D.prof.space] || SPC[''])[0]} ${SPC[D.prof.space] && D.prof.space ? SPC[D.prof.space][1] : (dn || 'Mon chien') + ' : sociable ?'} <i>▾</i></button></span>
     ${SOC.ed ? `<input id="scbio" maxlength="80" enterkeyhint="done" placeholder="Ex. Balade tous les soirs vers 18 h au Taillan" value="${esc(u.bio || '')}">` : `<button class="scbio${u.bio ? '' : ' ph'}" data-sme="bio">${u.bio ? '« ' + esc(u.bio) + ' »' : '✏️ Ajouter une description…'}</button>`}</span>`;
   if (SOC.ed) { const el = $('#scbio'); el.focus(); const done = () => { if (!SOC.ed) return; SOC.ed = false; accU().bio = el.value.trim().slice(0, 80); save(); socMe(); }; el.onblur = done; el.onkeydown = e => { if (e.key === 'Enter') el.blur(); }; }
@@ -3093,21 +3096,21 @@ const msgUnread = () => Object.values(msgAll()).reduce((a, L) => a + (L.some(m =
 function msgList() {
   const M = msgAll(), F = SOC.F || socDemo().F, ids = Object.keys(M).filter(id => M[id].length && who(id)).sort((a, b) => M[b][M[b].length - 1].ts - M[a][M[a].length - 1].ts);
   $('#scms').innerHTML = `<button class="scadd scnew" data-sx="newmsg">✏️ Nouveau message</button><div class="scls">` + (ids.length ? `<div class="acg scml">${ids.map(id => { const f = who(id), L = M[id], m = L[L.length - 1], nw = L.some(x => x.nw);
-    return `<button class="scr scmr${nw ? ' nw' : ''}" data-chat="${id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}</b><small>${m.me ? 'Vous : ' : ''}${m.k ? '📍 ' : ''}${esc(m.t || m.kn || '')}</small></span><span class="scmt"><small>${msgT(m.ts)}</small>${nw ? '<i></i>' : ''}</span></button>`; }).join('')}</div>` : '<div class="hint">Aucun message pour l\'instant.</div>') +
+    return `<button class="scr scmr${nw ? ' nw' : ''}" data-chat="${id}"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b><small>${m.me ? 'Vous : ' : ''}${m.k ? '📍 ' : ''}${esc(m.t || m.kn || '')}</small></span><span class="scmt"><small>${msgT(m.ts)}</small>${nw ? '<i></i>' : ''}</span></button>`; }).join('')}</div>` : '<div class="hint">Aucun message pour l\'instant.</div>') +
     '</div>';
   const u = msgUnread(); $('#scmn').hidden = !u; $('#scmn').textContent = u; socBadge();
 }
 function chatOpen(id) {
   const f = who(id); if (!f) return; SOC.chat = id; const M = msgAll();
   if ((M[id] || []).some(m => m.nw)) { M[id].forEach(m => m.nw = 0); msgSave(); }
-  $('#scchw').innerHTML = `<span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}</b><small>${f.grp ? esc(f.ms.map(x => x.d).join(', ') || 'Aucun membre') : spTag(f.sp) + (f.st === 'walk' ? '🐾 En balade · ' + esc(f.at.n) : f.st === 'on' ? 'En ligne' : f.last ? 'Vu ' + esc(f.last) : 'Hors ligne')}</small></span>`;
+  $('#scchw').innerHTML = `<span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b><small>${f.grp ? esc(f.ms.map(x => x.d).join(', ') || 'Aucun membre') : spTag(f.sp) + (f.st === 'walk' ? '🐾 En balade · ' + esc(f.at.n) : f.st === 'on' ? 'En ligne' : f.last ? 'Vu ' + esc(f.last) : 'Hors ligne')}</small></span>`;
   chatRender(); $('#scch').hidden = false; msgList(); soTick();
 }
 function chatRender() {
   const L = msgAll()[SOC.chat] || []; let lastD = '';
   const gr = (who(SOC.chat) || {}).grp; $('#scchl').innerHTML = (L.length ? '' : '<div class="scchn">👋 Dites bonjour !</div>') + L.map(m => { const d = new Date(m.ts).toDateString(), sep = d !== lastD ? `<div class="scchd">${new Date(m.ts).toDateString() === new Date().toDateString() ? 'Aujourd\'hui' : new Date(m.ts).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>` : ''; lastD = d;
     if (m.kn && !m.k && m.bx != null) m.k = soCell(m.bx, m.by);
-    return sep + `<div class="scb${m.me ? ' me' : ''}${m.pend ? ' pend' : ''}">${gr && !m.me ? `<em class="scbn">${esc(((p => p ? p.n || p.d : '')(person(m.f))))}</em>` : ''}${m.kn ? `<button class="scbk" data-emap="${m.k || ''}"><b>📍 ${esc(m.kn || 'Balade')}</b><small>Voir sur la carte ›</small></button>` : ''}${m.t ? `<span>${esc(m.t)}</span>` : ''}<small>${new Date(m.ts).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</small></div>`; }).join('');
+    return sep + `<div class="scb${m.me ? ' me' : ''}${m.pend ? ' pend' : ''}">${gr && !m.me ? `<em class="scbn">${esc(((p => p ? p.n || p.d : '')(person(m.f))))}${bdg(m.f)}</em>` : ''}${m.kn ? `<button class="scbk" data-emap="${m.k || ''}"><b>📍 ${esc(m.kn || 'Balade')}</b><small>Voir sur la carte ›</small></button>` : ''}${m.t ? `<span>${esc(m.t)}</span>` : ''}<small>${new Date(m.ts).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</small></div>`; }).join('');
   const l = $('#scchl'); requestAnimationFrame(() => l.scrollTop = l.scrollHeight);
 }
 function chatSend(m) { const id = SOC.chat; if (!id) return; if (!clOn()) return toast('☁️ Connectez-vous pour envoyer des messages');
@@ -3132,7 +3135,7 @@ function who(id) { const f = FR_().find(x => x.id === id); if (f) return f; cons
 const grpStack = ms => `<span class="scps">${ms.slice(0, 4).map(f => socAv(f, 'sm')).join('')}${ms.length > 4 ? `<span class="scav sm more">+${ms.length - 4}</span>` : ''}</span>`;
 function grpRows() { const G = grpAll();
   return `<div class="mh">👥 Groupes${G.length ? ' · ' + G.length : ''}</div><div class="acg">${G.map(g => { const w = who(g.id); return `<button class="scr scgrr" data-grp="${g.id}"><span class="scgi">${g.ic}</span><span class="act"><b>${esc(g.name)}</b><small>${w.ms.length ? grpStack(w.ms) : 'Aucun copain pour l\'instant'}</small></span><i class="scgo">›</i></button>`; }).join('')}<button class="scr scgnew" data-grpnew="1"><span class="scgi">＋</span><span class="act"><b>Nouveau groupe</b></span></button></div>`; }
-const grpPick = (L, sel) => L.length ? `<div class="acg scgl">${L.map(f => `<button class="scr" data-gpick="${f.id}"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}</b></span><i class="scck${sel.includes(f.id) ? ' on' : ''}">${sel.includes(f.id) ? '✓' : ''}</i></button>`).join('')}</div>` : '<div class="hint" style="padding:10px">Tous vos copains sont déjà dans ce groupe.</div>';
+const grpPick = (L, sel) => L.length ? `<div class="acg scgl">${L.map(f => `<button class="scr" data-gpick="${f.id}"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b></span><i class="scck${sel.includes(f.id) ? ' on' : ''}">${sel.includes(f.id) ? '✓' : ''}</i></button>`).join('')}</div>` : '<div class="hint" style="padding:10px">Tous vos copains sont déjà dans ce groupe.</div>';
 function grpNew() {      // création : nom + icône + copains à inviter, puis « Créer le groupe »
   const n = SOC.gnew ||= { name: '', ic: GIC[grpAll().length % GIC.length], m: [] }, F = FR_();
   $('#scgw').innerHTML = `<div class="scgt">Nouveau groupe</div>
@@ -3147,7 +3150,7 @@ function grpOpen(id) { const g = grpGet(id); if (!g) return; SOC.gid = id; SOC.g
     : `<div class="scgh"><span class="scgic">${g.ic}</span><b class="scgname">${esc(g.name)}</b><button class="scgedit" data-gren="go">✏️ Renommer</button></div>`;
   $('#scgw').innerHTML = head + (SOC.ginv ? `<div class="mh">Inviter des copains${SOC.ginv.length ? ' · ' + SOC.ginv.length : ''}</div>${grpPick(out, SOC.ginv)}
       <div class="scga"><button class="btn" data-ginv="x">Retour</button><button class="btn gold" data-ginv="ok"${SOC.ginv.length ? '' : ' disabled'}>Inviter${SOC.ginv.length ? ' (' + SOC.ginv.length + ')' : ''}</button></div>`
-    : `<div class="mh">Membres · ${ms.length + 1}</div><div class="acg scgl"><div class="scr"><span class="scaw"><span class="scav me">${esc((D.prof && D.prof.name || 'M')[0])}</span></span><span class="act"><b>Vous${D.prof && D.prof.name ? ' <em>& ' + esc(D.prof.name) + '</em>' : ''}</b><small>${own ? 'Créateur du groupe' : 'Membre'}</small></span></div>${ms.map(f => `<div class="scr"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}</b><small>${spTag(f.sp)}${f.st === 'walk' ? '🐾 En balade' : f.st === 'on' ? 'En ligne' : 'Hors ligne'}</small></span>${own ? `<button class="scmore" data-gout="${f.id}" aria-label="Retirer ${esc(f.d)} du groupe">✕</button>` : ''}</div>`).join('')}</div>
+    : `<div class="mh">Membres · ${ms.length + 1}</div><div class="acg scgl"><div class="scr"><span class="scaw"><span class="scav me">${esc((D.prof && D.prof.name || 'M')[0])}</span></span><span class="act"><b>Vous${D.prof && D.prof.name ? ' <em>& ' + esc(D.prof.name) + '</em>' : ''}${bdg('me')}</b><small>${own ? 'Créateur du groupe' : 'Membre'}</small></span></div>${ms.map(f => `<div class="scr"><span class="scaw">${socAv(f)}<i class="scdot ${f.st}"></i></span><span class="act"><b>${esc(f.d)} ${f.n ? `<em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b><small>${spTag(f.sp)}${f.st === 'walk' ? '🐾 En balade' : f.st === 'on' ? 'En ligne' : 'Hors ligne'}</small></span>${own ? `<button class="scmore" data-gout="${f.id}" aria-label="Retirer ${esc(f.d)} du groupe">✕</button>` : ''}</div>`).join('')}</div>
       ${out.length ? '<button class="scadd" data-ginv="go">＋ Inviter des copains</button>' : ''}
       <div class="scga"><button class="btn" data-gx>Fermer</button><button class="btn gold" data-gmsg>💬 Écrire au groupe</button></div><button class="scgdel" data-gdel>${own ? '🗑 Supprimer le groupe' : '🚪 Quitter le groupe'}</button>`);
   $('#scgr').hidden = false; const el = $('#scgn'); if (el) { el.focus(); el.select(); el.onkeydown = e => { if (e.key === 'Enter') $('#scgw [data-gren="ok"]').click(); }; } }
@@ -3187,7 +3190,7 @@ function socShow(k) { if (!k || !D.cells[k]) return toast('📍 Cette balade n\'
 function faOpen(mode, pre) {
   if (!clOn()) return toast('☁️ Connectez-vous pour retrouver vos copains');
   if (mode === 'ev') { SOC.ev = evDefaults(pre); SOC.fa = 'ev'; evForm(); $('#scfa').hidden = false; return; }
-  const w = $('#scfw'), pseudo = (accU().name || CLD.name || '').trim(), row = (f, x) => `<div class="scr"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}</b><small>${esc(f.h)}</small></span>${x}</div>`;
+  const w = $('#scfw'), pseudo = (accU().name || CLD.name || '').trim(), row = (f, x) => `<div class="scr"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b><small>${esc(f.h)}</small></span>${x}</div>`;
   if (mode === 'add') w.innerHTML = `<div class="scgt">Ajouter un copain</div><div class="scgs">Demandez son pseudo à l'autre promeneur.</div>
     <div class="scgh"><input id="scfq" maxlength="24" placeholder="Pseudo de votre copain" autocapitalize="none" autocomplete="off" spellcheck="false" enterkeyhint="send" value="${esc(pre || '')}" aria-label="Pseudo"></div><div class="clerr" id="scfe"></div>
     <div class="scga"><button class="btn" data-fa="x">Annuler</button><button class="btn gold" data-fa="go">📨 Envoyer</button></div>
@@ -3197,7 +3200,7 @@ function faOpen(mode, pre) {
       + (O.length ? `<div class="mh">Envoyées · ${O.length}</div><div class="acg scgl">${O.map(f => row(f, `<button class="scmore" data-fcx="${f.id}" aria-label="Annuler la demande">✕</button>`)).join('')}</div>` : '')
       + `<div class="scga"><button class="btn" data-fa="x">Fermer</button><button class="btn gold" data-fa="add">＋ Ajouter</button></div>`; }
   else { const L = [...grpAll().map(g => who(g.id)), ...FR_()].filter(Boolean);
-    w.innerHTML = `<div class="scgt">${SOC.shareK ? 'Proposer cette balade à…' : 'Nouveau message'}</div>` + (SOC.shareK ? `<button class="btn gold evfrom" data-evk="${SOC.shareK}">📅 Organiser un rendez-vous ici</button>` : '') + (L.length ? `<div class="acg scgl">${L.map(f => `<button class="scr" data-fto="${f.id}"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}</b></span><i class="scgo">›</i></button>`).join('')}</div>` : '<div class="hint" style="padding:10px 4px">Ajoutez d\'abord un copain.</div>')
+    w.innerHTML = `<div class="scgt">${SOC.shareK ? 'Proposer cette balade à…' : 'Nouveau message'}</div>` + (SOC.shareK ? `<button class="btn gold evfrom" data-evk="${SOC.shareK}">📅 Organiser un rendez-vous ici</button>` : '') + (L.length ? `<div class="acg scgl">${L.map(f => `<button class="scr" data-fto="${f.id}"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b></span><i class="scgo">›</i></button>`).join('')}</div>` : '<div class="hint" style="padding:10px 4px">Ajoutez d\'abord un copain.</div>')
       + `<div class="scga"><button class="btn" data-fa="x">Fermer</button>${FR_().length ? '' : '<button class="btn gold" data-fa="add">＋ Ajouter un copain</button>'}</div>`; }
   SOC.fa = mode; $('#scfa').hidden = false; const q = $('#scfq'); if (q) { setTimeout(() => q.focus(), 60); q.onkeydown = e => { if (e.key === 'Enter') $('#scfw [data-fa="go"]').click(); }; }
 }
@@ -3286,12 +3289,12 @@ async function cmPhoto(path) {      // photo lue avec la session (dossier privé
 function cmCard(p) {
   const f = cmPerson(p), uid = CLD.s && CLD.s.user.id, lc = p.last;
   return `<article class="cmp" data-post="${p.id}">
-    <div class="cmh"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''} <small>· ${cmAgo(Date.parse(p.ts))}</small></b></span>${p.author === uid ? `<button class="cmx" data-cmdel="${p.id}" aria-label="Supprimer ma publication">⋯</button>` : ''}</div>
+    <div class="cmh"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)} <small>· ${cmAgo(Date.parse(p.ts))}</small></b></span>${p.author === uid ? `<button class="cmx" data-cmdel="${p.id}" aria-label="Supprimer ma publication">⋯</button>` : ''}</div>
     <button class="cmloc" data-cmloc="${p.id}">📍 ${esc(p.bal)}</button>
     ${p.body ? `<p class="cmt">${esc(p.body)}</p>` : ''}
     ${p.photo ? `<button class="cmimg" data-cmimg="${esc(p.photo)}" aria-label="Agrandir la photo"><img alt="" data-cmsrc="${esc(p.photo)}"></button>` : ''}
     <div class="cma"><button class="cml${p.liked ? ' on' : ''}" data-cmlike="${p.id}" aria-pressed="${p.liked ? 'true' : 'false'}">${p.liked ? '♥' : '♡'} <span>${p.likes || ''}</span></button><button class="cmc" data-cmcom="${p.id}">💬 <span>${p.ncom || ''}</span></button></div>
-    ${lc ? `<button class="cmlast" data-cmcom="${p.id}"><b>${esc(cmPerson(lc).n || cmPerson(lc).d)}</b> ${esc(lc.body)}${p.ncom > 1 ? `<small>Voir les ${p.ncom} commentaires</small>` : ''}</button>` : ''}
+    ${lc ? `<button class="cmlast" data-cmcom="${p.id}"><b>${esc(cmPerson(lc).n || cmPerson(lc).d)}</b>${bdg(lc.author)} ${esc(lc.body)}${p.ncom > 1 ? `<small>Voir les ${p.ncom} commentaires</small>` : ''}</button>` : ''}
   </article>`;
 }
 function cmRender() {
@@ -3309,7 +3312,8 @@ async function cmLoad() {
   try { const r = await soRpc('post_feed', { bx: c[0], by: c[1], r: 700 }); if (CM.k === k) CM.posts = Array.isArray(r) ? r : []; } catch (e) { toast('⚠️ ' + e.message); }
   CM.busy = false; cmRender();
 }
-function comOpen() { try { socClose(); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#com').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#cmsh').hidden = true; $('#com').classList.add('open'); cmRender(); cmLoad(); }
+function comOpen() { if (clOn() && Date.now() - SOT.bt > 6e5) { SOT.bt = Date.now(); soRpc('badges').then(b => { if (b && typeof b === 'object') { SO.B = b; soSave(); cmRender(); } }).catch(() => {}); }
+ try { socClose(); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#com').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#cmsh').hidden = true; $('#com').classList.add('open'); cmRender(); cmLoad(); }
 const comClose = () => { $('#com').classList.remove('open'); $('#cmsh').hidden = true; };
 async function cmCompress(file) {      // photo réduite (1024 px max) et compressée en JPEG, ~100 à 200 Ko
   const u = URL.createObjectURL(file); try { const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = u; });
@@ -3331,7 +3335,7 @@ async function cmComments(id) {
   $('#cmsh').hidden = false; $('#cmci').onkeydown = e => { if (e.key === 'Enter') $('#cmsw [data-cmsend]').click(); };
   let L = []; try { L = await soRpc('post_comments', { post: id }) || []; } catch (e) {}
   if (CM.open !== id) return;
-  $('#cmcl').innerHTML = L.length ? L.map(c => { const f = cmPerson(c); return `<div class="cmcr"><span class="scaw">${socAv(f, 'sm')}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}</b> <small>${cmAgo(Date.parse(c.ts))}</small><span>${esc(c.body)}</span></span></div>`; }).join('') : '<div class="hint" style="padding:8px 2px">Aucun commentaire pour l\'instant.</div>';
+  $('#cmcl').innerHTML = L.length ? L.map(c => { const f = cmPerson(c); return `<div class="cmcr"><span class="scaw">${socAv(f, 'sm')}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b> <small>${cmAgo(Date.parse(c.ts))}</small><span>${esc(c.body)}</span></span></div>`; }).join('') : '<div class="hint" style="padding:8px 2px">Aucun commentaire pour l\'instant.</div>';
   requestAnimationFrame(() => { const l = $('#cmcl'); if (l) l.scrollTop = l.scrollHeight; });
 }
 $('#cmsel').onchange = e => { CM.k = e.target.value || null; CM.posts = []; cmLoad(); };
@@ -3372,7 +3376,7 @@ $('#soc').addEventListener('click', e => {
   if (e.target.closest('[data-grpnew]')) { SOC.gnew = null; return grpNew(); }
   const ch = e.target.closest('[data-chat]'); if (ch && !e.target.closest('[data-fmap],[data-fmore]')) return chatOpen(ch.dataset.chat);
   const fm = e.target.closest('[data-fmap]'); if (fm) { const f = SOC.F.find(x => x.id === fm.dataset.fmap); return socShow(f && f.at.k); }
-  const mo = e.target.closest('[data-fmore]'); if (mo) { const f = SOC.F.find(x => x.id === mo.dataset.fmore); SOC.who = f; $('#scshh').innerHTML = `${socAv(f)}<b>${esc(f.d)}${f.n ? ' & ' + esc(f.n) : ''}</b>`; $('#scsh [data-sa="map"]').hidden = f.st !== 'walk'; $('#scsh').hidden = false; return; }
+  const mo = e.target.closest('[data-fmore]'); if (mo) { const f = SOC.F.find(x => x.id === mo.dataset.fmore); SOC.who = f; $('#scshh').innerHTML = `${socAv(f)}<b>${esc(f.d)}${f.n ? ' & ' + esc(f.n) : ''}${bdg(f.id)}</b>`; $('#scsh [data-sa="map"]').hidden = f.st !== 'walk'; $('#scsh').hidden = false; return; }
   const sa = e.target.closest('[data-sa]'); if (sa) { const a = sa.dataset.sa, f = SOC.who; $('#scsh').hidden = true; if (a === 'x' || !f) return; if (a === 'msg') return chatOpen(f.id); if (a === 'map') return socShow(f && f.at && f.at.k);
     if (a === 'prof') return toast(`🐕 ${f.d}${f.n ? ' & ' + f.n : ''} · ${f.h}${f.sp && SPC[f.sp] ? ' · ' + SPC[f.sp][0] + ' ' + SPC[f.sp][1] : ''}${f.bio ? ' — « ' + f.bio + ' »' : ''}`);
     if (a === 'rm') { if (!confirm(`Retirer ${f.d}${f.n ? ' & ' + f.n : ''} de vos copains ?`)) return; SO.fr = SO.fr.filter(x => x !== f.id); delete SO.th[f.id]; soSave(); socRender(); soRpc('friend_remove', { other: f.id }).then(() => soTick(true)).catch(x => toast('⚠️ ' + x.message)); return toast('Retiré de vos copains'); }
