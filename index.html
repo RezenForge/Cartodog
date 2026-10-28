@@ -2927,7 +2927,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-133';
+const APP_V = '2026.10.28-134';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2971,11 +2971,11 @@ function soIngest(x, first) {
   SO.last = Math.max(SO.last || 0, x.id); return th;
 }
 function presHere() { if (!me) return null; let best = null, bd = 250; try { Object.keys(D.cells).forEach(k => { const c = D.cells[k]; if (!rec(c) || c.x == null) return; const d = rdist(ctr(k), [me.x, me.y]); if (d < bd) { bd = d; best = k; } }); } catch (e) {} return best; }
-function presDwell() {      // présent sur une balade seulement après 10 minutes à moins de 250 m (le temps continue si l'appli est rouverte vite)
+function presDwell() {      // présent sur une balade seulement après 5 minutes à moins de 250 m (le temps continue si l'appli est rouverte vite)
   const k = presHere(), now = Date.now(); let H = {}; try { H = JSON.parse(localStorage.getItem('cartodog-here') || '{}') || {}; } catch (e) {}
   if (!k) { if (H.k) try { localStorage.removeItem('cartodog-here'); } catch (e) {} return null; }
   if (H.k !== k || now - (+H.last || 0) > 5 * 6e4) H = { k, t: now }; H.last = now; try { localStorage.setItem('cartodog-here', JSON.stringify(H)); } catch (e) {}
-  return now - H.t >= 10 * 6e4 ? k : null;
+  return now - H.t >= 5 * 6e4 ? k : null;
 }
 function soPresence() {      // mon état pour les copains ; sur une balade : son nom et son centre, jamais ma position exacte
   if (!clOn()) return; const u = accU(), here = BR.on && BR.k && D.cells[BR.k] ? BR.k : presDwell(), walk = !!((BR.on || here) && u.pres !== false), k = walk && here ? here : null, c = k ? ctr(k) : null; SOT.pt = Date.now(); SOT.here = here || '';
