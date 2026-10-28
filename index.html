@@ -1193,6 +1193,7 @@ html.lite #pt,html.lite #homeb{display:none!important}
 .pfbio{margin:11px 0 0;font:italic 500 13.5px/1.45 var(--num);color:#e8d8b8;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .pfa{display:flex;gap:8px;margin-top:13px}.pfa .btn{flex:1;margin:0}.pfa .pfmo{flex:0 0 48px}.pfw .pfrm{margin:8px 0 0;color:#ff8a6e}
 .pfme{margin-top:12px;font:600 12px var(--num);color:var(--mut);text-align:center}[data-pfu]{cursor:pointer}
+body #dogm{align-items:flex-start!important;padding-top:calc(env(safe-area-inset-top,0px) + 80px)!important}body #dogm .win{max-height:calc(100dvh - env(safe-area-inset-top) - 96px)!important}
 /* fiche balade */
 #panel{max-height:52dvh!important;overflow-y:auto!important;overscroll-behavior:contain}
 .bpph{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:repeat(2,52px);gap:5px;margin:0 0 9px}.bpph.n0{grid-template-rows:46px;grid-template-columns:1fr}.bpph:has(.bpp:only-child){grid-template-columns:1fr}
@@ -1200,7 +1201,7 @@ html.lite #pt,html.lite #homeb{display:none!important}
 .bpp img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .3s}.bpp.ok img{opacity:1}
 .bpp.add{display:flex;align-items:center;justify-content:center;gap:6px;border-style:dashed;border-color:#6b5a40;color:var(--ember2);font-size:17px;background:rgba(0,0,0,.18)}.bpp.add small{font:700 12px var(--num);color:var(--mut)}
 .bph{display:flex;align-items:flex-start;gap:8px}.bph .f3t{flex:1;min-width:0}.bph .pname{font-size:22px!important;min-height:28px}
-.bpsub{display:flex;flex-wrap:wrap;gap:4px;margin-top:1px;font:600 12.5px/1.35 var(--num);color:var(--mut)}#bpcity{color:#f0d9a8;font-weight:700}
+.bpsub{display:flex;flex-wrap:wrap;gap:4px;margin-top:1px;font:600 12.5px/1.35 var(--num);color:var(--mut)}#bpcity{color:#f0d9a8;font-weight:700}.bpsub>span:empty{display:none}.bpsub>span:not(:empty)~span:not(:empty)::before{content:'· '}
 .bpic{flex:none;width:38px;height:38px;display:grid;place-items:center;padding:0;border:2px solid var(--edge);border-radius:50%;background:linear-gradient(#3a3024,#211b14);color:var(--ember2);cursor:pointer}.bpic svg{width:18px;height:18px}
 .bprt{display:flex;align-items:center;gap:6px;margin:7px 0 0;font:800 14px var(--num);color:#fff1cf}.bpst{display:inline-flex;gap:1px;font-size:16px;line-height:1;color:#4a4035;letter-spacing:0}.bpst i{font-style:normal}.bpst i.on{color:#f4c862}.bpst i.half{background:linear-gradient(90deg,#f4c862 50%,#4a4035 50%);-webkit-background-clip:text;background-clip:text;color:transparent}.bpst.sm{font-size:12px;margin:0 6px}.bpst.off i{color:#3a332a}
 .bplk{padding:0;border:0;background:none;color:var(--ember2);font:700 12.5px var(--num);text-decoration:underline;text-underline-offset:2px;cursor:pointer}.bpmu{font:600 12.5px var(--num);color:var(--mut)}
@@ -1367,8 +1368,8 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
     <label class="acf"><span>Prénom</span><input id="acpf" maxlength="24" placeholder="Ex. Dylan" autocomplete="given-name" enterkeyhint="next"></label>
     <label class="acf"><span>Pseudo</span><input id="acpn" maxlength="24" placeholder="Ex. dylan_nova" autocomplete="nickname" enterkeyhint="done"></label>
     <label class="acf"><span>Commune</span><input id="acpc" maxlength="40" placeholder="Ex. Le Taillan-Médoc" autocomplete="address-level2" enterkeyhint="done"></label>
-    <label class="acf off"><span>E-mail <em>bientôt</em></span><input disabled placeholder="Avec le compte en ligne"></label>
-    <div class="hint">Le pseudo s'affichera à côté de votre chien quand Cartodog sera en ligne.</div>
+    <label class="acf off"><span>E-mail du compte</span><input id="acpe" disabled placeholder="Non connecté"></label>
+    <div class="hint">Votre prénom, votre pseudo et le nom de votre chien sont visibles des membres connectés. La commune reste privée.</div>
   </div>
   <div class="acp" data-pg="priv"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Visibilité et partage<small>Ce que les autres promeneurs voient</small></h2></div>
     <div class="mh">Qui peut me voir</div>
@@ -2006,14 +2007,14 @@ function renderPanel() {
   if (!sel) { p.innerHTML = ''; return; }
   const c = D.cells[sel] || blank(), [la, lo] = toLL(...ctr(sel)), n = c.v.length, m = lm(c), s = c.v.reduce((a, v) => a + v.s, 0);
   const rk = rankK(c), RK = RANKS[rk], last = c.v.reduce((a, v) => v.d > a ? v.d : a, '');
-  const hist = c.v.map((v, i) => [v, i]).sort((a, b) => (b[0].d + b[0].h).localeCompare(a[0].d + a[0].h)).map(([v, i]) => `<li${v.id === BSEL ? ' class="on"' : ''}><span data-act="show" data-i="${i}" class="wk"><i class="lg">›</i><b>${dayLbl(v.d)}</b>${v.h ? ' <small>' + v.h + '</small>' : ''}<br>${fmtDist(v.m)} · ${fmtDur(v.s)}${v.bal ? ' · 🧭 ' + esc(v.bal) : ''}${v.pts.length > 1 ? ' <small>· 🗺 tracé</small>' : ''}${v.t ? '<br><small>' + esc(v.t) + '</small>' : ''}</span><span style="display:flex;flex:none">${v.pts.length > 1 ? `${LITE ? '' : `<button data-act="topath" data-i="${i}" aria-label="Ajouter ce tracé à mes sentiers">🥾</button>`}` : ''}<button data-act="edit" data-i="${i}" aria-label="Modifier">✎</button><button data-act="del" data-i="${i}" aria-label="Supprimer">✕</button></span></li>`).join('');
+  const hist = c.v.map((v, i) => [v, i]).sort((a, b) => (b[0].d + b[0].h).localeCompare(a[0].d + a[0].h)).map(([v, i]) => `<li${v.id === BSEL ? ' class="on"' : ''}><span data-act="show" data-i="${i}" class="wk"><i class="lg">›</i><b>${dayLbl(v.d)}</b>${v.h ? ' <small>' + v.h + '</small>' : ''}<br>${!v.m && !v.s ? esc(v.t || 'Visite') : fmtDist(v.m) + ' · ' + fmtDur(v.s)}${v.bal ? ' · 🧭 ' + esc(v.bal) : ''}${v.pts.length > 1 ? ' <small>· 🗺 tracé</small>' : ''}${v.t ? '<br><small>' + esc(v.t) + '</small>' : ''}</span><span style="display:flex;flex:none">${v.pts.length > 1 ? `${LITE ? '' : `<button data-act="topath" data-i="${i}" aria-label="Ajouter ce tracé à mes sentiers">🥾</button>`}` : ''}<button data-act="edit" data-i="${i}" aria-label="Modifier">✎</button><button data-act="del" data-i="${i}" aria-label="Supprimer">✕</button></span></li>`).join('');
   const g = cellGroup(sel), TH = [1, 5, 15, 40], nx = rk < 4 ? TH[rk] : 0, prv = rk ? TH[rk - 1] : 0, pct = nx ? Math.round((n - prv) / (nx - prv) * 100) : 100;
   const chip = (ic, v, t) => `<span title="${t}">${ic}<b>${v}</b></span>`;
   const dn = D.prof && D.prof.name || '', av = $('#dogav') ? $('#dogav').innerHTML : '', np = c.ph.length;
   const dme = me ? rdist(ctr(sel), [me.x, me.y]) : null, lv = (() => { try { const o = socLive().get(sel); return o ? o.cnt : 0; } catch (e) { return 0; } })();
   p.innerHTML = `<div class="bpph" id="bpph"></div>
     <div class="bph"><div class="f3t"><div class="pnw"><input class="pname" data-f="name" placeholder="${esc(g ? g.name : 'Nommer cette balade…')}" value="${esc(c.name)}" aria-label="Nom de la balade"><span class="pnm" aria-hidden="true"><span></span></span></div>
-      <span class="bpsub"><span id="bpcity">📍 ${esc(cityOf(sel) || '…')}</span>${dme != null ? `<span>· à ${fmtDist(dme)}</span>` : ''}${g ? `<span>· ${fmtDist(g.len)} de sentier</span>` : ''}</span></div>
+      <span class="bpsub"><span id="bpcity">${cityOf(sel) ? '📍 ' + esc(cityOf(sel)) : ''}</span>${dme != null ? `<span>à ${fmtDist(dme)}</span>` : ''}${g ? `<span>${fmtDist(g.len)} de sentier</span>` : ''}</span></div>
       ${g ? `<button class="bpic" data-act="share" aria-label="Partager cette balade"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="18" cy="5.5" r="2.8"/><circle cx="6" cy="12" r="2.8"/><circle cx="18" cy="18.5" r="2.8"/><path d="M8.5 10.7l7-3.9M8.5 13.3l7 3.9"/></svg></button>` : ''}</div>
     <div class="bprt" id="bprt"></div>
     <div class="bpam" id="bpam"></div>
@@ -2021,8 +2022,8 @@ function renderPanel() {
     <div class="bpme">${n ? `🐾 <b>${esc(dn || 'Vous')}</b> · ${n} visite${n > 1 ? 's' : ''} · dernière ${ago(last)}` : `🐾 Pas encore venus${dn ? ' avec ' + esc(dn) : ''}`}${lv ? ` <span class="bplv">· ${lv} ici maintenant</span>` : ''}</div>
     <div class="bpa"><button class="btn gold" data-act="maps">🧭 Y aller</button><button class="btn" data-act="addtoggle">＋ Visite</button><button class="btn bpi" data-act="invite" aria-label="Inviter des copains">👥</button></div>
     <button id="pdzc" class="fdz" data-tab="nt" hidden></button>
-    <div id="addv" class="row"><input type="date" id="vd" max="${today()}" value="${today()}"><input type="number" id="vn" min="0" step="1" placeholder="Durée min" inputmode="numeric"><input type="number" id="vw" min="0" step="0.1" placeholder="Distance km" inputmode="decimal">
-      <input class="full" id="vt" placeholder="Note : rencontres, état du chien, météo…"><button class="btn gold full" data-act="add">Consigner la sortie</button></div>
+    <div id="addv" class="row"><input type="date" id="vd" max="${today()}" value="${today()}"><input type="number" id="vn" min="0" step="1" placeholder="Durée min" inputmode="numeric"${LITE ? ' hidden' : ''}><input type="number" id="vw" min="0" step="0.1" placeholder="Distance km" inputmode="decimal"${LITE ? ' hidden' : ''}>
+      <input class="full" id="vt" placeholder="Note : rencontres, état du chien, météo…"><button class="btn gold full" data-act="add">${LITE ? '🐾 Noter la visite' : 'Consigner la sortie'}</button></div>
     <div class="bprv" id="bprv"></div>
     <div class="f4tab"><button data-tab="hs">Sorties${n ? ' <em>' + n + '</em>' : ''}</button><button data-tab="ph">Photos${np ? ' <em>' + np + '</em>' : ''}</button><button data-tab="nt">Notes${c.note ? ' <em>•</em>' : ''}</button></div>
     <div class="tpw f3p">
@@ -2228,7 +2229,7 @@ $('#panel').addEventListener('click', e => {
   if (a === 'walk') { if (BR.on) return brStop(); BR.k0 = sel; const g = cellGroup(sel); return g ? openBal(g.k, 'panel') : balOpen(); }
   if (a === 'bal') { const g = cellGroup(sel); if (g) openBal(g.k, 'panel'); return; }
   if (a === 'share') { const g = cellGroup(sel); if (g) balShare(g); return; }
-  if (a === 'addtoggle') { const f = $('#addv'); if (editI !== null) { renderPanel(); return $('#addv').classList.add('on'); } f.classList.toggle('on'); if (f.classList.contains('on')) $('#vn').focus(); return; }
+  if (a === 'addtoggle') { const f = $('#addv'); if (editI !== null) { renderPanel(); return $('#addv').classList.add('on'); } f.classList.toggle('on'); if (f.classList.contains('on')) (LITE ? $('#vt') : $('#vn')).focus(); return; }
   if (a === 'show') { const v = c.v[+b.dataset.i]; if (!v) return; if (BSEL === v.id) { BSEL = null; renderPanel(); return draw(); } BSEL = v.id; ptab = 'hs'; renderPanel();
     if (v.pts.length < 2) { draw(); return toast('Pas de tracé GPS pour cette sortie (notée à la main)'); }
     const xs = v.pts.map(q => q[0]), ys = v.pts.map(q => q[1]), W = cv.clientWidth, H = cv.clientHeight; collapse();
@@ -3076,7 +3077,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-149';
+const APP_V = '2026.10.28-150';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3188,7 +3189,7 @@ async function avLoad(id, v) {
 }
 async function dogPub() {      // profil public du chien : envoyé quand il change ; photos réduites à 720 px dans le dossier des photos de profil
   if (!clOn() || !CLD.pulled || SOT.dgb) return; SOT.dgb = 1; const uid = CLD.s.user.id;
-  try { const up = SO.gup ||= [], gal = (D.prof.gal || []).slice(0, 3);
+  try { const off = accU().stats === false, up = SO.gup ||= [], gal = off ? [] : (D.prof.gal || []).slice(0, 3);
     for (const id of gal.filter(x => !up.includes(x))) { const d = await pGet(id).catch(() => null); if (!d) continue;
       const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = d; }), s = Math.min(1, 720 / Math.max(im.width, im.height)), c = document.createElement('canvas');
       c.width = Math.round(im.width * s); c.height = Math.round(im.height * s); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); const b = await new Promise(r => c.toBlob(r, 'image/jpeg', .7));
@@ -3196,7 +3197,7 @@ async function dogPub() {      // profil public du chien : envoyé quand il chan
     for (const id of up.filter(x => !gal.includes(x))) { try { await sb('/storage/v1/object/avatars/' + uid + '/g-' + id + '.jpg', { method: 'DELETE', raw: true }); } catch (e) {} up.splice(up.indexOf(id), 1); }
     const d = dogData(), P = x => x && { n: String(x.n).slice(0, 60), bx: x.bx, by: x.by, ...(x.c ? { c: x.c } : {}), ...(x.d ? { d: x.d } : {}) };
     const card = { v: 1, name: d.name.slice(0, 30), sx: d.sx, breed: d.breed.slice(0, 60), age: d.age, lv: d.lv, pc: Math.round(d.pc * 100) / 100, rank: d.rank, tot: d.tot, disc: d.disc, nv: d.nv, st: d.st, mon: d.mon, nf: d.nf, gal: gal.filter(x => up.includes(x)) };
-    const priv = { ...(d.fav ? { fav: P(d.fav) } : {}), ...(d.last ? { last: P(d.last) } : {}) }, h = JSON.stringify([card, priv]);
+    let priv = { ...(d.fav ? { fav: P(d.fav) } : {}), ...(d.last ? { last: P(d.last) } : {}) }; if (off) { for (const k of Object.keys(card)) if (k !== 'v') delete card[k]; card.off = 1; priv = {}; } const h = JSON.stringify([card, priv]);
     if (h !== SO.dgh) { await soRpc('dog_card_set', { card, priv }); SO.dgh = h; } soSave();
   } catch (e) {} finally { SOT.dgb = 0; }
 }
@@ -3309,7 +3310,7 @@ const STS = { on: ['🟢', 'Disponible', 'En ligne, joignable'], look: ['👋', 
 function socMe() {
   const u = accU(), st = STS[u.st] ? u.st : 'on', walk = !!BR.on, ic = walk ? '🐾' : STS[st][0], lb = walk ? 'En balade' : STS[st][1], dn = D.prof && D.prof.name || '';
   $('#scme').innerHTML = `<span class="scaw"><span class="scmav">${$('#dogav') ? $('#dogav').innerHTML : ''}</span><i class="scdot ${walk ? 'walk' : st}"></i></span>
-    <span class="act"><b>${esc((u.first || '').trim() || u.name.trim() || 'Moi')}${dn ? ` <em>& ${esc(dn)}</em>` : ''}${bdg('me')}</b>
+    <span class="act"><b>${dn ? `${esc(dn)} <em>& ${esc((u.first || '').trim() || u.name.trim() || 'moi')}</em>` : esc((u.first || '').trim() || u.name.trim() || 'Moi')}${bdg('me')}</b>
     <span class="scchips"><button class="scst" data-sme="st">${ic} ${lb}${walk ? ' <small>auto</small>' : ''} <i>▾</i></button><button class="scst scsp ${D.prof.space || 'none'}" data-sme="sp">${(SPC[D.prof.space] || SPC[''])[0]} ${SPC[D.prof.space] && D.prof.space ? SPC[D.prof.space][1] : (dn || 'Mon chien') + ' : sociable ?'} <i>▾</i></button></span>
     ${SOC.ed ? `<input id="scbio" maxlength="80" enterkeyhint="done" placeholder="Ex. Balade tous les soirs vers 18 h au Taillan" value="${esc(u.bio || '')}">` : `<button class="scbio${u.bio ? '' : ' ph'}" data-sme="bio">${u.bio ? '« ' + esc(u.bio) + ' »' : '✏️ Ajouter une description…'}</button>`}</span>`;
   if (SOC.ed) { const el = $('#scbio'); el.focus(); const done = () => { if (!SOC.ed) return; SOC.ed = false; accU().bio = el.value.trim().slice(0, 80); save(); socMe(); }; el.onblur = done; el.onkeydown = e => { if (e.key === 'Enter') el.blur(); }; }
@@ -3454,10 +3455,10 @@ $('#scfa').addEventListener('click', async e => {
 /* ===== Profil public : une fiche courte quand on touche un promeneur (Communauté, copains, demandes, conversation) ===== */
 const PF = { id: null, more: false, c: {} };
 function pfOpen(id) {
-  if (!id || !clOn() || grpGet(id)) return; PF.id = id; PF.more = false;
+  if (!id || !clOn() || grpGet(id)) return; PF.id = id; PF.more = false; PF.dog = null;
   const uid = CLD.s.user.id; if (id !== uid && !PF.c[id]) { const p = (CM.posts || []).find(x => x.author === id); if (p) PF.c[id] = { name: p.name, first: p.first, dog: p.dog }; }
   pfRender(); $('#pfsh').hidden = false;
-  PF.dog = null; soRpc('dog_card', { u: id }).then(c => { if (c && typeof c === 'object' && c.v && PF.id === id) { PF.dog = c; if (!$('#pfsh').hidden) pfRender(); } }).catch(() => {});
+  soRpc('dog_card', { u: id }).then(c => { if (c && typeof c === 'object' && c.v && !c.off && PF.id === id) { PF.dog = c; if (!$('#pfsh').hidden) pfRender(); } }).catch(() => {});
   if (id !== uid && !SO.fr.includes(id)) sb('/rest/v1/profiles?select=name,first,dog,sp,bio&id=eq.' + encodeURIComponent(id)).then(r => { if (r && r[0]) { PF.c[id] = { ...r[0], full: 1 }; if (PF.id === id && !$('#pfsh').hidden) pfRender(); } }).catch(() => {});
 }
 const pfClose = () => { $('#pfsh').hidden = true; PF.id = null; };
@@ -3725,7 +3726,7 @@ async function clSignOut(gone) {      // le carnet reste dans le compte et quitt
 const OWK = 'cartodog-owner';      // compte à qui appartiennent les données de ce téléphone
 function localWipe() {
   D = { cells: {}, paths: [], marks: [], dog: '', prof: cleanProf({}, ''), user: cleanUser({}) }; sel = null; CLD.pulled = false;
-  [GRK, MSK, SYK, 'cartodog-socdemo', 'cartodog-msgs'].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} }); SO = soNew(); SOT.sig = ''; clearTimeout(SOT.tm); try { socBadge(); } catch (e) {}
+  [GRK, MSK, SYK, 'cartodog-socdemo', 'cartodog-msgs', 'cartodog-seen', 'cartodog-here'].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} }); try { Object.keys(BI).forEach(k => delete BI[k]); } catch (e) {} SO = soNew(); SOT.sig = ''; clearTimeout(SOT.tm); try { socBadge(); } catch (e) {}
   try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) {} try { CGM.clear(); } catch (e) {} NG.sig = '';
   idb.then(db => { if (db) try { db.transaction('p', 'readwrite').objectStore('p').clear(); } catch (e) {} });
   try { $('#panel').hidden = true; } catch (e) {} try { hdrRender(); dogAvatar(); } catch (e) {} schedule();
@@ -3955,9 +3956,9 @@ function accRender() {
   $('#acme').textContent = nm ? nm + (u.city ? ' · ' + u.city : '') : 'Pseudo, commune';
   $('#acdgs').textContent = dog ? dog + ' · niveau ' + ($('#hlv').textContent || 1) : 'Créer son profil';
   $('#acpv').textContent = ACV[u.vis] || ACV.friends;
-  $('#acpn').value = u.name; $('#acpf').value = u.first || ''; $('#acpc').value = u.city;
+  $('#acpn').value = u.name; $('#acpf').value = u.first || ''; $('#acpc').value = u.city; $('#acpe').value = (clOn() && CLD.s.user.email) || '';
   document.querySelectorAll('#acvis [data-v]').forEach(b => b.classList.toggle('on', b.dataset.v === u.vis));
-  $('#acpres').innerHTML = sw('Montrer ma présence sur les balades', u.pres); $('#acstat').innerHTML = sw('Partager mes stats (km, niveau) avec mes copains', u.stats);
+  $('#acpres').innerHTML = sw('Montrer ma présence sur les balades', u.pres); $('#acstat').innerHTML = sw('Montrer le profil de mon chien aux membres (photos, niveau, balades)', u.stats);
   $('#acver').textContent = 'Version ' + APP_V; try { clUi(); } catch (e) {}
 }
 document.querySelectorAll('#menu [data-acp]').forEach(b => b.onclick = () => { accPage(b.dataset.acp); bkStat(); });
@@ -3967,7 +3968,7 @@ $('#acdog').onclick = () => dogOpen();
 [['#acpn', 'name'], ['#acpf', 'first'], ['#acpc', 'city']].forEach(([id, k]) => { const el = $(id); el.oninput = () => { accU()[k] = el.value; saveSoon(); }; el.onchange = () => { accU()[k] = el.value.trim(); save(); accRender(); try { hdrRender(); } catch (x) {} }; el.onkeydown = e => { if (e.key === 'Enter') el.blur(); }; });
 document.querySelectorAll('#acvis [data-v]').forEach(b => b.onclick = () => { accU().vis = b.dataset.v; save(); accRender(); });
 $('#acpres').onclick = () => { const u = accU(); u.pres = !u.pres; save(); accRender(); };
-$('#acstat').onclick = () => { const u = accU(); u.stats = !u.stats; save(); accRender(); };
+$('#acstat').onclick = () => { const u = accU(); u.stats = !u.stats; save(); accRender(); dogPub(); };
 
 $('#fi').onchange = e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { importData(JSON.parse(r.result)); $('#menu').classList.remove('open'); } catch (x) { toast('Fichier illisible'); } }; r.readAsText(f); e.target.value = ''; };
 async function bkFile() { const photos = {}; for (const id of [D.prof.ph, ...(D.prof.gal || [])].filter(Boolean)) { try { const u = await pGet(id); if (u) photos[id] = u; } catch (e) {} } for (const c of Object.values(D.cells)) for (const p of c.ph) { try { const u = await pGet(p.id); if (u) photos[p.id] = u; } catch (e) {} }
@@ -4064,7 +4065,7 @@ function dogHtml(d, o) {      // o : { mine, pic, own (maître), up }
     <div class="dggal" id="dggal"></div>
     <${o.mine ? 'button data-dgmap' : 'div'} class="dgx1"><span class="dgxi">🗺️</span><span class="dgxt"><b>${disc}<small> / ${tot}</small></b><small>balades découvertes sur ${o.mine ? 'la' : 'sa'} carte</small><i class="dgbar"><i style="--w:${pct}%"></i></i></span><em>${pct} %</em></${o.mine ? 'button' : 'div'}>
     <div class="dgs3"><div><b>${nv}</b><small>visite${nv > 1 ? 's' : ''}</small></div><div class="${st ? 'hot' : ''}"><b>${st ? '🔥 ' : ''}${st}</b><small>série</small></div><div><b>${N(d.mon)}</b><small>ce mois-ci</small></div><div><b>${nf}</b><small>copain${nf > 1 ? 's' : ''}</small></div></div>
-    ${li ? `<div class="dgli">${li}</div>` : ''}${o.mine ? '<div class="dgpub">👁️ Ce profil est visible des membres. La balade préférée et la dernière sortie : vos copains seulement.</div>' : ''}`;
+    ${li ? `<div class="dgli">${li}</div>` : ''}${o.mine ? `<div class="dgpub">${accU().stats === false ? '🙈 Profil masqué aux autres membres (Mon compte › Visibilité et partage).' : '👁️ Ce profil est visible des membres. La balade préférée et la dernière sortie : vos copains seulement.'}</div>` : ''}`;
 }
 let DOGV = null;      // profil d'un autre promeneur affiché (lecture seule)
 function dogMain() {
@@ -4182,11 +4183,11 @@ function renderList() {
   const q = $('#lq').value.trim().toLowerCase(), all = walkPlaces();
   const it = all.filter(x => !q || x.label.toLowerCase().includes(q) || x.note.toLowerCase().includes(q));
   it.sort(lsort === 'recent' ? (a, b) => b.last.localeCompare(a.last) || b.n - a.n : (a, b) => b.n - a.n || b.m - a.m);
-  $('#lh').innerHTML = `Mes balades<small>${all.length} balade${all.length > 1 ? 's' : ''} · ${(n => n + ' sortie' + (n > 1 ? 's' : ''))(all.reduce((a, x) => a + x.n, 0))} · ${fmtDist(all.reduce((a, x) => a + x.m, 0))}</small>`;
+  { const nv = all.reduce((a, x) => a + x.n, 0), nd = all.filter(x => x.n).length; $('#lh').innerHTML = `Mes balades<small>${all.length} balade${all.length > 1 ? 's' : ''} · ${nd} découverte${nd > 1 ? 's' : ''} · ${nv} visite${nv > 1 ? 's' : ''}</small>`; }
   document.querySelectorAll('#lst .seg button').forEach(b => b.classList.toggle('on', b.dataset.s === lsort));
   const podium = ['1er', '2e', '3e'];
-  $('#ll').innerHTML = it.map((x, i) => `<li ${x.k ? `data-k="${x.k}"` : ''}${x.g ? ` data-g="${esc(x.g.k)}"` : ''}>${crest(x.rk, 30)}<span class="lt"><b>${esc(x.label)}</b><br><small>${lsort === 'best' && !q && i < 3 && x.n ? `<span class="top">${podium[i]}</span> · ` : ''}${x.g ? '🥾 ' + fmtDist(x.g.len) + ' de sentiers' : '<span class="r' + x.rk + '">' + RANKS[x.rk].n + '</span>'}${x.last ? ' · ' + ago(x.last) : ''}</small></span><span class="bd"><b>${x.n}</b> <small>sortie${x.n > 1 ? 's' : ''}</small><br><small>${fmtDist(x.m)}</small></span></li>`).join('')
-    || `<li class="hint" style="cursor:default">${all.length ? 'Aucun résultat.' : 'Aucune balade pour l\'instant : ▶ Balade enregistre une sortie, 🥾 Sentiers trace un parcours.'}</li>`;
+  $('#ll').innerHTML = it.map((x, i) => `<li ${x.k ? `data-k="${x.k}"` : ''}${x.g ? ` data-g="${esc(x.g.k)}"` : ''}>${crest(x.rk, 30)}<span class="lt"><b>${esc(x.label)}</b><br><small>${lsort === 'best' && !q && i < 3 && x.n ? `<span class="top">${podium[i]}</span> · ` : ''}${x.g ? '🥾 ' + fmtDist(x.g.len) + ' de sentiers' : '<span class="r' + x.rk + '">' + RANKS[x.rk].n + '</span>'}${x.last ? ' · ' + ago(x.last) : ''}</small></span><span class="bd"><b>${x.n}</b> <small>${LITE ? 'visite' : 'sortie'}${x.n > 1 ? 's' : ''}</small>${!LITE || x.m ? `<br><small>${fmtDist(x.m)}</small>` : ''}</span></li>`).join('')
+    || `<li class="hint" style="cursor:default">${all.length ? 'Aucun résultat.' : 'Aucune balade sur votre carte pour l\'instant.'}</li>`;
 }
 function openBal(k, from) { BL.from = from || null; $('#lst').classList.remove('open'); if (watch === null) startLoc(); BL.pk = null; balDetail(k); $('#balm').classList.add('open'); }
 $('#lb').onclick = () => { $('#lq').value = ''; renderList(); $('#lst').classList.add('open'); };
