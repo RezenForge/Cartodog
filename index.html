@@ -1439,7 +1439,7 @@ function journal() {      // journal de balade : bilan de toutes les sorties
   const tile = (v, l) => `<div><b>${v}</b><small>${l}</small></div>`;
   return `<div class="jrh">${avUrl ? `<img class="jav" src="${avUrl}" alt="">` : ICO.paw}<div><small>Rang de la meute${D.dog ? ' · ' + esc(D.dog) : ''}</small><b>${t[1]}</b><i>${nx ? `Encore ${Math.ceil(nx[0] - K)} km avant « ${nx[1]} »` : 'Rang le plus élevé atteint'}</i><i>${fmtDist(wk)} ces 7 derniers jours</i></div></div>
     <div class="jrp"><i style="width:${Math.round(pc)}%"></i></div>
-    <div class="jrg">${tile(W.length, 'sorties')}${tile(fmtDist(m), 'parcourus')}${tile(fmtDur(s), 'de promenade')}${tile(cs.length, 'lieux')}${tile(fmtDist(km), 'de sentiers')}${tile(dz, 'dangers signalés')}</div>`;
+    <div class="jrg">${tile(W.length, 'sorties')}${tile(fmtDist(m), 'parcourus')}${tile(fmtDur(s), 'de promenade')}${tile(cs.length, 'balades')}${LITE ? '' : tile(fmtDist(km), 'de sentiers')}${tile(dz, 'dangers signalés')}</div>`;
 }
 /* ===== Coordonnées : mètres Mercator ; chaque lieu garde sa position exacte ===== */
 const R = 6378137, CS = 50 / Math.cos(46 * Math.PI / 180), KEY = 'cartodog-v1', O = 20037508.34;
@@ -2916,7 +2916,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-128';
+const APP_V = '2026.10.28-129';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3059,7 +3059,7 @@ function evDefaults(k) {      // prochaine demi-heure ronde (au moins 1 h devant
 function evForm() {
   const v = SOC.ev, w = $('#scfw'), ymd = v.ymd, t0 = new Date(), day = n => { const x = new Date(t0); x.setDate(x.getDate() + n); return x; };
   const sat = (6 - t0.getDay() + 7) % 7, sun = (7 - t0.getDay()) % 7, chips = [[0, 'Aujourd\'hui'], [1, 'Demain'], ...(sat > 1 ? [[sat, 'Samedi']] : []), ...(sun > 1 ? [[sun, 'Dimanche']] : [])];
-  const bals = walkPlaces().filter(x => x.g && x.k).sort((a, b) => a.label.localeCompare(b.label, 'fr')), F = FR_(), G = grpAll();
+  const bals = walkPlaces().filter(x => x.k && (x.g || LITE)).sort((a, b) => a.label.localeCompare(b.label, 'fr')), F = FR_(), G = grpAll();
   w.innerHTML = `<div class="scgt">Organiser un rendez-vous</div>
     <label class="acf"><span>Balade</span><select id="evk">${bals.length ? bals.map(x => `<option value="${x.k}"${x.k === v.k ? ' selected' : ''}>${esc(x.label)}</option>`).join('') : '<option value="">Aucune balade sur votre carte</option>'}</select></label>
     <div class="evrow">${chips.map(([n, l]) => `<button class="evc${ymd(day(n)) === v.date ? ' on' : ''}" data-evd="${ymd(day(n))}">${l}</button>`).join('')}</div>
@@ -3314,7 +3314,7 @@ const CM = { k: null, posts: [], busy: false, img: {}, open: null, draft: null }
 const cmAgo = t => { const s = (Date.now() - t) / 1000; if (s < 90) return 'à l\'instant'; if (s < 3600) return 'il y a ' + Math.round(s / 60) + ' min'; if (s < 86400) return 'il y a ' + Math.round(s / 3600) + ' h';
   const d = Math.round(s / 86400); return d < 7 ? 'il y a ' + d + ' j' : 'le ' + new Date(t).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); };
 function cmBals() {      // balades récemment visitées (sorties du carnet), sinon les plus proches
-  let L = []; try { L = walkPlaces().filter(x => x.g && x.k); } catch (e) {}
+  let L = []; try { L = walkPlaces().filter(x => x.k && (x.g || LITE)); } catch (e) {}
   const vis = L.filter(x => x.last).sort((a, b) => b.last.localeCompare(a.last)).slice(0, 12);
   if (vis.length) return vis.map(x => ({ k: x.k, n: x.label, sub: x.last === new Date().toISOString().slice(0, 10) ? 'aujourd\'hui' : new Date(x.last).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) }));
   const ref = me ? [me.x, me.y] : [V.cx, V.cy]; return L.map(x => ({ x, d: rdist(ctr(x.k), ref) })).sort((a, b) => a.d - b.d).slice(0, 12).map(({ x, d }) => ({ k: x.k, n: x.label, sub: fmtDist(d) }));
@@ -3438,7 +3438,7 @@ function srRender() {
   const R = L.filter(x => x.sc < 9).sort((a, b) => a.sc - b.sc || a.dm - b.dm).slice(0, 7);
   const hl = t => { if (!q) return esc(t); const n = nrm(t), i = n.indexOf(q); return i < 0 ? esc(t) : esc(t.slice(0, i)) + '<mark>' + esc(t.slice(i, i + q.length)) + '</mark>' + esc(t.slice(i + q.length)); };
   $('#srl').innerHTML = (!q && R.length ? '<li class="srt">📍 Les plus proches</li>' : '') + (R.map((x, i) => { const th = x.k && D.cells[x.k] && D.cells[x.k].th, tg = (x.k && D.cells[x.k] && D.cells[x.k].tags) || [];
-    return `<li role="option" data-srk="${x.k || ''}" data-srg="${x.g ? esc(x.g.k) : ''}" class="${i === SRI ? 'on' : ''}">${th ? `<img src="${th}" alt="">` : crest(x.rk, 30)}<span class="act"><b>${hl(x.label)}</b><small>${x.g ? '🥾 ' + fmtDist(x.g.len) : '📍 lieu'}${tg.length ? ' · ' + tg.map(t => TAGS[t][0]).join('') : ''}</small></span><em>${fmtDist(x.dm)}</em></li>`; }).join('')
+    return `<li role="option" data-srk="${x.k || ''}" data-srg="${x.g ? esc(x.g.k) : ''}" class="${i === SRI ? 'on' : ''}">${th ? `<img src="${th}" alt="">` : crest(x.rk, 30)}<span class="act"><b>${hl(x.label)}</b><small>${x.g && !LITE ? '🥾 ' + fmtDist(x.g.len) : '📍 balade'}${tg.length ? ' · ' + tg.map(t => TAGS[t][0]).join('') : ''}</small></span><em>${fmtDist(x.dm)}</em></li>`; }).join('')
     || `<li class="srt">Aucune balade ne correspond à « ${esc($('#srq').value.trim())} »</li>`);
 }
 let SRI = 0;
@@ -4630,15 +4630,15 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
   const done = () => { $('#wel').hidden = true; try { localStorage.setItem('cartodog-wel', '1'); } catch (e) {} };
   /* Premier lancement en 3 étapes : le chien, la position, la balade la plus proche */
   let step = 0; const dots = () => $('#obd').innerHTML = [0, 1, 2].map(i => `<i class="${i === step ? 'on' : i < step ? 'ok' : ''}"></i>`).join('') + '<button class="obsk" data-ob="skip">Passer</button>';
-  const near = () => { const ref = me ? [me.x, me.y] : [V.cx, V.cy]; return walkPlaces().filter(x => x.g).map(x => ({ x, d: Math.min(...x.g.paths.flatMap(p => p.pts).map(q => rdist(q, ref))) })).sort((a, b) => a.d - b.d).slice(0, 2); };
+  const near = () => { const ref = me ? [me.x, me.y] : [V.cx, V.cy]; return walkPlaces().filter(x => x.g || (LITE && x.k)).map(x => ({ x, d: x.g ? Math.min(...x.g.paths.flatMap(p => p.pts).map(q => rdist(q, ref))) : rdist(ctr(x.k), ref) })).sort((a, b) => a.d - b.d).slice(0, 2); };
   const render = () => { dots(); const c = $('#obc');
     if (step === 0) c.innerHTML = `<div class="obi">🐕</div><h3>Bienvenue sur Cartodog !</h3><p>Les balades des promeneurs de chiens, cartographiées sur le terrain. Pour commencer, comment s'appelle votre chien ?</p><input id="obn" maxlength="30" placeholder="Ex. Nova" value="${esc(D.prof.name || '')}" enterkeyhint="next" autocomplete="off"><button class="btn gold obgo" data-ob="n1">Suivant ›</button>`;
     else if (step === 1) c.innerHTML = `<div class="obi">📍</div><h3>Les balades près de chez vous</h3><p>Cartodog utilise votre position pour trouver les balades proches, vous guider et vous prévenir des dangers. Elle reste sur votre téléphone.</p><button class="btn gold obgo" data-ob="loc">📍 Autoriser ma position</button><button class="btn obno" data-ob="n2">Plus tard</button>`;
     else { const L = near(), dn = D.prof.name ? ' avec ' + esc(D.prof.name) : '';
-      c.innerHTML = L.length ? `<div class="obi">🌲</div><h3>Votre première balade${dn}</h3><p>${me ? 'La plus proche de vous :' : 'Sur la carte :'}</p>${L.map(({ x, d }) => `<button class="obb" data-obk="${x.k || ''}" data-obg="${esc(x.g.k)}"><b>${esc(x.label)}</b><small>🥾 ${fmtDist(x.g.len)}${me ? ' · à ' + fmtDist(d) : ''}</small><i>›</i></button>`).join('')}<button class="btn obno" data-ob="end">Explorer la carte</button>`
+      c.innerHTML = L.length ? `<div class="obi">🌲</div><h3>Votre première balade${dn}</h3><p>${me ? 'La plus proche de vous :' : 'Sur la carte :'}</p>${L.map(({ x, d }) => `<button class="obb" data-obk="${x.k || ''}" data-obg="${esc(x.g ? x.g.k : x.k)}"><b>${esc(x.label)}</b><small>${x.g && !LITE ? '🥾 ' + fmtDist(x.g.len) : '📍 balade'}${me ? ' · à ' + fmtDist(d) : ''}</small><i>›</i></button>`).join('')}<button class="btn obno" data-ob="end">Explorer la carte</button>`
         : `<div class="obi">🥾</div><h3>Aucune balade ici… pour l'instant</h3>${LITE ? `<p>Les balades apparaîtront sur la carte au fil des ajouts.</p>` : `<p>Tracez votre premier sentier en marchant : il apparaîtra sur la carte, prêt pour vos prochaines balades${dn}.</p><button class="btn gold obgo" data-ob="trail">🥾 Tracer mon premier sentier</button>`}<button class="btn obno" data-ob="end">Explorer la carte</button>`; } };
   $('#wel').onclick = e => { const b = e.target.closest('[data-ob],[data-obg]'); if (!b) return; const a = b.dataset.ob;
-    if (b.dataset.obg) { done(); const k = b.dataset.obk; if (k && D.cells[k]) { select(k); try { fitBal(k); } catch (x) {} } else openBal(b.dataset.obg); return; }
+    if (b.dataset.obg) { done(); const k = b.dataset.obk; if (k && D.cells[k]) { select(k); try { fitBal(k); } catch (x) { flyTo(k); } } else openBal(b.dataset.obg); return; }
     if (a === 'skip' || a === 'end') return done();
     if (a === 'n1') { const v = ($('#obn').value || '').trim().slice(0, 30); if (v) { D.prof.name = v; D.dog = v; save(); try { hdrRender(); } catch (x) {} } $('#obn').blur(); step = 1; return render(); }
     if (a === 'loc') { if (watch === null) startLoc(); b.textContent = '📍 Recherche de votre position…'; b.disabled = true; let n = 0; const w = setInterval(() => { if (me || ++n > 16) { clearInterval(w); step = 2; render(); } }, 500); return; }
