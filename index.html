@@ -1988,7 +1988,7 @@ function select(k) { const neu = k !== sel || document.body.classList.contains('
   renderPanel(); if (neu) { countUp(); const c = D.cells[k]; if (c && c.x != null) { const ps = spotSz(); fxa({ k: 'ring', x: c.x, y: c.y, col: '#e3c071', r0: ps * .4, r1: ps * 1.2, dur: 650, w: 3, oy: ps / 2 }); } } draw(); }
 const collapse = () => { document.body.classList.add('pmin'); $('#grab').textContent = '▴'; };
 function pick(k) { if (rec(D.cells[k])) select(k); else { sel = k; collapse(); draw(); } }      // une case vide se sélectionne sans ouvrir le carnet
-$('#grab').onclick = () => { const m = document.body.classList.toggle('pmin'); $('#grab').textContent = m ? '▴' : '▾'; if (!m) renderPanel(); };
+$('#grab').onclick = () => { if (document.body.classList.contains('pmin')) { document.body.classList.remove('pmin'); $('#grab').textContent = '▾'; return renderPanel(); } sel = null; BSEL = null; document.body.classList.remove('pmin'); renderPanel(); draw(); };      // ▾ referme la fiche : retour à la carte et aux boutons du bas
 let ptab = '';
 function setTab() { const tw = document.querySelector('#panel .tpw'); if (tw) tw.hidden = !ptab; document.querySelectorAll('#panel [data-tab]').forEach(b => b.classList.toggle('on', b.dataset.tab === ptab)); document.querySelectorAll('#panel [data-pane]').forEach(x => x.classList.toggle('on', x.dataset.pane === ptab)); }
 let editI = null;
@@ -3077,7 +3077,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-151';
+const APP_V = '2026.10.28-152';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
