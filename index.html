@@ -1018,7 +1018,7 @@ body:not(.nosel):not(.pmin) #dock:not(:has(#found.rec)) #grab{flex:1!important;w
 /* ===== Mon compte : comme Copains, dans le cadre de la carte (le bandeau reste visible) ===== */
 #menu{top:var(--mnt,0px)!important;background:none!important;padding:0 8px calc(6px + env(safe-area-inset-bottom))!important}
 body:has(#menu.open) header.bar{z-index:23}
-#menu .win.acw{width:100%!important;height:auto!important;max-height:none!important;align-self:stretch;padding:14px 14px 14px!important;border:3px solid var(--edge)!important;border-radius:6px!important;box-shadow:0 0 0 2px #574c3d,0 0 0 4px var(--edge),0 6px 18px rgba(0,0,0,.5)!important}
+#menu .win.acw{width:100%!important;height:auto!important;max-height:none!important;align-self:stretch;padding:var(--hov,30px) 14px 14px!important;border:3px solid var(--edge)!important;border-radius:6px!important;box-shadow:0 0 0 2px #574c3d,0 0 0 4px var(--edge),0 6px 18px rgba(0,0,0,.5)!important}
 #menu.open .win.acw{animation:socUp .3s cubic-bezier(.2,.85,.25,1) both!important}
 @media (max-height:720px){#menu .win.acw{padding-top:30px!important}#menu .acon{display:none}#menu .acg .act small{display:none}#menu .acr{padding:8px 10px}}
 
@@ -1070,7 +1070,7 @@ body:has(#menu.open) header.bar{z-index:23}
 #bksh{flex-direction:column!important;gap:1px!important}#bksh small{display:block;font-weight:600;opacity:.8;font-size:11.5px}.sct button{white-space:nowrap;font-size:12.5px!important;letter-spacing:-.01em}
 
 /* ===== Copains : seule la liste défile ===== */
-#soc .scw{display:flex!important;flex-direction:column;overflow:hidden!important;padding-top:14px!important}
+#soc .scw{display:flex!important;flex-direction:column;overflow:hidden!important;padding-top:var(--hov,30px)!important}
 #soc .scw>*{flex:none;width:100%}
 #soc .scx{position:absolute;top:4px;right:6px;width:34px!important;height:34px!important;z-index:2}
 #soc .scp.on{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
@@ -1154,7 +1154,7 @@ body:has(#com.open) header.bar{z-index:23}
 #com .scw{inset:0 8px calc(6px + env(safe-area-inset-bottom)) 8px!important;padding:34px 14px 14px!important;border:3px solid var(--edge)!important;border-radius:6px!important;box-shadow:0 0 0 2px #574c3d,0 0 0 4px var(--edge),0 6px 18px rgba(0,0,0,.5)!important;animation:socUp .3s cubic-bezier(.2,.85,.25,1) both!important}
 body:not(.nosel):not(.pmin) #dock #found:not(.rec),body:not(.nosel):not(.pmin) #dock #comb{display:none}
 #com .scw{animation-fill-mode:backwards!important}
-#com .scw{display:flex!important;flex-direction:column;overflow:hidden!important;padding-top:14px!important}
+#com .scw{display:flex!important;flex-direction:column;overflow:hidden!important;padding-top:var(--hov,30px)!important}
 #com .scw>*{flex:none;width:100%}
 #com .scx{position:absolute;top:4px;right:6px;width:34px!important;height:34px!important;z-index:2}
 #com .scp.on{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
@@ -3076,11 +3076,11 @@ $('#found').innerHTML = foundOff(); $('#found').onclick = () => { if (LITE) retu
 /* ===== Menu, import / export, toast ===== */
 const bump = s => { const b = $(s); if (!b || RMO.matches) return; b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); };
 let tt; function toast(m, undo, lbl) { $('#tm').textContent = m; $('#tu').hidden = !undo; $('#tu').textContent = lbl || 'Annuler'; $('#tu').onclick = () => { undo && undo(); $('#toast').classList.remove('show'); }; { const el = $('#toast'); el.classList.remove('show'); void el.offsetWidth; el.classList.add('show'); } clearTimeout(tt); tt = setTimeout(() => $('#toast').classList.remove('show'), undo ? 7000 : 3500); }
-$('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('#menu').classList.remove('open'); try { socClose(); comClose(); } catch (e) {} { const r = $('#mapBox').getBoundingClientRect(); document.documentElement.style.setProperty('--socbt', Math.max(0, Math.round(innerHeight - r.bottom)) + 'px'); } $('#menu').style.setProperty('--mnt', Math.max(0, Math.round($('#mapBox').getBoundingClientRect().top)) + 'px'); alLabel(); accPage('main', true); accRender(); const nl = Object.values(D.cells).filter(rec).length, nm = (D.marks || []).length, np = (D.paths || []).length; $('#info').textContent = `Version ${APP_V} · ${nl} balade${nl > 1 ? 's' : ''} · ${nm} repère${nm > 1 ? 's' : ''} · ${np} sentier${np > 1 ? 's' : ''} dans le carnet`; $('#menu').classList.add('open'); };
+$('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('#menu').classList.remove('open'); try { socClose(); comClose(); } catch (e) {} { const r = $('#mapBox').getBoundingClientRect(); hovSet(); document.documentElement.style.setProperty('--socbt', Math.max(0, Math.round(innerHeight - r.bottom)) + 'px'); } $('#menu').style.setProperty('--mnt', Math.max(0, Math.round($('#mapBox').getBoundingClientRect().top)) + 'px'); alLabel(); accPage('main', true); accRender(); const nl = Object.values(D.cells).filter(rec).length, nm = (D.marks || []).length, np = (D.paths || []).length; $('#info').textContent = `Version ${APP_V} · ${nl} balade${nl > 1 ? 's' : ''} · ${nm} repère${nm > 1 ? 's' : ''} · ${np} sentier${np > 1 ? 's' : ''} dans le carnet`; $('#menu').classList.add('open'); };
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-158';
+const APP_V = '2026.10.28-159';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3415,7 +3415,10 @@ function mqFit(root) {      // seul le nom de la balade défile (aller-retour) q
   requestAnimationFrame(() => root.querySelectorAll('.mqn').forEach(el => { const sp = el.firstElementChild, d = sp.scrollWidth - el.clientWidth; el.classList.toggle('mq', d > 2); if (d > 2) { sp.style.setProperty('--d', -(d + 10) + 'px'); sp.style.animationDuration = Math.max(6, (d + 10) / 22 + 4) + 's'; } })); }
 function socBadge() { let n = 0; try { n = msgUnread() + SO.rin.length + evNew(); } catch (e) {} const b = $('#socn'); b.hidden = !n; b.textContent = n > 9 ? '9+' : n; $('#socb').setAttribute('aria-label', 'Copains, messages et rendez-vous' + (n ? ' : ' + n + ' notification' + (n > 1 ? 's' : '') : '')); }
 setTimeout(socBadge, 300);
-function socOpen() { try { comClose(); $('#menu').classList.remove('open'); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); document.documentElement.style.setProperty('--socbt', Math.max(0, Math.round(innerHeight - mb.bottom)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); faClose(); socMe(); socRender(); $('#soc').classList.add('open'); soTick(true); }
+function hovSet() {      // le rond du chien dépasse du bandeau : les fenêtres commencent juste en dessous
+  try { const mb = $('#mapBox').getBoundingClientRect(); let bt = 0; document.querySelectorAll('#hdog, #hdog *').forEach(e => { const r = e.getBoundingClientRect(); if (r.width && r.height) bt = Math.max(bt, r.bottom); });
+    document.documentElement.style.setProperty('--hov', Math.max(14, Math.round(bt - mb.top + 10)) + 'px'); } catch (e) {} }
+function socOpen() { try { comClose(); $('#menu').classList.remove('open'); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); hovSet(); document.documentElement.style.setProperty('--socbt', Math.max(0, Math.round(innerHeight - mb.bottom)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); faClose(); socMe(); socRender(); $('#soc').classList.add('open'); soTick(true); }
 const socClose = () => { SOC.ed = false; $('#soc').classList.remove('open'); };
 const socSoon = () => toast('🛠️ Bientôt disponible');
 function socShow(k) { if (!k || !D.cells[k]) return toast('📍 Cette balade n\'est pas sur votre carte'); socClose(); select(k); try { fitBal(k); } catch (e) {} }
@@ -3594,7 +3597,7 @@ async function cmLoad() {
   CM.busy = false; cmRender();
 }
 function comOpen() { metaLoad(() => cmRender());
- try { socClose(); $('#menu').classList.remove('open'); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#com').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); document.documentElement.style.setProperty('--socbt', Math.max(0, Math.round(innerHeight - mb.bottom)) + 'px'); $('#cmsh').hidden = true; $('#com').classList.add('open'); cmRender(); cmLoad(); }
+ try { socClose(); $('#menu').classList.remove('open'); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#com').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); hovSet(); document.documentElement.style.setProperty('--socbt', Math.max(0, Math.round(innerHeight - mb.bottom)) + 'px'); $('#cmsh').hidden = true; $('#com').classList.add('open'); cmRender(); cmLoad(); }
 const comClose = () => { $('#com').classList.remove('open'); $('#cmsh').hidden = true; };
 async function cmCompress(file) {      // photo réduite (1024 px max) et compressée en JPEG, ~100 à 200 Ko
   const u = URL.createObjectURL(file); try { const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = u; });
