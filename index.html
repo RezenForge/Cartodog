@@ -2847,7 +2847,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-119';
+const APP_V = '2026.10.28-120';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -4632,6 +4632,7 @@ function cl(){m.classList.remove('open')}
 function go(n){P.forEach(function(p,i){p.classList.toggle('on',i===n)});D.forEach(function(d,i){d.classList.toggle('on',i===n)})}
 m.addEventListener('click',function(e){var t=e.target;if(t===m||t.closest('[data-ok]'))return cl();var g=t.closest('[data-go]');if(g)go(+g.dataset.go)});
 document.addEventListener('keydown',function(e){if(!m.classList.contains('open'))return;if(e.key==='Escape')cl();else if(e.key==='ArrowRight')go(1);else if(e.key==='ArrowLeft')go(0)});
-m.classList.add('open');})();
+var d=new Date(),k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(),v='';try{v=localStorage.getItem('cartodog-welm')||''}catch(e){}
+if(v!==k){m.classList.add('open');try{localStorage.setItem('cartodog-welm',k)}catch(e){}}})();      /* une fois par jour */
 </script>
 </body></html>
