@@ -1175,7 +1175,7 @@ body.lpon #dock #found:not(.rec),body.lpon #dock #comb{display:none!important}
 .cmloc{align-self:flex-start;max-width:100%;border:0;background:rgba(234,165,60,.12);color:var(--ember2);font:800 13px var(--num);padding:4px 9px;border-radius:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cmt{margin:0;font:500 14.5px/1.45 var(--num);color:var(--txt);white-space:pre-wrap;overflow-wrap:anywhere}
 .cmimg{display:block;width:100%;height:150px;padding:0;border:0;border-radius:8px;overflow:hidden;background:#14110e}.cmimg img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .25s}.cmimg.ok img{opacity:1}
-.cma{display:flex;gap:8px}.cma button{height:30px;padding:0 12px;border-radius:17px;border:1.5px solid var(--rim);background:none;color:var(--txt);font:800 14px var(--num)}.cma .cml.on{color:#ff7a6b;border-color:#8a3a30}.cma span:empty{display:none}
+.cma{display:flex;gap:8px}.cma button{height:30px;padding:0 12px;border-radius:17px;border:1.5px solid var(--rim);background:none;color:var(--txt);font:800 14px var(--num)}.cma button{display:inline-flex;align-items:center;gap:5px}.bisc{width:26px;height:13px;display:block;overflow:visible}.bisc path{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round}.bisc circle{fill:currentColor;opacity:.55}.cma .cml.on{color:#2a1806;background:linear-gradient(#f4c862,#c6862a);border-color:#8a5a1a}.cma .cml.on .bisc path{fill:#e8b45c;stroke:#5a3410}.cma .cml.on .bisc circle{fill:#5a3410;opacity:.8}.cma span:empty{display:none}
 .cmlast{display:block;text-align:left;border:0;background:none;padding:2px 0;color:var(--txt);font:500 13.5px/1.35 var(--num);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cmlast b{font-weight:800}.cmlast small{display:block;color:var(--mut);font:600 12.5px var(--num);margin-top:2px}
 .cmto{font:800 13px var(--num);color:var(--ember2);margin:-4px 0 8px}#cmtx{width:100%;box-sizing:border-box;min-height:80px;border-radius:9px;border:2px solid var(--edge);background:var(--slot);color:var(--txt);font:500 15px/1.4 var(--num);padding:9px 10px;resize:vertical;margin-bottom:8px}
 .cmprev{position:relative;height:150px;border-radius:9px;overflow:hidden;margin-bottom:8px}.cmprev img{width:100%;height:100%;object-fit:cover}.cmprev button{position:absolute;top:6px;right:6px;width:32px;height:32px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;font:800 15px var(--num)}
@@ -2928,7 +2928,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-136';
+const APP_V = '2026.10.28-137';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3337,6 +3337,7 @@ if ('serviceWorker' in navigator) {
   if (PUSH.on) pushReg();
 }
 /* ===== Communauté : publications courtes des promeneurs, rangées par balade (texte, photo compressée, j'aime, commentaires) ===== */
+const BISC = '<svg class="bisc" viewBox="0 0 32 16" aria-hidden="true"><path d="M8.6 5.4H23.4A3.4 3.4 0 1 1 27.2 8A3.4 3.4 0 1 1 23.4 10.6H8.6A3.4 3.4 0 1 1 4.8 8A3.4 3.4 0 1 1 8.6 5.4Z"/><circle cx="13" cy="8" r=".9"/><circle cx="16" cy="8" r=".9"/><circle cx="19" cy="8" r=".9"/></svg>';      // biscuit pour chien
 const CM = { k: null, posts: [], busy: false, img: {}, open: null, draft: null };
 const cmAgo = t => { const s = (Date.now() - t) / 1000; if (s < 90) return 'à l\'instant'; if (s < 3600) return 'il y a ' + Math.round(s / 60) + ' min'; if (s < 86400) return 'il y a ' + Math.round(s / 3600) + ' h';
   const d = Math.round(s / 86400); return d < 7 ? 'il y a ' + d + ' j' : 'le ' + new Date(t).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); };
@@ -3358,7 +3359,7 @@ function cmCard(p) {
     <button class="cmloc" data-cmloc="${p.id}">📍 ${esc(p.bal)}</button>
     ${p.body ? `<p class="cmt">${esc(p.body)}</p>` : ''}
     ${p.photo ? `<button class="cmimg" data-cmimg="${esc(p.photo)}" aria-label="Agrandir la photo"><img alt="" data-cmsrc="${esc(p.photo)}"></button>` : ''}
-    <div class="cma"><button class="cml${p.liked ? ' on' : ''}" data-cmlike="${p.id}" aria-pressed="${p.liked ? 'true' : 'false'}">${p.liked ? '♥' : '♡'} <span>${p.likes || ''}</span></button><button class="cmc" data-cmcom="${p.id}">💬 <span>${p.ncom || ''}</span></button></div>
+    <div class="cma"><button class="cml${p.liked ? ' on' : ''}" data-cmlike="${p.id}" aria-pressed="${p.liked ? 'true' : 'false'}" aria-label="Donner un biscuit">${BISC} <span>${p.likes || ''}</span></button><button class="cmc" data-cmcom="${p.id}">💬 <span>${p.ncom || ''}</span></button></div>
     ${lc ? `<button class="cmlast" data-cmcom="${p.id}"><b>${esc(cmPerson(lc).n || cmPerson(lc).d)}</b>${bdg(lc.author)} ${esc(lc.body)}${p.ncom > 1 ? `<small>Voir les ${p.ncom} commentaires</small>` : ''}</button>` : ''}
   </article>`;
 }
