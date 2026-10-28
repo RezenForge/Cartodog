@@ -1070,7 +1070,7 @@ body:has(#menu.open) header.bar{z-index:23}
 #bksh{flex-direction:column!important;gap:1px!important}#bksh small{display:block;font-weight:600;opacity:.8;font-size:11.5px}.sct button{white-space:nowrap;font-size:12.5px!important;letter-spacing:-.01em}
 
 /* ===== Copains : seule la liste défile ===== */
-#soc .scw{display:flex!important;flex-direction:column;overflow:hidden!important;padding-top:40px!important}
+#soc .scw{display:flex!important;flex-direction:column;overflow:hidden!important;padding-top:14px!important}
 #soc .scw>*{flex:none;width:100%}
 #soc .scx{position:absolute;top:4px;right:6px;width:34px!important;height:34px!important;z-index:2}
 #soc .scp.on{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
@@ -1154,7 +1154,7 @@ body:has(#com.open) header.bar{z-index:23}
 #com .scw{inset:0 8px calc(6px + env(safe-area-inset-bottom)) 8px!important;padding:34px 14px 14px!important;border:3px solid var(--edge)!important;border-radius:6px!important;box-shadow:0 0 0 2px #574c3d,0 0 0 4px var(--edge),0 6px 18px rgba(0,0,0,.5)!important;animation:socUp .3s cubic-bezier(.2,.85,.25,1) both!important}
 body:not(.nosel):not(.pmin) #dock #found:not(.rec),body:not(.nosel):not(.pmin) #dock #comb{display:none}
 #com .scw{animation-fill-mode:backwards!important}
-#com .scw{display:flex!important;flex-direction:column;overflow:hidden!important;padding-top:40px!important}
+#com .scw{display:flex!important;flex-direction:column;overflow:hidden!important;padding-top:14px!important}
 #com .scw>*{flex:none;width:100%}
 #com .scx{position:absolute;top:4px;right:6px;width:34px!important;height:34px!important;z-index:2}
 #com .scp.on{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
@@ -1260,8 +1260,8 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
   <div id="lp" class="dg" hidden><div class="eyb" id="lpe">Balade guidée</div><div id="lpt"></div><div class="pmb"><button id="lpgo" aria-label="Partir">▶</button><button id="lpn" aria-label="Proposer une autre boucle">↻</button><button id="lpd" aria-label="Changer la durée ou le départ">⏱</button><button id="lpv" aria-label="Guidage vocal"></button><button id="lpx" aria-label="Masquer la boucle">✕</button></div></div>
   <div id="rm" class="dg" hidden><div class="eyb">Poser un repère</div><div id="rmt">Touchez la carte pour poser un repère (point d'eau, danger, parking…), ou touchez un repère existant pour le modifier.</div><div class="pmb"><button id="rmg">À ma position</button><button id="rmx" aria-label="Quitter le mode repère">✕</button></div></div>
   <div id="zb"><button class="ib" id="gr" data-ic="grid" aria-label="Afficher ou cacher la grille"></button><button class="ib" id="pt" data-ic="trail" aria-label="Cartographier les sentiers"><small>Sentiers</small></button><button class="ib" id="rtb" data-ic="home" aria-label="Retour au départ ou au parking"><small>Retour</small></button><button class="ib" id="lb" data-ic="book" aria-label="Mes balades"><small>Balades</small></button><i class="sep"></i><button class="ib" id="fit" data-ic="fit" aria-label="Tout voir"><small>Tout voir</small></button><span class="zst"><button class="ib" id="zi" data-ic="plus" aria-label="Zoomer"></button><button class="ib" id="zo" data-ic="minus" aria-label="Dézoomer"></button></span></div></div>
-<div id="dock"><button id="found" aria-label="Lancer ou terminer une balade">▶ Balade</button><button id="homeb" hidden aria-label="Me ramener au départ ou au parking">🏠<small>Retour</small></button><button id="comb" aria-label="Communauté : publications des balades"><svg viewBox="0 2.2 32 32" aria-hidden="true"><defs><linearGradient id="cmg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><g stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"><path d="M5.6 13.6l1.5-2.6h5.2l1.5 2.6z" fill="url(#cmg)"/><rect x="1.4" y="13.4" width="16.8" height="12.2" rx="2.6" fill="url(#cmg)"/><circle cx="9.8" cy="19.5" r="4" fill="#3a3026"/><circle cx="9.8" cy="19.5" r="2.2" fill="#6b5b44"/></g><circle cx="9" cy="18.7" r=".8" fill="#fff1cf"/><rect x="14" y="15.2" width="2.3" height="1.5" rx=".5" fill="#fff1cf" stroke="#1a1208" stroke-width=".6"/><g fill="#433b31" stroke="#433b31" stroke-width="3.2" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z"/></g>
-<g stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)" fill="#a8641c"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)" fill="#a8641c"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z" fill="url(#cpg)"/><ellipse cx="23" cy="20.9" rx="2.8" ry="2.1" fill="#fff1cf"/></g>
+<div id="dock"><button id="found" aria-label="Lancer ou terminer une balade">▶ Balade</button><button id="homeb" hidden aria-label="Me ramener au départ ou au parking">🏠<small>Retour</small></button><button id="comb" aria-label="Communauté : publications des balades"><svg viewBox="0 2.2 32 32" aria-hidden="true"><defs><linearGradient id="cmg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient><linearGradient id="cpg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><g stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"><path d="M5.6 13.6l1.5-2.6h5.2l1.5 2.6z" fill="url(#cmg)"/><rect x="1.4" y="13.4" width="16.8" height="12.2" rx="2.6" fill="url(#cmg)"/><circle cx="9.8" cy="19.5" r="4" fill="#3a3026"/><circle cx="9.8" cy="19.5" r="2.2" fill="#6b5b44"/></g><circle cx="9" cy="18.7" r=".8" fill="#fff1cf"/><rect x="14" y="15.2" width="2.3" height="1.5" rx=".5" fill="#fff1cf" stroke="#1a1208" stroke-width=".6"/><g fill="#433b31" stroke="#433b31" stroke-width="3.2" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z"/></g>
+<g stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)" fill="#a8641c"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)" fill="#a8641c"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z" fill="url(#cpg2)"/><ellipse cx="23" cy="20.9" rx="2.8" ry="2.1" fill="#fff1cf"/></g>
 <ellipse cx="23" cy="19.8" rx="1.3" ry=".9" fill="#1a1208"/><circle cx="21" cy="16.6" r=".95" fill="#1a1208"/><circle cx="25" cy="16.6" r=".95" fill="#1a1208"/></svg><small>Communauté</small><span class="dkar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8.5l7 7 7-7"/></svg></span></button><button id="socb" aria-label="Copains, messages et rendez-vous"><svg viewBox="0 2.2 32 32" aria-hidden="true"><defs><linearGradient id="cpg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs>
 <circle cx="10.6" cy="12.6" r="4.5" fill="url(#cpg)" stroke="#1a1208" stroke-width="1.1"/><path d="M2.4 28c0-5.4 3.6-9 8.2-9s8.2 3.6 8.2 9z" fill="url(#cpg)" stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"/>
 <g fill="#433b31" stroke="#433b31" stroke-width="3.2" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z"/></g>
@@ -1351,7 +1351,6 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
   </div>
 </div></div>
 <div id="com"><div class="win dg scw" role="dialog" aria-label="Communauté">
-  <button class="ib scx" id="comx" aria-label="Fermer">✕</button>
   <div class="cmtop"><label class="cmlb" for="cmsel">📍 Publier à la balade</label><select id="cmsel" aria-label="Balade"></select><button class="btn gold" id="cmpub">＋ Publier ici</button></div>
   <div class="scls cmls" id="cmls"></div>
   <div class="scsh" id="cmsh" hidden><div class="scgw" id="cmsw"></div></div>
@@ -1360,7 +1359,6 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
 <div id="cmv" hidden><img id="cmvi" alt="Photo de la publication"></div>
 <div class="scsh" id="pfsh" hidden><div class="pfw dg" id="pfw" role="dialog" aria-label="Profil"></div></div>
 <div id="soc"><div class="win dg scw" role="dialog" aria-label="Copains, messages et rendez-vous">
-  <button class="ib scx" id="socx" aria-label="Fermer">✕</button>
   <div class="scme" id="scme"></div>
   <div class="sct" role="tablist"><button data-st="fr" role="tab">👥 Copains</button><button data-st="ms" role="tab">💬 Messages<b id="scmn" hidden></b></button><button data-st="ev" role="tab">📅 Rendez-vous<b id="scen" hidden></b></button></div>
   <div class="scp" data-sp="fr" id="scfr"></div>
@@ -2945,7 +2943,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-140';
+const APP_V = '2026.10.28-141';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3468,7 +3466,7 @@ async function cmComments(id) {
 $('#cmsel').onchange = e => { CM.k = e.target.value || null; cmRender(); };
 $('#cmpub').onclick = () => { if (!clOn()) return toast('☁️ Connectez-vous pour publier'); if (!CM.k) return; CM.draft = null; cmCompose(); };
 $('#cmfile').onchange = async e => { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return; try { const b = await cmCompress(f); const d = CM.draft ||= { t: '' }; d.blob = b; if (d.url) URL.revokeObjectURL(d.url); d.url = URL.createObjectURL(b); d.t = $('#cmtx') ? $('#cmtx').value : d.t; cmCompose(); } catch (x) { toast('⚠️ Photo illisible'); } };
-$('#comb').onclick = () => $('#com').classList.contains('open') ? comClose() : comOpen(); $('#comx').onclick = comClose;
+$('#comb').onclick = () => $('#com').classList.contains('open') ? comClose() : comOpen();
 $('#com').addEventListener('click', async e => {
   const t = e.target; if (t.id === 'cmsh') { $('#cmsh').hidden = true; CM.open = null; return; }
   const loc = t.closest('[data-cmloc]'); if (loc) { const p = CM.posts.find(x => x.id === loc.dataset.cmloc), k = p && (soCell(p.bx, p.by) || CM.k); if (!k || !D.cells[k]) return toast('📍 Cette balade n\'est pas sur votre carte'); comClose(); select(k); try { fitBal(k); } catch (x) {} return; }
@@ -3489,7 +3487,7 @@ $('#com').addEventListener('click', async e => {
     catch (x) { toast('⚠️ ' + x.message); sd.disabled = false; } return; }
 });
 $('#cmv').onclick = () => { $('#cmv').hidden = true; $('#cmvi').removeAttribute('src'); };
-$('#socb').onclick = () => $('#soc').classList.contains('open') ? socClose() : socOpen(); $('#socx').onclick = socClose;
+$('#socb').onclick = () => $('#soc').classList.contains('open') ? socClose() : socOpen();
 $('#soc').addEventListener('click', e => {
   const me = e.target.closest('[data-sme]'); if (me) { if (me.dataset.sme === 'bio') { SOC.ed = true; return socMe(); }
     if (me.dataset.sme === 'sp') { const cur = D.prof.space || ''; $('#scst .scshh').textContent = (D.prof.name || 'Mon chien') + ' avec les autres chiens'; $('#scstl').innerHTML = Object.entries(SPC).map(([k, [ic, t, d]]) => `<button data-spc="${k}"${k === cur ? ' class="on"' : ''}><span>${ic}</span><span class="act"><b>${t}</b><small>${d}</small></span></button>`).join('') + '<div class="spnote">Visible par les copains et les promeneurs proches, pour éviter les mauvaises rencontres.</div>'; $('#scst').hidden = false; return; }
