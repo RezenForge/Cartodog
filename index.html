@@ -1470,7 +1470,7 @@ addEventListener('pagehide', () => { if (saveT) { clearTimeout(saveT); save(); }
 const CGM = new Map();      // fiche → sentiers rattachés (cache, vidé à chaque enregistrement)
 function save() { clearTimeout(saveT); saveT = 0; CGM.clear(); try { if (syncBal()) CGM.clear(); } catch (e) {} try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) { toast('Stockage plein : exportez vos données'); } syncSoon(); }
 const cleanPts = a => Array.isArray(a) ? a.filter(q => Array.isArray(q) && isFinite(q[0]) && isFinite(q[1])).map(q => [+q[0], +q[1]]).slice(0, 6000) : [];
-function clean(c) { const ok = c && c.x != null && c.y != null && isFinite(c.x) && isFinite(c.y); return { ...(ok ? { x: +c.x, y: +c.y } : {}), name: String(c?.name || ''), note: String(c?.note || ''),
+function clean(c) { const ok = c && c.x != null && c.y != null && isFinite(c.x) && isFinite(c.y); return { ...(ok ? { x: +c.x, y: +c.y } : {}), ...(+c?._t > 0 ? { _t: +c._t } : {}), name: String(c?.name || ''), note: String(c?.note || ''),
   ph: (Array.isArray(c?.ph) ? c.ph : []).filter(p => p && /^[\w-]+$/.test(String(p.id))).map(p => ({ id: String(p.id), d: /^\d{4}-\d\d-\d\d$/.test(p.d) ? p.d : '' })),
   ...(/^[\w-]+$/.test(String(c?.cov || '')) ? { cov: String(c.cov) } : {}), ...(Array.isArray(c?.tags) && c.tags.length ? { tags: c.tags.filter(t => ['sb', 'terre', 'pmr', 'pous'].includes(t)) } : {}), ...(typeof c?.th === 'string' && c.th.startsWith('data:image/') && c.th.length < 40000 ? { th: c.th } : {}),
   v: (Array.isArray(c?.v) ? c.v : []).filter(v => v && /^\d{4}-\d\d-\d\d$/.test(v.d)).map(v => ({ id: /^[\w-]+$/.test(String(v.id)) ? String(v.id) : rid(), d: v.d, h: /^\d\d:\d\d$/.test(v.h) ? v.h : '', s: Math.max(0, Math.round(+v.s || 0)), m: Math.max(0, Math.round(+v.m || 0)), t: String(v.t || ''), pts: cleanPts(v.pts), bal: String(v.bal || '').slice(0, 60) })) }; }
@@ -1576,13 +1576,13 @@ function mergeMarks(a) { const have = new Set((D.marks ||= []).map(m => m.id)); 
 const snapC = () => JSON.stringify({ cells: D.cells });
 function restoreSnap(snap) { const o = JSON.parse(snap); D.cells = o.cells; if (sel && !D.cells[sel]) sel = null; }      // annuler une action du carnet ne touche ni aux sentiers ni aux repères
 const cleanProf = (p, nm) => { p = p && typeof p === 'object' ? p : {}; const st = (k, n) => String(p[k] || '').slice(0, n);
-  return { name: st('name', 30) || String(nm || '').slice(0, 30), breed: st('breed', 60), sx: p.sx === 'm' || p.sx === 'f' ? p.sx : '', bd: /^\d{4}-\d\d-\d\d$/.test(p.bd) ? p.bd : '', st: !!p.st, chip: st('chip', 60), vet: st('vet', 60), vtel: st('vtel', 30), note: st('note', 1000),
+  return { ...(+p._t > 0 ? { _t: +p._t } : {}), name: st('name', 30) || String(nm || '').slice(0, 30), breed: st('breed', 60), sx: p.sx === 'm' || p.sx === 'f' ? p.sx : '', bd: /^\d{4}-\d\d-\d\d$/.test(p.bd) ? p.bd : '', st: !!p.st, chip: st('chip', 60), vet: st('vet', 60), vtel: st('vtel', 30), note: st('note', 1000),
     ph: /^[\w-]+$/.test(String(p.ph || '')) ? String(p.ph) : '', space: ['ok', 'space', 'shy', 'heat'].includes(p.space) ? p.space : '', w: (Array.isArray(p.w) ? p.w : []).filter(x => x && /^\d{4}-\d\d-\d\d$/.test(x.d) && +x.kg > 0 && +x.kg < 150).map(x => ({ d: x.d, kg: Math.round(+x.kg * 10) / 10 })) }; };
 D.prof = cleanProf(null);
 function load() {
   try { const d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && d.cells) { D = { cells: {}, paths: cleanPaths(d.paths), marks: cleanMarks(d.marks), dog: String(d.dog || '').slice(0, 30), prof: cleanProf(d.prof, d.dog), user: cleanUser(d.user) }; D.dog = D.prof.name || D.dog; Object.entries(d.cells).forEach(([k, c]) => { if (/^[\w,-]+$/.test(k)) { const x = clean(c); if (x.x != null) D.cells[k] = x; } }); } } catch (e) {}
 }
-function cleanUser(u) { u = u && typeof u === 'object' ? u : {}; return { name: String(u.name || '').slice(0, 24), first: String(u.first || '').slice(0, 24), city: String(u.city || '').slice(0, 40), vis: ['none', 'friends', 'all'].includes(u.vis) ? u.vis : 'friends', pres: u.pres !== false, stats: u.stats !== false, st: ['on', 'look', 'dnd', 'hid'].includes(u.st) ? u.st : 'on', bio: String(u.bio || '').slice(0, 80) }; }
+function cleanUser(u) { u = u && typeof u === 'object' ? u : {}; return { ...(+u._t > 0 ? { _t: +u._t } : {}), name: String(u.name || '').slice(0, 24), first: String(u.first || '').slice(0, 24), city: String(u.city || '').slice(0, 40), vis: ['none', 'friends', 'all'].includes(u.vis) ? u.vis : 'friends', pres: u.pres !== false, stats: u.stats !== false, st: ['on', 'look', 'dnd', 'hid'].includes(u.st) ? u.st : 'on', bio: String(u.bio || '').slice(0, 80) }; }
 function importData(d) {
   let msg;
   if (d && d.app === 'cartodog' && d.kind === 'balade' && Array.isArray(d.paths)) { mergePaths(d.paths); mergeMarks(d.marks); NG.sig = ''; msg = 'Balade « ' + String(d.name || '').slice(0, 60) + ' » importée' + (d.from ? ' (partagée par ' + String(d.from).slice(0, 30) + ')' : '');
@@ -2914,7 +2914,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-125';
+const APP_V = '2026.10.28-126';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2963,7 +2963,7 @@ function soPresence() {      // mon état pour les copains ; en balade : le nom 
   soRpc('set_presence', { st: u.vis === 'none' ? 'hid' : ['on', 'look', 'dnd', 'hid'].includes(u.st) ? u.st : 'on', walk, bal: bal.slice(0, 60), bx: c ? c[0] : null, by: c ? c[1] : null }).catch(() => {});
 }
 function soProfile() {      // ce que voient les autres promeneurs : pseudo, prénom, nom du chien, sociabilité, description
-  if (!clOn() || !CLD.at) return; const u = accU(), nm = (u.name || '').trim().slice(0, 24), o = { first: (u.first || '').trim().slice(0, 24), dog: String(D.prof.name || '').slice(0, 30), sp: D.prof.space || '', bio: String(u.bio || '').slice(0, 80) }; if (nm) o.name = nm;
+  if (!clOn() || !CLD.at || !CLD.pulled) return; const u = accU(), nm = (u.name || '').trim().slice(0, 24), o = { first: (u.first || '').trim().slice(0, 24), dog: String(D.prof.name || '').slice(0, 30), sp: D.prof.space || '', bio: String(u.bio || '').slice(0, 80) }; if (nm) o.name = nm;
   const h = JSON.stringify(o); if (h === SO.ph) return; SO.ph = h;
   sb('/rest/v1/profiles?id=eq.' + CLD.s.user.id, { method: 'PATCH', json: o, headers: { Prefer: 'return=minimal' } }).then(() => { if (nm) CLD.name = nm; })
     .catch(e => { if (e.status === 409 || e.code === '23505') toast('⚠️ Le pseudo « ' + nm + ' » est déjà pris : choisissez-en un autre dans Mon compte'); else SO.ph = ''; });
@@ -3464,7 +3464,7 @@ async function clSignOut(gone) {      // le carnet reste dans le compte et quitt
   const t = CLD.s && CLD.s.access_token; CLD.s = null; CLD.role = ''; CLD.skip = false; clSave(); localWipe(); try { localStorage.removeItem(OWK); } catch (e) {} clUi(); if (t) try { await clAuth('logout', {}, t); } catch (e) {} }
 const OWK = 'cartodog-owner';      // compte à qui appartiennent les données de ce téléphone
 function localWipe() {
-  D = { cells: {}, paths: [], marks: [], dog: '', prof: cleanProf({}, ''), user: cleanUser({}) }; sel = null;
+  D = { cells: {}, paths: [], marks: [], dog: '', prof: cleanProf({}, ''), user: cleanUser({}) }; sel = null; CLD.pulled = false;
   [GRK, MSK, SYK, 'cartodog-socdemo', 'cartodog-msgs'].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} }); SO = soNew(); SOT.sig = ''; clearTimeout(SOT.tm); try { socBadge(); } catch (e) {}
   try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) {} try { CGM.clear(); } catch (e) {} NG.sig = '';
   idb.then(db => { if (db) try { db.transaction('p', 'readwrite').objectStore('p').clear(); } catch (e) {} });
@@ -3480,11 +3480,12 @@ async function clAfterLogin(first) {
   if (uid && own && own !== uid) localWipe();      // données d'un autre compte : on repart de zéro
   if (uid) try { localStorage.setItem(OWK, uid); } catch (e) {}
   gateSync();
-  try { const p = await sb('/rest/v1/profiles?select=name,role&id=eq.' + CLD.s.user.id); if (p && p[0]) { CLD.role = p[0].role; CLD.name = p[0].name; }
-    const u = accU(); if (!u.name.trim() && CLD.name) { u.name = CLD.name; save(); try { hdrRender(); } catch (e) {} } } catch (e) {}
+  CLD.pulled = false; let pr = null;
+  try { const p = await sb('/rest/v1/profiles?select=name,role,first,bio&id=eq.' + CLD.s.user.id); if (p && p[0]) { pr = p[0]; CLD.role = pr.role; CLD.name = pr.name; } } catch (e) {}
   clUi(); if (first) toast('☁️ Connecté : vos données se synchronisent');
   if (PUSH.on && pushOk() && pushPerm() === 'granted') pushEnable(true);
-  sync(true).then(() => { soTick(true); amiGo(); pushGo(); if (!first) return; if (!(D.prof && D.prof.name)) { if (window.welOpen) welOpen(); } else if (!$('#wel').hidden) { $('#wel').hidden = true; try { localStorage.setItem('cartodog-wel', '1'); } catch (e) {} } try { hdrRender(); dogAvatar(); } catch (e) {} });
+  sync(true).then(() => { if (CLD.pulled && pr) { const u = accU(); let f = false; if (!u.name.trim() && pr.name) { u.name = pr.name; f = true; } if (!(u.first || '').trim() && pr.first) { u.first = pr.first; f = true; } if (!(u.bio || '').trim() && pr.bio) { u.bio = pr.bio; f = true; } if (f) { save(); try { hdrRender(); accRender(); } catch (e) {} } }
+    soTick(true); amiGo(); pushGo(); if (!first) return; if (!(D.prof && D.prof.name)) { if (window.welOpen) welOpen(); } else if (!$('#wel').hidden) { $('#wel').hidden = true; try { localStorage.setItem('cartodog-wel', '1'); } catch (e) {} } try { hdrRender(); dogAvatar(); } catch (e) {} });
 }
 /* Retour d'un lien reçu par e-mail (confirmation d'inscription, mot de passe oublié) : #access_token=…&type=… */
 { const h = location.hash; if (/access_token=/.test(h)) { const q = new URLSearchParams(h.slice(1)); history.replaceState(null, '', location.pathname + location.search);
@@ -3498,7 +3499,52 @@ async function clAfterLogin(first) {
 const hsh = s => { let h = 5381; for (let i = 0; i < s.length; i++) h = (h * 33 + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36) + s.length.toString(36); };
 const syLoad = () => { let s = null; try { s = JSON.parse(localStorage.getItem(SYK) || 'null'); } catch (e) {} if (!s || !CLD.s || s.uid !== CLD.s.user.id) s = { uid: CLD.s && CLD.s.user.id, tp: '1970-01-01T00:00:00Z', mp: '1970-01-01T00:00:00Z', p: {}, m: {}, pst: {}, c: '', ca: '', ph: {} }; return s; };
 const sySave = s => { try { localStorage.setItem(SYK, JSON.stringify(s)); } catch (e) {} };
-const carnetOf = () => ({ v: 1, cells: D.cells, prof: D.prof, dog: D.dog, user: D.user || null });
+const carnetOf = () => ({ v: 2, cells: D.cells, prof: D.prof, dog: D.dog, user: D.user || null, prefs: D.prefs || prefsOf() });
+/* Fusion à trois du carnet : la dernière synchro sert de référence ; ce qui n'a changé que d'un côté est repris tel quel,
+   ce qui a changé des deux côtés est réuni (sorties et photos) ou départagé par la date ; les suppressions sont respectées. */
+const hj = o => hsh(JSON.stringify(o === undefined ? null : o, (k, v) => k === '_t' ? undefined : v));
+const PREFK = ['cartodog-grid', 'cartodog-roads', 'cartodog-alert', 'cartodog-wake', 'cartodog-comp', 'cartodog-comm', 'cartodog-mag', 'cartodog-dur', 'cartodog-rqt', 'cartodog-pushno', 'cartodog-seen'];
+function prefsOf() { const o = { _t: (D.prefs && D.prefs._t) || 0 }; PREFK.forEach(k => { try { const v = localStorage.getItem(k); if (v !== null) o[k] = v; } catch (e) {} }); o.rem = SO.rem || {}; o.evs = SO.evs || {}; return o; }
+function prefsApply(p) { if (!p || typeof p !== 'object') return; PREFK.forEach(k => { if (typeof p[k] === 'string') try { localStorage.setItem(k, p[k]); } catch (e) {} });
+  if (p.rem && typeof p.rem === 'object') SO.rem = { ...p.rem, ...(SO.rem || {}) }; if (p.evs && typeof p.evs === 'object') SO.evs = { ...p.evs, ...(SO.evs || {}) }; soSave(); }
+const filled = o => o ? Object.entries(o).filter(([k, v]) => k !== '_t' && v !== '' && v !== false && v != null && !(Array.isArray(v) && !v.length)).length : 0;
+function m3sec(b, loc, sv) {      // une section (profil, chien, réglages) : renvoie [valeur retenue, vient du serveur ?]
+  const lh = hj(loc), sh = hj(sv); if (!sv || lh === sh) return [loc, false];
+  if (!b) { const lt = +loc?._t || 0, st = +sv._t || 0; if (st !== lt) return st > lt ? [sv, true] : [loc, false]; return filled(sv) > filled(loc) ? [sv, true] : [loc, false]; }
+  const lc = lh !== b, sc = sh !== b; if (sc && !lc) return [sv, true]; if (lc && !sc) return [loc, false];
+  return (+sv._t || 0) > (+loc._t || 0) ? [sv, true] : [loc, false];
+}
+function m3cell(b, l, s) {      // une balade du carnet
+  const ids = L => (L || []).map(x => x.id), gone = (bl, cur) => new Set((bl || []).filter(i => !ids(cur).includes(i)));
+  const dv = b ? new Set([...gone(b.v, l.v), ...gone(b.v, s.v)]) : new Set(), dp = b ? new Set([...gone(b.ph, l.ph), ...gone(b.ph, s.ph)]) : new Set();
+  const top = (+s._t || 0) > (+l._t || 0) ? s : l, o = { ...top };
+  const uni = (A, B, del) => { const seen = new Set(), out = []; [...A, ...B].forEach(x => { if (!x || seen.has(x.id) || del.has(x.id)) return; seen.add(x.id); out.push(x); }); return out; };
+  o.v = uni(l.v || [], s.v || [], dv); o.ph = uni(l.ph || [], s.ph || [], dp); return o;
+}
+function carnetMerge3(S, sd) {      // sd = carnet du serveur ; modifie D ; renvoie true si D a changé
+  const B = S.cb || null, now = Date.now(); let ch = false;
+  sd = sd && typeof sd === 'object' ? sd : {};
+  for (const [name, get, set, cl] of [['user', () => D.user || cleanUser({}), v => D.user = v, cleanUser], ['prof', () => D.prof, v => { D.prof = v; D.dog = v.name; }, v => cleanProf(v, sd.dog)], ['prefs', () => prefsOf(), v => { D.prefs = v; prefsApply(v); }, v => v]]) {
+    const loc = get(), b = B && B[name]; if (b && hj(loc) !== b) loc._t = Math.max(+loc._t || 0, now);      // modifié sur ce téléphone depuis la dernière synchro
+    const sv = sd[name] && typeof sd[name] === 'object' ? cl(sd[name]) : null; const [v, fromS] = m3sec(b, loc, sv);
+    if (fromS) { set(v); ch = true; } else if (name === 'prefs') D.prefs = loc; else if (name === 'user') D.user = loc;
+  }
+  const sc = {}; Object.entries(sd.cells && typeof sd.cells === 'object' ? sd.cells : {}).forEach(([k, c]) => { if (/^[\w,-]+$/.test(k)) { const x = clean(c); if (x.x != null) sc[k] = x; } });
+  const bc = B && B.c || {}, keys = new Set([...Object.keys(D.cells), ...Object.keys(sc), ...Object.keys(bc)]);
+  keys.forEach(k => { const b = bc[k], l = D.cells[k], s = sc[k], lh = l ? hj(l) : '', sh = s ? hj(s) : ''; if (lh === sh) return;
+    if (!B || !b) { if (!l) { D.cells[k] = s; ch = true; } else if (s) { D.cells[k] = m3cell(null, l, s); ch = true; } return; }
+    const lc = lh !== b.h, scg = sh !== b.h; if (lc && l) l._t = Math.max(+l._t || 0, now);
+    if (scg && !lc) { if (s) D.cells[k] = s; else delete D.cells[k]; ch = true; return; }
+    if (lc && !scg) { if (l) l._t = Math.max(+l._t || 0, now); return; }
+    if (!l) { D.cells[k] = s; ch = true; return; } if (!s) { l._t = now; return; }
+    D.cells[k] = m3cell(b, l, s); ch = true; });
+  return ch;
+}
+function carnetBase() {      // référence pour la prochaine synchro
+  const c = {}; Object.entries(D.cells).forEach(([k, x]) => c[k] = { h: hj(x), v: (x.v || []).map(y => y.id), ph: (x.ph || []).map(y => y.id) });
+  return { user: hj(D.user || cleanUser({})), prof: hj(D.prof), prefs: hj(D.prefs || prefsOf()), c };
+}
+
 function carnetMerge(srv) {      // fusion des fiches : sorties et photos réunies, nom et notes du téléphone gardés s'ils existent
   const cells = srv && srv.cells && typeof srv.cells === 'object' ? srv.cells : {};
   Object.entries(cells).forEach(([k, c0]) => { if (!/^[\w,-]+$/.test(k)) return; const c = clean(c0); if (c.x == null) return; const l = D.cells[k];
@@ -3548,17 +3594,18 @@ async function sync(force) {
     for (const id of Object.keys(S.m)) if (!(D.marks || []).some(m => m.id === id)) { try { await sb('/rest/v1/marks?id=eq.' + encodeURIComponent(id), { method: 'PATCH', json: { deleted: true }, headers: { Prefer: 'return=minimal' } }); } catch (e) {} delete S.m[id]; }
     /* 4. Carnet personnel */
     const cr = await sb('/rest/v1/carnets?select=data,updated_at'), srv = cr && cr[0];
-    let locH = hsh(JSON.stringify(carnetOf()));
-    if (srv && srv.updated_at !== S.ca) { if (locH === S.c && S.ca) { D.cells = {}; if (srv.data && srv.data.prof) { D.prof = cleanProf(srv.data.prof, srv.data.dog); D.dog = D.prof.name; } if (srv.data && srv.data.user) D.user = cleanUser(srv.data.user); } carnetMerge(srv.data); locH = hsh(JSON.stringify(carnetOf())); changed = true; down++; }
-    if (locH !== S.c || !srv) { const r = await sb('/rest/v1/carnets?on_conflict=user_id&select=updated_at', { method: 'POST', json: [{ user_id: CLD.s.user.id, data: carnetOf() }], headers: { Prefer: 'resolution=merge-duplicates,return=representation' } }); S.c = locH; S.ca = r && r[0] ? r[0].updated_at : S.ca; up++; }
+    D.prefs = prefsOf(); if (carnetMerge3(S, srv && srv.data)) { changed = true; down++; }
+    const out = carnetOf(), locH = hj(out);
+    if (!srv || locH !== hj(srv.data)) { const r = await sb('/rest/v1/carnets?on_conflict=user_id&select=updated_at', { method: 'POST', json: [{ user_id: CLD.s.user.id, data: out }], headers: { Prefer: 'resolution=merge-duplicates,return=representation' } }); S.ca = r && r[0] ? r[0].updated_at : S.ca; up++; }
     else S.ca = srv.updated_at;
+    S.c = locH; S.cb = carnetBase(); CLD.pulled = true;
     if (changed) { localStorage.setItem(KEY, JSON.stringify(D)); CGM.clear(); try { renderPanel(); hdrRender(); dogAvatar(); } catch (e) {} draw(); }
     /* 5. Photos : on envoie les nouvelles, on récupère celles qui manquent (par petits paquets) */
     const ids = [...new Set([...Object.values(D.cells).flatMap(c => c.ph.map(p => p.id)), D.prof.ph].filter(Boolean))]; let n = 0;
     for (const id of ids) { if (n >= 12) break;
       if (!S.ph[id]) { const u = await pGet(id).catch(() => null);
         if (u) { const b = await (await fetch(u)).blob(); try { await sb(`/storage/v1/object/photos/${CLD.s.user.id}/${id}`, { method: 'POST', body: b, headers: { 'Content-Type': b.type || 'image/jpeg', 'x-upsert': 'true' }, ms: 30000 }); S.ph[id] = 1; n++; up++; } catch (e) { if (e.status === 400 || e.status === 413) S.ph[id] = 1; } }
-        else { try { const r = await sb(`/storage/v1/object/authenticated/photos/${CLD.s.user.id}/${id}`, { raw: true, ms: 30000 }); if (r.ok) { const b = await r.blob(); const d = await new Promise(res => { const f = new FileReader(); f.onload = () => res(f.result); f.readAsDataURL(b); }); await pPut(id, d); S.ph[id] = 1; n++; down++; } } catch (e) {} } } }
+        else { try { const r = await sb(`/storage/v1/object/authenticated/photos/${CLD.s.user.id}/${id}`, { raw: true, ms: 30000 }); if (r.ok) { const b = await r.blob(); const d = await new Promise(res => { const f = new FileReader(); f.onload = () => res(f.result); f.readAsDataURL(b); }); await pPut(id, d); S.ph[id] = 1; n++; down++; try { if (id === D.prof.ph) dogAvatar(); else renderPanel(); } catch (e) {} } } catch (e) {} } } }
     sySave(S); CLD.st = 'ok'; CLD.at = Date.now(); CLD.n = { up, down };
   } catch (e) { sySave(S); CLD.st = 'err'; CLD.err = e.message || 'Pas de réseau'; }
   CLD.busy = false; clUi();
