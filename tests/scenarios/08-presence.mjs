@@ -1,0 +1,22 @@
+import { signup, befriend, poll } from '../lib.mjs';
+export const title = 'Présence sur une balade (500 m, 5 min), visite automatique';
+export default async T => {
+  const A = await T.dev('A'), B = await T.dev('B'), C = await T.dev('C');
+  await signup(A, 'dylan@test.fr', 'Rezen', 'Dylan', 'Nova'); await signup(B, 'lea@test.fr', 'lea_33', 'Léa', 'Max'); await signup(C, 'tom@test.fr', 'tom', 'Tom', 'Pepsi');
+  await befriend(A, B, 'lea_33');
+  const at = (p, dx = 300) => p.evaluate(dx => { const k = Object.keys(D.cells).find(k => balName(k) === 'Bois du Taillan'), c = ctr(k); me = { x: c[0] + dx, y: c[1] + 150, acc: 10 }; soPresence(); }, dx);
+  const old = p => p.evaluate(() => { const H = JSON.parse(localStorage.getItem('cartodog-here')); H.t -= 6 * 6e4; localStorage.setItem('cartodog-here', JSON.stringify(H)); soPresence(); });
+  await at(B); await at(C); await B.waitForTimeout(300); await poll(A);
+  T.eq(await A.evaluate(() => [...socLive()].length), 0, 'pas compté avant 5 minutes sur place');
+  await old(B); await old(C); await B.waitForTimeout(300); await poll(A); await poll(A);
+  T.eq(await A.evaluate(() => [...socLive()].map(([k, o]) => [balName(k), o.cnt, o.fr.map(f => f.id)])), [['Bois du Taillan', 2, ['u2']]], '2 promeneurs, dont ma copine nommée');
+  await A.click('#socb'); await A.waitForTimeout(300);
+  T.ok((await A.evaluate(() => $('#soc').innerText)).includes('Bois du Taillan'), 'copine « en balade à » dans Copains');
+  await A.evaluate(() => socClose());
+  await C.evaluate(() => { me = null; soPresence(); }); await C.waitForTimeout(300); await poll(A);
+  T.eq(await A.evaluate(() => [...socLive()].map(([k, o]) => o.cnt)), [1], 'parti : plus compté');
+  await A.evaluate(() => { const k = Object.keys(D.cells).find(k => balName(k) === 'Bois du Taillan'), c = ctr(k); me = { x: c[0] + 300, y: c[1], acc: 10 }; presTick(); const H = JSON.parse(localStorage.getItem('cartodog-here')); H.t -= 6 * 6e4; localStorage.setItem('cartodog-here', JSON.stringify(H)); presTick(); });
+  await A.waitForTimeout(300);
+  T.eq(await A.evaluate(() => { const k = Object.keys(D.cells).find(k => balName(k) === 'Bois du Taillan'); return [visited(k), D.cells[k].v.map(v => v.t)]; }), [true, ['Présence détectée sur place']], 'visite notée toute seule');
+  await A.evaluate(() => presTick()); T.eq(await A.evaluate(() => Object.values(D.cells).reduce((a, c) => a + c.v.length, 0)), 1, 'une seule visite par jour');
+};

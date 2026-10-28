@@ -1,0 +1,25 @@
+import { signup, befriend, poll } from '../lib.mjs';
+export const title = 'Administration : signalements, masquage, description, journal, balade';
+export default async T => {
+  const A = await T.dev('A', { prompt: 'Parc Test' }), B = await T.dev('B'), C = await T.dev('C');
+  await signup(A, 'dylan@test.fr', 'Rezen', 'Dylan', 'Nova'); await signup(B, 'lea@test.fr', 'lea_33', 'Léa', 'Pistache'); await signup(C, 'tom@test.fr', 'tom', 'Tom', 'Rocky');
+  const c = await C.evaluate(() => ctr(Object.keys(D.cells).find(k => balName(k) === 'Bois du Taillan')));
+  await C.evaluate(([x, y]) => soRpc('post_create', { bal: 'Bois du Taillan', bx: x, by: y, body: 'Achetez mes croquettes !!!', photo: null }), c);
+  const tom = T.S.db.users.find(u => u.email === 'tom@test.fr'); tom.bio = 'Description douteuse';
+  await B.evaluate(() => comOpen()); await B.waitForTimeout(1200); await B.click('#cmls [data-cmrep]'); await B.waitForTimeout(300); await B.click('#rpw [data-rp="spam"]'); await B.waitForTimeout(400);
+  await B.evaluate(id => { comClose(); pfOpen(id); }, tom.id); await B.waitForTimeout(600); await B.click('#pfw [data-pf="rep"]'); await B.click('#rpw [data-rp="inapproprie"]'); await B.waitForTimeout(400);
+  T.eq(T.S.db.reports.map(r => [r.kind, r.reason]), [['post', 'spam'], ['profile', 'inapproprie']], 'signalements envoyés');
+  T.ok(await B.evaluate(() => { $('#mn').click(); return $('#acadmg').hidden; }), 'pas d\'administration pour un membre');
+  T.ok(await B.evaluate(async () => { try { await soRpc('admin_overview', {}); return false; } catch (e) { return true; } }), 'serveur : administration refusée à un membre');
+  await A.evaluate(() => $('#mn').click()); await A.waitForTimeout(600); T.ok(await A.evaluate(() => !$('#acadmg').hidden), 'entrée Administration pour l\'admin');
+  await A.click('#acadm'); await A.waitForTimeout(800);
+  T.ok((await A.evaluate(() => $('#adm').innerText)).includes('Achetez mes croquettes'), 'signalement affiché avec le contenu');
+  await A.click('#adm [data-ah^="post|"]'); await A.waitForTimeout(600); T.ok(T.S.db.posts[0].del, 'publication masquée');
+  await A.click('#adm [data-ah^="bio|"]'); await A.waitForTimeout(600); T.eq(tom.bio, '', 'description effacée');
+  await A.evaluate(() => document.querySelector('#adm [data-adt="bal"]').click()); await A.waitForTimeout(300);
+  await A.evaluate(() => document.querySelector('#adm [data-adb="add"]').click()); await A.waitForTimeout(200);
+  const box = await A.evaluate(() => { const r = cv.getBoundingClientRect(); return [r.x + r.width / 2 + 40, r.y + r.height / 2]; }); await A.mouse.click(box[0], box[1]); await A.waitForTimeout(1500);
+  T.eq([...T.S.db.trails.values()].filter(t => t.data.name === 'Parc Test').map(t => t.status), ['public'], 'balade ajoutée par l\'admin, publique');
+  await A.evaluate(() => { sel = null; renderPanel(); admOpen(); ADM.tab = 'log'; admRender(); admLog(); }); await A.waitForTimeout(600);
+  T.eq(await A.evaluate(() => (ADM.log || []).map(l => l.action)), ['Balade ajoutée', 'Masqué', 'Masqué'], 'journal des actions');
+};
