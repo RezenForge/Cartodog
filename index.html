@@ -1183,7 +1183,7 @@ body.lpon #dock #found:not(.rec),body.lpon #dock #comb{display:none!important}
 .cmin{display:flex;gap:8px}.cmin input{flex:1;min-width:0;height:42px;border-radius:9px;border:2px solid var(--edge);background:var(--slot);color:var(--txt);font:500 15px var(--num);padding:0 10px}.cmin .btn{flex:none;margin:0;height:42px;padding:0 14px;width:auto}
 #cmv{position:fixed;inset:0;z-index:40;background:rgba(6,5,3,.94);display:flex;align-items:center;justify-content:center;padding:12px}#cmv[hidden]{display:none}#cmv img{max-width:100%;max-height:100%;border-radius:8px}
 
-.fbdg{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:1px 4px 1px 6px;border-radius:9px;border:1px solid rgba(234,165,60,.55);background:rgba(234,165,60,.1);color:#e9c77a;font:800 9.5px/14px var(--num);letter-spacing:.02em;font-style:normal;white-space:nowrap;vertical-align:2px;text-shadow:none}.fbdg img{width:11px;height:11px;border-radius:3px;display:block}
+.fbdg{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px;border-radius:6px;border:1px solid rgba(234,165,60,.55);background:rgba(234,165,60,.1);color:#e9c77a;font:800 9.5px/14px var(--num);letter-spacing:.02em;font-style:normal;white-space:nowrap;vertical-align:2px;text-shadow:none}.fbdg img{width:13px;height:13px;border-radius:3px;display:block}
 .scemp{display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;padding:26px 14px;font:700 15px/1.3 var(--num);color:var(--txt)}.scemp small{font:500 13px/1.4 var(--num);color:var(--mut);max-width:290px}
 .hico{display:inline-block;width:17px;height:17px;margin:0 0 0 4px;vertical-align:top;position:relative;top:1px;border-radius:5px;box-shadow:0 1px 2px rgba(0,0,0,.6)}
 
@@ -2902,7 +2902,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-122';
+const APP_V = '2026.10.28-123';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2920,7 +2920,7 @@ $('#mx').onclick = () => $('#menu').classList.remove('open'); $('#menu').onclick
 const soNew = () => ({ P: {}, fr: [], rin: [], rout: [], G: [], E: [], th: {}, last: 0, ph: '', init: 0, rem: {}, evs: {} });
 let SO = (() => { try { const o = JSON.parse(localStorage.getItem('cartodog-msgs') || 'null'); if (o && o.th) return Object.assign(soNew(), o); } catch (e) {} return soNew(); })();
 const SOT = { tm: 0, busy: false, sig: '', pt: 0, bt: 0 };
-const bdg = id => { if (id === 'me' && CLD.s) id = CLD.s.user.id; return (SO.B || {})[id] === 'founder' ? '<span class="fbdg" title="Fondateur de Cartodog">Fondateur Cartodog<img src="icon.svg" alt=""></span>' : ''; };
+const bdg = id => { if (id === 'me' && CLD.s) id = CLD.s.user.id; return (SO.B || {})[id] === 'founder' ? '<span class="fbdg" title="Fondateur de Cartodog" role="img" aria-label="Fondateur de Cartodog"><img src="icon.svg" alt=""></span>' : ''; };
 const soSave = () => { try { localStorage.setItem('cartodog-msgs', JSON.stringify(SO)); } catch (e) {} };
 const soRpc = (fn, args) => sb('/rest/v1/rpc/' + fn, { method: 'POST', json: args || {} });
 const PAL = ['#c6862a', '#5f7350', '#466f9a', '#8a4f7d', '#6b5b44', '#9a5a3a', '#3f7a74', '#7a6a2a'];
