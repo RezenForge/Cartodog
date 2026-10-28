@@ -1996,7 +1996,7 @@ const pPut = (id, u) => pdb('readwrite', s => s.put(u, id)), pGet = id => pdb('r
 /* Photo de couverture d'une balade : vignette carrée de 128 px gardée dans le carnet (légère, affichée sur la carte sans lag) */
 function mkThumb(url) { return new Promise((res, rej) => { const im = new Image(); im.onload = () => { const S = 128, c = document.createElement('canvas'); c.width = c.height = S; const m = Math.min(im.width, im.height);
   c.getContext('2d').drawImage(im, (im.width - m) / 2, (im.height - m) / 2, m, m, 0, 0, S, S); res(c.toDataURL('image/jpeg', .72)); }; im.onerror = rej; im.src = url; }); }
-async function setCover(k, id) { const c = D.cells[k]; if (!c) return; if (!id) { delete c.cov; delete c.th; THI.delete(k); return; } try { const u = await pGet(id); if (!u) return; c.cov = id; c.th = await mkThumb(u); THI.delete(k); save(); draw(); } catch (e) {} }
+async function setCover(k, id) { const c = D.cells[k]; if (!c) return; if (!id) { delete c.cov; delete c.th; THI.delete(k); if (c.bcs) bcUnshare(k); return; } try { const u = await pGet(id); if (!u) return; c.cov = id; c.th = await mkThumb(u); THI.delete(k); save(); draw(); bcQueue(); } catch (e) {} }
 const THI = new Map(), thBusy = new Set();
 /* ===== Photo du badge partagée : choisie avec ★ par un membre, elle s'affiche pour tous sur la carte ===== */
 const BC = (() => { try { const o = JSON.parse(localStorage.getItem('cartodog-bc') || 'null'); if (o && Array.isArray(o.r)) return { t: 0, r: o.r, busy: false }; } catch (e) {} return { t: 0, r: [], busy: false }; })(), BCI = {};
@@ -2022,7 +2022,14 @@ async function bcShare(k) {      // ma photo du badge, envoyée en 640 px carré
   const r = await sb('/storage/v1/object/avatars/' + path, { method: 'POST', body: b, headers: { 'Content-Type': 'image/jpeg', 'x-upsert': 'true' }, raw: true }); if (!r.ok) throw new Error('Photo non envoyée');
   await soRpc('bal_cover_set', { ...balXY(k), path }); const old = c.bcs; c.bcs = id; save();
   if (old && old !== id) sb('/storage/v1/object/avatars/' + uid + '/b-' + old + '.jpg', { method: 'DELETE', raw: true }).catch(() => {});
-  BCI[path] = { url: '', img: null, busy: false }; bcLoad(true); return true;
+  BCI[path] = { url: '', img: null, busy: false }; BC.t = 0; setTimeout(() => bcLoad(), 2000); return true;
+}
+let bcQT = 0, bcQB = false;
+function bcQueue() { clearTimeout(bcQT); bcQT = setTimeout(bcAll, 1500); }
+async function bcAll() {      // la photo du badge de chaque balade est publique : on envoie celles qui ne le sont pas encore
+  if (!clOn() || bcQB) return; bcQB = true; let n = 0;
+  try { for (const k of Object.keys(D.cells)) { const c = D.cells[k]; if (!c || !c.cov || c.bcs === c.cov || !(c.ph || []).some(p => p.id === c.cov)) continue; if (n++ >= 8) { bcQueue(); break; }
+      try { await bcShare(k); } catch (e) {} } } finally { bcQB = false; } if (sel) balPhotos(sel, BI[sel] && BI[sel].d);
 }
 async function bcUnshare(k, keep) {
   const c = D.cells[k]; if (!c || !c.bcs || !clOn()) return; const id = c.bcs, uid = CLD.s.user.id;
@@ -2046,8 +2053,7 @@ let pvId = null, pvDog = false;
 const closePh = () => { $('#pv').classList.remove('open'); $('#pvi').removeAttribute('src'); pvId = null; pvDog = false; $('#pvc').hidden = false; $('#pvd').hidden = false; };
 $('#pvx').onclick = closePh;
 $('#pvc').onclick = async () => { const k = sel; if (!k || !pvId) return; await setCover(k, pvId); $('#pvc').classList.add('on');
-  if (!clOn()) return toast('★ Photo du badge : elle s\u2019affiche sur votre carte');
-  toast('★ Photo du badge… envoi pour les autres promeneurs'); try { await bcShare(k); toast('★ Photo du badge : visible sur la carte par tous les promeneurs'); if (sel === k) balPhotos(k, BI[k] && BI[k].d); } catch (e) { toast('⚠️ ' + (e.message || 'Photo non partagée')); } };
+  toast('★ Photo du badge : visible sur la carte par tous les promeneurs'); };
 $('#pvd').onclick = () => { if (pvDog) { const id = pvId; if (!id || !confirm('Supprimer cette photo ?')) return; D.prof.gal = (D.prof.gal || []).filter(x => x !== id); save(); pDel(id).catch(() => {}); closePh(); dogGal(); return toast('Photo supprimée'); }
   const k = sel, id = pvId, c = k && D.cells[k], i = c ? c.ph.findIndex(p => p.id === id) : -1; if (i < 0) return closePh();
   const snap = snapC(); c.ph.splice(i, 1); if (c.bcs === id) bcUnshare(k); if (c.cov === id) setCover(k, c.ph[0] ? c.ph[0].id : null); save(); closePh(); draw(); renderPanel();
@@ -2159,7 +2165,7 @@ function balDraw(k) {
 async function balPhotos(k, info) {      // 3 photos : les miennes d'abord (couverture en tête), puis celles de la Communauté
   const el = $('#bpph'); if (!el) return; const c = D.cells[k] || blank(), mine = [...(c.cov ? c.ph.filter(p => p.id === c.cov) : []), ...c.ph.filter(p => p.id !== c.cov)].slice(0, 3).map(p => ({ id: p.id })),
     com = (info && Array.isArray(info.photos) ? info.photos : []).filter(x => x && typeof x.p === 'string').map(x => ({ cp: x.p })), bp = !mine.length ? bcOf(k) : null, L = [...(bp ? [{ bv: bp }] : []), ...mine, ...com].slice(0, 3);
-  const sh = $('#bpbc'); if (sh) { const on = clOn() && c.cov && c.ph.some(p => p.id === c.cov); sh.innerHTML = !on ? '' : c.bcs === c.cov ? `<span>🌍 Photo du badge visible par tous</span><button data-act="bcoff">Ne plus la montrer</button>` : `<button class="gold" data-act="bcon">🌍 Montrer la photo du badge à tous les promeneurs</button>`; }
+  const sh = $('#bpbc'); if (sh) { const on = clOn() && c.cov && c.ph.some(p => p.id === c.cov); sh.innerHTML = on ? `<span>🌍 La photo du badge (★) est visible par tous les promeneurs</span>` : ''; }
   const sig = JSON.stringify(L) + (bp && BCI[bp] && BCI[bp].url ? '+' : ''); if (el.dataset.sig === sig && el.childElementCount) return; el.dataset.sig = sig;
   el.innerHTML = L.map((x, i) => `<button class="bpp${i === 0 ? ' big' : ''}" ${x.id ? `data-bpo="${esc(x.id)}"` : x.bv ? `data-bpv="${esc(x.bv)}"` : `data-bpc="${esc(x.cp)}"`} aria-label="Agrandir la photo"><img alt=""></button>`).join('')
     + (L.length < 3 ? `<label class="bpp add${L.length ? '' : ' big solo'}" aria-label="Ajouter une photo">📷<small>${L.length ? 'Ajouter' : 'Ajouter la première photo'}</small><input type="file" accept="image/*" id="phf2" multiple hidden></label>` : '');
@@ -2296,7 +2302,7 @@ $('#panel').addEventListener('click', e => {
   const am = e.target.closest('[data-am]'); if (am && sel) { const k = sel, m = BI[k] && BI[k].d && BI[k].d.mine, L = new Set(m && Array.isArray(m.tags) ? m.tags : []); const t = am.dataset.am; L.has(t) ? L.delete(t) : (L.add(t), AMX[t] && L.delete(AMX[t])); return balSave(k, { tags: Object.keys(AMEN).filter(x => L.has(x)) }); }
   const rvr = e.target.closest('[data-rvrep]'); if (rvr) return rpOpen('review', rvr.dataset.rvrep, 'cet avis');
   const b = e.target.closest('[data-act]'); if (!b || !sel) return; const a = b.dataset.act, c = D.cells[sel] ||= blank();
-  if (a === 'bcon') { b.disabled = true; toast('🌍 Envoi de la photo…'); bcShare(sel).then(ok => { if (ok) toast('★ Photo du badge : visible sur la carte par tous les promeneurs'); }).catch(x => toast('⚠️ ' + (x.message || 'Photo non partagée'))).finally(() => { if (sel) balPhotos(sel, BI[sel] && BI[sel].d); }); return; }
+  if (a === 'bcon_') { b.disabled = true; toast('🌍 Envoi de la photo…'); bcShare(sel).then(ok => { if (ok) toast('★ Photo du badge : visible sur la carte par tous les promeneurs'); }).catch(x => toast('⚠️ ' + (x.message || 'Photo non partagée'))).finally(() => { if (sel) balPhotos(sel, BI[sel] && BI[sel].d); }); return; }
   if (a === 'bcoff') { const k = sel; bcUnshare(k).then(() => { toast('🙈 La photo du badge n\'est plus montrée aux autres'); if (sel === k) balPhotos(k, BI[k] && BI[k].d); }); return; }
   if (a === 'balrep') { const g = cellGroup(sel); if (g && g.paths[0]) rpOpen('balade', g.paths[0].id, 'cette balade'); return; }
   if (a === 'delcell') { if (c.bcs) bcUnshare(sel, true); const g = cellGroup(sel); if (g && !confirm(`Supprimer la balade « ${g.name} » : sa fiche (sorties, photos, notes) et ${g.paths.length > 1 ? 'ses ' + g.paths.length + ' sentiers' : 'son sentier'} ?`)) return;
@@ -3163,7 +3169,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-168';
+const APP_V = '2026.10.28-169';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -4112,7 +4118,7 @@ async function sync(force) {
       if (!S.ph[id]) { const u = await pGet(id).catch(() => null);
         if (u) { const b = await (await fetch(u)).blob(); try { await sb(`/storage/v1/object/photos/${CLD.s.user.id}/${id}`, { method: 'POST', body: b, headers: { 'Content-Type': b.type || 'image/jpeg', 'x-upsert': 'true' }, ms: 30000 }); S.ph[id] = 1; n++; up++; } catch (e) { if (e.status === 400 || e.status === 413) S.ph[id] = 1; } }
         else { try { const r = await sb(`/storage/v1/object/authenticated/photos/${CLD.s.user.id}/${id}`, { raw: true, ms: 30000 }); if (r.ok) { const b = await r.blob(); const d = await new Promise(res => { const f = new FileReader(); f.onload = () => res(f.result); f.readAsDataURL(b); }); await pPut(id, d); S.ph[id] = 1; n++; down++; try { if (id === D.prof.ph) dogAvatar(); else if ((D.prof.gal || []).includes(id)) dogGal(); else renderPanel(); } catch (e) {} } } catch (e) {} } } }
-    sySave(S); CLD.st = 'ok'; CLD.at = Date.now(); CLD.n = { up, down }; badRefresh(); bcLoad();
+    sySave(S); CLD.st = 'ok'; CLD.at = Date.now(); CLD.n = { up, down }; badRefresh(); bcLoad(); bcQueue();
   } catch (e) { sySave(S); CLD.st = 'err'; CLD.err = e.message || 'Pas de réseau'; }
   CLD.busy = false; clUi();
 }
@@ -4137,7 +4143,7 @@ function clUi() {
     <div class="clerr" id="clerr"></div>
     <button class="btn gold" id="clgo">${CLD.mode === 'up' ? '✨ Créer mon compte' : '☁️ Se connecter'}</button>
     ${CLD.mode !== 'up' ? '<button class="cllink" id="clforgot">Mot de passe oublié ?</button>' : ''}
-    <div class="acnote">🔐 Vos données sont stockées en France (Paris). Vos repères, avis et publications sont visibles par les autres promeneurs ; votre carnet (balades, visites, photos du carnet) reste privé.</div>`;
+    <div class="acnote">🔐 Vos données sont stockées en France (Paris). Vos repères, avis et publications sont visibles par les autres promeneurs ; votre carnet (balades, visites, photos) reste privé, sauf la photo du badge de chaque balade, visible par tous.</div>`;
     return; }
   if (CLD.pwReset) { c.innerHTML = `<div class="acnote">🔑 Choisissez un nouveau mot de passe.</div><label class="acf"><span>Nouveau mot de passe</span><input id="clnpw" type="password" minlength="8" autocomplete="new-password"></label><div class="clerr" id="clerr"></div><button class="btn gold" id="clnpwgo">Enregistrer</button>`; return; }
   c.innerHTML = `<div class="clcard"><b>${esc(CLD.s.user.email || '')}</b><small>${CLD.role === 'admin' ? '👑 Administrateur' : CLD.role === 'editor' ? '🧭 Éditeur des sentiers' : '🐾 Membre'}</small></div>
