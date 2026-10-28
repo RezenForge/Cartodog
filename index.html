@@ -1201,6 +1201,22 @@ html.lite #pt,html.lite #homeb{display:none!important}
 .pfbio{margin:11px 0 0;font:italic 500 13.5px/1.45 var(--num);color:#e8d8b8;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .pfa{display:flex;gap:8px;margin-top:13px}.pfa .btn{flex:1;margin:0}.pfa .pfmo{flex:0 0 48px}.pfw .pfrm{margin:8px 0 0;color:#ff8a6e}
 .pfme{margin-top:12px;font:600 12px var(--num);color:var(--mut);text-align:center}[data-pfu]{cursor:pointer}
+/* signaler */
+#rpsh{z-index:27;background:rgba(6,5,3,.62);padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}.rph{font:800 18px var(--px);color:#fff1cf;padding-right:40px}.rps{margin:6px 0 10px;font:600 13px/1.4 var(--num);color:var(--mut)}#rpw .rpb{margin:6px 0 0;justify-content:flex-start;text-align:left}
+.cmx.rp{font-size:15px;opacity:.7}.cmrp{flex:none;align-self:flex-start;padding:2px 6px;border:0;background:none;color:var(--mut);font-size:13px;opacity:.6;cursor:pointer}.bprvi .cmrp{margin-left:auto}.cmcr{position:relative}.cmcr .cmrp{margin-left:auto}
+.pfrep{display:block;margin:12px auto 0;padding:4px 8px;border:0;background:none;color:var(--mut);font:600 12px var(--num);opacity:.75;cursor:pointer}
+/* placement d'une balade */
+#admpl{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 84px);z-index:30;display:flex;align-items:center;gap:10px;padding:10px 12px;border:2px solid #c6862a;border-radius:12px;background:#211b14;box-shadow:0 8px 20px rgba(0,0,0,.6);color:#f0d9a8;font:700 14px/1.3 var(--num)}#admpl[hidden]{display:none}#admpl span{flex:1}#admpl button{padding:7px 12px;border:1.5px solid #6b5a40;border-radius:9px;background:#14110e;color:var(--ember2);font:800 13px var(--num)}
+/* administration */
+.adst{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:0 0 10px}.adst div{padding:6px 2px;text-align:center;background:var(--slot);border:2px solid var(--edge);border-radius:6px}.adst b{display:block;font:800 17px var(--num);color:#fff3d6}.adst small{display:block;font:700 9.5px/1.2 var(--num);color:var(--mut);text-transform:uppercase}
+.adtb{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:0 0 10px}.adtb button{padding:8px 2px;border:2px solid var(--edge);border-radius:8px;background:var(--slot);color:var(--mut);font:800 11.5px var(--num);cursor:pointer}.adtb button.on{color:#2a1806;background:linear-gradient(#f4c862,#c6862a);border-color:#c6862a}.adtb em{font-style:normal;padding:0 5px;border-radius:8px;background:#c9472c;color:#fff}
+.adc{margin:0 0 8px;padding:9px 11px;border:2px solid var(--edge);border-radius:10px;background:var(--slot)}.adc.off{opacity:.6}.adch{font:800 13px var(--num);color:#fff1cf}.adch small{display:block;font:600 11.5px var(--num);color:var(--mut)}.adch em{font-style:normal;color:#ff8a6e}.adk{display:inline-block;margin-right:4px;padding:1px 7px;border-radius:6px;background:rgba(244,200,98,.15);color:var(--ember2);font-size:11.5px}
+.adpv{margin:7px 0 0;font:600 13px/1.4 var(--num);color:#e8d8b8}.adpv b{color:#fff1cf}.adpv p{margin:3px 0 0;overflow-wrap:anywhere}.admu{color:var(--mut);font-style:italic}.adgone{margin-top:4px;color:#ff8a6e;font:700 12px var(--num)}
+.adph{display:block;width:100%;height:120px;margin-top:6px;padding:0;border:0;border-radius:8px;overflow:hidden;background:#14110e}.adph img{width:100%;height:100%;object-fit:cover;opacity:0}.adph.ok img{opacity:1}
+.ada{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}.ada .btn{flex:1 1 auto;width:auto;margin:0;padding:8px 10px;font-size:13px!important}
+.adseg{margin:0 0 8px}#adq{width:100%;margin:8px 0}.adbl{display:flex;flex-direction:column;gap:5px}.adbr{display:flex;align-items:center;gap:4px;padding:4px 4px 4px 10px;border:2px solid var(--edge);border-radius:8px;background:var(--slot)}.adbn{flex:1;min-width:0;padding:4px 0;border:0;background:none;text-align:left;color:var(--txt);cursor:pointer}.adbn b{display:block;font:800 13.5px var(--num);color:#fff1cf;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.adbn small{font:600 11px var(--num);color:var(--mut)}.adbr .ib{width:34px!important;height:34px!important;font-size:15px}
+.adlog div{padding:6px 2px;border-bottom:1px solid #2e2820;font:600 12.5px/1.35 var(--num);color:#e8d8b8}.adlog small{display:block;color:var(--mut)}.adlog b{color:#fff1cf}
+
 .acvis.two{grid-template-columns:1fr 1fr!important}
 /* listes qui défilent : une carte ne se tasse jamais (sinon, sur Safari notamment, son contenu déborde et chevauche la carte du dessus) */
 .cmls>*,.cmp>*,.scls>*,.scgl>*,.bprvl>*,.cmcl>*{flex-shrink:0}html,body{overscroll-behavior:none}
@@ -1367,6 +1383,7 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
     <div class="ach"><h2>Mon compte<small>Profil et réglages</small></h2></div>
     <button class="acu" data-acp="me"><span class="acav" id="acav"></span><span class="act"><b id="acnm">Promeneur</b><small id="acsb">Compte local · sur ce téléphone</small></span><i>›</i></button>
     <div class="acg" style="margin-top:8px"><span id="acme" hidden></span><button class="acr" id="acdog"><span class="aci">🐕</span><span class="act"><b>Mon chien</b><small id="acdgs">Profil, santé, niveau</small></span><i>›</i></button></div>
+    <div class="acg" id="acadmg" hidden style="margin-top:8px"><button class="acr" id="acadm"><span class="aci">🛡️</span><span class="act"><b>Administration</b><small id="acadms">Signalements, contenus, balades</small></span><i>›</i></button></div>
     <div class="mh">Confidentialité</div>
     <div class="acg"><button class="acr" data-acp="priv"><span class="aci">🔒</span><span class="act"><b>Visibilité et partage</b><small id="acpv">Copains</small></span><i>›</i></button><button class="acr" data-lg="confidentialite"><span class="aci">📄</span><span class="act"><b>Informations légales</b><small>Mentions, confidentialité, conditions</small></span><i>›</i></button></div>
     <div class="mh">Application</div>
@@ -1380,6 +1397,7 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
     <div class="hint">Votre prénom, votre pseudo et le nom de votre chien sont visibles des membres connectés. La commune reste privée. Votre description se modifie dans Copains.</div>
     <div class="mh">Connexion</div><div id="accl"></div>
   </div>
+  <div class="acp" data-pg="adm"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Administration<small>Modération et balades</small></h2></div><div id="adm"></div></div>
   <div class="acp" data-pg="priv"><div class="ach"><button class="ib acb" data-acb aria-label="Retour">‹</button><h2>Visibilité et partage<small>Ce que les autres promeneurs voient</small></h2></div>
     <div class="mh">Qui peut me voir</div>
     <div class="acvis two" id="acvis"><button data-v="friends"><span>🤝</span><b>Visible</b><small>En ligne pour mes copains</small></button><button data-v="none"><span>🙈</span><b>Invisible</b><small>Mode fantôme</small></button></div>
@@ -1421,6 +1439,8 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
   <input type="file" id="cmfile" accept="image/*" hidden>
 </div></div>
 <div id="cmv" hidden><img id="cmvi" alt="Photo de la publication"></div>
+<div class="scsh" id="rpsh" hidden><div class="pfw dg" id="rpw" role="dialog" aria-label="Signaler"></div></div>
+<div id="admpl" hidden><span id="admplt">📍 Touchez la carte pour placer la balade</span><button data-admpl="x">Annuler</button></div>
 <div class="scsh" id="pfsh" hidden><div class="pfw dg" id="pfw" role="dialog" aria-label="Profil"></div></div>
 <div id="soc"><div class="win dg scw" role="dialog" aria-label="Copains, messages et rendez-vous">
   <div class="scme" id="scme"></div>
@@ -2078,7 +2098,7 @@ function balDraw(k) {
   /* avis */
   const rv = $('#bprv'); if (rv) { if (!on) { rv.innerHTML = ''; } else {
     const R2 = info && Array.isArray(info.reviews) ? info.reviews : [], ms = mine && mine.stars ? N(mine.stars) : 0, mb = mine && mine.body || '';
-    const one = r => { const f = cmPerson({ author: r.u, name: r.name, first: r.first, dog: r.dog }); return `<div class="bprvi"><span data-pfu="${esc(r.u)}">${socAv(f, 'sm')}</span><div><b data-pfu="${esc(r.u)}">${esc(f.n || f.d)}</b>${r.stars ? stars(r.stars, 'sm') : ''}<small>${rvAgo(r.ts)}</small>${r.body ? `<p>${esc(r.body)}</p>` : ''}</div></div>`; };
+    const one = r => { const f = cmPerson({ author: r.u, name: r.name, first: r.first, dog: r.dog }); return `<div class="bprvi"><span data-pfu="${esc(r.u)}">${socAv(f, 'sm')}</span><div><b data-pfu="${esc(r.u)}">${esc(f.n || f.d)}</b>${r.stars ? stars(r.stars, 'sm') : ''}<small>${rvAgo(r.ts)}</small>${r.body ? `<p>${esc(r.body)}</p>` : ''}</div>${r.id ? `<button class="cmrp" data-rvrep="${esc(String(r.id))}" aria-label="Signaler cet avis">⚑</button>` : ''}</div>`; };
     rv.innerHTML = `<div class="bprvh"><span>Votre avis</span><span class="bpmy">${[1, 2, 3, 4, 5].map(i => `<button data-star="${i}" class="${i <= ms ? 'on' : ''}" aria-label="${i} étoile${i > 1 ? 's' : ''}">★</button>`).join('')}</span></div>`
       + (BIE.txt ? `<div class="bprvf"><input id="bprvt" maxlength="300" placeholder="Un mot sur cette balade (facultatif)" value="${esc(mb)}" enterkeyhint="send"><button class="btn gold" data-act="rvsend">OK</button></div>`
         : mb ? `<button class="bpmine" data-act="rvtxt">« ${esc(mb)} » <small>✏️</small></button>` : ms ? `<button class="bplk" data-act="rvtxt">＋ Ajouter un commentaire</button>` : '')
@@ -2221,6 +2241,7 @@ $('#panel').addEventListener('click', e => {
   const pc = e.target.closest('[data-bpc]'); if (pc) { const im = pc.querySelector('img'); if (!im || !im.src) return; pvId = null; $('#pvc').hidden = true; $('#pvd').hidden = true; $('#pvi').src = im.src; $('#pv').classList.add('open'); return; }
   const st = e.target.closest('[data-star]'); if (st && sel) { const k = sel, n = +st.dataset.star, cur = BI[k] && BI[k].d && BI[k].d.mine && BI[k].d.mine.stars; if (!clOn()) return toast('☁️ Connectez-vous pour donner votre avis'); if (n === cur) return; BIE.txt = !(BI[k] && BI[k].d && BI[k].d.mine && BI[k].d.mine.body); balSave(k, { stars: n }); if (BIE.txt) setTimeout(() => { const i = $('#bprvt'); if (i) i.focus(); }, 80); return toast('★'.repeat(n) + ' Merci pour votre avis'); }
   const am = e.target.closest('[data-am]'); if (am && sel) { const k = sel, m = BI[k] && BI[k].d && BI[k].d.mine, L = new Set(m && Array.isArray(m.tags) ? m.tags : []); L.has(am.dataset.am) ? L.delete(am.dataset.am) : L.add(am.dataset.am); return balSave(k, { tags: Object.keys(AMEN).filter(x => L.has(x)) }); }
+  const rvr = e.target.closest('[data-rvrep]'); if (rvr) return rpOpen('review', rvr.dataset.rvrep, 'cet avis');
   const b = e.target.closest('[data-act]'); if (!b || !sel) return; const a = b.dataset.act, c = D.cells[sel] ||= blank();
   if (a === 'delcell') { const g = cellGroup(sel); if (g && !confirm(`Supprimer la balade « ${g.name} » : sa fiche (sorties, photos, notes) et ${g.paths.length > 1 ? 'ses ' + g.paths.length + ' sentiers' : 'son sentier'} ?`)) return;
     const snap = snapC(), pj = JSON.stringify(D.paths), k = sel; if (c.x != null) fxRing(c.x, c.y, 'rgba(171,159,132,.9)', 6, 34, 550);
@@ -3086,7 +3107,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-163';
+const APP_V = '2026.10.28-164';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3486,13 +3507,14 @@ function pfRender() {
     : rout ? '<div class="pfa"><button class="btn" disabled>⏳ Demande envoyée</button><button class="btn pfmo" data-pf="cx" aria-label="Annuler la demande">✕</button></div>'
     : `<div class="pfa"><button class="btn gold" data-pf="add"${ok ? '' : ' disabled'}>➕ Ajouter en ami</button></div>`;
   const dgb = PF.dog || mine ? `<button class="pfdog" data-pf="dog"><span>🐾</span><span class="act"><b>Profil de ${esc(String((PF.dog && PF.dog.name) || dog || 'son chien').slice(0, 30))}</b><small>${PF.dog ? `Niv. ${Math.max(1, Math.round(+PF.dog.lv || 1))} · ${esc(String(PF.dog.rank || '').slice(0, 30))} · ${Math.round(+PF.dog.disc || 0)} balade${+PF.dog.disc > 1 ? 's' : ''} découverte${+PF.dog.disc > 1 ? 's' : ''}` : 'Photos et chiffres'}</small></span><i>›</i></button>` : '';
-  $('#pfw').innerHTML = `<button class="ib pfx" data-pf="x" aria-label="Fermer">✕</button><div class="pfh">${socAv(f)}<div class="pfn"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(id)}</b><small>${ok ? '@' + esc(raw.name) : ''}${ok && st ? ' · ' : ''}${st}</small>${pp && pp.st === 'walk' ? balChip(pp, 'data-pfmap') : ''}${sp ? `<span class="pfsp">${sp[0]} ${esc(sp[1])}</span>` : ''}</div></div>${(raw.bio || '').trim() ? `<p class="pfbio">« ${esc(raw.bio.trim())} »</p>` : ''}${dgb}${act}`;
+  $('#pfw').innerHTML = `<button class="ib pfx" data-pf="x" aria-label="Fermer">✕</button><div class="pfh">${socAv(f)}<div class="pfn"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(id)}</b><small>${ok ? '@' + esc(raw.name) : ''}${ok && st ? ' · ' : ''}${st}</small>${pp && pp.st === 'walk' ? balChip(pp, 'data-pfmap') : ''}${sp ? `<span class="pfsp">${sp[0]} ${esc(sp[1])}</span>` : ''}</div></div>${(raw.bio || '').trim() ? `<p class="pfbio">« ${esc(raw.bio.trim())} »</p>` : ''}${dgb}${act}${mine ? '' : '<button class="pfrep" data-pf="rep">⚑ Signaler ce profil</button>'}`;
 }
 $('#pfsh').addEventListener('click', async e => {
   if (e.target.id === 'pfsh') return pfClose(); if (e.target.closest('[data-pfmap]')) { const pp = person(PF.id); pfClose(); try { comClose(); } catch (x) {} return socShow(pp && pp.at && pp.at.k); }
   const b = e.target.closest('[data-pf]'); if (!b || b.disabled) return; const a = b.dataset.pf, id = PF.id; if (!id) return;
   if (a === 'x') return pfClose();
   if (a === 'more') { PF.more = !PF.more; return pfRender(); }
+  if (a === 'rep') { pfClose(); return rpOpen('profile', id, 'ce profil'); }
   if (a === 'dog') { const c = PF.dog, f = person(id) || {}, raw = PF.c[id] || SO.P[id] || {}; pfClose(); if (id === CLD.s.user.id) return dogOpen(); if (!c) return; return dogView(id, c, ((raw.first || '').trim() || (raw.name || '').trim() || f.n || '')); }
   if (a === 'msg') { pfClose(); if (SOC.chat === id && !$('#scch').hidden) return; try { comClose(); } catch (x) {} if (!$('#soc').classList.contains('open')) socOpen(); return chatOpen(id); }
   if (a === 'map') { const pp = person(id); pfClose(); try { comClose(); } catch (x) {} return socShow(pp && pp.at && pp.at.k); }
@@ -3510,6 +3532,90 @@ $('#pfsh').addEventListener('click', async e => {
   if (a === 'cx') { SO.rout = SO.rout.filter(x => x !== id); soSave(); pfRender(); try { if (SOC.fa === 'req') faOpen('req'); } catch (x) {} try { await soRpc('friend_remove', { other: id }); } catch (x) { toast('⚠️ ' + x.message); } return soTick(true); }
 });
 document.addEventListener('click', e => { const u = e.target.closest && !e.target.closest('[data-fmap]') && e.target.closest('[data-pfu]'); if (!u || !u.dataset.pfu || grpGet(u.dataset.pfu)) return; e.stopPropagation(); e.preventDefault(); pfOpen(u.dataset.pfu); }, true);
+/* ===== Signaler un contenu (tout membre) ===== */
+const RPR = [['inapproprie', '🔞 Contenu inapproprié'], ['harcelement', '😠 Harcèlement ou insulte'], ['spam', '📢 Spam ou publicité'], ['faux', '❌ Fausse information'], ['autre', '❓ Autre raison']];
+const RP = { kind: '', target: '' };
+function rpOpen(kind, target, what) {
+  if (!clOn()) return; RP.kind = kind; RP.target = String(target);
+  $('#rpw').innerHTML = `<button class="ib pfx" data-rp="x" aria-label="Fermer">✕</button><div class="rph">⚑ Signaler ${esc(what)}</div><p class="rps">L'administrateur sera prévenu et pourra le masquer. Pourquoi ?</p>` + RPR.map(([k, t]) => `<button class="btn rpb" data-rp="${k}">${t}</button>`).join('');
+  $('#rpsh').hidden = false;
+}
+$('#rpsh').addEventListener('click', async e => {
+  if (e.target.id === 'rpsh') { $('#rpsh').hidden = true; return; } const b = e.target.closest('[data-rp]'); if (!b) return; if (b.dataset.rp === 'x') { $('#rpsh').hidden = true; return; }
+  b.disabled = true; try { const r = await soRpc('report_content', { kind: RP.kind, target: RP.target, reason: b.dataset.rp }); $('#rpsh').hidden = true;
+    toast(r === 'deja' ? '⚑ Vous l\'avez déjà signalé, merci' : r === 'introuvable' ? 'Ce contenu n\'existe plus' : '⚑ Merci, l\'administrateur est prévenu'); } catch (x) { b.disabled = false; toast('⚠️ ' + x.message); }
+});
+/* ===== Administration (réservée à l'administrateur : chaque action est vérifiée par le serveur et notée au journal) ===== */
+const ADM = { tab: 'rep', ck: 'post', ov: null, items: {}, log: null, q: '', pl: null };
+const ADK = { post: 'Publication', comment: 'Commentaire', review: 'Avis', profile: 'Profil', bio: 'Description', avatar: 'Photo de profil', balade: 'Balade' };
+const ADR = Object.fromEntries(RPR.map(([k, t]) => [k, t.slice(t.indexOf(' ') + 1)]));
+const admAgo = ts => { const t = Date.parse(ts); return t ? cmAgo(t) : ''; };
+async function admOpen() { if (CLD.role !== 'admin') return; accPage('adm'); admRender(); admLoad(); }
+async function admLoad() { try { ADM.ov = await soRpc('admin_overview'); } catch (x) { toast('⚠️ ' + x.message); } admRender(); if (ADM.tab === 'con') admCon(); if (ADM.tab === 'log') admLog(); }
+async function admCon() { try { ADM.items[ADM.ck] = await soRpc('admin_content', { kind: ADM.ck }); } catch (x) { toast('⚠️ ' + x.message); } admRender(); }
+async function admLog() { try { ADM.log = await soRpc('admin_log_list'); } catch (x) { toast('⚠️ ' + x.message); } admRender(); }
+function admGroups() { try { return netGroups().filter(g => g.paths && g.paths.length).sort((a, b) => a.name.localeCompare(b.name, 'fr')); } catch (e) { return []; } }
+const admCell = g => Object.keys(D.cells).find(k => rec(D.cells[k]) && cellGroup(k) === g);
+function admRender() {
+  const el = $('#adm'); if (!el) return; const ov = ADM.ov, S = ov && ov.stats || {}, N = x => Math.max(0, Math.round(+x || 0)), open = N(S.open);
+  if ($('#acadms')) $('#acadms').textContent = open ? `🚩 ${open} signalement${open > 1 ? 's' : ''} à traiter` : 'Signalements, contenus, balades';
+  const stat = (v, l) => `<div><b>${ov ? N(v) : '…'}</b><small>${l}</small></div>`;
+  let h = `<div class="adst">${stat(S.members, 'membres')}${stat(S.new7, 'nouveaux (7 j)')}${stat(S.posts, 'publications')}${stat(S.reviews, 'avis')}${stat(S.balades, 'balades')}</div>
+    <div class="adtb">${[['rep', `🚩 Signalements${open ? ` <em>${open}</em>` : ''}`], ['con', '🧹 Contenus'], ['bal', '📍 Balades'], ['log', '📜 Journal']].map(([k, t]) => `<button data-adt="${k}" class="${ADM.tab === k ? 'on' : ''}">${t}</button>`).join('')}</div>`;
+  const prev = c => !c ? '<div class="adgone">Contenu introuvable (supprimé par son auteur)</div>'
+    : `<div class="adpv"><b>${esc(c.who || '')}</b>${c.pseudo ? ` <small>@${esc(c.pseudo)}</small>` : ''}${c.stars ? ` ${'★'.repeat(N(c.stars))}` : ''}${c.bal ? ` <small>· 📍 ${esc(c.bal)}</small>` : ''}${c.body ? `<p>${esc(c.body)}</p>` : '<p class="admu">(sans texte)</p>'}${c.photo ? `<button class="adph" data-adph="${esc(c.photo)}"><img alt="" data-cmsrc="${esc(c.photo)}"></button>` : ''}${c.avatar ? `<span class="admu">Photo de profil : ${socAv({ id: c.author, d: c.who || '?', c: soCol(c.author) }, 'sm')}</span>` : ''}${c.gone ? '<div class="adgone">Déjà masqué</div>' : ''}</div>`;
+  if (ADM.tab === 'rep') { const L = ov && Array.isArray(ov.reports) ? ov.reports : null;
+    h += !L ? '<div class="hint">Chargement…</div>' : !L.length ? '<div class="scemp">✅ Aucun signalement en attente<small>Les membres peuvent signaler une publication, un commentaire, un avis ou un profil avec ⚑.</small></div>'
+      : L.map(r => `<div class="adc"><div class="adch"><span class="adk">${ADK[r.kind] || r.kind}</span> ${esc(ADR[r.reason] || 'Autre')}${N(r.n) > 1 ? ` <em>×${N(r.n)}</em>` : ''}<small>${admAgo(r.ts)} · par ${esc(r.by || '?')}</small></div>${prev(r.c)}
+        <div class="ada">${r.kind === 'profile' ? `<button class="btn" data-ah="bio|${esc(r.target)}|1">Effacer la description</button><button class="btn" data-ah="avatar|${esc(r.target)}|1">Retirer la photo</button><button class="btn" data-adpf="${esc(r.target)}">Voir le profil</button>`
+          : r.c && !r.c.gone ? `<button class="btn gold" data-ah="${r.kind}|${esc(r.target)}|1">🙈 Masquer</button>` : ''}<button class="btn" data-ar="${N(r.id)}">Ignorer</button></div></div>`).join(''); }
+  if (ADM.tab === 'con') { const L = ADM.items[ADM.ck];
+    h += `<div class="seg adseg">${[['post', 'Publications'], ['comment', 'Commentaires'], ['review', 'Avis']].map(([k, t]) => `<button data-adck="${k}" class="${ADM.ck === k ? 'on' : ''}">${t}</button>`).join('')}</div>`
+      + (!L ? '<div class="hint">Chargement…</div>' : !L.length ? '<div class="hint">Rien pour l\'instant.</div>' : L.map(c => `<div class="adc${c.hidden ? ' off' : ''}"><div class="adch"><small>${admAgo(c.ts)}</small></div>${prev({ ...c, gone: false })}<div class="ada">${c.hidden ? `<span class="admu">🙈 Masqué</span><button class="btn" data-ah="${ADM.ck}|${esc(String(c.id))}|0">Rétablir</button>` : `<button class="btn" data-ah="${ADM.ck}|${esc(String(c.id))}|1">🙈 Masquer</button>`}</div></div>`).join('')); }
+  if (ADM.tab === 'bal') { const G = admGroups(), q = normS(ADM.q || ''), L = q ? G.filter(g => normS(g.name).includes(q)) : G;
+    h += `<button class="btn gold" data-adb="add">＋ Ajouter une balade sur la carte</button><input id="adq" type="search" placeholder="Rechercher parmi les ${G.length} balades…" value="${esc(ADM.q)}">`
+      + `<div class="adbl">${L.slice(0, 150).map(g => { const k = admCell(g); return `<div class="adbr"><button class="adbn" data-adb="go" data-g="${esc(g.k)}"><b>${esc(g.name)}</b><small>${k && cityOf(k) ? esc(cityOf(k)) : ''}</small></button><button class="ib" data-adb="ren" data-g="${esc(g.k)}" aria-label="Renommer">✏️</button><button class="ib" data-adb="mov" data-g="${esc(g.k)}" aria-label="Déplacer">📍</button><button class="ib" data-adb="del" data-g="${esc(g.k)}" aria-label="Supprimer">🗑️</button></div>`; }).join('') || '<div class="hint">Aucune balade.</div>'}</div>`; }
+  if (ADM.tab === 'log') { const L = ADM.log; h += !L ? '<div class="hint">Chargement…</div>' : !L.length ? '<div class="hint">Aucune action pour l\'instant.</div>'
+    : `<div class="adlog">${L.map(l => `<div><small>${new Date(l.at).toLocaleString('fr-FR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</small><b>${esc(l.action)}</b> <span>${esc(ADK[l.kind] || l.kind)}${l.detail && l.detail.name ? ' · ' + esc(l.detail.name) : ''}</span></div>`).join('')}</div>`; }
+  el.innerHTML = h;
+  el.querySelectorAll('img[data-cmsrc]').forEach(async im => { const u = await cmPhoto(im.dataset.cmsrc); if (u) { im.src = u; im.parentNode.classList.add('ok'); } });
+  const qi = $('#adq'); if (qi) qi.oninput = () => { ADM.q = qi.value; const p = qi.selectionStart; admRender(); const n = $('#adq'); if (n) { n.focus(); try { n.setSelectionRange(p, p); } catch (e) {} } };
+}
+const admLogAdd = (action, kind, target, detail) => soRpc('admin_log_add', { action, kind, target: String(target || ''), detail: detail || {} }).catch(() => {});
+const admG = k => admGroups().find(g => g.k === k);
+function admPlBar(t) { ADM.pl ? ($('#admplt').textContent = t, $('#admpl').hidden = false) : ($('#admpl').hidden = true); }
+function admPlace(x, y) {
+  const P0 = ADM.pl; ADM.pl = null; admPlBar(); const pts = [[+(x - .6).toFixed(1), +y.toFixed(1)], [+(x + .6).toFixed(1), +y.toFixed(1)]];
+  if (P0.mode === 'add') { const nm = (prompt('Nom de la nouvelle balade :', '') || '').trim().slice(0, 60); if (!nm) return toast('Ajout annulé');
+    const id = rid(); (D.paths ||= []).push({ id, name: nm, d: '', pts }); NG.sig = ''; save(); draw(); sync(true); admLogAdd('Balade ajoutée', 'balade', id, { name: nm });
+    const k = Object.keys(D.cells).find(k => rec(D.cells[k]) && balName(k) === nm); if (k) select(k); return toast('📍 Balade « ' + nm + ' » ajoutée pour tous'); }
+  if (P0.mode === 'move') { const g = admG(P0.k); if (!g) return; const ks = Object.keys(D.cells).filter(k => cellGroup(k) === g);
+    g.paths.forEach(p => p.pts = pts.map(q => q.slice())); ks.forEach(k => { D.cells[k].x = x; D.cells[k].y = y; }); NG.sig = ''; CGM.clear(); save(); draw(); sync(true);
+    admLogAdd('Balade déplacée', 'balade', g.paths[0].id, { name: g.name }); return toast('📍 « ' + g.name + ' » déplacée'); }
+}
+$('#admpl').addEventListener('click', e => { if (e.target.closest('[data-admpl]')) { ADM.pl = null; admPlBar(); toast('Annulé'); } });
+$('#acadm').onclick = () => admOpen();
+$('#adm').addEventListener('click', async e => {
+  const t = e.target; const tb = t.closest('[data-adt]'); if (tb) { ADM.tab = tb.dataset.adt; admRender(); if (ADM.tab === 'con' && !ADM.items[ADM.ck]) admCon(); if (ADM.tab === 'log') admLog(); if (ADM.tab === 'rep') admLoad(); return; }
+  const ck = t.closest('[data-adck]'); if (ck) { ADM.ck = ck.dataset.adck; admRender(); return admCon(); }
+  const ph = t.closest('[data-adph]'); if (ph) { const im = ph.querySelector('img'); if (im && im.src) { pvId = null; $('#pvc').hidden = true; $('#pvd').hidden = true; $('#pvi').src = im.src; $('#pv').classList.add('open'); } return; }
+  const pf = t.closest('[data-adpf]'); if (pf) { $('#menu').classList.remove('open'); return pfOpen(pf.dataset.adpf); }
+  const ah = t.closest('[data-ah]'); if (ah) { const [kind, target, hv] = ah.dataset.ah.split('|'), hide = hv === '1';
+    if (hide && !confirm(kind === 'bio' ? 'Effacer la description de ce membre ?' : kind === 'avatar' ? 'Retirer la photo de profil de ce membre ?' : 'Masquer ce contenu pour tout le monde ?')) return; ah.disabled = true;
+    try { await soRpc('admin_hide', { kind, target, hide }); toast(hide ? '🙈 Fait' : '↩️ Rétabli'); if (kind === 'post' && hide) CM.posts = (CM.posts || []).filter(p => p.id !== target); Object.keys(BI).forEach(k => delete BI[k]); }
+    catch (x) { toast('⚠️ ' + x.message); } return ADM.tab === 'con' ? (admCon(), admLoad()) : admLoad(); }
+  const ar = t.closest('[data-ar]'); if (ar) { ar.disabled = true; try { await soRpc('admin_report_close', { id: +ar.dataset.ar }); toast('Signalement ignoré'); } catch (x) { toast('⚠️ ' + x.message); } return admLoad(); }
+  const bb = t.closest('[data-adb]'); if (!bb) return; const a = bb.dataset.adb, g = bb.dataset.g ? admG(bb.dataset.g) : null;
+  if (a === 'add') { $('#menu').classList.remove('open'); ADM.pl = { mode: 'add' }; return admPlBar('📍 Touchez la carte à l\'endroit de la nouvelle balade'); }
+  if (!g) return;
+  if (a === 'go') { const k = admCell(g); $('#menu').classList.remove('open'); if (k) { select(k); try { fitBal(k); } catch (x) {} } return; }
+  if (a === 'mov') { $('#menu').classList.remove('open'); ADM.pl = { mode: 'move', k: g.k }; const k = admCell(g); if (k) { const c = D.cells[k]; flyXY(c.x, c.y, Math.min(V.mpp, 3), 500); } return admPlBar('📍 Touchez le nouvel emplacement de « ' + g.name + ' »'); }
+  if (a === 'ren') { const nm = (prompt('Nouveau nom de la balade :', g.name) || '').trim().slice(0, 60); if (!nm || nm === g.name) return; const old = g.name, ks = Object.keys(D.cells).filter(k => cellGroup(k) === g);
+    setBalName(g, nm); ks.forEach(k => { if ((D.cells[k].name || '').trim()) D.cells[k].name = nm; }); save(); draw(); sync(true); admLogAdd('Balade renommée', 'balade', g.paths[0].id, { name: nm, avant: old }); toast('✏️ Renommée en « ' + nm + ' »'); return admRender(); }
+  if (a === 'del') { if (!confirm(`Supprimer la balade « ${g.name} » pour tout le monde ?\n\nLes membres qui l'ont visitée gardent leurs souvenirs dans leur carnet.`)) return; const ids = new Set(g.paths.map(p => p.id)), ks = Object.keys(D.cells).filter(k => cellGroup(k) === g);
+    D.paths = D.paths.filter(p => !ids.has(p.id)); ks.forEach(k => { const c = D.cells[k]; if (!c.v.length && !c.ph.length && !(c.note || '').trim()) delete D.cells[k]; }); if (ks.includes(sel)) { sel = null; renderPanel(); }
+    NG.sig = ''; CGM.clear(); save(); draw(); sync(true); admLogAdd('Balade supprimée', 'balade', [...ids][0], { name: g.name }); toast('🗑️ « ' + g.name + ' » supprimée'); return admRender(); }
+});
 function amiGo() { const v = SOC.ami; if (!v || !clOn()) return; SOC.ami = null; socOpen(); faOpen('add', v); }      // lien « #ami=pseudo » partagé par un copain
 { const m = /^#ami=([^&]+)/.exec(location.hash); if (m) { try { SOC.ami = decodeURIComponent(m[1]).slice(0, 24); } catch (e) {} history.replaceState(null, '', location.pathname + location.search); } }
 /* ===== Notifications push : messages, demandes de copains et rendez-vous, même appli fermée (iPhone : appli ajoutée à l'écran d'accueil) ===== */
@@ -3552,10 +3658,11 @@ function pushHtml() {      // la ligne « Notifications » de la carte du compte
 const pushAsk = () => clOn() && !(PUSH.on && pushPerm() === 'granted') && pushPerm() !== 'denied' && (pushOk() || pushIosHint()) && (() => { try { return !localStorage.getItem('cartodog-pushno'); } catch (e) { return true; } })();
 async function pushGo(u) {      // toucher une notification : ouvrir la conversation, les demandes ou les rendez-vous
   u = u || SOC.pushU; SOC.pushU = null; if (!u || !clOn()) return; let m;
+  if (u === '#admin') { if (CLD.role === 'admin') { if (!$('#menu').classList.contains('open')) $('#mn').click(); admOpen(); } return; }
   if ((m = /^#chat=([\w-]+)/.exec(u))) { const id = m[1]; if (!who(id)) { SOT.busy = false; await soPoll(); } if (!$('#soc').classList.contains('open')) socOpen(); if (who(id)) chatOpen(id); return; }
   if ((m = /^#soc=(\w+)/.exec(u))) { if (!$('#soc').classList.contains('open')) socOpen(); if (m[1] === 'req') return faOpen('req'); SOC.tab = m[1] === 'ev' ? 'ev' : 'fr'; if (SOC.tab === 'ev') { (SO.E || []).forEach(x => SO.evs[x.id] = 1); soSave(); } socRender(); soTick(true); }
 }
-{ const m = /^#(chat=[\w-]+|soc=\w+)/.exec(location.hash); if (m) { SOC.pushU = '#' + m[1]; history.replaceState(null, '', location.pathname + location.search); } }
+{ const m = /^#(chat=[\w-]+|soc=\w+|admin)$/.exec(location.hash); if (m) { SOC.pushU = '#' + m[1]; history.replaceState(null, '', location.pathname + location.search); } }
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('message', e => { const d = e.data || {}; if (d.cartodog === 'push') soTick(true); if (d.cartodog === 'open') pushGo(d.u); });
   if (PUSH.on) pushReg();
@@ -3579,7 +3686,7 @@ async function cmPhoto(path) {      // photo lue avec la session (dossier privé
 function cmCard(p) {
   const f = cmPerson(p), uid = CLD.s && CLD.s.user.id, lc = p.last;
   return `<article class="cmp" data-post="${p.id}">
-    <div class="cmh"><span class="scaw" data-pfu="${f.id}">${socAv(f)}</span><span class="act"><b data-pfu="${f.id}">${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)} <small>· ${cmAgo(Date.parse(p.ts))}</small></b></span>${p.author === uid ? `<button class="cmx" data-cmdel="${p.id}" aria-label="Supprimer ma publication">⋯</button>` : ''}</div>
+    <div class="cmh"><span class="scaw" data-pfu="${f.id}">${socAv(f)}</span><span class="act"><b data-pfu="${f.id}">${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)} <small>· ${cmAgo(Date.parse(p.ts))}</small></b></span>${p.author === uid ? `<button class="cmx" data-cmdel="${p.id}" aria-label="Supprimer ma publication">⋯</button>` : `<button class="cmx rp" data-cmrep="${p.id}" aria-label="Signaler cette publication">⚑</button>`}</div>
     <button class="cmloc" data-cmloc="${p.id}">📍 ${esc(p.bal)}</button>
     ${p.body ? `<p class="cmt">${esc(p.body)}</p>` : ''}
     ${p.photo ? `<button class="cmimg" data-cmimg="${esc(p.photo)}" aria-label="Agrandir la photo"><img alt="" data-cmsrc="${esc(p.photo)}"></button>` : ''}
@@ -3625,7 +3732,7 @@ async function cmComments(id) {
   $('#cmsh').hidden = false; $('#cmci').onkeydown = e => { if (e.key === 'Enter') $('#cmsw [data-cmsend]').click(); };
   let L = []; try { L = await soRpc('post_comments', { post: id }) || []; } catch (e) {}
   if (CM.open !== id) return;
-  $('#cmcl').innerHTML = L.length ? L.map(c => { const f = cmPerson(c); return `<div class="cmcr"><span class="scaw" data-pfu="${f.id}">${socAv(f, 'sm')}</span><span class="act"><b data-pfu="${f.id}">${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b> <small>${cmAgo(Date.parse(c.ts))}</small><span>${esc(c.body)}</span></span></div>`; }).join('') : '<div class="hint" style="padding:8px 2px">Aucun commentaire pour l\'instant.</div>';
+  $('#cmcl').innerHTML = L.length ? L.map(c => { const f = cmPerson(c); return `<div class="cmcr"><span class="scaw" data-pfu="${f.id}">${socAv(f, 'sm')}</span><span class="act"><b data-pfu="${f.id}">${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}${bdg(f.id)}</b> <small>${cmAgo(Date.parse(c.ts))}</small><span>${esc(c.body)}</span></span>${c.author !== CLD.s.user.id && c.id ? `<button class="cmrp" data-cmrepc="${c.id}" aria-label="Signaler ce commentaire">⚑</button>` : ''}</div>`; }).join('') : '<div class="hint" style="padding:8px 2px">Aucun commentaire pour l\'instant.</div>';
   requestAnimationFrame(() => { const l = $('#cmcl'); if (l) l.scrollTop = l.scrollHeight; });
 }
 $('#cmsel').onchange = e => { CM.k = e.target.value || null; cmRender(); };
@@ -3634,6 +3741,7 @@ $('#cmfile').onchange = async e => { const f = e.target.files && e.target.files[
 $('#comb').onclick = () => $('#com').classList.contains('open') ? comClose() : comOpen();
 $('#com').addEventListener('click', async e => {
   const t = e.target; if (t.id === 'cmsh') { $('#cmsh').hidden = true; CM.open = null; return; }
+  const rp = t.closest('[data-cmrep],[data-cmrepc]'); if (rp) return rp.dataset.cmrep ? rpOpen('post', rp.dataset.cmrep, 'cette publication') : rpOpen('comment', rp.dataset.cmrepc, 'ce commentaire');
   const loc = t.closest('[data-cmloc]'); if (loc) { const p = CM.posts.find(x => x.id === loc.dataset.cmloc), k = p && (soCell(p.bx, p.by) || CM.k); if (!k || !D.cells[k]) return toast('📍 Cette balade n\'est pas sur votre carte'); comClose(); select(k); try { fitBal(k); } catch (x) {} return; }
   const im = t.closest('[data-cmimg]'); if (im) { const u = await cmPhoto(im.dataset.cmimg); if (u) { $('#cmvi').src = u; $('#cmv').hidden = false; } return; }
   const lk = t.closest('[data-cmlike]'); if (lk) { const p = CM.posts.find(x => x.id === lk.dataset.cmlike); if (!p) return; p.liked = !p.liked; p.likes = Math.max(0, (p.likes || 0) + (p.liked ? 1 : -1)); cmRender(); if (p.liked) try { navigator.vibrate && navigator.vibrate(15); } catch (x) {}
@@ -3962,7 +4070,7 @@ function accRender() {
   $('#acav').textContent = nm ? nm[0].toUpperCase() : ''; $('#acav').classList.toggle('ini', !!nm);
   $('#acme').textContent = [nm && '@' + nm, clOn() && CLD.s.user.email].filter(Boolean).join(' · ') || 'Prénom, pseudo, e-mail, synchronisation';
   $('#acdgs').textContent = dog ? dog + ' · niveau ' + ($('#hlv').textContent || 1) : 'Créer son profil';
-  $('#acpv').textContent = ACV[u.vis] || ACV.friends;
+  $('#acpv').textContent = ACV[u.vis] || ACV.friends; $('#acadmg').hidden = CLD.role !== 'admin'; if (CLD.role === 'admin' && !ADM.ov) soRpc('admin_overview').then(o => { ADM.ov = o; admRender(); }).catch(() => {});
   $('#acpn').value = u.name; $('#acpf').value = u.first || ''; $('#acpc').value = u.city;
   document.querySelectorAll('#acvis [data-v]').forEach(b => b.classList.toggle('on', b.dataset.v === (u.vis === 'none' ? 'none' : 'friends')));
   $('#acpres').innerHTML = sw('Montrer à mes copains la balade où je suis', u.pres); $('#acstat').innerHTML = sw('Montrer le profil de mon chien aux membres (photos, niveau, balades)', u.stats);
@@ -4889,7 +4997,7 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
 { const op = id => () => { const e = document.getElementById(id); return !!e && e.classList.contains('open'); }, vis = id => () => { const e = document.getElementById(id); return !!e && !e.hidden; };
   /* couches, de la plus haute à la plus basse : [ouverte ?, retour (sous-page, sinon fermeture)] */
   const LAY = [
-    [vis('pfsh'), () => pfClose()], [op('pv'), () => closePh()], [op('rqm'), () => rqClose()], [op('dzq'), () => $('#dzl').click()], [op('mkm'), () => closeMk()],
+    [vis('rpsh'), () => { $('#rpsh').hidden = true; }], [() => !!ADM.pl, () => { ADM.pl = null; admPlBar(); }], [vis('pfsh'), () => pfClose()], [op('pv'), () => closePh()], [op('rqm'), () => rqClose()], [op('dzq'), () => $('#dzl').click()], [op('mkm'), () => closeMk()],
     [op('encm'), () => { const b = !$('#encv').hidden && !(encFrom && !encStack.length) && $('#encbk'); b ? b.click() : encClose(); }],      // ouvert directement sur une fiche depuis une autre fenêtre : retour = revenir à cette fenêtre
     [op('dogm'), () => { const p = document.querySelector('#dogm .dgp.on'); p && p.dataset.p !== 'main' ? dogPane('main') : dogClose(); }],
     [op('balm'), () => { !$('#balb').hidden ? $('#balb').click() : balClose(); }],
@@ -5097,7 +5205,7 @@ function navTxt(k) {
 }
 function updNav() { const e = $('#nvt'); if (e && sel && D.cells[sel]) e.innerHTML = navSub(sel); }
 /* ===== Tap : 1 = action, 2 = zoom doux à l'endroit touché, 3 = dézoom doux ===== */
-function onTap(e) { const r = cv.getBoundingClientRect(); if (!RM && !P.on) { const q = clusterAt(e.clientX - r.left, e.clientY - r.top); if (q) { const xs = q.items.map(m => m.c.x), ys = q.items.map(m => m.c.y), W = cv.clientWidth, H = cv.clientHeight; flyXY((Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2, Math.max(.8, Math.min(V.mpp / 2.5, (Math.max(...xs) - Math.min(...xs)) / (W * .6), (Math.max(...ys) - Math.min(...ys)) / (H * .5))), 550); return; } } const pt = spotAt(e.clientX - r.left, e.clientY - r.top), mk = markAt(e.clientX - r.left, e.clientY - r.top); if (RM) { const w = (([ux, uy]) => ({ x: V.cx + ux * V.mpp, y: V.cy - uy * V.mpp }))(unr(e.clientX - r.left - r.width / 2, e.clientY - r.top - r.height / 2)); if (RMT) { const t = RMT; setRM(false); mkQuick(t, w.x, w.y); } else if (mk) openMark(mk.id); else openMk({ id: null, t: mkLast, note: '', ...w, where: 'tap' }); } else if (P.on) { const px = e.clientX - r.left, py = e.clientY - r.top; if (ED.on) (ED.draw ? edDrawTap : edPick)(px, py); else if (!RC.on && !P.cur && !P.start) { edToggle(true); edPick(px, py); } }      /* en mode Marcher, toucher un sentier passe en Modifier sur ce tronçon */ else if (pt && pt !== sel) { select(pt); fitBal(pt); } else if (mk && !pt) openMark(mk.id); else if (sel) { sel = null; collapse(); renderPanel(); draw(); } }
+function onTap(e) { const r = cv.getBoundingClientRect(); if (ADM.pl) { const [ux, uy] = unr(e.clientX - r.left - r.width / 2, e.clientY - r.top - r.height / 2); return admPlace(V.cx + ux * V.mpp, V.cy - uy * V.mpp); } if (!RM && !P.on) { const q = clusterAt(e.clientX - r.left, e.clientY - r.top); if (q) { const xs = q.items.map(m => m.c.x), ys = q.items.map(m => m.c.y), W = cv.clientWidth, H = cv.clientHeight; flyXY((Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2, Math.max(.8, Math.min(V.mpp / 2.5, (Math.max(...xs) - Math.min(...xs)) / (W * .6), (Math.max(...ys) - Math.min(...ys)) / (H * .5))), 550); return; } } const pt = spotAt(e.clientX - r.left, e.clientY - r.top), mk = markAt(e.clientX - r.left, e.clientY - r.top); if (RM) { const w = (([ux, uy]) => ({ x: V.cx + ux * V.mpp, y: V.cy - uy * V.mpp }))(unr(e.clientX - r.left - r.width / 2, e.clientY - r.top - r.height / 2)); if (RMT) { const t = RMT; setRM(false); mkQuick(t, w.x, w.y); } else if (mk) openMark(mk.id); else openMk({ id: null, t: mkLast, note: '', ...w, where: 'tap' }); } else if (P.on) { const px = e.clientX - r.left, py = e.clientY - r.top; if (ED.on) (ED.draw ? edDrawTap : edPick)(px, py); else if (!RC.on && !P.cur && !P.start) { edToggle(true); edPick(px, py); } }      /* en mode Marcher, toucher un sentier passe en Modifier sur ce tronçon */ else if (pt && pt !== sel) { select(pt); fitBal(pt); } else if (mk && !pt) openMark(mk.id); else if (sel) { sel = null; collapse(); renderPanel(); draw(); } }
 var TT = { t: 0, n: 0, x: 0, y: 0, timer: 0 };
 function multiTap(e) {
   const now = performance.now(), same = now - TT.t < 330 && Math.hypot(e.clientX - TT.x, e.clientY - TT.y) < 36;
