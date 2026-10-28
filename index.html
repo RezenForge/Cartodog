@@ -1139,6 +1139,50 @@ body.lpon #dock #found:not(.rec),body.lpon #dock #socb{display:none!important}bo
 #lg{position:fixed;inset:0;z-index:44;display:flex;flex-direction:column;background:#16130f}.lgbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(8px + env(safe-area-inset-top)) 12px 8px 16px;border-bottom:1px solid #4a4236;color:#fff1cf;font:800 17px var(--px,Georgia)}#lgf{flex:1;width:100%;border:0;background:#16130f}
 .gtleg{text-align:center;font:600 12.5px/1.6 var(--num);color:var(--mut);margin-top:4px}.gtleg a{color:var(--mut)}
 .clterm{display:flex;gap:10px;align-items:flex-start;font:600 13.5px/1.4 var(--num);color:var(--txt);padding:2px 2px}.clterm input{flex:none;width:22px!important;height:22px!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;background:none!important;appearance:auto!important;-webkit-appearance:checkbox!important;accent-color:#eaa53c}.clterm a{color:var(--ember2)}
+body:has(#com.open,#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#pls.open,#mkm.open,#dlm.open) #toast{top:auto;bottom:calc(18px + env(safe-area-inset-bottom))}
+#dock #comb{flex:none;width:68px;position:relative;flex-direction:column;justify-content:center;gap:1px;padding:2px 0 7px;background:var(--stone);color:var(--ember2);font:800 10.5px/1 var(--num);text-shadow:none}
+#comb svg{width:28px;height:25px;flex:none}
+#comb small{font:800 10.5px/1.1 var(--num);color:#e8dcc0;letter-spacing:.02em}
+#com{position:fixed;inset:0;z-index:21;display:none;background:rgba(6,5,3,.72)}
+#com.open{display:block}
+#com .scw{position:absolute;inset:0;max-width:none;max-height:none;margin:0;border:0;border-radius:0;padding:calc(12px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;animation:accIn .32s cubic-bezier(.2,.85,.25,1) both}
+#com .scw>*{max-width:520px;margin-left:auto;margin-right:auto}
+#com .ach{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+#com .ach h2{flex:1;margin:0}
+#com{top:var(--soct,0px)!important;background:none!important}
+body:has(#com.open) header.bar{z-index:23}
+#com .scw{inset:0 8px calc(6px + env(safe-area-inset-bottom)) 8px!important;padding:34px 14px 14px!important;border:3px solid var(--edge)!important;border-radius:6px!important;box-shadow:0 0 0 2px #574c3d,0 0 0 4px var(--edge),0 6px 18px rgba(0,0,0,.5)!important;animation:socUp .3s cubic-bezier(.2,.85,.25,1) both!important}
+body:not(.nosel):not(.pmin) #dock #found:not(.rec),body:not(.nosel):not(.pmin) #dock #comb{display:none}
+#com .scw{animation-fill-mode:backwards!important}
+#com .scw{display:flex!important;flex-direction:column;overflow:hidden!important;padding-top:40px!important}
+#com .scw>*{flex:none;width:100%}
+#com .scx{position:absolute;top:4px;right:6px;width:34px!important;height:34px!important;z-index:2}
+#com .scp.on{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+#com .scp>*{flex:none}
+#com .scp>.scls{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;margin-top:2px;padding-bottom:6px;-webkit-mask-image:linear-gradient(#000 calc(100% - 14px),transparent);mask-image:linear-gradient(#000 calc(100% - 14px),transparent)}
+#com .scnew{margin:10px 0 0!important}
+#com .scls>.scml{margin-top:8px}
+#com .scsh{padding-bottom:calc(8px + var(--kb,0px))!important;transition:padding-bottom .15s}
+#com .scgw{max-height:calc(82dvh - var(--kb,0px))}
+body.lpon #dock #found:not(.rec),body.lpon #dock #comb{display:none!important}
+#dock #comb{width:76px}#dock #comb svg{width:30px}#dock #comb small{font-size:9.6px;letter-spacing:0}
+#com .cmtop{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}#com .cmlb{font:800 11px var(--num);letter-spacing:.1em;text-transform:uppercase;color:var(--ember);width:100%}
+#cmsel{flex:1;min-width:0;height:42px;border-radius:9px;border:2px solid var(--edge);background:var(--slot);color:var(--txt);font:700 14.5px var(--num);padding:0 8px}#com #cmpub{flex:none;width:auto;height:42px;padding:0 12px;margin:0}
+#com .cmls{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:10px;padding-bottom:8px}
+.cmp{background:var(--slot);border:2px solid var(--edge);box-shadow:inset 0 0 0 1px #3a332a;border-radius:10px;padding:9px 11px;display:flex;flex-direction:column;gap:5px}.cmh .scav{width:34px;height:34px;font-size:15px}.cmh small{font-weight:600}
+.cmh{display:flex;align-items:center;gap:9px}.cmh .act{flex:1;min-width:0;display:flex;flex-direction:column}.cmh b{font:800 14.5px/1.2 var(--num);color:var(--txt)}.cmh em{font-style:normal;color:var(--mut);font-weight:700}.cmh small{font:600 12px var(--num);color:var(--mut)}
+.cmx{width:32px;height:32px;border-radius:8px;border:0;background:none;color:var(--mut);font:900 18px var(--num)}
+.cmloc{align-self:flex-start;max-width:100%;border:0;background:rgba(234,165,60,.12);color:var(--ember2);font:800 13px var(--num);padding:4px 9px;border-radius:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmt{margin:0;font:500 14.5px/1.45 var(--num);color:var(--txt);white-space:pre-wrap;overflow-wrap:anywhere}
+.cmimg{display:block;width:100%;height:150px;padding:0;border:0;border-radius:8px;overflow:hidden;background:#14110e}.cmimg img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .25s}.cmimg.ok img{opacity:1}
+.cma{display:flex;gap:8px}.cma button{height:30px;padding:0 12px;border-radius:17px;border:1.5px solid var(--rim);background:none;color:var(--txt);font:800 14px var(--num)}.cma .cml.on{color:#ff7a6b;border-color:#8a3a30}.cma span:empty{display:none}
+.cmlast{display:block;text-align:left;border:0;background:none;padding:2px 0;color:var(--txt);font:500 13.5px/1.35 var(--num);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cmlast b{font-weight:800}.cmlast small{display:block;color:var(--mut);font:600 12.5px var(--num);margin-top:2px}
+.cmto{font:800 13px var(--num);color:var(--ember2);margin:-4px 0 8px}#cmtx{width:100%;box-sizing:border-box;min-height:80px;border-radius:9px;border:2px solid var(--edge);background:var(--slot);color:var(--txt);font:500 15px/1.4 var(--num);padding:9px 10px;resize:vertical;margin-bottom:8px}
+.cmprev{position:relative;height:150px;border-radius:9px;overflow:hidden;margin-bottom:8px}.cmprev img{width:100%;height:100%;object-fit:cover}.cmprev button{position:absolute;top:6px;right:6px;width:32px;height:32px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;font:800 15px var(--num)}
+.cmcl{max-height:46dvh;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:10px}.cmcr{display:flex;gap:9px;align-items:flex-start}.cmcr .act{display:flex;flex-direction:column;font:500 14px/1.35 var(--num);color:var(--txt)}.cmcr b{font:800 13.5px var(--num)}.cmcr em{font-style:normal;color:var(--mut)}.cmcr small{color:var(--mut);font:600 11.5px var(--num)}
+.cmin{display:flex;gap:8px}.cmin input{flex:1;min-width:0;height:42px;border-radius:9px;border:2px solid var(--edge);background:var(--slot);color:var(--txt);font:500 15px var(--num);padding:0 10px}.cmin .btn{flex:none;margin:0;height:42px;padding:0 14px;width:auto}
+#cmv{position:fixed;inset:0;z-index:40;background:rgba(6,5,3,.94);display:flex;align-items:center;justify-content:center;padding:12px}#cmv[hidden]{display:none}#cmv img{max-width:100%;max-height:100%;border-radius:8px}
+
 .scemp{display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;padding:26px 14px;font:700 15px/1.3 var(--num);color:var(--txt)}.scemp small{font:500 13px/1.4 var(--num);color:var(--mut);max-width:290px}
 .hico{display:inline-block;width:17px;height:17px;margin:0 0 0 4px;vertical-align:top;position:relative;top:1px;border-radius:5px;box-shadow:0 1px 2px rgba(0,0,0,.6)}
 
@@ -1194,7 +1238,9 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
   <div id="lp" class="dg" hidden><div class="eyb" id="lpe">Balade guidée</div><div id="lpt"></div><div class="pmb"><button id="lpgo" aria-label="Partir">▶</button><button id="lpn" aria-label="Proposer une autre boucle">↻</button><button id="lpd" aria-label="Changer la durée ou le départ">⏱</button><button id="lpv" aria-label="Guidage vocal"></button><button id="lpx" aria-label="Masquer la boucle">✕</button></div></div>
   <div id="rm" class="dg" hidden><div class="eyb">Poser un repère</div><div id="rmt">Touchez la carte pour poser un repère (point d'eau, danger, parking…), ou touchez un repère existant pour le modifier.</div><div class="pmb"><button id="rmg">À ma position</button><button id="rmx" aria-label="Quitter le mode repère">✕</button></div></div>
   <div id="zb"><button class="ib" id="gr" data-ic="grid" aria-label="Afficher ou cacher la grille"></button><button class="ib" id="pt" data-ic="trail" aria-label="Cartographier les sentiers"><small>Sentiers</small></button><button class="ib" id="rtb" data-ic="home" aria-label="Retour au départ ou au parking"><small>Retour</small></button><button class="ib" id="lb" data-ic="book" aria-label="Mes balades"><small>Balades</small></button><i class="sep"></i><button class="ib" id="fit" data-ic="fit" aria-label="Tout voir"><small>Tout voir</small></button><span class="zst"><button class="ib" id="zi" data-ic="plus" aria-label="Zoomer"></button><button class="ib" id="zo" data-ic="minus" aria-label="Dézoomer"></button></span></div></div>
-<div id="dock"><button id="found" aria-label="Lancer ou terminer une balade">▶ Balade</button><button id="homeb" hidden aria-label="Me ramener au départ ou au parking">🏠<small>Retour</small></button><button id="socb" aria-label="Copains, messages et rendez-vous"><svg viewBox="0 2.2 32 32" aria-hidden="true"><defs><linearGradient id="cpg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs>
+<div id="dock"><button id="found" aria-label="Lancer ou terminer une balade">▶ Balade</button><button id="homeb" hidden aria-label="Me ramener au départ ou au parking">🏠<small>Retour</small></button><button id="comb" aria-label="Communauté : publications des balades"><svg viewBox="0 2.2 32 32" aria-hidden="true"><defs><linearGradient id="cmg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><g stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"><path d="M5.6 13.6l1.5-2.6h5.2l1.5 2.6z" fill="url(#cmg)"/><rect x="1.4" y="13.4" width="16.8" height="12.2" rx="2.6" fill="url(#cmg)"/><circle cx="9.8" cy="19.5" r="4" fill="#3a3026"/><circle cx="9.8" cy="19.5" r="2.2" fill="#6b5b44"/></g><circle cx="9" cy="18.7" r=".8" fill="#fff1cf"/><rect x="14" y="15.2" width="2.3" height="1.5" rx=".5" fill="#fff1cf" stroke="#1a1208" stroke-width=".6"/><g fill="#433b31" stroke="#433b31" stroke-width="3.2" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z"/></g>
+<g stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)" fill="#a8641c"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)" fill="#a8641c"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z" fill="url(#cpg)"/><ellipse cx="23" cy="20.9" rx="2.8" ry="2.1" fill="#fff1cf"/></g>
+<ellipse cx="23" cy="19.8" rx="1.3" ry=".9" fill="#1a1208"/><circle cx="21" cy="16.6" r=".95" fill="#1a1208"/><circle cx="25" cy="16.6" r=".95" fill="#1a1208"/></svg><small>Communauté</small></button><button id="socb" aria-label="Copains, messages et rendez-vous"><svg viewBox="0 2.2 32 32" aria-hidden="true"><defs><linearGradient id="cpg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs>
 <circle cx="10.6" cy="12.6" r="4.5" fill="url(#cpg)" stroke="#1a1208" stroke-width="1.1"/><path d="M2.4 28c0-5.4 3.6-9 8.2-9s8.2 3.6 8.2 9z" fill="url(#cpg)" stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"/>
 <g fill="#433b31" stroke="#433b31" stroke-width="3.2" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z"/></g>
 <g stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)" fill="#a8641c"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)" fill="#a8641c"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z" fill="url(#cpg)"/><ellipse cx="23" cy="20.9" rx="2.8" ry="2.1" fill="#fff1cf"/></g>
@@ -1282,6 +1328,14 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
     <button class="btn" id="rf">Actualiser l'application</button>
   </div>
 </div></div>
+<div id="com"><div class="win dg scw" role="dialog" aria-label="Communauté">
+  <button class="ib scx" id="comx" aria-label="Fermer">✕</button>
+  <div class="cmtop"><label class="cmlb" for="cmsel">📍 Balade</label><select id="cmsel" aria-label="Balade"></select><button class="btn gold" id="cmpub">＋ Publier ici</button></div>
+  <div class="scls cmls" id="cmls"></div>
+  <div class="scsh" id="cmsh" hidden><div class="scgw" id="cmsw"></div></div>
+  <input type="file" id="cmfile" accept="image/*" hidden>
+</div></div>
+<div id="cmv" hidden><img id="cmvi" alt="Photo de la publication"></div>
 <div id="soc"><div class="win dg scw" role="dialog" aria-label="Copains, messages et rendez-vous">
   <button class="ib scx" id="socx" aria-label="Fermer">✕</button>
   <div class="scme" id="scme"></div>
@@ -2847,7 +2901,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-120';
+const APP_V = '2026.10.28-121';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3125,7 +3179,7 @@ function mqFit(root) {      // seul le nom de la balade défile (aller-retour) q
   requestAnimationFrame(() => root.querySelectorAll('.mqn').forEach(el => { const sp = el.firstElementChild, d = sp.scrollWidth - el.clientWidth; el.classList.toggle('mq', d > 2); if (d > 2) { sp.style.setProperty('--d', -(d + 10) + 'px'); sp.style.animationDuration = Math.max(6, (d + 10) / 22 + 4) + 's'; } })); }
 function socBadge() { let n = 0; try { n = msgUnread() + SO.rin.length + evNew(); } catch (e) {} const b = $('#socn'); b.hidden = !n; b.textContent = n > 9 ? '9+' : n; $('#socb').setAttribute('aria-label', 'Copains, messages et rendez-vous' + (n ? ' : ' + n + ' notification' + (n > 1 ? 's' : '') : '')); }
 setTimeout(socBadge, 300);
-function socOpen() { const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); faClose(); socMe(); socRender(); $('#scsh').hidden = true; $('#soc').classList.add('open'); soTick(true); }
+function socOpen() { try { comClose(); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); faClose(); socMe(); socRender(); $('#scsh').hidden = true; $('#soc').classList.add('open'); soTick(true); }
 const socClose = () => { SOC.ed = false; $('#soc').classList.remove('open'); };
 const socSoon = () => toast('🛠️ Bientôt disponible');
 function socShow(k) { if (!k || !D.cells[k]) return toast('📍 Cette balade n\'est pas sur votre carte'); socClose(); select(k); try { fitBal(k); } catch (e) {} }
@@ -3214,6 +3268,96 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('message', e => { const d = e.data || {}; if (d.cartodog === 'push') soTick(true); if (d.cartodog === 'open') pushGo(d.u); });
   if (PUSH.on) pushReg();
 }
+/* ===== Communauté : publications courtes des promeneurs, rangées par balade (texte, photo compressée, j'aime, commentaires) ===== */
+const CM = { k: null, posts: [], busy: false, img: {}, open: null, draft: null };
+const cmAgo = t => { const s = (Date.now() - t) / 1000; if (s < 90) return 'à l\'instant'; if (s < 3600) return 'il y a ' + Math.round(s / 60) + ' min'; if (s < 86400) return 'il y a ' + Math.round(s / 3600) + ' h';
+  const d = Math.round(s / 86400); return d < 7 ? 'il y a ' + d + ' j' : 'le ' + new Date(t).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); };
+function cmBals() {      // balades récemment visitées (sorties du carnet), sinon les plus proches
+  let L = []; try { L = walkPlaces().filter(x => x.g && x.k); } catch (e) {}
+  const vis = L.filter(x => x.last).sort((a, b) => b.last.localeCompare(a.last)).slice(0, 12);
+  if (vis.length) return vis.map(x => ({ k: x.k, n: x.label, sub: x.last === new Date().toISOString().slice(0, 10) ? 'aujourd\'hui' : new Date(x.last).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) }));
+  const ref = me ? [me.x, me.y] : [V.cx, V.cy]; return L.map(x => ({ x, d: rdist(ctr(x.k), ref) })).sort((a, b) => a.d - b.d).slice(0, 12).map(({ x, d }) => ({ k: x.k, n: x.label, sub: fmtDist(d) }));
+}
+function cmPerson(p) { const hu = (p.first || '').trim() || (p.name || '').trim(), dog = (p.dog || '').trim(); return { id: p.author, d: dog || hu || '?', n: dog ? hu : '', c: soCol(p.author) }; }
+async function cmPhoto(path) {      // photo lue avec la session (dossier privé aux membres), gardée en mémoire le temps de la visite
+  if (CM.img[path]) return CM.img[path];
+  try { const r = await sb('/storage/v1/object/authenticated/posts/' + path, { raw: true }); if (!r.ok) return ''; return CM.img[path] = URL.createObjectURL(await r.blob()); } catch (e) { return ''; }
+}
+function cmCard(p) {
+  const f = cmPerson(p), uid = CLD.s && CLD.s.user.id, lc = p.last;
+  return `<article class="cmp" data-post="${p.id}">
+    <div class="cmh"><span class="scaw">${socAv(f)}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''} <small>· ${cmAgo(Date.parse(p.ts))}</small></b></span>${p.author === uid ? `<button class="cmx" data-cmdel="${p.id}" aria-label="Supprimer ma publication">⋯</button>` : ''}</div>
+    <button class="cmloc" data-cmloc="${p.id}">📍 ${esc(p.bal)}</button>
+    ${p.body ? `<p class="cmt">${esc(p.body)}</p>` : ''}
+    ${p.photo ? `<button class="cmimg" data-cmimg="${esc(p.photo)}" aria-label="Agrandir la photo"><img alt="" data-cmsrc="${esc(p.photo)}"></button>` : ''}
+    <div class="cma"><button class="cml${p.liked ? ' on' : ''}" data-cmlike="${p.id}" aria-pressed="${p.liked ? 'true' : 'false'}">${p.liked ? '♥' : '♡'} <span>${p.likes || ''}</span></button><button class="cmc" data-cmcom="${p.id}">💬 <span>${p.ncom || ''}</span></button></div>
+    ${lc ? `<button class="cmlast" data-cmcom="${p.id}"><b>${esc(cmPerson(lc).n || cmPerson(lc).d)}</b> ${esc(lc.body)}${p.ncom > 1 ? `<small>Voir les ${p.ncom} commentaires</small>` : ''}</button>` : ''}
+  </article>`;
+}
+function cmRender() {
+  const B = cmBals(); if (!CM.k || !B.some(b => b.k === CM.k)) CM.k = B.length ? B[0].k : null;
+  $('#cmsel').innerHTML = B.length ? B.map(b => `<option value="${b.k}"${b.k === CM.k ? ' selected' : ''}>${esc(b.n)} (${esc(b.sub)})</option>`).join('') : '<option value="">Aucune balade pour l\'instant</option>';
+  $('#cmpub').disabled = !CM.k;
+  const L = CM.posts; $('#cmls').innerHTML = !clOn() ? '<div class="scemp">☁️ Connectez-vous pour voir la communauté</div>'
+    : CM.busy && !L.length ? '<div class="scemp">Chargement…</div>'
+    : L.length ? L.map(cmCard).join('') : `<div class="scemp">📷 Pas encore de publication ici<small>Soyez le premier à partager un moment de balade à ${esc(CM.k ? balName(CM.k) : 'cette balade')}.</small></div>`;
+  $('#cmls').querySelectorAll('img[data-cmsrc]').forEach(async im => { const u = await cmPhoto(im.dataset.cmsrc); if (u) { im.src = u; im.parentNode.classList.add('ok'); } });
+}
+async function cmLoad() {
+  if (!clOn() || !CM.k || !D.cells[CM.k]) { CM.posts = []; return cmRender(); }
+  const c = ctr(CM.k), k = CM.k; CM.busy = true; cmRender();
+  try { const r = await soRpc('post_feed', { bx: c[0], by: c[1], r: 700 }); if (CM.k === k) CM.posts = Array.isArray(r) ? r : []; } catch (e) { toast('⚠️ ' + e.message); }
+  CM.busy = false; cmRender();
+}
+function comOpen() { try { socClose(); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#com').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#cmsh').hidden = true; $('#com').classList.add('open'); cmRender(); cmLoad(); }
+const comClose = () => { $('#com').classList.remove('open'); $('#cmsh').hidden = true; };
+async function cmCompress(file) {      // photo réduite (1024 px max) et compressée en JPEG, ~100 à 200 Ko
+  const u = URL.createObjectURL(file); try { const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = u; });
+    const s = Math.min(1, 1024 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * s); c.height = Math.round(im.height * s); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+    let q = .72, b = await new Promise(r => c.toBlob(r, 'image/jpeg', q)); while (b && b.size > 230000 && q > .4) { q -= .1; b = await new Promise(r => c.toBlob(r, 'image/jpeg', q)); } return b; } finally { URL.revokeObjectURL(u); } }
+function cmCompose() {
+  const d = CM.draft ||= { t: '', blob: null, url: '' };
+  $('#cmsw').innerHTML = `<div class="scgt">Publier</div><div class="cmto">📍 ${esc(balName(CM.k))}</div>
+    <textarea id="cmtx" maxlength="500" rows="3" placeholder="Un moment de balade à partager ?">${esc(d.t)}</textarea>
+    ${d.url ? `<div class="cmprev"><img src="${d.url}" alt=""><button data-cmph="x" aria-label="Retirer la photo">✕</button></div>` : '<button class="btn" data-cmph="add">📷 Ajouter une photo</button>'}
+    <div class="clerr" id="cmerr"></div>
+    <div class="scga"><button class="btn" data-cmsx>Annuler</button><button class="btn gold" data-cmgo>Publier</button></div>`;
+  $('#cmsh').hidden = false; const tx = $('#cmtx'); tx.oninput = () => d.t = tx.value;
+}
+async function cmComments(id) {
+  const p = CM.posts.find(x => x.id === id); if (!p) return; CM.open = id;
+  $('#cmsw').innerHTML = `<div class="scgt">Commentaires</div><div class="cmcl" id="cmcl"><div class="hint">Chargement…</div></div>
+    <div class="cmin"><input id="cmci" maxlength="300" placeholder="Votre commentaire…" enterkeyhint="send" aria-label="Votre commentaire"><button class="btn gold" data-cmsend>Envoyer</button></div>`;
+  $('#cmsh').hidden = false; $('#cmci').onkeydown = e => { if (e.key === 'Enter') $('#cmsw [data-cmsend]').click(); };
+  let L = []; try { L = await soRpc('post_comments', { post: id }) || []; } catch (e) {}
+  if (CM.open !== id) return;
+  $('#cmcl').innerHTML = L.length ? L.map(c => { const f = cmPerson(c); return `<div class="cmcr"><span class="scaw">${socAv(f, 'sm')}</span><span class="act"><b>${esc(f.d)}${f.n ? ` <em>& ${esc(f.n)}</em>` : ''}</b> <small>${cmAgo(Date.parse(c.ts))}</small><span>${esc(c.body)}</span></span></div>`; }).join('') : '<div class="hint" style="padding:8px 2px">Aucun commentaire pour l\'instant.</div>';
+  requestAnimationFrame(() => { const l = $('#cmcl'); if (l) l.scrollTop = l.scrollHeight; });
+}
+$('#cmsel').onchange = e => { CM.k = e.target.value || null; CM.posts = []; cmLoad(); };
+$('#cmpub').onclick = () => { if (!clOn()) return toast('☁️ Connectez-vous pour publier'); if (!CM.k) return; CM.draft = null; cmCompose(); };
+$('#cmfile').onchange = async e => { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return; try { const b = await cmCompress(f); const d = CM.draft ||= { t: '' }; d.blob = b; if (d.url) URL.revokeObjectURL(d.url); d.url = URL.createObjectURL(b); d.t = $('#cmtx') ? $('#cmtx').value : d.t; cmCompose(); } catch (x) { toast('⚠️ Photo illisible'); } };
+$('#comb').onclick = comOpen; $('#comx').onclick = comClose;
+$('#com').addEventListener('click', async e => {
+  const t = e.target; if (t.id === 'cmsh') { $('#cmsh').hidden = true; CM.open = null; return; }
+  const loc = t.closest('[data-cmloc]'); if (loc) { const p = CM.posts.find(x => x.id === loc.dataset.cmloc), k = p && (soCell(p.bx, p.by) || CM.k); if (!k || !D.cells[k]) return toast('📍 Cette balade n\'est pas sur votre carte'); comClose(); select(k); try { fitBal(k); } catch (x) {} return; }
+  const im = t.closest('[data-cmimg]'); if (im) { const u = await cmPhoto(im.dataset.cmimg); if (u) { $('#cmvi').src = u; $('#cmv').hidden = false; } return; }
+  const lk = t.closest('[data-cmlike]'); if (lk) { const p = CM.posts.find(x => x.id === lk.dataset.cmlike); if (!p) return; p.liked = !p.liked; p.likes = Math.max(0, (p.likes || 0) + (p.liked ? 1 : -1)); cmRender(); if (p.liked) try { navigator.vibrate && navigator.vibrate(15); } catch (x) {}
+    soRpc('post_like', { post: p.id, on: p.liked }).catch(x => toast('⚠️ ' + x.message)); return; }
+  const cc = t.closest('[data-cmcom]'); if (cc) return cmComments(cc.dataset.cmcom);
+  const dl = t.closest('[data-cmdel]'); if (dl) { if (!confirm('Supprimer cette publication ?')) return; const id = dl.dataset.cmdel, dp = CM.posts.find(x => x.id === id); if (dp && dp.photo) sb('/storage/v1/object/posts/' + dp.photo, { method: 'DELETE' }).catch(() => {}); CM.posts = CM.posts.filter(x => x.id !== id); cmRender(); soRpc('post_delete', { post: id }).catch(x => toast('⚠️ ' + x.message)); return toast('Publication supprimée'); }
+  const ph = t.closest('[data-cmph]'); if (ph) { const d = CM.draft ||= { t: '' }; d.t = $('#cmtx') ? $('#cmtx').value : d.t; if (ph.dataset.cmph === 'add') return $('#cmfile').click(); if (d.url) URL.revokeObjectURL(d.url); d.url = ''; d.blob = null; return cmCompose(); }
+  if (t.closest('[data-cmsx]')) { $('#cmsh').hidden = true; return; }
+  const go = t.closest('[data-cmgo]'); if (go) { const d = CM.draft || {}, txt = ($('#cmtx').value || '').trim(); if (!txt && !d.blob) return $('#cmerr').textContent = 'Écrivez un mot ou ajoutez une photo';
+    go.disabled = true; go.textContent = '…'; const c = ctr(CM.k);
+    try { let photo = null; if (d.blob) { photo = CLD.s.user.id + '/' + rid() + '.jpg'; const r = await sb('/storage/v1/object/posts/' + photo, { method: 'POST', body: d.blob, headers: { 'Content-Type': 'image/jpeg', 'x-upsert': 'true' }, raw: true }); if (!r.ok) throw new Error('envoi de la photo impossible'); CM.img[photo] = d.url; d.url = ''; }
+      await soRpc('post_create', { bal: balName(CM.k).slice(0, 60), bx: c[0], by: c[1], body: txt.slice(0, 500), photo }); CM.draft = null; $('#cmsh').hidden = true; toast('📷 Publié !'); cmLoad(); }
+    catch (x) { $('#cmerr').textContent = x.message; go.disabled = false; go.textContent = 'Publier'; } return; }
+  const sd = t.closest('[data-cmsend]'); if (sd) { const id = CM.open, v = ($('#cmci').value || '').trim(); if (!id || !v) return; sd.disabled = true;
+    try { await soRpc('post_comment', { post: id, body: v.slice(0, 300) }); const p = CM.posts.find(x => x.id === id); if (p) { p.ncom = (p.ncom || 0) + 1; p.last = { author: CLD.s.user.id, body: v, ...(SO.me || {}), first: accU().first || '', name: accU().name || '', dog: D.prof.name || '' }; } cmRender(); cmComments(id); }
+    catch (x) { toast('⚠️ ' + x.message); sd.disabled = false; } return; }
+});
+$('#cmv').onclick = () => { $('#cmv').hidden = true; $('#cmvi').removeAttribute('src'); };
 $('#socb').onclick = socOpen; $('#socx').onclick = socClose;
 $('#soc').addEventListener('click', e => {
   const me = e.target.closest('[data-sme]'); if (me) { if (me.dataset.sme === 'bio') { SOC.ed = true; return socMe(); }
@@ -3465,6 +3609,7 @@ document.addEventListener('click', async e => {
   if (t.closest('#clout')) { if (!confirm('Se déconnecter ?\n\nVotre carnet reste sauvegardé dans votre compte et quitte ce téléphone jusqu\'à votre prochaine connexion.' + (navigator.onLine === false ? '\n\n⚠️ Hors ligne : les dernières modifications pas encore envoyées seront perdues.' : ''))) return; await clSignOut(); toast('☁️ Déconnecté'); return; }
   if (t.closest('#cldel')) { if (!confirm('Supprimer définitivement votre compte en ligne ? Vos sentiers publics restent sur la carte (sans votre nom) ; votre carnet en ligne et vos photos en ligne sont effacés. Tout est aussi retiré de ce téléphone.')) return;
     try { const S = syLoad(); for (const id of Object.keys(S.ph)) { try { await sb(`/storage/v1/object/photos/${CLD.s.user.id}/${id}`, { method: 'DELETE' }); } catch (x) {} }
+      try { const L = await sb('/storage/v1/object/list/posts', { method: 'POST', json: { prefix: CLD.s.user.id + '/', limit: 1000 } }); if (Array.isArray(L) && L.length) await sb('/storage/v1/object/posts', { method: 'DELETE', json: { prefixes: L.map(o => CLD.s.user.id + '/' + o.name) } }); } catch (x) {}      // photos de la Communauté
       await sb('/rest/v1/rpc/delete_my_account', { method: 'POST', json: {} }); await clSignOut(true); toast('Compte supprimé'); }
     catch (x) { toast(x.status === 404 ? '⚠️ Suppression bientôt disponible : écrivez-nous pour supprimer votre compte' : '⚠️ ' + x.message); } return; }
 });
@@ -4378,14 +4523,14 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
     [op('encm'), () => { const b = !$('#encv').hidden && !(encFrom && !encStack.length) && $('#encbk'); b ? b.click() : encClose(); }],      // ouvert directement sur une fiche depuis une autre fenêtre : retour = revenir à cette fenêtre
     [op('dogm'), () => { const p = document.querySelector('#dogm .dgp.on'); p && p.dataset.p !== 'main' ? dogPane('main') : dogClose(); }],
     [op('balm'), () => { !$('#balb').hidden ? $('#balb').click() : balClose(); }],
-    [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('srp'), () => srClose()], [op('soc'), () => { !$('#scgr').hidden ? grpBack() : !$('#scch').hidden ? chatClose() : !$('#scst').hidden ? ($('#scst').hidden = true) : !$('#scsh').hidden ? ($('#scsh').hidden = true) : socClose(); }], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
+    [op('com'), () => { !$('#cmsh').hidden ? ($('#cmsh').hidden = true) : comClose(); }], [op('pls'), () => $('#pls').classList.remove('open')], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('srp'), () => srClose()], [op('soc'), () => { !$('#scgr').hidden ? grpBack() : !$('#scch').hidden ? chatClose() : !$('#scst').hidden ? ($('#scst').hidden = true) : !$('#scsh').hidden ? ($('#scsh').hidden = true) : socClose(); }], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
     [vis('shm'), () => shClose()], [() => RM, () => setRM(false)], [() => ED.on, () => edToggle(false)], [() => P.on && !RC.on, () => $('#pt').click()],
     [() => !!BL.poly && !BR.on, () => { apClear('loop'); BL.wait = false; BL.poly = null; lpUi(); }], [() => !!sel, () => { const f = selFrom && selFrom.k === sel; const hub = f && selFrom.hub; selFrom = null; sel = null; collapse(); renderPanel(); draw(); if (f) hub ? balOpen() : $('#lb').click(); }]];
   let pushed = false, skip = 0, q = 0;
   const any = () => LAY.some(l => { try { return l[0](); } catch (e) { return false; } });
   const sync = () => { q = 0; const a = any(); if (a && !pushed) { pushed = true; try { history.pushState({ cdm: 1 }, ''); } catch (e) {} } else if (!a && pushed) { pushed = false; if (history.state && history.state.cdm) { skip++; history.back(); } } };
   window.navSync = () => { if (!q) { q = 1; setTimeout(sync, 60); } };
-  const mo = new MutationObserver(navSync); ['srp', 'soc', 'pv', 'rqm', 'dzq', 'mkm', 'encm', 'encv', 'dogm', 'balm', 'pls', 'lst', 'dlm', 'menu', 'shm', 'rm', 'pm', 'lp'].forEach(id => { const el = document.getElementById(id); if (el) mo.observe(el, { attributes: true, attributeFilter: ['class', 'hidden'] }); });
+  const mo = new MutationObserver(navSync); ['srp', 'soc', 'com', 'pv', 'rqm', 'dzq', 'mkm', 'encm', 'encv', 'dogm', 'balm', 'pls', 'lst', 'dlm', 'menu', 'shm', 'rm', 'pm', 'lp'].forEach(id => { const el = document.getElementById(id); if (el) mo.observe(el, { attributes: true, attributeFilter: ['class', 'hidden'] }); });
   mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
   addEventListener('popstate', () => { if (skip) { skip--; return; } pushed = false;
     const l = LAY.find(x => { try { return x[0](); } catch (e) { return false; } }); if (l) l[1](); setTimeout(sync, 80); }); }
