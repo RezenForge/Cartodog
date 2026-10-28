@@ -3077,7 +3077,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-150';
+const APP_V = '2026.10.28-151';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -4257,17 +4257,19 @@ $('#compb').onclick = () => { compOn = !compOn; try { localStorage.setItem('cart
 $('#cmb').onclick = () => { commOn = !commOn; try { localStorage.setItem('cartodog-comm', commOn ? '1' : '0'); } catch (e) {} cmLabel(); if (commOn) scan(); schedule(); };
 $('#mn').addEventListener('click', cmLabel); cmLabel();
 
-/* ===== Plein écran (activé par défaut ; le navigateur exige un premier toucher pour l'accorder) ===== */
-let fsOn = true;      // plein écran permanent
-const fsEl = document.documentElement, fsCan = !!(fsEl.requestFullscreen || fsEl.webkitRequestFullscreen);
+/* ===== Plein écran : l'appli installée est déjà en plein écran (sans message du navigateur) ; dans un onglet, c'est un réglage, désactivé par défaut,
+   car le navigateur affiche à chaque fois « Balayez pour quitter le plein écran » et aucune page ne peut masquer ce message ===== */
+const fsApp = (() => { try { return matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches || navigator.standalone === true; } catch (e) { return false; } })();
+let fsOn = !fsApp && (() => { try { return localStorage.getItem('cartodog-full') === '1'; } catch (e) { return false; } })();
+const fsEl = document.documentElement, fsCan = !fsApp && !!(fsEl.requestFullscreen || fsEl.webkitRequestFullscreen);
 const inFs = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
 const enterFs = () => { try { return Promise.resolve((fsEl.requestFullscreen || fsEl.webkitRequestFullscreen).call(fsEl, { navigationUI: 'hide' })); } catch (e) { return Promise.reject(e); } };
 const exitFs = () => { try { const r = (document.exitFullscreen || document.webkitExitFullscreen).call(document); r && r.catch && r.catch(() => {}); } catch (e) {} };
 const fsLabel = () => { $('#fs').innerHTML = sw('Plein écran' + (fsCan ? '' : ' (non pris en charge ici)'), fsOn); };
 $('#fs').onclick = () => { fsOn = !fsOn; try { localStorage.setItem('cartodog-full', fsOn ? '1' : '0'); } catch (e) {} fsLabel();
   if (fsOn) { if (!fsCan) toast(`Plein écran indisponible ici : ajoutez la page à l'écran d'accueil`); else if (!inFs()) enterFs().catch(() => toast('Plein écran refusé par le navigateur')); } else if (inFs()) exitFs(); };
-$('#mn').addEventListener('click', fsLabel); fsLabel();
-['pointerup', 'click'].forEach(ev => document.addEventListener(ev, e => { if (fsCan && !inFs() && !e.target.closest('input,textarea,label,select,a[href]')) enterFs().catch(() => {}); }, true));      // revient en plein écran au premier toucher après chaque sortie (retour, partage, photo…)
+$('#mn').addEventListener('click', fsLabel); fsLabel(); $('#fs').hidden = !fsCan;
+['pointerup', 'click'].forEach(ev => document.addEventListener(ev, e => { if (fsOn && fsCan && !inFs() && !e.target.closest('input,textarea,label,select,a[href]')) enterFs().catch(() => {}); }, true));      // revient en plein écran au premier toucher après chaque sortie (retour, partage, photo…)
 
 /* ===== Chemins : lignes posées point par point avec le GPS (coordonnées en mètres Mercator) ===== */
 const bbC = new WeakMap();
