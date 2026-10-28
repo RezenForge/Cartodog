@@ -891,7 +891,7 @@ header.bar .hset{width:40px;height:40px}
 #sc{top:auto!important;bottom:14px!important;left:10px!important}header.bar .hbr{padding-left:2px}#bh{top:8px!important;left:100px!important;max-width:calc(100% - 160px)!important}
 
 header.bar.dg::before{background:none}
-body{padding-top:0!important}header.bar{margin-top:6px!important}
+body{padding-top:env(safe-area-inset-top,0px)!important}      /* iPhone : le bandeau passe sous l'encoche et la barre d'état, plus dessous */header.bar{margin-top:6px!important}
 
 /* ===== Météo : bouton rond dans la colonne de droite, comme la boussole et le GPS ===== */
 #wxw{top:104px!important;right:12px!important;width:36px;height:36px;max-width:none!important;padding:0!important;display:grid!important;place-items:center;border-radius:50%!important;border:2px solid #d6ab55!important;background:rgba(14,12,9,.82)!important;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6));overflow:visible}
@@ -1186,6 +1186,7 @@ body.lpon #dock #found:not(.rec),body.lpon #dock #comb{display:none!important}
 .fbdg{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px;border-radius:6px;border:1px solid rgba(234,165,60,.55);background:rgba(234,165,60,.1);color:#e9c77a;font:800 9.5px/14px var(--num);letter-spacing:.02em;font-style:normal;white-space:nowrap;vertical-align:2px;text-shadow:none}.fbdg img{width:13px;height:13px;border-radius:3px;display:block}
 html.lite #pt,html.lite #homeb{display:none!important}
 .scav.img{padding:0;overflow:hidden;background:#1b1814}.scav.img img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+#mkm,#encm,#pls,#balm,#dzq,#dogm,#welm,#cmv{padding-top:max(12px,calc(env(safe-area-inset-top,0px) + 6px))!important;padding-bottom:max(12px,calc(env(safe-area-inset-bottom,0px) + 6px))!important}#rqm{padding-bottom:max(6px,env(safe-area-inset-bottom,0px))!important}
 .scemp{display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;padding:26px 14px;font:700 15px/1.3 var(--num);color:var(--txt)}.scemp small{font:500 13px/1.4 var(--num);color:var(--mut);max-width:290px}
 .hico{display:inline-block;width:17px;height:17px;margin:0 0 0 4px;vertical-align:top;position:relative;top:1px;border-radius:5px;box-shadow:0 1px 2px rgba(0,0,0,.6)}
 
@@ -2915,7 +2916,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-127';
+const APP_V = '2026.10.28-128';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
