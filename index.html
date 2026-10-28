@@ -1213,7 +1213,9 @@ html.lite #pt,html.lite #homeb{display:none!important}
 /* signaler */
 #bash{z-index:27;background:rgba(6,5,3,.62);padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}#baw input{width:100%;margin:2px 0 8px}.bawn{margin:0 0 10px;padding:8px 10px;border:1.5px solid #8a5a2a;border-radius:9px;background:rgba(234,120,40,.1);font:600 12.5px/1.4 var(--num);color:#f0d9a8}
 .baxp{display:flex;gap:8px;align-items:center;margin:0 0 10px;font:700 12.5px/1.35 var(--num);color:var(--mut)}.baxp b{color:var(--ember2)}.bab{display:flex;gap:8px}.bab .btn{flex:1}
-#admpl button[data-admplme]{border-color:#c6862a}.bprep{display:block;margin:10px auto 2px;border:0;background:none;color:var(--mut);font:600 12px var(--num);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+#admpl button[data-admplme]{border-color:#c6862a}.bpbc{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 10px;margin:6px 0 0;font:600 12px var(--num);color:var(--mut)}.bpbc:empty{display:none}.bpbc button{border:0;background:none;padding:2px 0;color:var(--ember2);font:700 12px var(--num);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.bpbc button.gold{width:100%;padding:8px 10px;border:1.5px dashed #c6862a;border-radius:10px;text-decoration:none;background:rgba(244,200,98,.08)}
+.bprep{display:block;margin:10px auto 2px;border:0;background:none;color:var(--mut);font:600 12px var(--num);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 #srl .sradd{padding:6px 10px 10px}#srl .sradd button{width:100%;padding:10px;border:2px dashed #8a6a3a;border-radius:10px;background:rgba(244,200,98,.06);color:var(--ember2);font:800 13.5px var(--num);cursor:pointer}#srl .sradd small{display:block;font:600 11px var(--num);color:var(--mut)}
 .dgadd{margin:8px 0 0;padding:8px 10px;border:1.5px solid #5a4a36;border-radius:10px;font:700 12.5px var(--num);color:#f0d9a8}.dgadd b{color:var(--ember2)}
 #rpsh{z-index:27;background:rgba(6,5,3,.62);padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}.rph{font:800 18px var(--px);color:#fff1cf;padding-right:40px}.rps{margin:6px 0 10px;font:600 13px/1.4 var(--num);color:var(--mut)}#rpw .rpb{margin:6px 0 0;justify-content:flex-start;text-align:left}
@@ -1474,7 +1476,7 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
   <div class="seg"><button data-s="recent" class="on">Récents</button><button data-s="best">Les plus fréquentés</button></div>
   <input id="lq" type="search" placeholder="Rechercher une balade…">
   <ul id="ll"></ul></div></div>
-<div id="pv"><div class="pvb"><button class="ib" id="pvc" aria-label="Choisir comme photo de couverture">★</button><button class="ib" id="pvd" data-ic="trash" aria-label="Supprimer la photo"></button><button class="ib" id="pvx" aria-label="Fermer">✕</button></div><img id="pvi" alt="Photo"></div>
+<div id="pv"><div class="pvb"><button class="ib" id="pvc" aria-label="Mettre sur le badge de la balade (visible par tous)">★</button><button class="ib" id="pvd" data-ic="trash" aria-label="Supprimer la photo"></button><button class="ib" id="pvx" aria-label="Fermer">✕</button></div><img id="pvi" alt="Photo"></div>
 <div id="encm"><div class="win dg">
   <div class="ehd"><button class="ib" id="encbk" data-back aria-label="Retour à la liste" hidden>‹</button><span class="elogo" id="elogo"></span><h2>Dangers &amp; secours<small>Reconnaître, réagir, appeler</small></h2><button class="ib" id="encx" aria-label="Fermer">✕</button></div>
   <div id="encbd">
@@ -1588,7 +1590,7 @@ function save() { clearTimeout(saveT); saveT = 0; CGM.clear(); try { if (syncBal
 const cleanPts = a => Array.isArray(a) ? a.filter(q => Array.isArray(q) && isFinite(q[0]) && isFinite(q[1])).map(q => [+q[0], +q[1]]).slice(0, 6000) : [];
 function clean(c) { const ok = c && c.x != null && c.y != null && isFinite(c.x) && isFinite(c.y); return { ...(ok ? { x: +c.x, y: +c.y } : {}), ...(+c?._t > 0 ? { _t: +c._t } : {}), name: String(c?.name || ''), note: String(c?.note || ''),
   ph: (Array.isArray(c?.ph) ? c.ph : []).filter(p => p && /^[\w-]+$/.test(String(p.id))).map(p => ({ id: String(p.id), d: /^\d{4}-\d\d-\d\d$/.test(p.d) ? p.d : '' })),
-  ...(/^[\w-]+$/.test(String(c?.cov || '')) ? { cov: String(c.cov) } : {}), ...(Array.isArray(c?.tags) && c.tags.length ? { tags: c.tags.filter(t => ['sb', 'terre', 'pmr', 'pous'].includes(t)) } : {}), ...(typeof c?.th === 'string' && c.th.startsWith('data:image/') && c.th.length < 40000 ? { th: c.th } : {}),
+  ...(/^[\w-]+$/.test(String(c?.cov || '')) ? { cov: String(c.cov) } : {}), ...(/^[\w-]+$/.test(String(c?.bcs || '')) ? { bcs: String(c.bcs) } : {}), ...(Array.isArray(c?.tags) && c.tags.length ? { tags: c.tags.filter(t => ['sb', 'terre', 'pmr', 'pous'].includes(t)) } : {}), ...(typeof c?.th === 'string' && c.th.startsWith('data:image/') && c.th.length < 40000 ? { th: c.th } : {}),
   v: (Array.isArray(c?.v) ? c.v : []).filter(v => v && /^\d{4}-\d\d-\d\d$/.test(v.d)).map(v => ({ id: /^[\w-]+$/.test(String(v.id)) ? String(v.id) : rid(), d: v.d, h: /^\d\d:\d\d$/.test(v.h) ? v.h : '', s: Math.max(0, Math.round(+v.s || 0)), m: Math.max(0, Math.round(+v.m || 0)), t: String(v.t || ''), pts: cleanPts(v.pts), bal: String(v.bal || '').slice(0, 60) })) }; }
 function mergeCell(k, c) {      // fusionne sans doublon (importer deux fois le même fichier ne double rien)
   c = clean(c); if (c.x == null) return; const a = D.cells[k] ||= { ...blank(), x: c.x, y: c.y }; const have = new Set(a.v.map(v => v.id));
@@ -1996,8 +1998,39 @@ function mkThumb(url) { return new Promise((res, rej) => { const im = new Image(
   c.getContext('2d').drawImage(im, (im.width - m) / 2, (im.height - m) / 2, m, m, 0, 0, S, S); res(c.toDataURL('image/jpeg', .72)); }; im.onerror = rej; im.src = url; }); }
 async function setCover(k, id) { const c = D.cells[k]; if (!c) return; if (!id) { delete c.cov; delete c.th; THI.delete(k); return; } try { const u = await pGet(id); if (!u) return; c.cov = id; c.th = await mkThumb(u); THI.delete(k); save(); draw(); } catch (e) {} }
 const THI = new Map(), thBusy = new Set();
-function thImg(k, c) {      // image de la vignette (créée une fois) ; une balade avec photos mais sans vignette en reçoit une, en arrière-plan
-  if (!c.th) { if (c.ph && c.ph.length && !thBusy.has(k)) { thBusy.add(k); setCover(k, c.cov && c.ph.some(p => p.id === c.cov) ? c.cov : c.ph[0].id).finally(() => thBusy.delete(k)); } return null; }
+/* ===== Photo du badge partagée : choisie avec ★ par un membre, elle s'affiche pour tous sur la carte ===== */
+const BC = (() => { try { const o = JSON.parse(localStorage.getItem('cartodog-bc') || 'null'); if (o && Array.isArray(o.r)) return { t: 0, r: o.r, busy: false }; } catch (e) {} return { t: 0, r: [], busy: false }; })(), BCI = {};
+async function bcLoad(force) {
+  if (!clOn() || BC.busy || (!force && Date.now() - BC.t < 3e5)) return; BC.busy = true;
+  try { const r = await soRpc('bal_covers', {}); if (Array.isArray(r)) { BC.r = r; BC.t = Date.now(); try { localStorage.setItem('cartodog-bc', JSON.stringify({ r })); } catch (e) {} draw(); if (sel) balPhotos(sel, BI[sel] && BI[sel].d); } } catch (e) {} BC.busy = false;
+}
+function bcOf(k) {      // la plus récente posée sur cette balade (même centre, à quelques mètres près)
+  if (!BC.r.length || !k) return null; const { bx, by } = balXY(k); let b = null;
+  for (const x of BC.r) { if (!Array.isArray(x) || typeof x[2] !== 'string' || Math.abs(x[0] - bx) > 60 || Math.abs(x[1] - by) > 60) continue; if (!b || +x[3] > +b[3]) b = x; } return b ? b[2] : null;
+}
+function bcUrl(p) {      // adresse locale de la photo (lue avec la session), chargée une fois
+  const o = BCI[p] ||= { url: '', img: null, busy: false }; if (o.url || o.busy || !clOn()) return o.url; o.busy = true;
+  sb('/storage/v1/object/authenticated/avatars/' + p, { raw: true }).then(async r => { if (!r.ok) return; o.url = URL.createObjectURL(await r.blob()); const im = new Image(); im.onload = () => { o.img = im; schedule(); }; im.src = o.url;
+    if ($('#srp').classList.contains('open')) srRender(); if (sel) balPhotos(sel, BI[sel] && BI[sel].d); }).catch(() => {}).finally(() => { o.busy = false; }); return '';
+}
+const bcImg = p => { bcUrl(p); const o = BCI[p]; return o && o.img && o.img.complete && o.img.naturalWidth ? o.img : null; };
+async function bcShare(k) {      // ma photo du badge, envoyée en 640 px carré dans mon dossier de photos de profil
+  const c = D.cells[k]; if (!c || !c.cov || !clOn()) return false; const id = c.cov, uid = CLD.s.user.id;
+  const d = await pGet(id); if (!d) return false; const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = d; });
+  const m = Math.min(im.width, im.height), S = Math.min(640, m), cv2 = document.createElement('canvas'); cv2.width = cv2.height = S; cv2.getContext('2d').drawImage(im, (im.width - m) / 2, (im.height - m) / 2, m, m, 0, 0, S, S);
+  const b = await new Promise(r => cv2.toBlob(r, 'image/jpeg', .8)), path = uid + '/b-' + id + '.jpg';
+  const r = await sb('/storage/v1/object/avatars/' + path, { method: 'POST', body: b, headers: { 'Content-Type': 'image/jpeg', 'x-upsert': 'true' }, raw: true }); if (!r.ok) throw new Error('Photo non envoyée');
+  await soRpc('bal_cover_set', { ...balXY(k), path }); const old = c.bcs; c.bcs = id; save();
+  if (old && old !== id) sb('/storage/v1/object/avatars/' + uid + '/b-' + old + '.jpg', { method: 'DELETE', raw: true }).catch(() => {});
+  BCI[path] = { url: '', img: null, busy: false }; bcLoad(true); return true;
+}
+async function bcUnshare(k, keep) {
+  const c = D.cells[k]; if (!c || !c.bcs || !clOn()) return; const id = c.bcs, uid = CLD.s.user.id;
+  try { await soRpc('bal_cover_set', { ...balXY(k), path: '' }); } catch (e) {} sb('/storage/v1/object/avatars/' + uid + '/b-' + id + '.jpg', { method: 'DELETE', raw: true }).catch(() => {});
+  if (!keep) { delete c.bcs; save(); } bcLoad(true);
+}
+function thImg(k, c) {      // image de la vignette (créée une fois) ; une balade avec photos mais sans vignette en reçoit une, en arrière-plan ; sinon, la photo du badge partagée par un membre
+  if (!c.th) { if (c.ph && c.ph.length) { if (!thBusy.has(k)) { thBusy.add(k); setCover(k, c.cov && c.ph.some(p => p.id === c.cov) ? c.cov : c.ph[0].id).finally(() => thBusy.delete(k)); } return null; } try { const p = bcOf(k); return p ? bcImg(p) : null; } catch (e) { return null; } }
   let o = THI.get(k); if (!o || o.src !== c.th) { o = new Image(); o.onload = () => schedule(); o.src = c.th; THI.set(k, o); } return o.complete && o.naturalWidth ? o : null;
 }
 function shrink(f, mx = 1280, q = .72) { return new Promise((res, rej) => { const u = URL.createObjectURL(f), im = new Image(); im.onload = () => { const s = Math.min(1, mx / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * s); c.height = Math.round(im.height * s); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(u); res(c.toDataURL('image/jpeg', q)); }; im.onerror = () => { URL.revokeObjectURL(u); rej(new Error('img')); }; im.src = u; }); }
@@ -2012,10 +2045,12 @@ let pvId = null, pvDog = false;
 ['cartodog-osm', 'cartodog-chemins', 'cartodog-chemins2'].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });      // test des chemins abandonné : on libère sa mémoire
 const closePh = () => { $('#pv').classList.remove('open'); $('#pvi').removeAttribute('src'); pvId = null; pvDog = false; $('#pvc').hidden = false; $('#pvd').hidden = false; };
 $('#pvx').onclick = closePh;
-$('#pvc').onclick = async () => { const k = sel; if (!k || !pvId) return; await setCover(k, pvId); $('#pvc').classList.add('on'); toast('★ Photo de couverture : elle s\u2019affiche sur la carte'); };
+$('#pvc').onclick = async () => { const k = sel; if (!k || !pvId) return; await setCover(k, pvId); $('#pvc').classList.add('on');
+  if (!clOn()) return toast('★ Photo du badge : elle s\u2019affiche sur votre carte');
+  toast('★ Photo du badge… envoi pour les autres promeneurs'); try { await bcShare(k); toast('★ Photo du badge : visible sur la carte par tous les promeneurs'); if (sel === k) balPhotos(k, BI[k] && BI[k].d); } catch (e) { toast('⚠️ ' + (e.message || 'Photo non partagée')); } };
 $('#pvd').onclick = () => { if (pvDog) { const id = pvId; if (!id || !confirm('Supprimer cette photo ?')) return; D.prof.gal = (D.prof.gal || []).filter(x => x !== id); save(); pDel(id).catch(() => {}); closePh(); dogGal(); return toast('Photo supprimée'); }
   const k = sel, id = pvId, c = k && D.cells[k], i = c ? c.ph.findIndex(p => p.id === id) : -1; if (i < 0) return closePh();
-  const snap = snapC(); c.ph.splice(i, 1); if (c.cov === id) setCover(k, c.ph[0] ? c.ph[0].id : null); save(); closePh(); draw(); renderPanel();
+  const snap = snapC(); c.ph.splice(i, 1); if (c.bcs === id) bcUnshare(k); if (c.cov === id) setCover(k, c.ph[0] ? c.ph[0].id : null); save(); closePh(); draw(); renderPanel();
   setTimeout(() => { if (!D.cells[k]?.ph.some(p => p.id === id)) pDel(id).catch(() => {}); }, 8000);
   toast('Photo supprimée', () => { restoreSnap(snap); save(); draw(); renderPanel(); }); };
 $('#panel').addEventListener('change', async e => {
@@ -2055,7 +2090,7 @@ function renderPanel() {
   const chip = (ic, v, t) => `<span title="${t}">${ic}<b>${v}</b></span>`;
   const dn = D.prof && D.prof.name || '', av = $('#dogav') ? $('#dogav').innerHTML : '', np = c.ph.length;
   const dme = me ? rdist(ctr(sel), [me.x, me.y]) : null, lv = (() => { try { const o = socLive().get(sel); return o ? o.cnt : 0; } catch (e) { return 0; } })();
-  p.innerHTML = `<div class="bpph" id="bpph"></div>
+  p.innerHTML = `<div class="bpph" id="bpph"></div><div class="bpbc" id="bpbc"></div>
     <div class="bph"><div class="f3t"><div class="pnw"><input class="pname" data-f="name" placeholder="${esc(g ? g.name : 'Nommer cette balade…')}" value="${esc(c.name)}" aria-label="Nom de la balade"><span class="pnm" aria-hidden="true"><span></span></span></div>
       <span class="bpsub"><span id="bpcity">${cityOf(sel) ? '📍 ' + esc(cityOf(sel)) : ''}</span>${dme != null ? `<span>à ${fmtDist(dme)}</span>` : ''}${g && g.len >= 30 ? `<span>${fmtDist(g.len)} de sentier</span>` : ''}</span></div>
       ${g ? `<button class="bpic" data-act="share" aria-label="Partager cette balade"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="18" cy="5.5" r="2.8"/><circle cx="6" cy="12" r="2.8"/><circle cx="18" cy="18.5" r="2.8"/><path d="M8.5 10.7l7-3.9M8.5 13.3l7 3.9"/></svg></button>` : ''}</div>
@@ -2123,12 +2158,13 @@ function balDraw(k) {
 }
 async function balPhotos(k, info) {      // 3 photos : les miennes d'abord (couverture en tête), puis celles de la Communauté
   const el = $('#bpph'); if (!el) return; const c = D.cells[k] || blank(), mine = [...(c.cov ? c.ph.filter(p => p.id === c.cov) : []), ...c.ph.filter(p => p.id !== c.cov)].slice(0, 3).map(p => ({ id: p.id })),
-    com = (info && Array.isArray(info.photos) ? info.photos : []).filter(x => x && typeof x.p === 'string').map(x => ({ cp: x.p })), L = [...mine, ...com].slice(0, 3);
-  const sig = JSON.stringify(L); if (el.dataset.sig === sig && el.childElementCount) return; el.dataset.sig = sig;
-  el.innerHTML = L.map((x, i) => `<button class="bpp${i === 0 ? ' big' : ''}" ${x.id ? `data-bpo="${esc(x.id)}"` : `data-bpc="${esc(x.cp)}"`} aria-label="Agrandir la photo"><img alt=""></button>`).join('')
+    com = (info && Array.isArray(info.photos) ? info.photos : []).filter(x => x && typeof x.p === 'string').map(x => ({ cp: x.p })), bp = !mine.length ? bcOf(k) : null, L = [...(bp ? [{ bv: bp }] : []), ...mine, ...com].slice(0, 3);
+  const sh = $('#bpbc'); if (sh) { const on = clOn() && c.cov && c.ph.some(p => p.id === c.cov); sh.innerHTML = !on ? '' : c.bcs === c.cov ? `<span>🌍 Photo du badge visible par tous</span><button data-act="bcoff">Ne plus la montrer</button>` : `<button class="gold" data-act="bcon">🌍 Montrer la photo du badge à tous les promeneurs</button>`; }
+  const sig = JSON.stringify(L) + (bp && BCI[bp] && BCI[bp].url ? '+' : ''); if (el.dataset.sig === sig && el.childElementCount) return; el.dataset.sig = sig;
+  el.innerHTML = L.map((x, i) => `<button class="bpp${i === 0 ? ' big' : ''}" ${x.id ? `data-bpo="${esc(x.id)}"` : x.bv ? `data-bpv="${esc(x.bv)}"` : `data-bpc="${esc(x.cp)}"`} aria-label="Agrandir la photo"><img alt=""></button>`).join('')
     + (L.length < 3 ? `<label class="bpp add${L.length ? '' : ' big solo'}" aria-label="Ajouter une photo">📷<small>${L.length ? 'Ajouter' : 'Ajouter la première photo'}</small><input type="file" accept="image/*" id="phf2" multiple hidden></label>` : '');
   el.classList.toggle('n0', !L.length);
-  for (const b of el.querySelectorAll('.bpp[data-bpo],.bpp[data-bpc]')) { let u = ''; try { u = b.dataset.bpo ? await pGet(b.dataset.bpo) : await cmPhoto(b.dataset.bpc); } catch (e) {} if (sel !== k) return; if (u) { b.querySelector('img').src = u; b.classList.add('ok'); } }
+  for (const b of el.querySelectorAll('.bpp[data-bpo],.bpp[data-bpc],.bpp[data-bpv]')) { let u = ''; try { u = b.dataset.bpo ? await pGet(b.dataset.bpo) : b.dataset.bpv ? bcUrl(b.dataset.bpv) : await cmPhoto(b.dataset.bpc); } catch (e) {} if (sel !== k) return; if (u) { b.querySelector('img').src = u; b.classList.add('ok'); } }
 }
 async function balSave(k, patch) {      // mon avis et mes équipements pour cette balade
   const info = BI[k] && BI[k].d || { tags: {} }, m = info.mine || {}, nx = { stars: m.stars || null, body: m.body || '', tags: Array.isArray(m.tags) ? m.tags : [], ...patch };
@@ -2254,13 +2290,16 @@ $('#panel').addEventListener('click', e => {
   const gi = e.target.closest('#gal img'); if (gi) { pvId = gi.dataset.id; $('#pvi').src = gi.src; $('#pvc').classList.toggle('on', D.cells[sel] && D.cells[sel].cov === pvId); $('#pv').classList.add('open'); return; }
   const t = e.target.closest('[data-tab]'); if (t) { ptab = ptab === t.dataset.tab ? '' : t.dataset.tab; return setTab(); }
   const po = e.target.closest('[data-bpo]'); if (po) { const im = po.querySelector('img'); if (!im || !im.src) return; pvId = po.dataset.bpo; $('#pvi').src = im.src; $('#pvc').classList.toggle('on', D.cells[sel] && D.cells[sel].cov === pvId); $('#pv').classList.add('open'); return; }
+  const pv2 = e.target.closest('[data-bpv]'); if (pv2) { const im = pv2.querySelector('img'); if (!im || !im.src) return; pvId = null; $('#pvc').hidden = true; $('#pvd').hidden = true; $('#pvi').src = im.src; $('#pv').classList.add('open'); return; }
   const pc = e.target.closest('[data-bpc]'); if (pc) { const im = pc.querySelector('img'); if (!im || !im.src) return; pvId = null; $('#pvc').hidden = true; $('#pvd').hidden = true; $('#pvi').src = im.src; $('#pv').classList.add('open'); return; }
   const st = e.target.closest('[data-star]'); if (st && sel) { const k = sel, n = +st.dataset.star, cur = BI[k] && BI[k].d && BI[k].d.mine && BI[k].d.mine.stars; if (!clOn()) return toast('☁️ Connectez-vous pour donner votre avis'); if (n === cur) return; BIE.txt = !(BI[k] && BI[k].d && BI[k].d.mine && BI[k].d.mine.body); balSave(k, { stars: n }); if (BIE.txt) setTimeout(() => { const i = $('#bprvt'); if (i) i.focus(); }, 80); return toast('★'.repeat(n) + ' Merci pour votre avis'); }
   const am = e.target.closest('[data-am]'); if (am && sel) { const k = sel, m = BI[k] && BI[k].d && BI[k].d.mine, L = new Set(m && Array.isArray(m.tags) ? m.tags : []); const t = am.dataset.am; L.has(t) ? L.delete(t) : (L.add(t), AMX[t] && L.delete(AMX[t])); return balSave(k, { tags: Object.keys(AMEN).filter(x => L.has(x)) }); }
   const rvr = e.target.closest('[data-rvrep]'); if (rvr) return rpOpen('review', rvr.dataset.rvrep, 'cet avis');
   const b = e.target.closest('[data-act]'); if (!b || !sel) return; const a = b.dataset.act, c = D.cells[sel] ||= blank();
+  if (a === 'bcon') { b.disabled = true; toast('🌍 Envoi de la photo…'); bcShare(sel).then(ok => { if (ok) toast('★ Photo du badge : visible sur la carte par tous les promeneurs'); }).catch(x => toast('⚠️ ' + (x.message || 'Photo non partagée'))).finally(() => { if (sel) balPhotos(sel, BI[sel] && BI[sel].d); }); return; }
+  if (a === 'bcoff') { const k = sel; bcUnshare(k).then(() => { toast('🙈 La photo du badge n\'est plus montrée aux autres'); if (sel === k) balPhotos(k, BI[k] && BI[k].d); }); return; }
   if (a === 'balrep') { const g = cellGroup(sel); if (g && g.paths[0]) rpOpen('balade', g.paths[0].id, 'cette balade'); return; }
-  if (a === 'delcell') { const g = cellGroup(sel); if (g && !confirm(`Supprimer la balade « ${g.name} » : sa fiche (sorties, photos, notes) et ${g.paths.length > 1 ? 'ses ' + g.paths.length + ' sentiers' : 'son sentier'} ?`)) return;
+  if (a === 'delcell') { if (c.bcs) bcUnshare(sel, true); const g = cellGroup(sel); if (g && !confirm(`Supprimer la balade « ${g.name} » : sa fiche (sorties, photos, notes) et ${g.paths.length > 1 ? 'ses ' + g.paths.length + ' sentiers' : 'son sentier'} ?`)) return;
     const snap = snapC(), pj = JSON.stringify(D.paths), k = sel; if (c.x != null) fxRing(c.x, c.y, 'rgba(171,159,132,.9)', 6, 34, 550);
     if (g) { const ids = new Set(g.paths.map(p => p.id)); D.paths = D.paths.filter(p => !ids.has(p.id)); NG.sig = ''; } delete D.cells[k]; sel = null; BSEL = null; save(); renderPanel(); draw();
     return toast('Balade supprimée', () => { restoreSnap(snap); D.paths = JSON.parse(pj); NG.sig = ''; sel = k; save(); draw(); renderPanel(); }); }
@@ -3124,7 +3163,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-167';
+const APP_V = '2026.10.28-168';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3564,7 +3603,7 @@ $('#rpsh').addEventListener('click', async e => {
 });
 /* ===== Administration (réservée à l'administrateur : chaque action est vérifiée par le serveur et notée au journal) ===== */
 const ADM = { tab: 'rep', ck: 'post', ov: null, items: {}, log: null, q: '', pl: null };
-const ADK = { post: 'Publication', comment: 'Commentaire', review: 'Avis', profile: 'Profil', bio: 'Description', avatar: 'Photo de profil', balade: 'Balade' };
+const ADK = { cover: 'Photo de balade', post: 'Publication', comment: 'Commentaire', review: 'Avis', profile: 'Profil', bio: 'Description', avatar: 'Photo de profil', balade: 'Balade' };
 const ADR = Object.fromEntries(RPR.map(([k, t]) => [k, t.slice(t.indexOf(' ') + 1)]));
 const admAgo = ts => { const t = Date.parse(ts); return t ? cmAgo(t) : ''; };
 async function admOpen() { if (CLD.role !== 'admin') return; accPage('adm'); admRender(); admLoad(); }
@@ -3580,7 +3619,7 @@ function admRender() {
   let h = `<div class="adst">${stat(S.members, 'membres')}${stat(S.new7, 'nouveaux (7 j)')}${stat(S.posts, 'publications')}${stat(S.reviews, 'avis')}${stat(S.balades, 'balades')}</div>
     <div class="adtb">${[['rep', `🚩 Signalements${open ? ` <em>${open}</em>` : ''}`], ['con', '🧹 Contenus'], ['bal', '📍 Balades'], ['log', '📜 Journal']].map(([k, t]) => `<button data-adt="${k}" class="${ADM.tab === k ? 'on' : ''}">${t}</button>`).join('')}</div>`;
   const prev = c => !c ? '<div class="adgone">Contenu introuvable (supprimé par son auteur)</div>'
-    : `<div class="adpv"><b>${esc(c.who || '')}</b>${c.pseudo ? ` <small>@${esc(c.pseudo)}</small>` : ''}${c.stars ? ` ${'★'.repeat(N(c.stars))}` : ''}${c.bal ? ` <small>· 📍 ${esc(c.bal)}</small>` : ''}${c.body ? `<p>${esc(c.body)}</p>` : '<p class="admu">(sans texte)</p>'}${c.photo ? `<button class="adph" data-adph="${esc(c.photo)}"><img alt="" data-cmsrc="${esc(c.photo)}"></button>` : ''}${c.avatar ? `<span class="admu">Photo de profil : ${socAv({ id: c.author, d: c.who || '?', c: soCol(c.author) }, 'sm')}</span>` : ''}${c.gone ? '<div class="adgone">Déjà masqué</div>' : ''}</div>`;
+    : `<div class="adpv"><b>${esc(c.who || '')}</b>${c.pseudo ? ` <small>@${esc(c.pseudo)}</small>` : ''}${c.stars ? ` ${'★'.repeat(N(c.stars))}` : ''}${c.bal ? ` <small>· 📍 ${esc(c.bal)}</small>` : ''}${c.body ? `<p>${esc(c.body)}</p>` : '<p class="admu">(sans texte)</p>'}${c.photo ? `<button class="adph" data-adph="${esc(c.photo)}"><img alt="" data-cmsrc="${esc(c.photo)}"></button>` : c.cover ? `<button class="adph" data-adph="${esc(c.cover)}"><img alt="" data-bcsrc="${esc(c.cover)}"></button>` : ''}${c.avatar ? `<span class="admu">Photo de profil : ${socAv({ id: c.author, d: c.who || '?', c: soCol(c.author) }, 'sm')}</span>` : ''}${c.gone ? '<div class="adgone">Déjà masqué</div>' : ''}</div>`;
   if (ADM.tab === 'rep') { const L = ov && Array.isArray(ov.reports) ? ov.reports : null;
     h += !L ? '<div class="hint">Chargement…</div>' : !L.length ? '<div class="scemp">✅ Aucun signalement en attente<small>Les membres peuvent signaler une publication, un commentaire, un avis ou un profil avec ⚑.</small></div>'
       : L.map(r => `<div class="adc"><div class="adch"><span class="adk">${ADK[r.kind] || r.kind}</span> ${esc(ADR[r.reason] || 'Autre')}${N(r.n) > 1 ? ` <em>×${N(r.n)}</em>` : ''}<small>${admAgo(r.ts)} · par ${esc(r.by || '?')}</small></div>${prev(r.c)}
@@ -3588,7 +3627,7 @@ function admRender() {
           : r.kind === 'balade' && r.c && !r.c.gone ? `<button class="btn gold" data-ah="balade|${esc(r.target)}|1">🗑️ Retirer la balade</button><button class="btn" data-adbid="${esc(r.target)}">Voir</button>`
           : r.c && !r.c.gone ? `<button class="btn gold" data-ah="${r.kind}|${esc(r.target)}|1">🙈 Masquer</button>` : ''}<button class="btn" data-ar="${N(r.id)}">Ignorer</button></div></div>`).join(''); }
   if (ADM.tab === 'con') { const L = ADM.items[ADM.ck];
-    h += `<div class="seg adseg">${[['post', 'Publications'], ['comment', 'Commentaires'], ['review', 'Avis']].map(([k, t]) => `<button data-adck="${k}" class="${ADM.ck === k ? 'on' : ''}">${t}</button>`).join('')}</div>`
+    h += `<div class="seg adseg">${[['post', 'Publications'], ['comment', 'Commentaires'], ['review', 'Avis'], ['cover', 'Photos']].map(([k, t]) => `<button data-adck="${k}" class="${ADM.ck === k ? 'on' : ''}">${t}</button>`).join('')}</div>`
       + (!L ? '<div class="hint">Chargement…</div>' : !L.length ? '<div class="hint">Rien pour l\'instant.</div>' : L.map(c => `<div class="adc${c.hidden ? ' off' : ''}"><div class="adch"><small>${admAgo(c.ts)}</small></div>${prev({ ...c, gone: false })}<div class="ada">${c.hidden ? `<span class="admu">🙈 Masqué</span><button class="btn" data-ah="${ADM.ck}|${esc(String(c.id))}|0">Rétablir</button>` : `<button class="btn" data-ah="${ADM.ck}|${esc(String(c.id))}|1">🙈 Masquer</button>`}</div></div>`).join('')); }
   if (ADM.tab === 'bal') { const G = admGroups(), q = normS(ADM.q || ''), L = q ? G.filter(g => normS(g.name).includes(q)) : G;
     const NB = ov && Array.isArray(ov.newbal) ? ov.newbal : [];
@@ -3599,6 +3638,7 @@ function admRender() {
     : `<div class="adlog">${L.map(l => `<div><small>${new Date(l.at).toLocaleString('fr-FR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</small><b>${esc(l.action)}</b> <span>${esc(ADK[l.kind] || l.kind)}${l.detail && l.detail.name ? ' · ' + esc(l.detail.name) : ''}</span></div>`).join('')}</div>`; }
   el.innerHTML = h;
   el.querySelectorAll('img[data-cmsrc]').forEach(async im => { const u = await cmPhoto(im.dataset.cmsrc); if (u) { im.src = u; im.parentNode.classList.add('ok'); } });
+  el.querySelectorAll('img[data-bcsrc]').forEach(async im => { try { const r = await sb('/storage/v1/object/authenticated/avatars/' + im.dataset.bcsrc, { raw: true }); if (r.ok) { im.src = URL.createObjectURL(await r.blob()); im.parentNode.classList.add('ok'); } } catch (e) {} });
   const qi = $('#adq'); if (qi) qi.oninput = () => { ADM.q = qi.value; const p = qi.selectionStart; admRender(); const n = $('#adq'); if (n) { n.focus(); try { n.setSelectionRange(p, p); } catch (e) {} } };
 }
 const admLogAdd = (action, kind, target, detail) => soRpc('admin_log_add', { action, kind, target: String(target || ''), detail: detail || {} }).catch(() => {});
@@ -3869,7 +3909,7 @@ function srRender() {
   const R = L.filter(x => x.sc < 9).sort((a, b) => a.sc - b.sc || a.label.localeCompare(b.label, 'fr'));
   srFilters();
   const hl = t => { if (!q) return esc(t); const n = nrm(t), i = n.indexOf(q); return i < 0 ? esc(t) : esc(t.slice(0, i)) + '<mark>' + esc(t.slice(i, i + q.length)) + '</mark>' + esc(t.slice(i + q.length)); };
-  $('#srl').innerHTML = (R.length ? `<li class="srt">${R.length} balade${R.length > 1 ? 's' : ''}${F.length ? ' avec ces critères' : ''}</li>` : '') + (R.slice(0, 200).map((x, i) => { const th = x.k && D.cells[x.k] && D.cells[x.k].th, ic = Object.keys(AMEN).filter(t => x.bt.tags[t]).map(t => AMEN[t][0]).join(''), ct = x.k ? cityOf(x.k) : '';
+  $('#srl').innerHTML = (R.length ? `<li class="srt">${R.length} balade${R.length > 1 ? 's' : ''}${F.length ? ' avec ces critères' : ''}</li>` : '') + (R.slice(0, 200).map((x, i) => { const th = (x.k && D.cells[x.k] && D.cells[x.k].th) || (x.k && bcOf(x.k) ? bcUrl(bcOf(x.k)) : ''), ic = Object.keys(AMEN).filter(t => x.bt.tags[t]).map(t => AMEN[t][0]).join(''), ct = x.k ? cityOf(x.k) : '';
     return `<li role="option" data-srk="${x.k || ''}" data-srg="${x.g ? esc(x.g.k) : ''}" class="${i === SRI && q ? 'on' : ''}">${th ? `<img src="${th}" alt="">` : crest(x.rk, 30)}<span class="act"><b>${hl(x.label)}</b><small>${[ct && '📍 ' + esc(ct), x.bt.n ? '★ ' + String(x.bt.avg).replace('.', ',') : '', ic].filter(Boolean).join(' · ') || '📍 balade'}</small></span><em>${fmtDist(x.dm)}</em></li>`; }).join('')
     || `<li class="srt">${F.length ? 'Aucune balade avec ces critères pour l\'instant' : 'Aucune balade ne correspond'}${q ? ` à « ${esc($('#srq').value.trim())} »` : ''}</li>${F.length ? '<li class="srn">Les équipements sont signalés par les promeneurs dans la fiche de chaque balade (« Qu\'y a-t-il sur place ? »).</li>' : ''}`) + (F.length ? '' : `<li class="sradd"><button data-sradd>＋ Une balade manque ? Ajoutez-la<small>visible par tous les promeneurs · +${BA_XP} XP</small></button></li>`);
 }
@@ -4017,7 +4057,7 @@ function carnetMerge(srv) {      // fusion des fiches : sorties et photos réuni
     if (!l) { D.cells[k] = c; return; }
     const ids = new Set(l.v.map(v => v.id)); c.v.forEach(v => { if (!ids.has(v.id)) l.v.push(v); });
     const pids = new Set(l.ph.map(p => p.id)); c.ph.forEach(p => { if (!pids.has(p.id)) l.ph.push(p); });
-    if (!l.name && c.name) l.name = c.name; if (!l.note && c.note) l.note = c.note; if (!l.cov && c.cov) l.cov = c.cov; if (!l.th && c.th) l.th = c.th; if ((!l.tags || !l.tags.length) && c.tags) l.tags = c.tags; });
+    if (!l.name && c.name) l.name = c.name; if (!l.note && c.note) l.note = c.note; if (!l.cov && c.cov) l.cov = c.cov; if (!l.bcs && c.bcs) l.bcs = c.bcs; if (!l.th && c.th) l.th = c.th; if ((!l.tags || !l.tags.length) && c.tags) l.tags = c.tags; });
   if (srv && srv.prof && !D.prof.name) { D.prof = cleanProf(srv.prof, srv.dog); D.dog = D.prof.name; }
   if (srv && srv.user && !(D.user && D.user.name)) D.user = cleanUser(srv.user);
 }
@@ -4072,7 +4112,7 @@ async function sync(force) {
       if (!S.ph[id]) { const u = await pGet(id).catch(() => null);
         if (u) { const b = await (await fetch(u)).blob(); try { await sb(`/storage/v1/object/photos/${CLD.s.user.id}/${id}`, { method: 'POST', body: b, headers: { 'Content-Type': b.type || 'image/jpeg', 'x-upsert': 'true' }, ms: 30000 }); S.ph[id] = 1; n++; up++; } catch (e) { if (e.status === 400 || e.status === 413) S.ph[id] = 1; } }
         else { try { const r = await sb(`/storage/v1/object/authenticated/photos/${CLD.s.user.id}/${id}`, { raw: true, ms: 30000 }); if (r.ok) { const b = await r.blob(); const d = await new Promise(res => { const f = new FileReader(); f.onload = () => res(f.result); f.readAsDataURL(b); }); await pPut(id, d); S.ph[id] = 1; n++; down++; try { if (id === D.prof.ph) dogAvatar(); else if ((D.prof.gal || []).includes(id)) dogGal(); else renderPanel(); } catch (e) {} } } catch (e) {} } } }
-    sySave(S); CLD.st = 'ok'; CLD.at = Date.now(); CLD.n = { up, down }; badRefresh();
+    sySave(S); CLD.st = 'ok'; CLD.at = Date.now(); CLD.n = { up, down }; badRefresh(); bcLoad();
   } catch (e) { sySave(S); CLD.st = 'err'; CLD.err = e.message || 'Pas de réseau'; }
   CLD.busy = false; clUi();
 }
