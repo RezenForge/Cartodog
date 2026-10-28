@@ -1193,6 +1193,15 @@ html.lite #pt,html.lite #homeb{display:none!important}
 .pfbio{margin:11px 0 0;font:italic 500 13.5px/1.45 var(--num);color:#e8d8b8;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .pfa{display:flex;gap:8px;margin-top:13px}.pfa .btn{flex:1;margin:0}.pfa .pfmo{flex:0 0 48px}.pfw .pfrm{margin:8px 0 0;color:#ff8a6e}
 .pfme{margin-top:12px;font:600 12px var(--num);color:var(--mut);text-align:center}[data-pfu]{cursor:pointer}
+/* Copains / Communauté ouverts : la fenêtre reste dans le cadre de la carte, les boutons du bas restent visibles ; le bouton touché devient une flèche pour refermer */
+html:not(.kbon) #soc,html:not(.kbon) #com{bottom:var(--socbt,0px)!important}html:not(.kbon) #soc .scw,html:not(.kbon) #com .scw{bottom:0!important}html:not(.kbon) #scch,html:not(.kbon) #soc .scsh,html:not(.kbon) #com .scsh{bottom:var(--socbt,0px)!important}
+body:has(#soc.open,#com.open) #dock #socb,body:has(#soc.open,#com.open) #dock #comb{display:flex!important}
+.dkar{display:none}body:has(#soc.open) #socb>:not(.dkar):not(#socn),body:has(#com.open) #comb>:not(.dkar){display:none!important}
+body:has(#soc.open) #socb .dkar,body:has(#com.open) #comb .dkar{display:grid;place-items:center;width:100%;height:100%}
+.dkar svg{width:30px!important;height:30px!important;fill:none;stroke:#f4c862;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 0 #000);animation:dkar .25s ease-out}
+body:has(#soc.open) #dock #socb,body:has(#com.open) #dock #comb{box-shadow:inset 0 0 0 2px #c6862a,0 0 10px rgba(244,200,98,.25)}
+@keyframes dkar{from{transform:rotate(180deg);opacity:0}to{transform:none;opacity:1}}
+
 .scav.img{padding:0;overflow:hidden;background:#1b1814}.scav.img img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
 #mkm,#encm,#pls,#balm,#dzq,#dogm,#welm,#cmv{padding-top:max(12px,calc(env(safe-area-inset-top,0px) + 6px))!important;padding-bottom:max(12px,calc(env(safe-area-inset-bottom,0px) + 6px))!important}#rqm{padding-bottom:max(6px,env(safe-area-inset-bottom,0px))!important}
 .scchbio{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-top:2px;font:italic 500 12.5px/1.3 var(--num);color:var(--mut);overflow:hidden;overflow-wrap:anywhere}
@@ -1253,11 +1262,11 @@ button.acon.acl>span:nth-child(2){flex:1;min-width:0}button.acon.acl small{white
   <div id="zb"><button class="ib" id="gr" data-ic="grid" aria-label="Afficher ou cacher la grille"></button><button class="ib" id="pt" data-ic="trail" aria-label="Cartographier les sentiers"><small>Sentiers</small></button><button class="ib" id="rtb" data-ic="home" aria-label="Retour au départ ou au parking"><small>Retour</small></button><button class="ib" id="lb" data-ic="book" aria-label="Mes balades"><small>Balades</small></button><i class="sep"></i><button class="ib" id="fit" data-ic="fit" aria-label="Tout voir"><small>Tout voir</small></button><span class="zst"><button class="ib" id="zi" data-ic="plus" aria-label="Zoomer"></button><button class="ib" id="zo" data-ic="minus" aria-label="Dézoomer"></button></span></div></div>
 <div id="dock"><button id="found" aria-label="Lancer ou terminer une balade">▶ Balade</button><button id="homeb" hidden aria-label="Me ramener au départ ou au parking">🏠<small>Retour</small></button><button id="comb" aria-label="Communauté : publications des balades"><svg viewBox="0 2.2 32 32" aria-hidden="true"><defs><linearGradient id="cmg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><g stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"><path d="M5.6 13.6l1.5-2.6h5.2l1.5 2.6z" fill="url(#cmg)"/><rect x="1.4" y="13.4" width="16.8" height="12.2" rx="2.6" fill="url(#cmg)"/><circle cx="9.8" cy="19.5" r="4" fill="#3a3026"/><circle cx="9.8" cy="19.5" r="2.2" fill="#6b5b44"/></g><circle cx="9" cy="18.7" r=".8" fill="#fff1cf"/><rect x="14" y="15.2" width="2.3" height="1.5" rx=".5" fill="#fff1cf" stroke="#1a1208" stroke-width=".6"/><g fill="#433b31" stroke="#433b31" stroke-width="3.2" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z"/></g>
 <g stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)" fill="#a8641c"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)" fill="#a8641c"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z" fill="url(#cpg)"/><ellipse cx="23" cy="20.9" rx="2.8" ry="2.1" fill="#fff1cf"/></g>
-<ellipse cx="23" cy="19.8" rx="1.3" ry=".9" fill="#1a1208"/><circle cx="21" cy="16.6" r=".95" fill="#1a1208"/><circle cx="25" cy="16.6" r=".95" fill="#1a1208"/></svg><small>Communauté</small></button><button id="socb" aria-label="Copains, messages et rendez-vous"><svg viewBox="0 2.2 32 32" aria-hidden="true"><defs><linearGradient id="cpg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs>
+<ellipse cx="23" cy="19.8" rx="1.3" ry=".9" fill="#1a1208"/><circle cx="21" cy="16.6" r=".95" fill="#1a1208"/><circle cx="25" cy="16.6" r=".95" fill="#1a1208"/></svg><small>Communauté</small><span class="dkar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8.5l7 7 7-7"/></svg></span></button><button id="socb" aria-label="Copains, messages et rendez-vous"><svg viewBox="0 2.2 32 32" aria-hidden="true"><defs><linearGradient id="cpg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs>
 <circle cx="10.6" cy="12.6" r="4.5" fill="url(#cpg)" stroke="#1a1208" stroke-width="1.1"/><path d="M2.4 28c0-5.4 3.6-9 8.2-9s8.2 3.6 8.2 9z" fill="url(#cpg)" stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"/>
 <g fill="#433b31" stroke="#433b31" stroke-width="3.2" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z"/></g>
 <g stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)" fill="#a8641c"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)" fill="#a8641c"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z" fill="url(#cpg)"/><ellipse cx="23" cy="20.9" rx="2.8" ry="2.1" fill="#fff1cf"/></g>
-<ellipse cx="23" cy="19.8" rx="1.3" ry=".9" fill="#1a1208"/><circle cx="21" cy="16.6" r=".95" fill="#1a1208"/><circle cx="25" cy="16.6" r=".95" fill="#1a1208"/></svg><small>Copains</small><b id="socn" hidden></b></button><button id="grab" aria-label="Réduire ou ouvrir la fiche">▾</button></div>
+<ellipse cx="23" cy="19.8" rx="1.3" ry=".9" fill="#1a1208"/><circle cx="21" cy="16.6" r=".95" fill="#1a1208"/><circle cx="25" cy="16.6" r=".95" fill="#1a1208"/></svg><small>Copains</small><span class="dkar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8.5l7 7 7-7"/></svg></span><b id="socn" hidden></b></button><button id="grab" aria-label="Réduire ou ouvrir la fiche">▾</button></div>
 <div id="panel" class="win dg"></div>
 <div id="rqm"><div class="win dg"><div class="lhd"><h2>Signaler</h2><button class="ib" id="rqx" aria-label="Fermer">✕</button></div><div class="rqt" role="tablist"><button data-rqt="dz" role="tab">⚠️ Danger</button><button data-rqt="st" role="tab">🥾 Sentier</button><button data-rqt="ok" role="tab">✅ Utile</button></div><div id="rqg"></div><button class="rqg" id="rqguide">📖 Dangers &amp; secours <small>reconnaître, réagir, numéros d’urgence</small><i>›</i></button><div class="rqhint" id="rqhint"></div><div class="rqw" id="rqw"><button data-rqw="gps"></button><button data-rqw="map">🗺️ Sur la carte</button></div></div></div>
 <div id="mkm"><div class="win dg"><h2 id="mkt">Nouveau repère</h2><div class="hint" id="mkw" style="padding:0"></div><button class="btn" id="mkpk" hidden>🅿 Retourner au parking</button>
@@ -2936,7 +2945,7 @@ $('#mn').onclick = () => { $('#menu').style.setProperty('--mnt', Math.max(0, Mat
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.28-139';
+const APP_V = '2026.10.28-140';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3250,13 +3259,13 @@ $('#scgr').addEventListener('click', e => { if (e.target.id === 'scgr') return g
 });
 
 /* Clavier ouvert : les fenêtres du bas remontent au-dessus (navigateurs qui ne redimensionnent pas la page) */
-if (window.visualViewport) { const kb = () => { const v = visualViewport, h = Math.max(0, Math.round(innerHeight - v.height - v.offsetTop)); document.documentElement.style.setProperty('--kb', h + 'px'); const a = document.activeElement; if (h > 80 && a && a.matches && a.matches('#soc input,#menu input')) setTimeout(() => a.scrollIntoView({ block: 'nearest' }), 60); };
+if (window.visualViewport) { const kb = () => { const v = visualViewport, h = Math.max(0, Math.round(innerHeight - v.height - v.offsetTop)); document.documentElement.style.setProperty('--kb', h + 'px'); document.documentElement.classList.toggle('kbon', h > 80); const a = document.activeElement; if (h > 80 && a && a.matches && a.matches('#soc input,#menu input')) setTimeout(() => a.scrollIntoView({ block: 'nearest' }), 60); };
   visualViewport.addEventListener('resize', kb); visualViewport.addEventListener('scroll', kb); }
 function mqFit(root) {      // seul le nom de la balade défile (aller-retour) quand il ne tient pas en entier
   requestAnimationFrame(() => root.querySelectorAll('.mqn').forEach(el => { const sp = el.firstElementChild, d = sp.scrollWidth - el.clientWidth; el.classList.toggle('mq', d > 2); if (d > 2) { sp.style.setProperty('--d', -(d + 10) + 'px'); sp.style.animationDuration = Math.max(6, (d + 10) / 22 + 4) + 's'; } })); }
 function socBadge() { let n = 0; try { n = msgUnread() + SO.rin.length + evNew(); } catch (e) {} const b = $('#socn'); b.hidden = !n; b.textContent = n > 9 ? '9+' : n; $('#socb').setAttribute('aria-label', 'Copains, messages et rendez-vous' + (n ? ' : ' + n + ' notification' + (n > 1 ? 's' : '') : '')); }
 setTimeout(socBadge, 300);
-function socOpen() { try { comClose(); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); faClose(); socMe(); socRender(); $('#soc').classList.add('open'); soTick(true); }
+function socOpen() { try { comClose(); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); document.documentElement.style.setProperty('--socbt', Math.max(0, Math.round(innerHeight - mb.bottom)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); faClose(); socMe(); socRender(); $('#soc').classList.add('open'); soTick(true); }
 const socClose = () => { SOC.ed = false; $('#soc').classList.remove('open'); };
 const socSoon = () => toast('🛠️ Bientôt disponible');
 function socShow(k) { if (!k || !D.cells[k]) return toast('📍 Cette balade n\'est pas sur votre carte'); socClose(); select(k); try { fitBal(k); } catch (e) {} }
@@ -3431,7 +3440,7 @@ async function cmLoad() {
   CM.busy = false; cmRender();
 }
 function comOpen() { metaLoad(() => cmRender());
- try { socClose(); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#com').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); $('#cmsh').hidden = true; $('#com').classList.add('open'); cmRender(); cmLoad(); }
+ try { socClose(); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#com').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); document.documentElement.style.setProperty('--socbt', Math.max(0, Math.round(innerHeight - mb.bottom)) + 'px'); $('#cmsh').hidden = true; $('#com').classList.add('open'); cmRender(); cmLoad(); }
 const comClose = () => { $('#com').classList.remove('open'); $('#cmsh').hidden = true; };
 async function cmCompress(file) {      // photo réduite (1024 px max) et compressée en JPEG, ~100 à 200 Ko
   const u = URL.createObjectURL(file); try { const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = u; });
@@ -3459,7 +3468,7 @@ async function cmComments(id) {
 $('#cmsel').onchange = e => { CM.k = e.target.value || null; cmRender(); };
 $('#cmpub').onclick = () => { if (!clOn()) return toast('☁️ Connectez-vous pour publier'); if (!CM.k) return; CM.draft = null; cmCompose(); };
 $('#cmfile').onchange = async e => { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return; try { const b = await cmCompress(f); const d = CM.draft ||= { t: '' }; d.blob = b; if (d.url) URL.revokeObjectURL(d.url); d.url = URL.createObjectURL(b); d.t = $('#cmtx') ? $('#cmtx').value : d.t; cmCompose(); } catch (x) { toast('⚠️ Photo illisible'); } };
-$('#comb').onclick = comOpen; $('#comx').onclick = comClose;
+$('#comb').onclick = () => $('#com').classList.contains('open') ? comClose() : comOpen(); $('#comx').onclick = comClose;
 $('#com').addEventListener('click', async e => {
   const t = e.target; if (t.id === 'cmsh') { $('#cmsh').hidden = true; CM.open = null; return; }
   const loc = t.closest('[data-cmloc]'); if (loc) { const p = CM.posts.find(x => x.id === loc.dataset.cmloc), k = p && (soCell(p.bx, p.by) || CM.k); if (!k || !D.cells[k]) return toast('📍 Cette balade n\'est pas sur votre carte'); comClose(); select(k); try { fitBal(k); } catch (x) {} return; }
@@ -3480,7 +3489,7 @@ $('#com').addEventListener('click', async e => {
     catch (x) { toast('⚠️ ' + x.message); sd.disabled = false; } return; }
 });
 $('#cmv').onclick = () => { $('#cmv').hidden = true; $('#cmvi').removeAttribute('src'); };
-$('#socb').onclick = socOpen; $('#socx').onclick = socClose;
+$('#socb').onclick = () => $('#soc').classList.contains('open') ? socClose() : socOpen(); $('#socx').onclick = socClose;
 $('#soc').addEventListener('click', e => {
   const me = e.target.closest('[data-sme]'); if (me) { if (me.dataset.sme === 'bio') { SOC.ed = true; return socMe(); }
     if (me.dataset.sme === 'sp') { const cur = D.prof.space || ''; $('#scst .scshh').textContent = (D.prof.name || 'Mon chien') + ' avec les autres chiens'; $('#scstl').innerHTML = Object.entries(SPC).map(([k, [ic, t, d]]) => `<button data-spc="${k}"${k === cur ? ' class="on"' : ''}><span>${ic}</span><span class="act"><b>${t}</b><small>${d}</small></span></button>`).join('') + '<div class="spnote">Visible par les copains et les promeneurs proches, pour éviter les mauvaises rencontres.</div>'; $('#scst').hidden = false; return; }
