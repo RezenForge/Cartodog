@@ -2150,7 +2150,7 @@ function drawMe(x, y, mpp) {
 function onPos(p) { if (samp) { const [mx, my] = toM(p.coords.latitude, p.coords.longitude); samp.push({ x: mx, y: my, a: p.coords.accuracy }); }
   const [x, y] = toM(p.coords.latitude, p.coords.longitude); const first = !me; me = { x, y, acc: p.coords.accuracy }; trackHd(x, y, p.coords.accuracy, p.coords.heading, p.coords.speed); hereK = nearestSpot(x, y, 15); updNav();
   if (first) { fxRing(x, y, '#ffd27a', 12, 60, 1100, 500, 2.5); fxRing(x, y, '#ffd27a', 12, 60, 1100, 850, 2); }
-  dangerCheck();
+  dangerCheck(); try { wkPos(); } catch (e) {}
   if (CAM.m) camKick();      // la vue ne suit la position que dans les modes « suivi » (touchez la boussole)
   presTick();
   schedule();
@@ -2176,7 +2176,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.29-178';
+const APP_V = '2026.10.29-179';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2717,6 +2717,12 @@ const hms = ms => { const t = Math.max(0, Math.floor(ms / 1000)), h = Math.floor
 function wkBtn() { const b = $('#found'); if (!b) return; const on = wkOn(); b.classList.toggle('rec', on);
   if (on) { const t = hms(Date.now() - WK.t0); if (b.dataset.t !== t) { b.dataset.t = t; b.innerHTML = `<span>🐾</span><span class="wkt">${t}</span><small>Terminer</small><span class="dkar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8.5l7 7 7-7"/></svg></span>`; } b.setAttribute('aria-label', 'En balade depuis ' + t + ' : toucher pour terminer'); }
   else if (b.dataset.t !== '') { b.dataset.t = ''; b.innerHTML = foundOff(); b.setAttribute('aria-label', 'Partir en balade'); } }
+function wkPos() {      // oubli : à plus de 2 km de la balade, la balade s'arrête (durée comptée jusqu'au dernier passage à moins de 2 km)
+  if (!wkOn() || !me || me.acc > 150 || !D.cells[WK.k]) return; const d = rdist(ctr(WK.k), [me.x, me.y]), now = Date.now();
+  if (d <= 2000) { if (now - (WK.ln || 0) > 3e4) { WK.ln = now; wkSave(); } WK.far = 0; return; }
+  if (d < 2000 + me.acc) return; WK.far = (WK.far || 0) + 1; if (WK.far < 2) return;      // deux positions de suite au-delà de 2 km (évite un saut du GPS)
+  const n = WK.n || balName(WK.k) || 'la balade', t0 = WK.t0, end = Math.max(t0, WK.ln || now); wkEnd(true, end);
+  toast(`🐾 Balade terminée : vous êtes à plus de 2 km de « ${n} » · ${Math.max(1, Math.round((end - t0) / 6e4))} min notées`); }
 function wkTick() {      // le temps affiché vient toujours de l'heure de départ : téléphone verrouillé ou appli en veille, rien n'est perdu
   if (wkOn() && Date.now() - WK.t0 > WK_MAX) { const t0 = WK.t0; wkEnd(true); return toast('🐾 Balade terminée automatiquement 4 h après le départ (' + new Date(t0).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) + ')'); }
   wkBtn(); const e = $('#wkt2'); if (e && wkOn()) e.textContent = hms(Date.now() - WK.t0); }
@@ -2762,8 +2768,8 @@ async function wkStart(k) {
     try { n = await soRpc('walk_notify', { bx: Math.round(c[0]), by: Math.round(c[1]), bal: WK.n, city: cityOf(k) || '' }); } catch (e) {} }
   toast(`🐾 Bonne balade${D.prof && D.prof.name ? ' avec ' + D.prof.name : ''} !` + (n ? ` · ${n} copain${n > 1 ? 's' : ''} prévenu${n > 1 ? 's' : ''}` : ''));
 }
-function wkEnd(auto) {
-  if (!wkOn()) return; const k = WK.k, dur = Math.min(WK_MAX, Date.now() - WK.t0), cell = D.cells[k], v = cell && cell.v.find(x => x.id === WK.v), nv = !!WK.nv, L0 = dogStats();
+function wkEnd(auto, endAt) {
+  if (!wkOn()) return; const k = WK.k, dur = Math.min(WK_MAX, (endAt || Date.now()) - WK.t0), cell = D.cells[k], v = cell && cell.v.find(x => x.id === WK.v), nv = !!WK.nv, L0 = dogStats();
   if (v) { v.s = Math.max(v.s || 0, Math.round(dur / 1000)); if (v.t === 'Présence détectée sur place') v.t = 'Balade'; }
   WK.k = null; WK.t0 = 0; WK.v = null; WK.nv = 0; wkSave(); save(); soPresence(); wkBtn(); draw(); try { renderPanel(); hdrRender(); } catch (e) {}
   if (auto) return; const S = dogStats(), w = $('#wkw');

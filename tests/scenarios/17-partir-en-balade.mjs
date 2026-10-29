@@ -36,6 +36,13 @@ export default async T => {
   await tap(B, '#wkw [data-wk="join"]'); await B.waitForTimeout(600);
   T.ok(T.S.db.msgs.some(m => m.f === 'u2' && m.to === 'u1' && m.t.includes("J'arrive")), 'Rejoindre : message envoyé');
   T.ok(/google\.com\/maps\/dir/.test(opened), 'Rejoindre : itinéraire ouvert');
+  // oubli : à plus de 2 km, la balade s'arrête (durée jusqu'au dernier passage à moins de 2 km)
+  await A.evaluate(() => { wkEnd(true); }); await gps(A, 200); await tap(A, '#found'); await A.waitForTimeout(200); await tap(A, '#wkw [data-wk="go"]'); await A.waitForTimeout(300);
+  await A.evaluate(() => { WK.t0 -= 40 * 6e4; WK.ln = Date.now() - 10 * 6e4; wkSave(); });
+  await gps(A, 1500); await A.evaluate(() => wkPos()); T.ok(await A.evaluate(() => wkOn()), 'à 1,5 km : la balade continue');
+  await gps(A, 2600); await A.evaluate(() => wkPos()); T.ok(await A.evaluate(() => wkOn()), 'une seule position lointaine : on attend (saut du GPS ?)');
+  await A.evaluate(() => wkPos()); T.ok(await A.evaluate(() => !wkOn()), 'à plus de 2 km : balade arrêtée');
+  T.ok(await A.evaluate(() => { const k = Object.keys(D.cells).find(k => balName(k) === 'Bois du Taillan'), s = D.cells[k].v[0].s; return s >= 39 * 60 && s <= 41 * 60; }), 'durée comptée jusqu\'au dernier passage à moins de 2 km');
   // mode invisible : personne n'est prévenu
   await A.evaluate(() => { wkEnd(true); accU().vis = 'none'; save(); }); await tap(A, '#found'); await A.waitForTimeout(200);
   T.ok(await A.evaluate(() => $('#wknot').disabled && $('#wkw').innerText.includes('Mode invisible')), 'mode invisible signalé');
