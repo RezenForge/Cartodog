@@ -29,7 +29,7 @@
   --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;margin:0}
-body{display:flex;flex-direction:column;height:100dvh;overflow:hidden;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);background:radial-gradient(120% 60% at 50% 0%,#1d2a1e 0%,var(--night) 70%);color:var(--ink);font:500 14px/1.35 var(--sans)}
+body{display:flex;flex-direction:column;position:fixed;inset:0;height:auto;width:auto;overflow:hidden;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);background:radial-gradient(120% 60% at 50% 0%,#1d2a1e 0%,var(--night) 70%);color:var(--ink);font:500 14px/1.35 var(--sans)}
 button,input,textarea{font:inherit;color:inherit;touch-action:manipulation}
 input,textarea{font-size:16px}
 button{-webkit-user-select:none;user-select:none;cursor:pointer}
@@ -870,7 +870,7 @@ body:not(.nosel):not(.pmin) #dock #found:not(.rec),body:not(.nosel):not(.pmin) #
 #com .cmtop{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}#com .cmlb{font:800 11px var(--num);letter-spacing:.1em;text-transform:uppercase;color:var(--ember);width:100%}
 #cmsel{flex:1;min-width:0;height:42px;border-radius:9px;border:2px solid var(--edge);background:var(--slot);color:var(--txt);font:700 14.5px var(--num);padding:0 8px}#com #cmpub{flex:none;width:auto;height:42px;padding:0 12px;margin:0}
 #com .cmls{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:10px;padding-bottom:8px}
-.cmp{background:var(--slot);border:2px solid var(--edge);box-shadow:inset 0 0 0 1px #3a332a;border-radius:10px;padding:9px 11px;display:flex;flex-direction:column;gap:5px}.cmh .scav{width:34px;height:34px;font-size:15px}.cmh small{font-weight:600}
+.cmp.cmhl{border-color:var(--ember);box-shadow:0 0 0 2px rgba(240,190,90,.45),inset 0 0 0 1px #3a332a;transition:box-shadow .3s,border-color .3s}.cmp{background:var(--slot);border:2px solid var(--edge);box-shadow:inset 0 0 0 1px #3a332a;border-radius:10px;padding:9px 11px;display:flex;flex-direction:column;gap:5px}.cmh .scav{width:34px;height:34px;font-size:15px}.cmh small{font-weight:600}
 .cmh{display:flex;align-items:center;gap:9px}.cmh .act{flex:1;min-width:0;display:flex;flex-direction:column}.cmh b{font:800 14.5px/1.2 var(--num);color:var(--txt)}.cmh em{font-style:normal;color:var(--mut);font-weight:700}.cmh small{font:600 12px var(--num);color:var(--mut)}
 .cmx{width:32px;height:32px;border-radius:8px;border:0;background:none;color:var(--mut);font:900 18px var(--num)}
 .cmloc{align-self:flex-start;max-width:100%;border:0;background:rgba(234,165,60,.12);color:var(--ember2);font:800 13px var(--num);padding:4px 9px;border-radius:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2190,7 +2190,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.29-184';
+const APP_V = '2026.10.29-185';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2733,7 +2733,7 @@ const wkOn = () => !!(WK.k && WK.t0), wkSave = () => { try { WK.k ? localStorage
 const wkNotif = () => { try { return localStorage.getItem('cartodog-wknot') !== '0'; } catch (e) { return true; } };
 const hms = ms => { const t = Math.max(0, Math.floor(ms / 1000)), h = Math.floor(t / 3600), m = Math.floor(t / 60) % 60, s2 = t % 60; return (h ? h + ':' + String(m).padStart(2, '0') : String(m)) + ':' + String(s2).padStart(2, '0'); };
 function wkBtn() { const b = $('#found'); if (!b) return; const on = wkOn(); b.classList.toggle('rec', on);
-  if (on) { const t = hms(Date.now() - WK.t0); if (b.dataset.t !== t) { b.dataset.t = t; b.innerHTML = `<span>🐾</span><span class="wkt">${t}</span><small>Terminer</small><span class="dkar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8.5l7 7 7-7"/></svg></span>`; } b.setAttribute('aria-label', 'En balade depuis ' + t + ' : toucher pour terminer'); }
+  if (on) { const t = hms(Date.now() - WK.t0); if (b.dataset.t !== t) { const w = b.dataset.t && b.querySelector('.wkt'); b.dataset.t = t; if (w) w.textContent = t; else b.innerHTML = `<span>🐾</span><span class="wkt">${t}</span><small>Terminer</small><span class="dkar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8.5l7 7 7-7"/></svg></span>`; }      /* seul le chiffre change : la flèche n'est pas recréée (sinon son animation se rejoue chaque seconde) */ b.setAttribute('aria-label', 'En balade depuis ' + t + ' : toucher pour terminer'); }
   else if (b.dataset.t !== '') { b.dataset.t = ''; b.innerHTML = foundOff(); b.setAttribute('aria-label', 'Partir en balade'); } }
 function wkPos() {      // oubli : à plus de 2 km de la balade, la balade s'arrête (durée comptée jusqu'au dernier passage à moins de 2 km)
   if (!wkOn() || !me || me.acc > 150 || !D.cells[WK.k]) return; const d = rdist(ctr(WK.k), [me.x, me.y]), now = Date.now();
@@ -2919,11 +2919,12 @@ const pushAsk = () => clOn() && !(PUSH.on && pushPerm() === 'granted') && pushPe
 async function pushGo(u) {      // toucher une notification : ouvrir la conversation, les demandes ou les rendez-vous
   u = u || SOC.pushU; SOC.pushU = null; if (!u || !clOn()) return; let m;
   if ((m = /^#walk=([\w-]+),(-?\d+),(-?\d+)/.exec(u))) return wkInvite(m[1], +m[2], +m[3]);
+  if ((m = /^#post=([\w-]+)(,c)?/.exec(u))) return cmGoPost(m[1], !!m[2]);
   if (u === '#admin') { if (CLD.role === 'admin') { if (!$('#menu').classList.contains('open')) $('#mn').click(); admOpen(); } return; }
   if ((m = /^#chat=([\w-]+)/.exec(u))) { const id = m[1]; if (!who(id)) { SOT.busy = false; await soPoll(); } if (!$('#soc').classList.contains('open')) socOpen(); if (who(id)) chatOpen(id); return; }
   if ((m = /^#soc=(\w+)/.exec(u))) { if (!$('#soc').classList.contains('open')) socOpen(); if (m[1] === 'req') return faOpen('req'); SOC.tab = m[1] === 'ev' ? 'ev' : 'fr'; if (SOC.tab === 'ev') { (SO.E || []).forEach(x => SO.evs[x.id] = 1); soSave(); } socRender(); soTick(true); }
 }
-{ const m = /^#(chat=[\w-]+|soc=\w+|admin|walk=[\w-]+,-?\d+,-?\d+)$/.exec(location.hash); if (m) { SOC.pushU = '#' + m[1]; history.replaceState(null, '', location.pathname + location.search); } }
+{ const m = /^#(chat=[\w-]+|soc=\w+|admin|walk=[\w-]+,-?\d+,-?\d+|post=[\w-]+(?:,c)?)$/.exec(location.hash); if (m) { SOC.pushU = '#' + m[1]; history.replaceState(null, '', location.pathname + location.search); } }
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('message', e => { const d = e.data || {}; if (d.cartodog === 'push') soTick(true); if (d.cartodog === 'open') pushGo(d.u); });
   if (PUSH.on) pushReg();
@@ -2972,6 +2973,11 @@ async function cmLoad() {
 }
 function comOpen() { metaLoad(() => cmRender()); try { wkClose(); } catch (e) {}
  try { socClose(); $('#menu').classList.remove('open'); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#com').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); hovSet(); document.documentElement.style.setProperty('--socbt', Math.max(0, Math.round(innerHeight - mb.bottom)) + 'px'); $('#cmsh').hidden = true; $('#com').classList.add('open'); comBadge(); cmRender(); cmLoad(); }
+async function cmGoPost(id, com) {      /* notification « j'aime » ou commentaire : ouvre la publication (et ses commentaires) */
+  if (!$('#com').classList.contains('open')) comOpen(); else cmLoad();
+  for (let i = 0; i < 40 && (CM.busy || !CM.posts.some(p => p.id === id)); i++) { if (!CM.busy && i > 2) break; await new Promise(r => setTimeout(r, 150)); }
+  const el = document.querySelector(`#cmls [data-post="${id}"]`); if (!el) return toast('Publication introuvable (supprimée ?)');
+  el.scrollIntoView({ block: 'center', behavior: 'smooth' }); el.classList.add('cmhl'); setTimeout(() => el.classList.remove('cmhl'), 2600); if (com) cmComments(id); }
 const comClose = () => { $('#com').classList.remove('open'); $('#cmsh').hidden = true; comBadge(); };
 async function cmCompress(file) {      // photo réduite (1024 px max) et compressée en JPEG, ~100 à 200 Ko
   const u = URL.createObjectURL(file); try { const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = u; });

@@ -80,8 +80,12 @@ export function makeServer() {
       if (fn === 'post_create') { const x = { id: 'p' + (db.posts.length + 1) + '-0000', author: me, bal: B.bal, bx: B.bx, by: B.by, body: B.body || '', photo: B.photo || null, ts: B.ts || new Date().toISOString(), del: false }; db.posts.push(x); return json(route, 200, x.id); }
       if (fn === 'post_feed') { const L = db.posts.filter(x => !x.del && (!(B.r > 0) || Math.hypot(x.bx - B.bx, x.by - B.by) < B.r)).sort((a, b) => b.ts.localeCompare(a.ts)).map(x => { const cs = db.coms.filter(c => c.post === x.id), lc = cs[cs.length - 1];
           return { ...x, ...pv(x.author), likes: db.likes.filter(l => l.post === x.id).length, liked: db.likes.some(l => l.post === x.id && l.u === me), ncom: cs.length, last: lc ? { ...pv(lc.author), body: lc.body, ts: lc.ts } : null }; }); return json(route, 200, L); }
-      if (fn === 'post_like') { db.likes = db.likes.filter(l => !(l.post === B.post && l.u === me)); if (B.on) db.likes.push({ post: B.post, u: me }); return json(route, 200, null); }
-      if (fn === 'post_comment') { db.coms.push({ post: B.post, author: me, body: B.body, ts: new Date().toISOString() }); return json(route, 200, null); }
+      if (fn === 'post_like') { const P = db.posts.find(x => x.id === B.post); if (!P) return json(route, 200, null); const first = !(db.liked ||= []).some(l => l.post === B.post && l.u === me); db.liked.push({ post: B.post, u: me });
+        db.likes = db.likes.filter(l => !(l.post === B.post && l.u === me)); if (B.on) db.likes.push({ post: B.post, u: me });
+        if (B.on && first && P.author !== me) (db.notifs ||= []).push({ to: P.author, from: me, t: 'like', url: '#post=' + B.post }); return json(route, 200, null); }
+      if (fn === 'post_comment') { const P = db.posts.find(x => x.id === B.post); if (!P) return err('publication introuvable'); const others = [...new Set(db.coms.filter(c => c.post === B.post && c.author !== me && c.author !== P.author).map(c => c.author))];
+        db.coms.push({ post: B.post, author: me, body: B.body, ts: new Date().toISOString() }); const N = db.notifs ||= [];
+        if (P.author !== me) N.push({ to: P.author, from: me, t: 'com', url: '#post=' + B.post + ',c' }); others.forEach(o => N.push({ to: o, from: me, t: 'com2', url: '#post=' + B.post + ',c' })); return json(route, 200, null); }
       if (fn === 'post_comments') return json(route, 200, db.coms.filter(c => c.post === B.post && !c.del).map(c => ({ id: db.coms.indexOf(c) + 1, ...pv(c.author), body: c.body, ts: c.ts })));
       if (fn === 'post_delete') { const x = db.posts.find(y => y.id === B.post); if (x && x.author === me) x.del = true; return json(route, 200, null); }
       if (fn === 'event_create') { if (Date.parse(B.at) < Date.now() - 6e5) return err('Choisissez une date à venir'); const G0 = B.grp && db.groups.find(y => y.id === B.grp);
