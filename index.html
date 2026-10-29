@@ -2176,7 +2176,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.29-179';
+const APP_V = '2026.10.29-180';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2230,7 +2230,7 @@ function presVisit(k) {      // 5 minutes sur place comptent comme une visite (u
   if (c.v.some(v => v.d === day)) return; c.v.push({ id: rid(), d: day, h: String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'), s: 0, m: 0, t: 'Présence détectée sur place', pts: [] });
   save(); try { renderPanel(); hdrRender(); } catch (e) {} toast('🐾 Visite notée : ' + (balName(k) || 'balade')); schedule(); balVisitPub(k, day);
 }
-function presTick() { const k = presDwell(); if (k !== (SOT.mine || null)) { SOT.mine = k || ''; SLV.t = 0; schedule(); } if (k) presVisit(k); if (clOn() && (k || '') !== SOT.here) soPresence(); }
+function presTick() { const k = (() => { try { return wkOn() && D.cells[WK.k] ? WK.k : null; } catch (e) { return null; } })() || presDwell();      /* « Partir en balade » compte tout de suite */ if (k !== (SOT.mine || null)) { SOT.mine = k || ''; SLV.t = 0; schedule(); } if (k) presVisit(k); if (clOn() && (k || '') !== SOT.here) soPresence(); }
 function soPresence() {      // mon état pour les copains ; sur une balade : son nom et son centre, jamais ma position exacte
   if (!clOn()) return; const u = accU(), here = (() => { try { return wkOn() && D.cells[WK.k] ? WK.k : null; } catch (e) { return null; } })() || presDwell(), walk = !!(here && u.pres !== false), k = walk && here ? here : null, c = k ? ctr(k) : null; SOT.pt = Date.now(); SOT.here = here || '';
   let bal = ''; if (walk) try { bal = String((k ? balName(k) : '') || ''); } catch (e) {}
@@ -2763,7 +2763,7 @@ function wkWait() { WKS.wait = Date.now(); const t = setInterval(() => { if ($('
 async function wkStart(k) {
   if (!D.cells[k]) return; const c = ctr(k), d = new Date(), day = today(); WK.k = k; WK.t0 = Date.now(); WK.n = balName(k) || 'Balade'; wkSave();
   const cell = D.cells[k]; let v = cell.v.find(x => x.d === day); if (!v) { v = { id: rid(), d: day, h: String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'), s: 0, m: 0, t: 'Balade', pts: [] }; cell.v.push(v); WK.nv = 1; } WK.v = v.id; wkSave();
-  save(); balVisitPub(k, day); soPresence(); wkBtn(); wkClose(); draw(); try { renderPanel(); hdrRender(); } catch (e) {} try { navigator.vibrate && navigator.vibrate([30, 40, 60]); } catch (e) {}
+  save(); balVisitPub(k, day); soPresence(); presTick(); wkBtn(); wkClose(); draw(); try { renderPanel(); hdrRender(); } catch (e) {} try { navigator.vibrate && navigator.vibrate([30, 40, 60]); } catch (e) {}
   let n = 0; const u = accU(); if (($('#wknot') ? $('#wknot').checked : wkNotif()) && u.vis !== 'none' && u.pres !== false) {
     try { n = await soRpc('walk_notify', { bx: Math.round(c[0]), by: Math.round(c[1]), bal: WK.n, city: cityOf(k) || '' }); } catch (e) {} }
   toast(`🐾 Bonne balade${D.prof && D.prof.name ? ' avec ' + D.prof.name : ''} !` + (n ? ` · ${n} copain${n > 1 ? 's' : ''} prévenu${n > 1 ? 's' : ''}` : ''));
@@ -2771,7 +2771,7 @@ async function wkStart(k) {
 function wkEnd(auto, endAt) {
   if (!wkOn()) return; const k = WK.k, dur = Math.min(WK_MAX, (endAt || Date.now()) - WK.t0), cell = D.cells[k], v = cell && cell.v.find(x => x.id === WK.v), nv = !!WK.nv, L0 = dogStats();
   if (v) { v.s = Math.max(v.s || 0, Math.round(dur / 1000)); if (v.t === 'Présence détectée sur place') v.t = 'Balade'; }
-  WK.k = null; WK.t0 = 0; WK.v = null; WK.nv = 0; wkSave(); save(); soPresence(); wkBtn(); draw(); try { renderPanel(); hdrRender(); } catch (e) {}
+  WK.k = null; WK.t0 = 0; WK.v = null; WK.nv = 0; wkSave(); save(); soPresence(); presTick(); wkBtn(); draw(); try { renderPanel(); hdrRender(); } catch (e) {}
   if (auto) return; const S = dogStats(), w = $('#wkw');
   w.innerHTML = `<div class="rph">🎉 Balade terminée</div>
     <div class="wkr"><div><b>${hms(dur).replace(/:(\d\d)$/, '')}</b><small>${dur >= 36e5 ? 'h:min' : 'minutes'}</small></div><div><b>${S.xp > L0.xp ? '+' + (S.xp - L0.xp) : nv ? '+25' : '✓'}</b><small>${nv || S.xp > L0.xp ? 'XP' : 'déjà comptée'}</small></div><div><b>${S.st ? '🔥 ' + S.st : '1'}</b><small>jour${S.st > 1 ? 's' : ''} de suite</small></div></div>
