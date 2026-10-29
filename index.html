@@ -887,6 +887,7 @@ body:not(.nosel):not(.pmin) #dock #found:not(.rec),body:not(.nosel):not(.pmin) #
 /* signaler */
 #wksh{z-index:21;inset:auto 0 var(--socbt,0px) 0!important;background:none!important;padding:0 8px 8px!important;pointer-events:none}#wksh>.pfw{pointer-events:auto;width:100%;max-width:520px;box-shadow:0 -6px 22px rgba(0,0,0,.55)}
 body:has(#wksh:not([hidden])) #found>:not(.dkar){display:none!important}body:has(#wksh:not([hidden])) #found .dkar{display:grid;place-items:center;width:100%;height:100%}
+#found .dkar svg{stroke:#1a1006!important;filter:drop-shadow(0 1px 0 rgba(255,240,200,.5))!important}#found.rec .dkar svg{stroke:#f4ffe8!important;filter:drop-shadow(0 1px 0 #000)!important}
 .wkcb{display:block;width:100%;padding:0;border:0;background:none;text-align:left;cursor:pointer;color:inherit}
 .wkc{display:flex;gap:12px;align-items:center;margin:4px 0 10px;padding:10px;border:2px solid var(--edge);border-radius:12px;background:#14110e}.wkc img,.wkph{flex:none;width:70px;height:70px;border-radius:10px;object-fit:cover;border:2px solid #0e0c09;display:grid;place-items:center;background:#2a2119;color:var(--ember2)}.wkph svg{width:34px;height:34px}
 .wkc .act{display:flex;flex-direction:column;gap:2px;min-width:0}.wkc b{font:800 16px var(--num);color:#fff1cf}.wkc small{font:600 12px/1.35 var(--num);color:var(--mut)}.wkc .wklv{color:#a9d98a}
@@ -2175,7 +2176,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.29-176';
+const APP_V = '2026.10.29-177';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
