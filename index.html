@@ -54,10 +54,9 @@ canvas{position:absolute;left:0;top:0;width:100%;height:100%;display:block;touch
 #nr i{position:absolute;right:-2px;bottom:-2px;width:18px;height:18px;border-radius:50%;display:none;place-items:center;background:#f4c862;color:#2a1806;border:2px solid #0e0b08;font:900 10px/1 system-ui,sans-serif;font-style:normal}
 #nr.m1 i,#nr.m2 i{display:grid}#nr.m1 i::before{content:'◎';font-size:12px}#nr.m2 i::before{content:'➤';transform:rotate(-90deg)}
 #nr.m1 svg circle,#nr.m2 svg circle{stroke:#f4c862;stroke-width:2.2}
-#gr{display:none!important}
 
 /* Cartouches flottants (chemins, itinéraire, repères, conseil) */
-#rm,#rt{position:absolute;left:8px;right:8px;bottom:68px;z-index:5;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-left:3px solid var(--brass);border-radius:14px;padding:9px 10px;box-shadow:0 8px 22px rgba(0,0,0,.42);font-size:13.5px;line-height:1.4}
+#rm{position:absolute;left:8px;right:8px;bottom:68px;z-index:5;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-left:3px solid var(--brass);border-radius:14px;padding:9px 10px;box-shadow:0 8px 22px rgba(0,0,0,.42);font-size:13.5px;line-height:1.4}
 .eyb{margin:0 0 4px;font:700 10px/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:#9a7430}
 .pmb{display:flex;gap:6px;margin-top:8px}
 .pmb button{height:44px;min-width:44px;padding:0 12px;border:1px solid rgba(0,0,0,.2);border-radius:10px;background:var(--moss);color:var(--paper3);font-size:14px;font-weight:600;box-shadow:0 1px 0 rgba(0,0,0,.2)}
@@ -103,7 +102,6 @@ ul{list-style:none;margin:4px 0;padding:0;font-size:13px}
 li{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:7px 0;border-bottom:1px solid rgba(106,95,75,.18)}
 li button{border:0;background:none;min-width:40px;min-height:40px;font-size:16px;color:var(--ink2)}
 li small{color:var(--ink2);font-weight:500}
-#wx{margin:2px 0}
 .wxd{position:relative;overflow:hidden;background:var(--paper3);border:1px solid var(--line);border-radius:9px;text-align:center;padding:4px 0 6px;line-height:1.15;color:var(--ink2)}
 .wxd small{display:block;font-size:10px;font-weight:600;white-space:nowrap}.wxd b{display:block;font:700 16px/1.25 var(--sans);font-variant-numeric:tabular-nums}
 .wxd i{position:absolute;left:0;bottom:0;height:3px}
@@ -248,7 +246,7 @@ body{background:
 #grab{color:var(--ember2)}
 
 /* Cartouches sur la carte (sentiers, itinéraire, repère) */
-#rt.dg,#rm.dg{padding:10px 12px;font-size:14px;line-height:1.4;border-left:2px solid var(--edge)!important}
+#rm.dg{padding:10px 12px;font-size:14px;line-height:1.4;border-left:2px solid var(--edge)!important}
 .dg .eyb{color:var(--ember);font:800 10.5px/1.2 var(--num);letter-spacing:.14em}
 .pmb button{border-radius:5px;border:2px solid var(--edge);background:var(--stone);color:var(--txt);box-shadow:var(--bevel);text-shadow:1px 1px 0 #000;font-weight:800}
 .pmb button:active{transform:translateY(2px);box-shadow:inset 0 3px 0 rgba(0,0,0,.45);filter:none}
@@ -312,7 +310,7 @@ body{background:
 .mki svg{transition:transform .2s cubic-bezier(.2,.9,.3,1.4)}.mki.on svg{transform:translateY(-3px) scale(1.12)}
 
 /* cartouches sur la carte et notifications */
-#rt:not([hidden]),#rm:not([hidden]){animation:rise .32s cubic-bezier(.2,.85,.25,1) both}
+#rm:not([hidden]){animation:rise .32s cubic-bezier(.2,.85,.25,1) both}
 #toast.show{animation:toastIn .38s cubic-bezier(.2,.9,.3,1.2) both}
 #dlp:not([hidden]){animation:fadeIn .25s ease both}#dlbi{transition:width .3s ease}
 #found{position:relative;overflow:hidden}
@@ -426,12 +424,8 @@ body{background:
 .egl .ett small{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 @media (max-height:700px){.eimg{aspect-ratio:2/1}.elogo{width:40px;height:40px}#encl li .sgl{width:38px;height:38px}.etabs button{height:38px}.sgl.big{width:52px;height:52px}}
 .etabs button svg.i{order:-1}
-#edm{position:absolute;z-index:7;padding:8px;max-width:calc(100% - 16px);border-radius:6px!important;animation:pop .25s cubic-bezier(.2,.9,.3,1.2) both}
-#edm[hidden]{display:none}
-#edmt{font:800 10.5px/1.2 var(--num);letter-spacing:.12em;text-transform:uppercase;color:var(--ember);margin:0 2px 6px}
 .edb{display:flex;gap:5px;flex-wrap:nowrap}.edb button{height:40px;padding:0 8px;white-space:nowrap;border-radius:5px;border:2px solid var(--edge);background:var(--stone);color:var(--txt);box-shadow:var(--bevel);font-weight:800;font-size:13px;text-shadow:1px 1px 0 #000}
-.edb button[hidden]{display:none}#eddl{background:linear-gradient(#a33c28,#6e2416)!important}
-#edsm{position:absolute;z-index:7;padding:8px;max-width:calc(100% - 16px);border-radius:6px!important;animation:pop .25s cubic-bezier(.2,.9,.3,1.2) both}#edsm[hidden]{display:none}.edmh{font:800 10.5px/1.2 var(--num);letter-spacing:.12em;text-transform:uppercase;color:var(--ember);margin:0 2px 6px}
+.edb button[hidden]{display:none}.edmh{font:800 10.5px/1.2 var(--num);letter-spacing:.12em;text-transform:uppercase;color:var(--ember);margin:0 2px 6px}
 .pc{display:inline-flex;align-items:center;padding:2px 8px;border-radius:3px;background:#14110e;border:1px solid #3a332a;font:800 12px/1.5 var(--num);color:var(--txt);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .pc.nm{color:var(--ember2)}.pc.tm{color:#ff9b85;font-variant-numeric:tabular-nums}.pc.q0{color:var(--mut)}
 
@@ -450,11 +444,6 @@ body{background:
 #vgm{margin:2px 0 4px}
 .dg #dzn small{color:var(--mut)}
 .elink{margin-right:8px}
-#lp{position:absolute;left:8px;right:8px;bottom:68px;z-index:5;padding:10px 12px;font-size:14px;line-height:1.4}#rt:not([hidden])~#lp{bottom:168px}
-#lp:not([hidden]){animation:rise .32s cubic-bezier(.2,.85,.25,1) both}
-#balm{position:fixed;inset:0;background:rgba(6,5,3,.72);display:none;align-items:center;justify-content:center;padding:12px;z-index:21}
-#balm.open{display:flex;animation:fadeIn .2s ease both}#balm .win{width:100%;max-width:420px;max-height:88dvh;overflow:auto;overscroll-behavior:contain;padding:16px}
-#balm.open .win{animation:pop .38s cubic-bezier(.2,.9,.3,1.15) both}#balm .btn small{font-weight:600;opacity:.75}
 #ll .pli{flex:none;width:36px;height:36px;display:grid;place-items:center;border-radius:4px;background:#0d0b08;border:2px solid #3a332a;color:var(--ember2)}
 .echips button.on{border-color:var(--ember)!important;color:var(--ember2);box-shadow:inset 0 0 0 1px var(--ember),0 0 10px rgba(234,165,60,.35)!important}
 #dzq{position:fixed;inset:0;background:rgba(6,5,3,.72);display:none;align-items:center;justify-content:center;padding:16px;z-index:45}
@@ -465,7 +454,7 @@ body.nosel #grab{display:none}
 #panel{max-height:47dvh;overflow-y:auto;overscroll-behavior:contain}#panel .tpw{max-height:none;overflow:visible}
 #wel .pmb button{font-size:13px;padding:0 8px;white-space:nowrap}body.nosel #found{flex:1}#found{min-width:130px}
 .mki{font-size:11px}.wxd small{font-size:10.5px}.ptab button small{font-size:11px}
-body:has(#soc.open,#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#mkm.open,#dlm.open) #toast{top:auto;bottom:calc(18px + env(safe-area-inset-bottom))}
+body:has(#soc.open,#menu.open,#lst.open,#encm.open,#dogm.open,#mkm.open,#dlm.open) #toast{top:auto;bottom:calc(18px + env(safe-area-inset-bottom))}
 #wel{position:absolute;inset:0;z-index:7;display:flex;flex-direction:column;padding:34px 18px 16px;border:0!important;border-radius:0!important;overflow-y:auto;animation:fadeIn .35s ease both}#wel[hidden]{display:none}
 #wel h3{margin:4px 0 8px;font:800 19px/1.2 var(--px);color:#fff1cf;text-shadow:2px 2px 0 #000}#wel ol{margin:0 0 4px;padding-left:20px;font-size:13.5px;line-height:1.45;color:var(--txt)}#wel li{display:list-item;border:0;padding:3px 0}#wel li b{color:var(--ember2)}
 .emb{border:0;padding:0;background:none;cursor:pointer;border-radius:50%}.emb.ph{width:36px;height:36px}.emb img{width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid var(--brass);box-shadow:0 0 0 2px #0e0b08;display:block}
@@ -485,9 +474,6 @@ body:has(#soc.open,#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#mkm.op
 .dgsvg{width:100%;height:auto;display:block;margin-top:6px;background:var(--slot);border:2px solid var(--edge);border-radius:4px;box-shadow:inset 0 0 0 1px var(--rim)}
 #dgwl{max-height:150px;overflow:auto}#dgtel{margin:2px 0 4px}
 .brand{cursor:pointer}#dogm #sos{margin:6px 0}
-#dogb .dgcard{display:flex;align-items:center;gap:10px;text-align:left;width:100%}
-#dogb .dgcard img,#dogb .dgcard svg{flex:none;width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--brass)}
-#dogb .dgcard svg{border:0;padding:4px}#dogb .dgcard b{display:block;font-size:15px}#dogb .dgcard small{display:block;font-size:12px;font-weight:600;color:var(--mut);text-shadow:none}
 #wxw{position:absolute;top:12px;right:58px;z-index:4;display:flex;align-items:center;padding:0;border:0;background:none;cursor:pointer;max-width:calc(100% - 150px)}
 #wxw[hidden]{display:none}
 #wxp{position:absolute;top:56px;right:8px;z-index:6;width:min(300px,calc(100% - 16px));padding:10px 12px;animation:pop .3s cubic-bezier(.2,.9,.3,1.2) both}#wxp[hidden]{display:none}
@@ -497,18 +483,6 @@ body:has(#soc.open,#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#mkm.op
 .fdz b{color:#ffc35a}.fdz i{margin-left:auto;font-style:normal;font-size:20px;color:#ffc35a}.fdz[hidden]{display:none}
 #panel .tp .esec{margin:10px 2px 5px}#panel .tp .esec:first-child{margin-top:2px}
 .fdel{display:flex;align-items:center;gap:6px;margin:12px auto 4px;padding:7px 12px;border:1px solid rgba(194,59,59,.5);border-radius:4px;background:transparent;color:#e2806f;font-size:13px;cursor:pointer}.fdel svg{width:16px;height:16px}
-
-/* ===== « Partir en balade » : une seule question, options discrètes ===== */
-#balm .lhd{align-items:center}
-
-#lp .eyb{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#lp .pmb button{white-space:nowrap}
-
-/* ===== Choix de la durée : petit panneau en bas, la carte reste visible ===== */
-#balm.sheet{align-items:flex-end;background:transparent;pointer-events:none;padding:0 6px 6px}
-#balm.sheet .win{pointer-events:auto;max-height:58dvh;padding:10px 12px 12px;box-shadow:0 -10px 30px rgba(0,0,0,.65);animation:rise .3s cubic-bezier(.2,.85,.25,1) both}
-#balm.sheet .lhd{margin-bottom:6px}#balm.sheet .lhd .ib{width:36px;height:36px}#bals[hidden]{display:none}
-#lp .pmb button{font-size:22px;line-height:1;min-height:46px}
 
 /* ===== Profil du chien : fiche de personnage sur un écran ===== */
 #dogm .win{padding:12px 14px 14px;max-height:94dvh}#dogm .lhd{margin-bottom:8px;align-items:center}#dgb{font-size:24px;line-height:1}#dgb[hidden]{display:none}
@@ -533,8 +507,6 @@ body:has(#soc.open,#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#mkm.op
 
 .dgnav{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}.dgnav button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 4px;border:2px solid var(--edge);border-radius:4px;background:linear-gradient(#4d453a,#3a332b);color:#f6ead0;font-size:19px;box-shadow:inset 0 2px 0 rgba(255,255,255,.13),0 2px 0 #000;cursor:pointer}.dgnav small{font-size:11.5px;font-weight:700}
 @media (max-height:700px){.dgav{width:88px;height:88px}.dgst{margin:10px 0 8px}.dgst div{padding:5px 3px}.dgst b{font-size:17px}.dgnav button{padding:6px 4px}}
-
-#edsm .edmh small{font-weight:600;color:var(--mut);text-transform:none;letter-spacing:0}
 
 #shm{position:absolute;left:8px;right:8px;bottom:68px;z-index:6;padding:12px 14px;font-size:14px;line-height:1.4;animation:rise .35s cubic-bezier(.2,.85,.25,1) both}#shm[hidden]{display:none}
 #shm h3{margin:2px 0 6px;font:800 22px/1.15 var(--px);color:#fff1cf;text-shadow:2px 2px 0 #000}
@@ -561,9 +533,8 @@ body:has(#soc.open,#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#mkm.op
 .rqw button small{color:var(--mut);font-weight:600;margin-left:3px}.rqw button.on{border-color:var(--ember);color:var(--ember2);box-shadow:inset 0 0 0 1px var(--ember)}.rqw button:disabled{opacity:.45}
 @media (max-height:680px){.rqi{height:64px}.rqi svg{width:30px;height:30px}.rqgr{min-height:calc(4 * 64px + 3 * 6px)}.rqt button{padding:8px 4px}}
 .rqgr.dz{min-height:0}.rqgr.dz .rqi{height:80px}.rqgr.dz+.rqg{margin-top:8px}
-#dock #found{flex:1}
-#mapBox:has(#lp:not([hidden])) #lp{bottom:8px}#mapBox:has(#shm:not([hidden])) #shm{bottom:8px}
-#rm,#rt,#lp,#shm{bottom:8px}#rt:not([hidden])~#lp{bottom:108px}
+#dock #found{flex:1}#mapBox:has(#shm:not([hidden])) #shm{bottom:8px}
+#rm,#shm{bottom:8px}
 
 /* ===== Fiche d'une balade : compacte, sans défilement ===== */
 #panel{overflow:hidden!important;max-height:none!important;padding:8px 10px 8px}.f3t{flex:1;min-width:0;display:flex;flex-direction:column}
@@ -579,7 +550,6 @@ body:has(#soc.open,#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#mkm.op
 #panel textarea[data-f=note]{min-height:0;height:58px;font-size:13px}
 .f3z{font-size:12px;margin:4px 2px 0}.f3z:empty{display:none}.f3z small{color:var(--mut)}
 .f3f{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 2px 0;font-size:11px;color:var(--mut)}.f3f .fdel{margin:0;padding:4px 8px;font-size:12px}
-#panel #wx .esec,#panel #wx .echips{display:none}
 @media (max-height:700px){.f3p{height:86px!important;max-height:86px!important}.f3gi img,.f3add{width:78px!important;height:78px!important}}
 
 /* pas de sélection de texte (sauf dans les champs de saisie), pas de menu « copier » à l'appui long */
@@ -863,7 +833,7 @@ body:has(#menu.open) header.bar{z-index:23}
 .rgbox ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:5px}.rgbox li{display:flex;gap:8px;align-items:flex-start;font:600 12.5px/1.35 var(--num);color:var(--mut)}.rgbox li>span:first-child{flex:none;width:20px;text-align:center}.rgbox li b{color:#fff1cf}
 .rgbox>small{display:block;margin:8px 0 2px;font:600 11.5px/1.35 var(--num);color:var(--mut)}.rgbox .cllink{padding:4px 0 0;text-align:left}
 .clterm{display:flex;gap:10px;align-items:flex-start;font:600 13.5px/1.4 var(--num);color:var(--txt);padding:2px 2px}.clterm input{flex:none;width:22px!important;height:22px!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;background:none!important;appearance:auto!important;-webkit-appearance:checkbox!important;accent-color:#eaa53c}.clterm a{color:var(--ember2)}
-body:has(#com.open,#menu.open,#lst.open,#encm.open,#dogm.open,#balm.open,#mkm.open,#dlm.open) #toast{top:auto;bottom:calc(18px + env(safe-area-inset-bottom))}
+body:has(#com.open,#menu.open,#lst.open,#encm.open,#dogm.open,#mkm.open,#dlm.open) #toast{top:auto;bottom:calc(18px + env(safe-area-inset-bottom))}
 #dock #comb{flex:none;width:68px;position:relative;flex-direction:column;justify-content:center;gap:1px;padding:2px 0 7px;background:var(--stone);color:var(--ember2);font:800 10.5px/1 var(--num);text-shadow:none}
 #comb svg{width:28px;height:25px;flex:none}
 #comb small{font:800 10.5px/1.1 var(--num);color:#e8dcc0;letter-spacing:.02em}
@@ -906,7 +876,6 @@ body:not(.nosel):not(.pmin) #dock #found:not(.rec),body:not(.nosel):not(.pmin) #
 #cmv{position:fixed;inset:0;z-index:40;background:rgba(6,5,3,.94);display:flex;align-items:center;justify-content:center;padding:12px}#cmv[hidden]{display:none}#cmv img{max-width:100%;max-height:100%;border-radius:8px}
 
 .fbdg{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px;border-radius:6px;border:1px solid rgba(234,165,60,.55);background:rgba(234,165,60,.1);color:#e9c77a;font:800 9.5px/14px var(--num);letter-spacing:.02em;font-style:normal;white-space:nowrap;vertical-align:2px;text-shadow:none}.fbdg img{width:13px;height:13px;border-radius:3px;display:block}
-html.lite #pt{display:none!important}
 #pfsh{z-index:24;background:rgba(6,5,3,.62);padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}.pfw{position:relative;padding:14px 14px 12px}.pfw .pfx{position:absolute;top:6px;right:6px}
 .pfh{display:flex;align-items:center;gap:12px;padding-right:34px}.pfh .scav{width:58px;height:58px;font-size:24px}.pfn{min-width:0;flex:1}
 .pfn b{display:block;font:800 17px/1.2 var(--px);color:#fff1cf;overflow-wrap:anywhere}.pfn b em{font:600 14px var(--num);font-style:normal;color:var(--mut)}
@@ -1007,7 +976,7 @@ body:has(#soc.open) #dock #socb,body:has(#com.open) #dock #comb{box-shadow:inset
 @keyframes dkar{from{transform:rotate(180deg);opacity:0}to{transform:none;opacity:1}}
 
 .scav.img{padding:0;overflow:hidden;background:#1b1814}.scav.img img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
-#mkm,#encm,#balm,#dzq,#dogm,#welm,#cmv{padding-top:max(12px,calc(env(safe-area-inset-top,0px) + 6px))!important;padding-bottom:max(12px,calc(env(safe-area-inset-bottom,0px) + 6px))!important}#rqm{padding-bottom:max(6px,env(safe-area-inset-bottom,0px))!important}
+#mkm,#encm,#dzq,#dogm,#welm,#cmv{padding-top:max(12px,calc(env(safe-area-inset-top,0px) + 6px))!important;padding-bottom:max(12px,calc(env(safe-area-inset-bottom,0px) + 6px))!important}#rqm{padding-bottom:max(6px,env(safe-area-inset-bottom,0px))!important}
 .scchbio{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-top:2px;font:italic 500 12.5px/1.3 var(--num);color:var(--mut);overflow:hidden;overflow-wrap:anywhere}
 .scemp{display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;padding:26px 14px;font:700 15px/1.3 var(--num);color:var(--txt)}.scemp small{font:500 13px/1.4 var(--num);color:var(--mut);max-width:290px}
 .hico{display:inline-block;width:17px;height:17px;margin:0 0 0 4px;vertical-align:top;position:relative;top:1px;border-radius:5px;box-shadow:0 1px 2px rgba(0,0,0,.6)}
@@ -1243,7 +1212,7 @@ const ctr = k => { const c = D.cells && D.cells[k]; return c && c.x != null ? [c
 const rdist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]) * Math.cos(toLL(a[0], a[1])[0] * Math.PI / 180);
 const blank = () => ({ name: '', note: '', ph: [], v: [] }), hasData = c => c && (c.v.length || c.name || c.note || (c.ph && c.ph.length)), rec = c => c && (c.x != null || hasData(c));
       // refonte : sentiers, boucles, guidage et voix mis de côté ; une balade = un repère, gris tant qu'il n'a pas été visité, doré ensuite
-document.documentElement.classList.toggle('lite', true);
+
 const VISM = { sig: '', set: new Set() };
 function visited(k) {      // une sortie notée sur la fiche, ou rattachée à la balade
   let n = 0; for (const c of Object.values(D.cells)) n += c.v.length; const sig = Object.keys(D.cells).length + ':' + n;
@@ -2070,7 +2039,7 @@ function balParks(g) {      // parkings à moins de 500 m du réseau de la balad
   return L;
 }
 const pkShort = n => n.replace(/^(parking|aire|place|parc)\s+(de\s+la\s+|de\s+l['’]\s*|du\s+|des\s+|de\s+|d['’]\s*)?/i, '').replace(/^./, c => c.toUpperCase()) || n;
-function sheetFit(pts, el = $('#balm .win')) {      // cadre ces points dans la partie de carte que le panneau laisse visible
+function sheetFit(pts, el) {      // cadre ces points dans la partie de carte que le panneau laisse visible
   const cr = cv.getBoundingClientRect(), wt = el.getBoundingClientRect().top, visH = Math.max(140, Math.min(cr.bottom, wt - 8) - cr.top);
   const xs = pts.map(q => q[0]), ys = pts.map(q => q[1]), x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
   const m = Math.max(.6, (x1 - x0) / (cr.width * .82), (y1 - y0) / (visH * .78)); flyXY((x0 + x1) / 2, (y0 + y1) / 2 - (cr.height / 2 - visH / 2) * m, m, 550);
