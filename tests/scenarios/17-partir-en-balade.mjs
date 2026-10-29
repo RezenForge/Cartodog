@@ -9,7 +9,7 @@ export default async T => {
   await gps(A, -900); await tap(A, '#found'); await A.waitForTimeout(300);
   T.ok((await A.evaluate(() => $('#wkw').innerText)).includes('Aucune balade ici'), 'hors périmètre : aucune balade');
   T.ok((await A.evaluate(() => $('#wkw').innerText)).includes('Bois du Taillan'), 'propose la plus proche');
-  await tap(A, '#wkw [data-wk="x"]');
+  await tap(A, '#found'); await A.waitForTimeout(200); T.ok(await A.evaluate(() => $('#wksh').hidden), 'retoucher le bouton ferme la fenêtre');
   // dans le périmètre
   await gps(A, 200); await tap(A, '#found'); await A.waitForTimeout(300);
   const t = await A.evaluate(() => $('#wkw').innerText); T.ok(t.includes('Vous êtes ici') && t.includes('Bois du Taillan'), 'balade détectée à 200 m');
@@ -25,13 +25,14 @@ export default async T => {
   const r = await A.evaluate(() => $('#wkw').innerText); T.ok(r.includes('Balade terminée') && r.includes('25'), 'bilan : durée affichée', r.replace(/\n/g, ' '));
   T.ok(await A.evaluate(() => !wkOn() && !$('#found').classList.contains('rec')), 'bouton revenu');
   T.ok(await A.evaluate(() => { const k = Object.keys(D.cells).find(k => balName(k) === 'Bois du Taillan'); return D.cells[k].v[0].s >= 25 * 60; }), 'durée enregistrée dans la visite');
-  await tap(A, '#wkw [data-wk="x"]'); await tap(A, '#found'); await A.waitForTimeout(200); await tap(A, '#wkw [data-wk="go"]'); await A.waitForTimeout(500);
+  await tap(A, '#wkw [data-wk="x"]'); await tap(A, '#found'); await A.waitForTimeout(200); await tap(A, '#wkw [data-wk="go"]');
+  T.ok(await A.evaluate(() => { const t0 = WK.t0; WK.t0 -= 3 * 6e4; wkTick(); const ok = /^3:0\d$/.test($('#found .wkt').textContent); WK.t0 = t0; wkTick(); return ok; }), 'minuteur calculé depuis l\'heure de départ'); await A.waitForTimeout(500);
   T.eq(T.S.db.walkN.length, 1, 'pas de 2e notification avant 20 minutes');
   // la copine touche la notification
   let opened = ''; await B.exposeFunction('__open', u => { opened = u; }); await B.evaluate(() => { window.open = u => { __open(u); return null; }; });
   await B.evaluate(u => pushGo(u), T.S.db.walkN[0].url); await B.waitForTimeout(800);
   const ti = await B.evaluate(() => $('#wkw').innerText); T.ok(ti.includes('Nova & Dylan sont en balade') && ti.includes('Bois du Taillan'), 'fenêtre de la notification', ti.replace(/\n/g, ' '));
-  T.ok(await B.evaluate(() => sel && balName(sel) === 'Bois du Taillan'), 'la balade est ouverte sur la carte');
+  T.ok(await B.evaluate(() => { const c = ctr(Object.keys(D.cells).find(k => balName(k) === 'Bois du Taillan')); return Math.hypot(V.cx - c[0], V.cy - c[1]) < 50 && !$('#wksh').hidden; }), 'la carte montre la balade, fenêtre au-dessus des boutons');
   await tap(B, '#wkw [data-wk="join"]'); await B.waitForTimeout(600);
   T.ok(T.S.db.msgs.some(m => m.f === 'u2' && m.to === 'u1' && m.t.includes("J'arrive")), 'Rejoindre : message envoyé');
   T.ok(/google\.com\/maps\/dir/.test(opened), 'Rejoindre : itinéraire ouvert');

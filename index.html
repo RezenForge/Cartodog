@@ -885,7 +885,9 @@ body:not(.nosel):not(.pmin) #dock #found:not(.rec),body:not(.nosel):not(.pmin) #
 .pfa{display:flex;gap:8px;margin-top:13px}.pfa .btn{flex:1;margin:0}.pfa .pfmo{flex:0 0 48px}.pfw .pfrm{margin:8px 0 0;color:#ff8a6e}
 .pfme{margin-top:12px;font:600 12px var(--num);color:var(--mut);text-align:center}[data-pfu]{cursor:pointer}
 /* signaler */
-#wksh{z-index:27;background:rgba(6,5,3,.62);padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+#wksh{z-index:21;inset:auto 0 var(--socbt,0px) 0!important;background:none!important;padding:0 8px 8px!important;pointer-events:none}#wksh>.pfw{pointer-events:auto;width:100%;max-width:520px;box-shadow:0 -6px 22px rgba(0,0,0,.55)}
+body:has(#wksh:not([hidden])) #found>:not(.dkar){display:none!important}body:has(#wksh:not([hidden])) #found .dkar{display:grid;place-items:center;width:100%;height:100%}
+.wkcb{display:block;width:100%;padding:0;border:0;background:none;text-align:left;cursor:pointer;color:inherit}
 .wkc{display:flex;gap:12px;align-items:center;margin:4px 0 10px;padding:10px;border:2px solid var(--edge);border-radius:12px;background:#14110e}.wkc img,.wkph{flex:none;width:70px;height:70px;border-radius:10px;object-fit:cover;border:2px solid #0e0c09;display:grid;place-items:center;background:#2a2119;color:var(--ember2)}.wkph svg{width:34px;height:34px}
 .wkc .act{display:flex;flex-direction:column;gap:2px;min-width:0}.wkc b{font:800 16px var(--num);color:#fff1cf}.wkc small{font:600 12px/1.35 var(--num);color:var(--mut)}.wkc .wklv{color:#a9d98a}
 .wknot{margin:0 0 10px}.wkr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 8px}.wkr div{display:flex;flex-direction:column;align-items:center;padding:10px 4px;border:2px solid var(--edge);border-radius:10px;background:#14110e}.wkr b{font:900 22px var(--num);color:var(--ember2)}.wkr small{font:700 11px var(--num);color:var(--mut)}
@@ -1890,7 +1892,7 @@ $('#panel').addEventListener('click', e => {
 
 /* ===== Balades : enregistrement GPS d'une promenade (durée, distance, tracé), rattachée au lieu de départ ===== */
 var BSEL = null;
-const foundOff = () => '▶ Balade' + ICO.paw;
+const foundOff = () => '<span>▶ Balade</span>' + ICO.paw + '<span class="dkar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8.5l7 7 7-7"/></svg></span>';
 /* ===== « + Lieu » : crée (ou retrouve) un lieu de balade à votre position ===== */
 /* ===== Risques éphémères : un repère « danger » reste 24 h ; en passant à moins de 45 m, une fenêtre demande s'il est toujours là.
    Oui : il reste 24 h de plus. Non : il disparaît. Un risque marqué « permanent » (route, troupeau…) ne disparaît jamais. ===== */
@@ -2173,7 +2175,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.29-175';
+const APP_V = '2026.10.29-176';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2520,7 +2522,7 @@ setTimeout(socBadge, 300);
 function hovSet() {      // le rond du chien dépasse du bandeau : les fenêtres commencent juste en dessous
   try { const mb = $('#mapBox').getBoundingClientRect(); let bt = 0; document.querySelectorAll('#hdog, #hdog *').forEach(e => { const r = e.getBoundingClientRect(); if (r.width && r.height) bt = Math.max(bt, r.bottom); });
     document.documentElement.style.setProperty('--hov', Math.max(14, Math.round(bt - mb.top + 10)) + 'px'); } catch (e) {} }
-function socOpen() { try { comClose(); $('#menu').classList.remove('open'); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); hovSet(); document.documentElement.style.setProperty('--socbt', Math.max(0, Math.round(innerHeight - mb.bottom)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); faClose(); socMe(); socRender(); $('#soc').classList.add('open'); soTick(true); }
+function socOpen() { try { wkClose(); comClose(); $('#menu').classList.remove('open'); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#soc').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); hovSet(); document.documentElement.style.setProperty('--socbt', Math.max(0, Math.round(innerHeight - mb.bottom)) + 'px'); $('#scst').hidden = true; $('#scch').hidden = true; SOC.chat = null; grpClose(); faClose(); socMe(); socRender(); $('#soc').classList.add('open'); soTick(true); }
 const socClose = () => { SOC.ed = false; $('#soc').classList.remove('open'); };
 const socSoon = () => toast('🛠️ Bientôt disponible');
 function socShow(k) { if (!k || !D.cells[k]) return toast('📍 Cette balade n\'est pas sur votre carte'); socClose(); select(k); try { fitBal(k); } catch (e) {} }
@@ -2712,10 +2714,16 @@ const wkOn = () => !!(WK.k && WK.t0), wkSave = () => { try { WK.k ? localStorage
 const wkNotif = () => { try { return localStorage.getItem('cartodog-wknot') !== '0'; } catch (e) { return true; } };
 const hms = ms => { const t = Math.max(0, Math.floor(ms / 1000)), h = Math.floor(t / 3600), m = Math.floor(t / 60) % 60, s2 = t % 60; return (h ? h + ':' + String(m).padStart(2, '0') : String(m)) + ':' + String(s2).padStart(2, '0'); };
 function wkBtn() { const b = $('#found'); if (!b) return; const on = wkOn(); b.classList.toggle('rec', on);
-  if (on) { const t = hms(Date.now() - WK.t0); if (b.dataset.t !== t) { b.dataset.t = t; b.innerHTML = `🐾 <span class="wkt">${t}</span><small>Terminer</small>`; } b.setAttribute('aria-label', 'En balade depuis ' + t + ' : toucher pour terminer'); }
+  if (on) { const t = hms(Date.now() - WK.t0); if (b.dataset.t !== t) { b.dataset.t = t; b.innerHTML = `<span>🐾</span><span class="wkt">${t}</span><small>Terminer</small><span class="dkar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8.5l7 7 7-7"/></svg></span>`; } b.setAttribute('aria-label', 'En balade depuis ' + t + ' : toucher pour terminer'); }
   else if (b.dataset.t !== '') { b.dataset.t = ''; b.innerHTML = foundOff(); b.setAttribute('aria-label', 'Partir en balade'); } }
-setInterval(() => { if (wkOn() && Date.now() - WK.t0 > WK_MAX) { wkEnd(true); return toast('🐾 Balade terminée automatiquement après 4 h'); } wkBtn(); }, 1000);
+function wkTick() {      // le temps affiché vient toujours de l'heure de départ : téléphone verrouillé ou appli en veille, rien n'est perdu
+  if (wkOn() && Date.now() - WK.t0 > WK_MAX) { const t0 = WK.t0; wkEnd(true); return toast('🐾 Balade terminée automatiquement 4 h après le départ (' + new Date(t0).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) + ')'); }
+  wkBtn(); const e = $('#wkt2'); if (e && wkOn()) e.textContent = hms(Date.now() - WK.t0); }
+setInterval(wkTick, 1000); ['visibilitychange', 'pageshow', 'focus'].forEach(ev => addEventListener(ev, () => { if (document.visibilityState !== 'hidden') wkTick(); }));
 const wkClose = () => { $('#wksh').hidden = true; WKS.wait = 0; };
+function wkShow() {      // la fenêtre se pose dans le cadre de la carte, au-dessus des boutons du bas (comme Copains et Communauté)
+  try { comClose(); socClose(); $('#menu').classList.remove('open'); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect();
+  document.documentElement.style.setProperty('--socbt', Math.max(0, Math.round(innerHeight - mb.bottom)) + 'px'); $('#wksh').hidden = false; }
 const WKS = { wait: 0 };
 function wkCard(k) {      // aperçu rapide d'une balade : photo, nom, ville, note, équipements, copains présents
   const c = D.cells[k], th = (c && c.th) || (bcOf(k) ? bcUrl(bcOf(k)) : ''), bt = btOf(k), ic = Object.keys(AMEN).filter(t => bt.tags[t]).map(t => AMEN[t][0]).join(' '), ct = cityOf(k); cityLoad(k);
@@ -2727,9 +2735,9 @@ function wkCard(k) {      // aperçu rapide d'une balade : photo, nom, ville, no
     ${live && live.cnt ? `<small class="wklv">👥 ${fr.length ? fr.join(', ') + (live.cnt > fr.length ? ` et ${live.cnt - fr.length} autre${live.cnt - fr.length > 1 ? 's' : ''}` : '') : live.cnt + ' promeneur' + (live.cnt > 1 ? 's' : '')} sur place</small>` : ''}</div></div>`;
 }
 function wkRender() {
-  const w = $('#wkw'), x = '<button class="ib pfx" data-wk="x" aria-label="Fermer">✕</button>';
+  const w = $('#wkw'), x = '';
   if (wkOn()) { const k = WK.k, d = Date.now() - WK.t0;
-    w.innerHTML = x + `<div class="rph">🐾 En balade depuis ${hms(d)}</div>${D.cells[k] ? wkCard(k) : ''}<div class="bab"><button class="btn" data-wk="x">Continuer</button><button class="btn gold" data-wk="end">⏹ Terminer la balade</button></div>`; return; }
+    w.innerHTML = x + `<div class="rph">🐾 En balade depuis <span id="wkt2">${hms(d)}</span></div>${D.cells[k] ? wkCard(k) : ''}<div class="bab"><button class="btn" data-wk="x">Continuer</button><button class="btn gold" data-wk="end">⏹ Terminer la balade</button></div>`; return; }
   if (!me) { w.innerHTML = x + `<div class="rph">🐾 Partir en balade</div><p class="rps">${watch === null ? 'La position est nécessaire pour trouver la balade où vous êtes.' : '📍 Recherche de votre position…'}</p>${watch === null ? '<button class="btn gold full" data-wk="gps">📍 Activer la position</button>' : ''}`; return; }
   const k = presHere();
   if (!k) { const L = walkPlaces().filter(p => p.k && D.cells[p.k]).map(p => [p.k, rdist(ctr(p.k), [me.x, me.y])]).sort((a, b) => a[1] - b[1]), n = L[0];
@@ -2742,8 +2750,8 @@ function wkRender() {
     <div class="bab"><button class="btn" data-wk="see" data-k="${k}">Voir la fiche</button><button class="btn gold" data-wk="go" data-k="${k}">🐾 Partir en balade</button></div>`;
 }
 const accName = () => { const dn = (D.prof && D.prof.name || '').trim(), hu = (accU().first || accU().name || '').trim(); return dn && hu ? dn + ' & ' + hu : dn || hu || 'Vous'; };
-function wkTap() { if (wkOn()) { wkRender(); $('#wksh').hidden = false; return; } if (!clOn()) return toast('☁️ Connectez-vous pour partir en balade');
-  wkRender(); $('#wksh').hidden = false; if (!me && watch !== null) wkWait(); }
+function wkTap() { if (!$('#wksh').hidden) return wkClose(); if (wkOn()) { wkRender(); return wkShow(); } if (!clOn()) return toast('☁️ Connectez-vous pour partir en balade');
+  wkRender(); wkShow(); if (!me && watch !== null) wkWait(); }
 function wkWait() { WKS.wait = Date.now(); const t = setInterval(() => { if ($('#wksh').hidden || !WKS.wait) return clearInterval(t); if (me || Date.now() - WKS.wait > 20000) { clearInterval(t); WKS.wait = 0; wkRender(); } }, 500); }
 async function wkStart(k) {
   if (!D.cells[k]) return; const c = ctr(k), d = new Date(), day = today(); WK.k = k; WK.t0 = Date.now(); WK.n = balName(k) || 'Balade'; wkSave();
@@ -2758,13 +2766,13 @@ function wkEnd(auto) {
   if (v) { v.s = Math.max(v.s || 0, Math.round(dur / 1000)); if (v.t === 'Présence détectée sur place') v.t = 'Balade'; }
   WK.k = null; WK.t0 = 0; WK.v = null; WK.nv = 0; wkSave(); save(); soPresence(); wkBtn(); draw(); try { renderPanel(); hdrRender(); } catch (e) {}
   if (auto) return; const S = dogStats(), w = $('#wkw');
-  w.innerHTML = `<button class="ib pfx" data-wk="x" aria-label="Fermer">✕</button><div class="rph">🎉 Balade terminée</div>
+  w.innerHTML = `<div class="rph">🎉 Balade terminée</div>
     <div class="wkr"><div><b>${hms(dur).replace(/:(\d\d)$/, '')}</b><small>${dur >= 36e5 ? 'h:min' : 'minutes'}</small></div><div><b>${S.xp > L0.xp ? '+' + (S.xp - L0.xp) : nv ? '+25' : '✓'}</b><small>${nv || S.xp > L0.xp ? 'XP' : 'déjà comptée'}</small></div><div><b>${S.st ? '🔥 ' + S.st : '1'}</b><small>jour${S.st > 1 ? 's' : ''} de suite</small></div></div>
     <p class="rps">${esc(balName(k) || 'Balade')}${S.L > L0.L ? ` · 🎉 ${esc(D.prof.name || 'Votre chien')} passe au niveau ${S.L} !` : ''}</p>
     <div class="bab"><button class="btn" data-wk="x">Fermer</button><button class="btn gold" data-wk="rate" data-k="${k}">★ Donner mon avis</button></div>`;
-  $('#wksh').hidden = false;
+  wkShow();
 }
-$('#wksh').addEventListener('click', e => { if (e.target.id === 'wksh') return wkClose(); const b = e.target.closest('[data-wk]'); if (!b) return; const a = b.dataset.wk, k = b.dataset.k;
+$('#wksh').addEventListener('click', e => { const b = e.target.closest('[data-wk]'); if (!b) return; const a = b.dataset.wk, k = b.dataset.k;
   if (a === 'x') return wkClose();
   if (a === 'gps') { startLoc(); wkRender(); return wkWait(); }
   if (a === 'see' || a === 'rate') { wkClose(); if (k && D.cells[k]) { select(k); try { fitBal(k); } catch (x) {} if (a === 'rate') setTimeout(() => { const r = document.querySelector('#panel #bprv'); if (r) r.scrollIntoView({ block: 'center' }); }, 600); } return; }
@@ -2779,13 +2787,13 @@ async function wkInvite(uid, bx, by) {      // notification « … en balade » 
   SOT.busy = false; try { await soPoll(); } catch (e) {} const p = person(uid), k = soCell(bx, by) || null;
   const nm = (p && p.at && p.at.n) || (k && balName(k)) || 'la balade', whoN = p ? (p.n ? p.d + ' & ' + p.n : p.d) : 'Votre copain', still = p && p.st === 'walk';
   WKS.inv = { u: uid, bx, by, k, n: nm, who: p ? p.n || p.d : 'votre copain' };
-  if (k) { select(k); try { fitBal(k); } catch (e) {} } else flyXY(bx, by, 3, 500);
-  $('#wkw').innerHTML = `<button class="ib pfx" data-wk="x" aria-label="Fermer">✕</button><div class="rph">🐾 ${esc(whoN)} ${p && p.n ? 'sont' : 'est'} en balade</div>
-    ${k ? wkCard(k) : `<p class="rps">à ${esc(nm)}</p>`}<p class="rps">${still ? `Sur place depuis ${p.t} min.` : 'La balade est peut-être terminée.'}</p>
+  try { if (sel) { sel = null; collapse(); renderPanel(); } } catch (e) {} flyXY(k ? ctr(k)[0] : bx, k ? ctr(k)[1] : by, 3, 500);
+  $('#wkw').innerHTML = `<div class="rph">🐾 ${esc(whoN)} ${p && p.n ? 'sont' : 'est'} en balade</div>
+    ${k ? `<button class="wkcb" data-wk="see" data-k="${k}">${wkCard(k)}</button>` : `<p class="rps">à ${esc(nm)}</p>`}<p class="rps">${still ? `Sur place depuis ${p.t} min.` : 'La balade est peut-être terminée.'}</p>
     <div class="bab"><button class="btn" data-wk="maps">🧭 Ouvrir dans Maps</button><button class="btn gold" data-wk="join">🐾 Rejoindre</button></div>`;
-  $('#wksh').hidden = false;
+  wkShow();
 }
-wkBtn();
+wkBtn(); $('#mn').addEventListener('click', () => { if (!$('#wksh').hidden) wkClose(); }, true);
 /* nombre de balades que j'ai ajoutées (compté par le serveur : une balade retirée par la modération ne compte plus) */
 const badN = () => { try { const o = JSON.parse(localStorage.getItem('cartodog-badd') || 'null'); return o && CLD.s && CLD.s.user && o.u === CLD.s.user.id ? Math.max(0, +o.n || 0) : 0; } catch (e) { return 0; } };
 const badSet = n => { try { if (CLD.s && CLD.s.user) localStorage.setItem('cartodog-badd', JSON.stringify({ u: CLD.s.user.id, n })); } catch (e) {} };
@@ -2907,7 +2915,7 @@ async function cmLoad() {
   try { const r = await soRpc('post_feed', { bx: 0, by: 0, r: 0 }); CM.posts = Array.isArray(r) ? r : []; if ($('#com').classList.contains('open')) cmMarkSeen(); } catch (e) { toast('⚠️ ' + e.message); }
   CM.busy = false; cmRender();
 }
-function comOpen() { metaLoad(() => cmRender());
+function comOpen() { metaLoad(() => cmRender()); try { wkClose(); } catch (e) {}
  try { socClose(); $('#menu').classList.remove('open'); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#com').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); hovSet(); document.documentElement.style.setProperty('--socbt', Math.max(0, Math.round(innerHeight - mb.bottom)) + 'px'); $('#cmsh').hidden = true; $('#com').classList.add('open'); comBadge(); cmRender(); cmLoad(); }
 const comClose = () => { $('#com').classList.remove('open'); $('#cmsh').hidden = true; comBadge(); };
 async function cmCompress(file) {      // photo réduite (1024 px max) et compressée en JPEG, ~100 à 200 Ko
