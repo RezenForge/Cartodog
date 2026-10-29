@@ -8,7 +8,7 @@ export { chromium };
 
 // Une session de test : un faux serveur, un navigateur, des « téléphones » (pages) et une liste de vérifications.
 export async function session(base, name) {
-  const S = makeServer(), browser = await chromium.launch(), errs = [], checks = [];
+  const S = makeServer(), browser = await chromium.launch(), errs = [], checks = [], covPages = [];
   const T = {
     S, browser, errs, checks, base,
     ok(cond, label, info) { checks.push({ ok: !!cond, label, info }); return !!cond; },
@@ -17,6 +17,7 @@ export async function session(base, name) {
       const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, ...(opt.ctx || {}) });
       if (opt.welcome !== true) await ctx.addInitScript(() => { const f = () => { const s = document.createElement('style'); s.textContent = '#welm{display:none!important}'; document.documentElement.appendChild(s); }; if (document.documentElement) f(); else document.addEventListener('DOMContentLoaded', f); });
       const p = await ctx.newPage();
+      if (process.env.COV) { await p.coverage.startJSCoverage({ resetOnNavigation: false }); covPages.push(p); }
       p.on('pageerror', e => errs.push(who + ' : ' + e.message));
       p.on('dialog', d => d.accept(d.type() === 'prompt' ? (opt.prompt || '') : undefined));
       await p.route(/open-meteo|geopf|geo\.api|arcgis|wikipedia|fonts\.g/, r => r.abort());
@@ -26,7 +27,9 @@ export async function session(base, name) {
       if (opt.balades !== false) await seed(p, opt.balades);
       return p;
     },
-    async close() { await browser.close(); },
+    async close() {
+      if (process.env.COV) { const fs = await import('node:fs'); for (const p of covPages) { try { const c = (await p.coverage.stopJSCoverage()).filter(e => /index\.html/.test(e.url)); fs.mkdirSync(process.env.COV, { recursive: true }); fs.writeFileSync(`${process.env.COV}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.json`, JSON.stringify(c.map(e => ({ src: e.source.length, functions: e.functions })))); } catch (e) {} } }
+      await browser.close(); },
   };
   return T;
 }

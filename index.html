@@ -1557,7 +1557,7 @@ function journal() {      // journal de balade : bilan de toutes les sorties
   const tile = (v, l) => `<div><b>${v}</b><small>${l}</small></div>`;
   return `<div class="jrh">${avUrl ? `<img class="jav" src="${avUrl}" alt="">` : ICO.paw}<div><small>Rang de la meute${D.dog ? ' · ' + esc(D.dog) : ''}</small><b>${t[1]}</b><i>${nx ? `Encore ${Math.ceil(nx[0] - K)} km avant « ${nx[1]} »` : 'Rang le plus élevé atteint'}</i><i>${fmtDist(wk)} ces 7 derniers jours</i></div></div>
     <div class="jrp"><i style="width:${Math.round(pc)}%"></i></div>
-    <div class="jrg">${tile(W.length, 'sorties')}${tile(fmtDist(m), 'parcourus')}${tile(fmtDur(s), 'de promenade')}${tile(cs.length, 'balades')}${LITE ? '' : tile(fmtDist(km), 'de sentiers')}${tile(dz, 'dangers signalés')}</div>`;
+    <div class="jrg">${tile(W.length, 'sorties')}${tile(fmtDist(m), 'parcourus')}${tile(fmtDur(s), 'de promenade')}${tile(cs.length, 'balades')}${('')}${tile(dz, 'dangers signalés')}</div>`;
 }
 /* ===== Coordonnées : mètres Mercator ; chaque lieu garde sa position exacte ===== */
 const R = 6378137, CS = 50 / Math.cos(46 * Math.PI / 180), KEY = 'cartodog-v1', O = 20037508.34;
@@ -1571,7 +1571,7 @@ const ctr = k => { const c = D.cells && D.cells[k]; return c && c.x != null ? [c
 const rdist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]) * Math.cos(toLL(a[0], a[1])[0] * Math.PI / 180);
 const blank = () => ({ name: '', note: '', ph: [], v: [] }), hasData = c => c && (c.v.length || c.name || c.note || (c.ph && c.ph.length)), rec = c => c && (c.x != null || hasData(c));
 const LITE = true;      // refonte : sentiers, boucles, guidage et voix mis de côté ; une balade = un repère, gris tant qu'il n'a pas été visité, doré ensuite
-document.documentElement.classList.toggle('lite', LITE);
+document.documentElement.classList.toggle('lite', true);
 const VISM = { sig: '', set: new Set() };
 function visited(k) {      // une sortie notée sur la fiche, ou rattachée à la balade
   let n = 0; for (const c of Object.values(D.cells)) n += c.v.length; const sig = Object.keys(D.cells).length + ':' + n;
@@ -1902,7 +1902,7 @@ function draw() {
       drawTile(Z, tx, ty, sx(tx * span - O), sy(O - ty * span), ts);
     }
   if (commOn) drawComm(0, sx, sy, W, x0, x1, y0, y1, mpp);
-  drawRoads(sx, sy, x0, x1, y0, y1, mpp); if (!LITE) { drawPaths(sx, sy); drawLoop(sx, sy); drawShared(sx, sy); drawWalks(sx, sy); drawRoute(sx, sy); drawAP(sx, sy); } const ps = spotSz();
+  drawRoads(sx, sy, x0, x1, y0, y1, mpp); ; const ps = spotSz();
   if (commOn) drawComm(1, sx, sy, W, x0, x1, y0, y1, mpp);      // noms des communes sous les repères : balades et groupes passent devant
   g.textAlign = 'center'; g.textBaseline = 'middle';
   /* Repères de balade : pastille ronde (photo de couverture, contour couleur du rang), pointe sur la position ; regroupés quand ils se chevauchent */
@@ -1932,7 +1932,7 @@ function draw() {
     g.restore(); if (upr) g.restore(); });
   fly.forEach(({ k, c, x, y, n, shr, al }) => { const upr = UP(x, y), pf = FX.length && fxOf('pop', k), sc = (pf ? Math.max(.01, EZ.back(Math.min(1, Math.max(0, fxP(pf))))) : 1) * shr; g.save(); g.globalAlpha = al;
     if (sc !== 1) { g.save(); g.translate(x, y); g.scale(sc, sc); g.translate(-x, -y); }
-    const isS = k === sel, R = isS ? PR + 4 : PR, cy = y - R - 8, vz = !LITE || visited(k), col = LITE ? (vz ? (isS ? '#ffe6a6' : '#e0a83c') : (isS ? '#c9c2b4' : '#7d776c')) : isS ? '#ffd27a' : RANKS[rankK(c)].c, im = thImg(k, c);
+    const isS = k === sel, R = isS ? PR + 4 : PR, cy = y - R - 8, vz = (visited(k)), col = (vz ? (isS ? '#ffe6a6' : '#e0a83c') : (isS ? '#c9c2b4' : '#7d776c')), im = thImg(k, c);
     g.beginPath(); g.ellipse(x, y, 5, 2, 0, 0, 7); g.fillStyle = 'rgba(0,0,0,.45)'; g.fill();
     g.beginPath(); g.moveTo(x - 7, cy + R - 2); g.lineTo(x, y); g.lineTo(x + 7, cy + R - 2); g.closePath(); g.fillStyle = '#0e0b08'; g.fill();
     g.beginPath(); g.arc(x, cy, R + 4, 0, 7); g.fillStyle = '#0e0b08'; g.fill(); g.beginPath(); g.arc(x, cy, R + 2.5, 0, 7); g.fillStyle = col; g.fill();
@@ -2093,7 +2093,7 @@ function renderPanel() {
   if (!sel) { p.innerHTML = ''; return; }
   const c = D.cells[sel] || blank(), [la, lo] = toLL(...ctr(sel)), n = c.v.length, m = lm(c), s = c.v.reduce((a, v) => a + v.s, 0);
   const rk = rankK(c), RK = RANKS[rk], last = c.v.reduce((a, v) => v.d > a ? v.d : a, '');
-  const hist = c.v.map((v, i) => [v, i]).sort((a, b) => (b[0].d + b[0].h).localeCompare(a[0].d + a[0].h)).map(([v, i]) => `<li${v.id === BSEL ? ' class="on"' : ''}><span data-act="show" data-i="${i}" class="wk"><i class="lg">›</i><b>${dayLbl(v.d)}</b>${v.h ? ' <small>' + v.h + '</small>' : ''}<br>${!v.m && !v.s ? esc(v.t || 'Visite') : fmtDist(v.m) + ' · ' + fmtDur(v.s)}${v.bal ? ' · 🧭 ' + esc(v.bal) : ''}${v.pts.length > 1 ? ' <small>· 🗺 tracé</small>' : ''}${v.t ? '<br><small>' + esc(v.t) + '</small>' : ''}</span><span style="display:flex;flex:none">${v.pts.length > 1 ? `${LITE ? '' : `<button data-act="topath" data-i="${i}" aria-label="Ajouter ce tracé à mes sentiers">🥾</button>`}` : ''}<button data-act="edit" data-i="${i}" aria-label="Modifier">✎</button><button data-act="del" data-i="${i}" aria-label="Supprimer">✕</button></span></li>`).join('');
+  const hist = c.v.map((v, i) => [v, i]).sort((a, b) => (b[0].d + b[0].h).localeCompare(a[0].d + a[0].h)).map(([v, i]) => `<li${v.id === BSEL ? ' class="on"' : ''}><span data-act="show" data-i="${i}" class="wk"><i class="lg">›</i><b>${dayLbl(v.d)}</b>${v.h ? ' <small>' + v.h + '</small>' : ''}<br>${!v.m && !v.s ? esc(v.t || 'Visite') : fmtDist(v.m) + ' · ' + fmtDur(v.s)}${v.bal ? ' · 🧭 ' + esc(v.bal) : ''}${v.pts.length > 1 ? ' <small>· 🗺 tracé</small>' : ''}${v.t ? '<br><small>' + esc(v.t) + '</small>' : ''}</span><span style="display:flex;flex:none">${v.pts.length > 1 ? `${('')}` : ''}<button data-act="edit" data-i="${i}" aria-label="Modifier">✎</button><button data-act="del" data-i="${i}" aria-label="Supprimer">✕</button></span></li>`).join('');
   const g = cellGroup(sel), TH = [1, 5, 15, 40], nx = rk < 4 ? TH[rk] : 0, prv = rk ? TH[rk - 1] : 0, pct = nx ? Math.round((n - prv) / (nx - prv) * 100) : 100;
   const chip = (ic, v, t) => `<span title="${t}">${ic}<b>${v}</b></span>`;
   const dn = D.prof && D.prof.name || '', av = $('#dogav') ? $('#dogav').innerHTML : '', np = c.ph.length;
@@ -2108,8 +2108,8 @@ function renderPanel() {
     <div class="bpme">${n ? `🐾 <b>${esc(dn || 'Vous')}</b> · ${n} visite${n > 1 ? 's' : ''} · dernière ${ago(last)}` : `🐾 Pas encore venus${dn ? ' avec ' + esc(dn) : ''}`}${lv ? ` <span class="bplv">· ${lv} ici maintenant</span>` : ''}</div>
     <div class="bpa"><button class="btn gold" data-act="maps">🧭 Y aller</button><button class="btn" data-act="addtoggle">＋ Visite</button><button class="btn bpi" data-act="invite" aria-label="Inviter des copains">👥</button></div>
     <button id="pdzc" class="fdz" data-tab="dz" hidden></button>
-    <div id="addv" class="row"><input type="date" id="vd" max="${today()}" value="${today()}"><input type="number" id="vn" min="0" step="1" placeholder="Durée min" inputmode="numeric"${LITE ? ' hidden' : ''}><input type="number" id="vw" min="0" step="0.1" placeholder="Distance km" inputmode="decimal"${LITE ? ' hidden' : ''}>
-      <input class="full" id="vt" placeholder="Note : rencontres, état du chien, météo…"><button class="btn gold full" data-act="add">${LITE ? '🐾 Noter la visite' : 'Consigner la sortie'}</button></div>
+    <div id="addv" class="row"><input type="date" id="vd" max="${today()}" value="${today()}"><input type="number" id="vn" min="0" step="1" placeholder="Durée min" inputmode="numeric"${(' hidden')}><input type="number" id="vw" min="0" step="0.1" placeholder="Distance km" inputmode="decimal"${(' hidden')}>
+      <input class="full" id="vt" placeholder="Note : rencontres, état du chien, météo…"><button class="btn gold full" data-act="add">${('🐾 Noter la visite')}</button></div>
     <div class="bprv" id="bprv"></div>${g && clOn() && g.paths[0] ? `<button class="bprep" data-act="balrep">⚑ Signaler cette balade (lieu inexistant, privé, doublon…)</button>` : ''}
     <div class="f4tab"><button data-tab="hs">Visites${n ? ' <em>' + n + '</em>' : ''}</button><button data-tab="ph">Photos${np ? ' <em>' + np + '</em>' : ''}</button></div>
     <div class="tpw f3p">
@@ -2323,7 +2323,7 @@ $('#panel').addEventListener('click', e => {
   if (a === 'walk') { if (BR.on) return brStop(); BR.k0 = sel; const g = cellGroup(sel); return g ? openBal(g.k, 'panel') : balOpen(); }
   if (a === 'bal') { const g = cellGroup(sel); if (g) openBal(g.k, 'panel'); return; }
   if (a === 'share') { const g = cellGroup(sel); if (g) balShare(g); return; }
-  if (a === 'addtoggle') { const f = $('#addv'); if (editI !== null) { renderPanel(); return $('#addv').classList.add('on'); } f.classList.toggle('on'); if (f.classList.contains('on')) (LITE ? $('#vt') : $('#vn')).focus(); return; }
+  if (a === 'addtoggle') { const f = $('#addv'); if (editI !== null) { renderPanel(); return $('#addv').classList.add('on'); } f.classList.toggle('on'); if (f.classList.contains('on')) (($('#vt'))).focus(); return; }
   if (a === 'show') { const v = c.v[+b.dataset.i]; if (!v) return; if (BSEL === v.id) { BSEL = null; renderPanel(); return draw(); } BSEL = v.id; ptab = 'hs'; renderPanel();
     if (v.pts.length < 2) { draw(); return toast('Pas de tracé GPS pour cette sortie (notée à la main)'); }
     const xs = v.pts.map(q => q[0]), ys = v.pts.map(q => q[1]), W = cv.clientWidth, H = cv.clientHeight; collapse();
@@ -2335,10 +2335,10 @@ $('#panel').addEventListener('click', e => {
     f.querySelector('[data-act=add]').textContent = 'Mettre à jour la sortie'; f.scrollIntoView({ block: 'nearest' }); $('#vd').focus(); return; }
   if (a === 'del') { const snap = snapC(), v = c.v[+b.dataset.i]; if (v && v.id === BSEL) BSEL = null; c.v.splice(+b.dataset.i, 1); save(); draw(); renderPanel(); return toast('Sortie supprimée', () => { restoreSnap(snap); save(); draw(); renderPanel(); }); }
   if (a === 'add') { const d = $('#vd').value || today(); if (d > today()) return toast('La date est dans le futur');
-    const mn = Math.max(0, +$('#vn').value || 0), km = Math.max(0, +String($('#vw').value).replace(',', '.') || 0); if (!mn && !km && !LITE) return toast('Indiquez au moins une durée ou une distance');
+    const mn = Math.max(0, +$('#vn').value || 0), km = Math.max(0, +String($('#vw').value).replace(',', '.') || 0); if (!mn && !km && !true) return toast('Indiquez au moins une durée ou une distance');
     const old = editI !== null ? c.v[editI] : null, nv = { id: old ? old.id : rid(), d, h: old ? old.h : '', s: Math.round(mn * 60), m: Math.round(km * 1000), t: $('#vt').value.trim(), pts: old ? old.pts : [] };
     if (old) { const snap = snapC(); c.v[editI] = nv; save(); draw(); renderPanel(); return toast('Sortie modifiée ✏️', () => { restoreSnap(snap); save(); draw(); renderPanel(); }); }
-    c.v.push(nv); save(); draw(); renderPanel(); toast('🐾 ' + (LITE ? 'Visite notée' : 'Sortie consignée')); balVisitPub(sel, d); }
+    c.v.push(nv); save(); draw(); renderPanel(); toast('🐾 ' + (('Visite notée'))); balVisitPub(sel, d); }
 });
 
 /* ===== Balades : enregistrement GPS d'une promenade (durée, distance, tracé), rattachée au lieu de départ ===== */
@@ -3161,7 +3161,7 @@ function stopLoc() { if (CAM.m) camSet(0, true); if (watch !== null) navigator.g
 $('#nr').onclick = () => camSet((CAM.m + 1) % 3, true);      // sans message : le badge de la boussole montre le mode
 $('#loc').onclick = () => watch === null ? startLoc() : (stopLoc(), toast('Localisation arrêtée'));
 const askGps = kind => { pending = kind; if (watch === null) startLoc(); else toast('Position pas encore trouvée…'); };
-$('#found').innerHTML = foundOff(); $('#found').onclick = () => { if (LITE) return; if (BR.on) return brStop(); BR.k0 = null; balOpen(); };
+$('#found').innerHTML = foundOff(); $('#found').onclick = () => { return; if (BR.on) return brStop(); BR.k0 = null; balOpen(); };
 
 
 /* ===== Menu, import / export, toast ===== */
@@ -3198,7 +3198,7 @@ const soAgo = t => { const s = (Date.now() - t) / 1000, d = new Date(t), n = new
   if (d.toDateString() === n.toDateString()) return 'à ' + d.getHours() + ' h ' + String(d.getMinutes()).padStart(2, '0'); n.setDate(n.getDate() - 1); if (d.toDateString() === n.toDateString()) return 'hier'; return 'le ' + d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); };
 function soCell(x, y) {      // la balade de ma carte la plus proche d'un point partagé (moins de 900 m)
   if (x == null || y == null) return null; let best = null, bd = 900;
-  try { Object.keys(D.cells).forEach(k => { if (!rec(D.cells[k]) || D.cells[k].x == null || (!LITE && !cellGroup(k))) return; const d = rdist(ctr(k), [x, y]); if (d < bd) { bd = d; best = k; } }); } catch (e) {} return best; }
+  try { Object.keys(D.cells).forEach(k => { if (!rec(D.cells[k]) || D.cells[k].x == null || (false)) return; const d = rdist(ctr(k), [x, y]); if (d < bd) { bd = d; best = k; } }); } catch (e) {} return best; }
 function person(id) {      // un promeneur tel que l'affichent les listes : chien (d), prénom (n), état, balade en cours
   const p = SO.P[id]; if (!p) return null; const seen = p.seen ? Date.parse(p.seen) : 0, on = seen && Date.now() - seen < 3 * 6e4, walk = !!p.walk && seen && Date.now() - seen < 10 * 6e4, hu = (p.first || '').trim() || (p.name || '').trim();
   return { id, h: p.name || '', d: (p.dog || '').trim() || hu || '?', n: (p.dog || '').trim() ? hu : '', c: soCol(id), sp: p.sp || '', bio: p.bio || '',
@@ -3342,7 +3342,7 @@ function evDefaults(k) {      // prochaine demi-heure ronde (au moins 1 h devant
 function evForm() {
   const v = SOC.ev, w = $('#scfw'), ymd = v.ymd, t0 = new Date(), day = n => { const x = new Date(t0); x.setDate(x.getDate() + n); return x; };
   const sat = (6 - t0.getDay() + 7) % 7, sun = (7 - t0.getDay()) % 7, chips = [[0, 'Aujourd\'hui'], [1, 'Demain'], ...(sat > 1 ? [[sat, 'Samedi']] : []), ...(sun > 1 ? [[sun, 'Dimanche']] : [])];
-  const bals = walkPlaces().filter(x => x.k && (x.g || LITE)).sort((a, b) => a.label.localeCompare(b.label, 'fr')), F = FR_(), G = grpAll();
+  const bals = walkPlaces().filter(x => x.k && (x.g || true)).sort((a, b) => a.label.localeCompare(b.label, 'fr')), F = FR_(), G = grpAll();
   w.innerHTML = `<div class="scgt">Organiser un rendez-vous</div>
     <label class="acf"><span>Balade</span><select id="evk">${bals.length ? bals.map(x => `<option value="${x.k}"${x.k === v.k ? ' selected' : ''}>${esc(x.label)}</option>`).join('') : '<option value="">Aucune balade sur votre carte</option>'}</select></label>
     <div class="evrow">${chips.map(([n, l]) => `<button class="evc${ymd(day(n)) === v.date ? ' on' : ''}" data-evd="${ymd(day(n))}">${l}</button>`).join('')}</div>
@@ -3779,7 +3779,7 @@ const CM = { k: null, posts: [], busy: false, img: {}, open: null, draft: null }
 const cmAgo = t => { const s = (Date.now() - t) / 1000; if (s < 90) return 'à l\'instant'; if (s < 3600) return 'il y a ' + Math.round(s / 60) + ' min'; if (s < 86400) return 'il y a ' + Math.round(s / 3600) + ' h';
   const d = Math.round(s / 86400); return d < 7 ? 'il y a ' + d + ' j' : 'le ' + new Date(t).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); };
 function cmBals() {      // balades récemment visitées (sorties du carnet), sinon les plus proches
-  let L = []; try { L = walkPlaces().filter(x => x.k && (x.g || LITE)); } catch (e) {}
+  let L = []; try { L = walkPlaces().filter(x => x.k && (x.g || true)); } catch (e) {}
   const vis = L.filter(x => x.last).sort((a, b) => b.last.localeCompare(a.last)).slice(0, 12);
   if (vis.length) return vis.map(x => ({ k: x.k, n: x.label, sub: x.last === new Date().toISOString().slice(0, 10) ? 'aujourd\'hui' : new Date(x.last).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) }));
   const ref = me ? [me.x, me.y] : [V.cx, V.cy]; return L.map(x => ({ x, d: rdist(ctr(x.k), ref) })).sort((a, b) => a.d - b.d).slice(0, 12).map(({ x, d }) => ({ k: x.k, n: x.label, sub: fmtDist(d) }));
@@ -4443,7 +4443,7 @@ function renderList() {
   { const nv = all.reduce((a, x) => a + x.n, 0), nd = all.filter(x => x.n).length; $('#lh').innerHTML = `Mes balades<small>${all.length} balade${all.length > 1 ? 's' : ''} · ${nd} découverte${nd > 1 ? 's' : ''} · ${nv} visite${nv > 1 ? 's' : ''}</small>`; }
   document.querySelectorAll('#lst .seg button').forEach(b => b.classList.toggle('on', b.dataset.s === lsort));
   const podium = ['1er', '2e', '3e'];
-  $('#ll').innerHTML = it.map((x, i) => `<li ${x.k ? `data-k="${x.k}"` : ''}${x.g ? ` data-g="${esc(x.g.k)}"` : ''}>${crest(x.rk, 30)}<span class="lt"><b>${esc(x.label)}</b><br><small>${lsort === 'best' && !q && i < 3 && x.n ? `<span class="top">${podium[i]}</span> · ` : ''}${x.g && x.g.len >= 30 ? '🥾 ' + fmtDist(x.g.len) + ' de sentiers' : (x.k && cityOf(x.k) ? '📍 ' + esc(cityOf(x.k)) : '<span class="r' + x.rk + '">' + RANKS[x.rk].n + '</span>')}${x.last ? ' · ' + ago(x.last) : ''}</small></span><span class="bd"><b>${x.n}</b> <small>${LITE ? 'visite' : 'sortie'}${x.n > 1 ? 's' : ''}</small>${!LITE || x.m ? `<br><small>${fmtDist(x.m)}</small>` : ''}</span></li>`).join('')
+  $('#ll').innerHTML = it.map((x, i) => `<li ${x.k ? `data-k="${x.k}"` : ''}${x.g ? ` data-g="${esc(x.g.k)}"` : ''}>${crest(x.rk, 30)}<span class="lt"><b>${esc(x.label)}</b><br><small>${lsort === 'best' && !q && i < 3 && x.n ? `<span class="top">${podium[i]}</span> · ` : ''}${x.g && x.g.len >= 30 ? '🥾 ' + fmtDist(x.g.len) + ' de sentiers' : (x.k && cityOf(x.k) ? '📍 ' + esc(cityOf(x.k)) : '<span class="r' + x.rk + '">' + RANKS[x.rk].n + '</span>')}${x.last ? ' · ' + ago(x.last) : ''}</small></span><span class="bd"><b>${x.n}</b> <small>${('visite')}${x.n > 1 ? 's' : ''}</small>${(x.m) ? `<br><small>${fmtDist(x.m)}</small>` : ''}</span></li>`).join('')
     || `<li class="hint" style="cursor:default">${all.length ? 'Aucun résultat.' : 'Aucune balade sur votre carte pour l\'instant.'}</li>`;
 }
 function openBal(k, from) { BL.from = from || null; $('#lst').classList.remove('open'); if (watch === null) startLoc(); BL.pk = null; balDetail(k); $('#balm').classList.add('open'); }
@@ -5161,13 +5161,13 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
   const done = () => { $('#wel').hidden = true; try { localStorage.setItem('cartodog-wel', '1'); } catch (e) {} };
   /* Premier lancement en 3 étapes : le chien, la position, la balade la plus proche */
   let step = 0; const dots = () => $('#obd').innerHTML = [0, 1, 2].map(i => `<i class="${i === step ? 'on' : i < step ? 'ok' : ''}"></i>`).join('') + '<button class="obsk" data-ob="skip">Passer</button>';
-  const near = () => { const ref = me ? [me.x, me.y] : [V.cx, V.cy]; return walkPlaces().filter(x => x.g || (LITE && x.k)).map(x => ({ x, d: x.g ? Math.min(...x.g.paths.flatMap(p => p.pts).map(q => rdist(q, ref))) : rdist(ctr(x.k), ref) })).sort((a, b) => a.d - b.d).slice(0, 2); };
+  const near = () => { const ref = me ? [me.x, me.y] : [V.cx, V.cy]; return walkPlaces().filter(x => x.g || ((x.k))).map(x => ({ x, d: x.g ? Math.min(...x.g.paths.flatMap(p => p.pts).map(q => rdist(q, ref))) : rdist(ctr(x.k), ref) })).sort((a, b) => a.d - b.d).slice(0, 2); };
   const render = () => { dots(); const c = $('#obc');
     if (step === 0) c.innerHTML = `<div class="obi">🐕</div><h3>Bienvenue sur Cartodog !</h3><p>Les balades des promeneurs de chiens, cartographiées sur le terrain. Pour commencer, comment s'appelle votre chien ?</p><input id="obn" maxlength="30" placeholder="Ex. Nova" value="${esc(D.prof.name || '')}" enterkeyhint="next" autocomplete="off"><button class="btn gold obgo" data-ob="n1">Suivant ›</button>`;
     else if (step === 1) c.innerHTML = `<div class="obi">📍</div><h3>Les balades près de chez vous</h3><p>Cartodog utilise votre position pour trouver les balades proches, vous guider et vous prévenir des dangers. Elle reste sur votre téléphone.</p><button class="btn gold obgo" data-ob="loc">📍 Autoriser ma position</button><button class="btn obno" data-ob="n2">Plus tard</button>`;
     else { const L = near(), dn = D.prof.name ? ' avec ' + esc(D.prof.name) : '';
-      c.innerHTML = L.length ? `<div class="obi">🌲</div><h3>Votre première balade${dn}</h3><p>${me ? 'La plus proche de vous :' : 'Sur la carte :'}</p>${L.map(({ x, d }) => `<button class="obb" data-obk="${x.k || ''}" data-obg="${esc(x.g ? x.g.k : x.k)}"><b>${esc(x.label)}</b><small>${x.g && !LITE ? '🥾 ' + fmtDist(x.g.len) : '📍 balade'}${me ? ' · à ' + fmtDist(d) : ''}</small><i>›</i></button>`).join('')}<button class="btn obno" data-ob="end">Explorer la carte</button>`
-        : `<div class="obi">🥾</div><h3>Aucune balade ici… pour l'instant</h3>${LITE ? `<p>Les balades apparaîtront sur la carte au fil des ajouts.</p>` : `<p>Tracez votre premier sentier en marchant : il apparaîtra sur la carte, prêt pour vos prochaines balades${dn}.</p><button class="btn gold obgo" data-ob="trail">🥾 Tracer mon premier sentier</button>`}<button class="btn obno" data-ob="end">Explorer la carte</button>`; } };
+      c.innerHTML = L.length ? `<div class="obi">🌲</div><h3>Votre première balade${dn}</h3><p>${me ? 'La plus proche de vous :' : 'Sur la carte :'}</p>${L.map(({ x, d }) => `<button class="obb" data-obk="${x.k || ''}" data-obg="${esc(x.g ? x.g.k : x.k)}"><b>${esc(x.label)}</b><small>${x.g && !true ? '🥾 ' + fmtDist(x.g.len) : '📍 balade'}${me ? ' · à ' + fmtDist(d) : ''}</small><i>›</i></button>`).join('')}<button class="btn obno" data-ob="end">Explorer la carte</button>`
+        : `<div class="obi">🥾</div><h3>Aucune balade ici… pour l'instant</h3>${(`<p>Les balades apparaîtront sur la carte au fil des ajouts.</p>`)}<button class="btn obno" data-ob="end">Explorer la carte</button>`; } };
   $('#wel').onclick = e => { const b = e.target.closest('[data-ob],[data-obg]'); if (!b) return; const a = b.dataset.ob;
     if (b.dataset.obg) { done(); const k = b.dataset.obk; if (k && D.cells[k]) { select(k); try { fitBal(k); } catch (x) { flyTo(k); } } else openBal(b.dataset.obg); return; }
     if (a === 'skip' || a === 'end') return done();
