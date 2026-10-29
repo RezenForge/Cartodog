@@ -2176,7 +2176,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.29-177';
+const APP_V = '2026.10.29-178';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2744,7 +2744,7 @@ function wkRender() {
   if (!k) { const L = walkPlaces().filter(p => p.k && D.cells[p.k]).map(p => [p.k, rdist(ctr(p.k), [me.x, me.y])]).sort((a, b) => a[1] - b[1]), n = L[0];
     w.innerHTML = x + `<div class="rph">🐾 Aucune balade ici</div><p class="rps">Il faut être à moins de 500 m d'une balade pour partir en balade.</p>
       ${n ? `<p class="rps">La plus proche : <b>${esc(balName(n[0]) || 'Balade')}</b>, à ${fmtDist(n[1])}.</p>` : ''}
-      <div class="bab">${n ? `<button class="btn" data-wk="see" data-k="${n[0]}">Voir la plus proche</button>` : ''}<button class="btn gold" data-wk="add">＋ Ajouter cette balade</button></div>`; return; }
+      <div class="bab">${n ? `<button class="btn" data-wk="see" data-k="${n[0]}">Voir la plus proche</button>` : ''}<button class="btn gold" data-wk="add">Ajouter une balade</button></div>`; return; }
   const u = accU(), inv = u.vis === 'none' || u.pres === false;
   w.innerHTML = x + `<div class="rph">🐾 Vous êtes ici</div>${wkCard(k)}
     <label class="clterm wknot"><input type="checkbox" id="wknot"${wkNotif() && !inv ? ' checked' : ''}${inv ? ' disabled' : ''}><span>${inv ? 'Mode invisible : vos copains ne seront pas prévenus' : 'Prévenir mes copains (« ' + esc(accName()) + ' en balade »)'}</span></label>
