@@ -653,7 +653,7 @@ body{padding-top:env(safe-area-inset-top,0px)!important}      /* iPhone : le ban
 /* ===== Dock : bouton Copains à droite de Balade ===== */
 #dock #socb{flex:none;width:68px;position:relative;flex-direction:column;justify-content:center;gap:1px;padding:2px 0 7px;background:var(--stone);color:var(--ember2);font:800 10.5px/1 var(--num);text-shadow:none}
 #socb svg{width:28px;height:25px;flex:none}#socb small{font:800 10.5px/1.1 var(--num);color:#e8dcc0;letter-spacing:.02em}
-#socn{position:absolute;top:-7px;left:-7px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:linear-gradient(#e8573a,#b8321e);border:2px solid #0e0c09;color:#fff;font:900 11px/16px var(--num);text-align:center;box-shadow:0 2px 4px rgba(0,0,0,.5);animation:pop .35s cubic-bezier(.2,.9,.3,1.3) both}#socn[hidden]{display:none}
+#socn,#comn{position:absolute;top:-7px;left:-7px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:linear-gradient(#e8573a,#b8321e);border:2px solid #0e0c09;color:#fff;font:900 11px/16px var(--num);text-align:center;box-shadow:0 2px 4px rgba(0,0,0,.5);animation:pop .35s cubic-bezier(.2,.9,.3,1.3) both}#socn[hidden],#comn[hidden]{display:none}
 #dock #grab{flex:none!important;width:46px}
 /* ===== Copains : plein écran qui glisse depuis la droite ===== */
 #soc{position:fixed;inset:0;z-index:21;display:none;background:rgba(6,5,3,.72)}#soc.open{display:block}
@@ -1021,7 +1021,7 @@ body:has(#soc.open) #dock #socb,body:has(#com.open) #dock #comb{box-shadow:inset
   </div>
 <div id="dock"><button id="found" aria-label="Lancer ou terminer une balade">▶ Balade</button><button id="comb" aria-label="Communauté : publications des balades"><svg viewBox="0 2.2 32 32" aria-hidden="true"><defs><linearGradient id="cmg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient><linearGradient id="cpg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs><g stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"><path d="M5.6 13.6l1.5-2.6h5.2l1.5 2.6z" fill="url(#cmg)"/><rect x="1.4" y="13.4" width="16.8" height="12.2" rx="2.6" fill="url(#cmg)"/><circle cx="9.8" cy="19.5" r="4" fill="#3a3026"/><circle cx="9.8" cy="19.5" r="2.2" fill="#6b5b44"/></g><circle cx="9" cy="18.7" r=".8" fill="#fff1cf"/><rect x="14" y="15.2" width="2.3" height="1.5" rx=".5" fill="#fff1cf" stroke="#1a1208" stroke-width=".6"/><g fill="#433b31" stroke="#433b31" stroke-width="3.2" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z"/></g>
 <g stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)" fill="#a8641c"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)" fill="#a8641c"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z" fill="url(#cpg2)"/><ellipse cx="23" cy="20.9" rx="2.8" ry="2.1" fill="#fff1cf"/></g>
-<ellipse cx="23" cy="19.8" rx="1.3" ry=".9" fill="#1a1208"/><circle cx="21" cy="16.6" r=".95" fill="#1a1208"/><circle cx="25" cy="16.6" r=".95" fill="#1a1208"/></svg><small>Communauté</small><span class="dkar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8.5l7 7 7-7"/></svg></span></button><button id="socb" aria-label="Copains, messages et rendez-vous"><svg viewBox="0 2.2 32 32" aria-hidden="true"><defs><linearGradient id="cpg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs>
+<ellipse cx="23" cy="19.8" rx="1.3" ry=".9" fill="#1a1208"/><circle cx="21" cy="16.6" r=".95" fill="#1a1208"/><circle cx="25" cy="16.6" r=".95" fill="#1a1208"/></svg><small>Communauté</small><span class="dkar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8.5l7 7 7-7"/></svg></span><b id="comn" hidden></b></button><button id="socb" aria-label="Copains, messages et rendez-vous"><svg viewBox="0 2.2 32 32" aria-hidden="true"><defs><linearGradient id="cpg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c6862a"/></linearGradient></defs>
 <circle cx="10.6" cy="12.6" r="4.5" fill="url(#cpg)" stroke="#1a1208" stroke-width="1.1"/><path d="M2.4 28c0-5.4 3.6-9 8.2-9s8.2 3.6 8.2 9z" fill="url(#cpg)" stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"/>
 <g fill="#433b31" stroke="#433b31" stroke-width="3.2" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z"/></g>
 <g stroke="#1a1208" stroke-width="1.1" stroke-linejoin="round"><ellipse cx="17.9" cy="15.4" rx="2.3" ry="4.6" transform="rotate(24 17.9 15.4)" fill="#a8641c"/><ellipse cx="28.1" cy="15.4" rx="2.3" ry="4.6" transform="rotate(-24 28.1 15.4)" fill="#a8641c"/><path d="M23 11c3.3 0 5.4 2.7 5.4 6.2 0 3.6-2.4 6.4-5.4 6.4s-5.4-2.8-5.4-6.4c0-3.5 2.1-6.2 5.4-6.2z" fill="url(#cpg)"/><ellipse cx="23" cy="20.9" rx="2.8" ry="2.1" fill="#fff1cf"/></g>
@@ -2169,7 +2169,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.29-173';
+const APP_V = '2026.10.29-174';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2248,6 +2248,7 @@ async function soPoll() {
     soSave(); const sig = JSON.stringify([r.friends, r.reqin, r.reqout, r.groups, r.people, r.events]) + SO.last, ch = sig !== SOT.sig; SOT.sig = sig;
     if (ths.size && [...ths].some(t => (SO.th[t] || []).some(m => m.nw))) try { navigator.vibrate && navigator.vibrate([20, 60, 20]); } catch (e) {}
     if ($('#soc').classList.contains('open')) { if (ch) socRender(); if (SOC.chat && ths.has(SOC.chat)) chatRender(); } else socBadge();
+    cmUnseen();
   } catch (e) {} finally { SOT.busy = false; }
 }
 function soTick(now) {
@@ -2501,7 +2502,16 @@ if (window.visualViewport) { const kb = () => { const v = visualViewport, h = Ma
   visualViewport.addEventListener('resize', kb); visualViewport.addEventListener('scroll', kb); }
 function mqFit(root) {      // seul le nom de la balade défile (aller-retour) quand il ne tient pas en entier
   requestAnimationFrame(() => root.querySelectorAll('.mqn').forEach(el => { const sp = el.firstElementChild, d = sp.scrollWidth - el.clientWidth; el.classList.toggle('mq', d > 2); if (d > 2) { sp.style.setProperty('--d', -(d + 10) + 'px'); sp.style.animationDuration = Math.max(6, (d + 10) / 22 + 4) + 's'; } })); }
-function socBadge() { let n = 0; try { n = msgUnread() + SO.rin.length + evNew(); } catch (e) {} const b = $('#socn'); b.hidden = !n; b.textContent = n > 9 ? '9+' : n; $('#socb').setAttribute('aria-label', 'Copains, messages et rendez-vous' + (n ? ' : ' + n + ' notification' + (n > 1 ? 's' : '') : '')); }
+/* Pastille Communauté : publications des autres membres pas encore vues (depuis la dernière ouverture du fil) */
+const CMS = { n: 0, t: 0 }, cmSeen = () => { try { return localStorage.getItem('cartodog-cmseen') || ''; } catch (e) { return ''; } };
+function comBadge() { const b = $('#comn'); if (!b) return; const n = clOn() && !$('#com').classList.contains('open') ? CMS.n : 0; b.hidden = !n; b.textContent = n > 9 ? '9+' : n;
+  $('#comb').setAttribute('aria-label', 'Communauté : publications des balades' + (n ? ` : ${n} nouvelle${n > 1 ? 's' : ''}` : '')); }
+async function cmUnseen(force) { if (!clOn() || (!force && Date.now() - CMS.t < 6e4)) return comBadge(); CMS.t = Date.now();
+  try { const n = await soRpc('post_unseen', { since: cmSeen() || null }); if (typeof n === 'number') CMS.n = n; } catch (e) {} comBadge(); }
+function cmMarkSeen() {      // le fil a été vu : tout ce qui est publié jusqu'ici ne compte plus (heure du serveur, pas du téléphone)
+  const last = (CM.posts || []).reduce((a, p) => p && p.ts > a ? p.ts : a, ''), v = last || new Date().toISOString();
+  if (v <= cmSeen() && !CMS.n) return; try { localStorage.setItem('cartodog-cmseen', v > cmSeen() ? v : cmSeen()); } catch (e) {} CMS.n = 0; comBadge(); try { save(); } catch (e) {} }
+function socBadge() { let n = 0; try { n = msgUnread() + SO.rin.length + evNew(); } catch (e) {} const b = $('#socn'); b.hidden = !n; b.textContent = n > 9 ? '9+' : n; $('#socb').setAttribute('aria-label', 'Copains, messages et rendez-vous' + (n ? ' : ' + n + ' notification' + (n > 1 ? 's' : '') : '')); comBadge(); }
 setTimeout(socBadge, 300);
 function hovSet() {      // le rond du chien dépasse du bandeau : les fenêtres commencent juste en dessous
   try { const mb = $('#mapBox').getBoundingClientRect(); let bt = 0; document.querySelectorAll('#hdog, #hdog *').forEach(e => { const r = e.getBoundingClientRect(); if (r.width && r.height) bt = Math.max(bt, r.bottom); });
@@ -2809,12 +2819,12 @@ function cmRender() {
 async function cmLoad() {
   if (!clOn()) { CM.posts = []; return cmRender(); }      // toutes les publications, quelle que soit la balade choisie (le menu sert à publier)
   CM.busy = true; cmRender();
-  try { const r = await soRpc('post_feed', { bx: 0, by: 0, r: 0 }); CM.posts = Array.isArray(r) ? r : []; } catch (e) { toast('⚠️ ' + e.message); }
+  try { const r = await soRpc('post_feed', { bx: 0, by: 0, r: 0 }); CM.posts = Array.isArray(r) ? r : []; if ($('#com').classList.contains('open')) cmMarkSeen(); } catch (e) { toast('⚠️ ' + e.message); }
   CM.busy = false; cmRender();
 }
 function comOpen() { metaLoad(() => cmRender());
- try { socClose(); $('#menu').classList.remove('open'); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#com').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); hovSet(); document.documentElement.style.setProperty('--socbt', Math.max(0, Math.round(innerHeight - mb.bottom)) + 'px'); $('#cmsh').hidden = true; $('#com').classList.add('open'); cmRender(); cmLoad(); }
-const comClose = () => { $('#com').classList.remove('open'); $('#cmsh').hidden = true; };
+ try { socClose(); $('#menu').classList.remove('open'); } catch (e) {} const mb = $('#mapBox').getBoundingClientRect(); $('#com').style.setProperty('--soct', Math.max(0, Math.round(mb.top)) + 'px'); hovSet(); document.documentElement.style.setProperty('--socbt', Math.max(0, Math.round(innerHeight - mb.bottom)) + 'px'); $('#cmsh').hidden = true; $('#com').classList.add('open'); comBadge(); cmRender(); cmLoad(); }
+const comClose = () => { $('#com').classList.remove('open'); $('#cmsh').hidden = true; comBadge(); };
 async function cmCompress(file) {      // photo réduite (1024 px max) et compressée en JPEG, ~100 à 200 Ko
   const u = URL.createObjectURL(file); try { const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = u; });
     const s = Math.min(1, 1024 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * s); c.height = Math.round(im.height * s); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
@@ -3021,9 +3031,10 @@ const carnetOf = () => ({ v: 2, cells: D.cells, prof: D.prof, dog: D.dog, user: 
 /* Fusion à trois du carnet : la dernière synchro sert de référence ; ce qui n'a changé que d'un côté est repris tel quel,
    ce qui a changé des deux côtés est réuni (sorties et photos) ou départagé par la date ; les suppressions sont respectées. */
 const hj = o => hsh(JSON.stringify(o === undefined ? null : o, (k, v) => k === '_t' ? undefined : v));
-const PREFK = ['cartodog-grid', 'cartodog-roads', 'cartodog-alert', 'cartodog-wake', 'cartodog-comp', 'cartodog-comm', 'cartodog-mag', 'cartodog-dur', 'cartodog-rqt', 'cartodog-pushno', 'cartodog-seen', 'cartodog-srf'];
+const PREFK = ['cartodog-grid', 'cartodog-roads', 'cartodog-alert', 'cartodog-wake', 'cartodog-comp', 'cartodog-comm', 'cartodog-mag', 'cartodog-dur', 'cartodog-rqt', 'cartodog-pushno', 'cartodog-seen', 'cartodog-srf', 'cartodog-cmseen'];
 function prefsOf() { const o = { _t: (D.prefs && D.prefs._t) || 0 }; PREFK.forEach(k => { try { const v = localStorage.getItem(k); if (v !== null) o[k] = v; } catch (e) {} }); o.rem = SO.rem || {}; o.evs = SO.evs || {}; return o; }
 function prefsApply(p) { if (!p || typeof p !== 'object') return; PREFK.forEach(k => { if (typeof p[k] === 'string') try { localStorage.setItem(k, p[k]); } catch (e) {} });
+  if (typeof p['cartodog-cmseen'] === 'string') try { CMS.t = 0; cmUnseen(true); } catch (e) {}
   if (typeof p['cartodog-srf'] === 'string') try { const a = JSON.parse(p['cartodog-srf']); SRF.clear(); (Array.isArray(a) ? a : []).filter(t => AMEN[t]).forEach(t => SRF.add(t)); if ($('#srp').classList.contains('open')) srRender(); } catch (e) {}
   if (p.rem && typeof p.rem === 'object') SO.rem = { ...p.rem, ...(SO.rem || {}) }; if (p.evs && typeof p.evs === 'object') SO.evs = { ...p.evs, ...(SO.evs || {}) }; soSave(); }
 const filled = o => o ? Object.entries(o).filter(([k, v]) => k !== '_t' && v !== '' && v !== false && v != null && !(Array.isArray(v) && !v.length)).length : 0;

@@ -1,0 +1,21 @@
+import { signup, poll, login, cellOf } from '../lib.mjs';
+export const title = 'Pastille Communauté : publications pas encore vues';
+export default async T => {
+  const A = await T.dev('A'), B = await T.dev('B');
+  await signup(A, 'dylan@test.fr', 'Rezen', 'Dylan', 'Nova'); await signup(B, 'lea@test.fr', 'lea_33', 'Léa', 'Max');
+  const c = await B.evaluate(() => ctr(Object.keys(D.cells).find(k => balName(k) === 'Bois du Taillan')));
+  const post = (p, body) => p.evaluate(([x, y, b]) => soRpc('post_create', { bal: 'Bois du Taillan', bx: x, by: y, body: b, photo: null }), [c[0], c[1], body]);
+  const badge = p => p.evaluate(() => $('#comn').hidden ? 0 : $('#comn').textContent);
+  await poll(A); T.eq(await badge(A), 0, 'rien de nouveau au départ');
+  await post(B, 'Max a adoré'); await post(B, 'Flaque après le pont'); await post(A, 'Ma propre publication');
+  await A.evaluate(() => { CMS.t = 0; }); await poll(A); await A.waitForTimeout(300);
+  T.eq(await badge(A), '2', '2 publications des autres, pas la mienne');
+  await A.click('#comb'); await A.waitForTimeout(1200); T.eq(await badge(A), 0, 'pastille cachée fil ouvert');
+  await A.evaluate(() => comClose()); await A.evaluate(() => { CMS.t = 0; }); await poll(A); await A.waitForTimeout(300);
+  T.eq(await badge(A), 0, 'fil vu : plus de pastille');
+  await post(B, 'Encore une'); await A.evaluate(() => { CMS.t = 0; }); await poll(A); await A.waitForTimeout(300);
+  T.eq(await badge(A), '1', 'nouvelle publication après la visite');
+  await A.evaluate(() => sync(true)); await A.waitForTimeout(1500);
+  const Q = await T.dev('A2'); await login(Q, 'dylan@test.fr'); await Q.evaluate(() => { CMS.t = 0; }); await poll(Q); await Q.waitForTimeout(500);
+  T.eq(await badge(Q), '1', 'même compte sur un autre téléphone : même compte rendu');
+};
