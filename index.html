@@ -433,7 +433,7 @@ body{background:
 #mkm .dg #mkpk{background:linear-gradient(#2d8fd0,#1a5f93)!important;color:#fff;border-color:#0b2a40;box-shadow:inset 0 2px 0 rgba(255,255,255,.3),inset 0 -3px 0 rgba(0,0,0,.35),0 2px 0 rgba(0,0,0,.45),0 0 12px rgba(25,181,255,.35)!important;font-size:15px}
 
 /* ===== Cartodog : balade en cours, vigilance, guide ===== */
-#found.rec{background:linear-gradient(#b8462f,#7e2a1c)!important;color:#fff3e6!important;text-shadow:1px 1px 0 #000!important;font-variant-numeric:tabular-nums;box-shadow:var(--bevel),0 0 14px rgba(200,70,40,.5)!important}
+#found.rec{background:linear-gradient(#6fae45,#3d6f24)!important;color:#f4ffe8!important;text-shadow:0 1px 0 rgba(0,0,0,.5)!important;font-variant-numeric:tabular-nums;box-shadow:var(--bevel),0 0 14px rgba(110,180,70,.45)!important;gap:8px}#found.rec small{font:800 11px var(--num);opacity:.85;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:2px 6px}.wkt{font-size:20px}
 #found.rec::after{display:none}
 #found svg.i{width:24px;height:24px}
 .dg li.on{background:rgba(234,165,60,.13)}
@@ -885,6 +885,10 @@ body:not(.nosel):not(.pmin) #dock #found:not(.rec),body:not(.nosel):not(.pmin) #
 .pfa{display:flex;gap:8px;margin-top:13px}.pfa .btn{flex:1;margin:0}.pfa .pfmo{flex:0 0 48px}.pfw .pfrm{margin:8px 0 0;color:#ff8a6e}
 .pfme{margin-top:12px;font:600 12px var(--num);color:var(--mut);text-align:center}[data-pfu]{cursor:pointer}
 /* signaler */
+#wksh{z-index:27;background:rgba(6,5,3,.62);padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+.wkc{display:flex;gap:12px;align-items:center;margin:4px 0 10px;padding:10px;border:2px solid var(--edge);border-radius:12px;background:#14110e}.wkc img,.wkph{flex:none;width:70px;height:70px;border-radius:10px;object-fit:cover;border:2px solid #0e0c09;display:grid;place-items:center;background:#2a2119;color:var(--ember2)}.wkph svg{width:34px;height:34px}
+.wkc .act{display:flex;flex-direction:column;gap:2px;min-width:0}.wkc b{font:800 16px var(--num);color:#fff1cf}.wkc small{font:600 12px/1.35 var(--num);color:var(--mut)}.wkc .wklv{color:#a9d98a}
+.wknot{margin:0 0 10px}.wkr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 8px}.wkr div{display:flex;flex-direction:column;align-items:center;padding:10px 4px;border:2px solid var(--edge);border-radius:10px;background:#14110e}.wkr b{font:900 22px var(--num);color:var(--ember2)}.wkr small{font:700 11px var(--num);color:var(--mut)}
 #bash{z-index:27;background:rgba(6,5,3,.62);padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}#baw input{width:100%;margin:2px 0 8px}.bawn{margin:0 0 10px;padding:8px 10px;border:1.5px solid #8a5a2a;border-radius:9px;background:rgba(234,120,40,.1);font:600 12.5px/1.4 var(--num);color:#f0d9a8}
 .baxp{display:flex;gap:8px;align-items:center;margin:0 0 10px;font:700 12.5px/1.35 var(--num);color:var(--mut)}.baxp b{color:var(--ember2)}.bab{display:flex;gap:8px}.bab .btn{flex:1}
 #admpl button[data-admplme]{border-color:#c6862a}.bpbc{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 10px;margin:6px 0 0;font:600 12px var(--num);color:var(--mut)}.bpbc:empty{display:none}.bpbc button{border:0;background:none;padding:2px 0;color:var(--ember2);font:700 12px var(--num);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
@@ -1114,7 +1118,7 @@ body:has(#soc.open) #dock #socb,body:has(#com.open) #dock #comb{box-shadow:inset
   <input type="file" id="cmfile" accept="image/*" hidden>
 </div></div>
 <div id="cmv" hidden><img id="cmvi" alt="Photo de la publication"></div>
-<div class="scsh" id="rpsh" hidden><div class="pfw dg" id="rpw" role="dialog" aria-label="Signaler"></div></div><div class="scsh" id="bash" hidden><div class="pfw dg" id="baw" role="dialog" aria-label="Nouvelle balade"></div></div>
+<div class="scsh" id="rpsh" hidden><div class="pfw dg" id="rpw" role="dialog" aria-label="Signaler"></div></div><div class="scsh" id="wksh" hidden><div class="pfw dg" id="wkw" role="dialog" aria-label="Balade"></div></div><div class="scsh" id="bash" hidden><div class="pfw dg" id="baw" role="dialog" aria-label="Nouvelle balade"></div></div>
 <div id="admpl" hidden><span id="admplt">📍 Touchez la carte pour placer la balade</span><button data-admplme hidden>📍 Ici</button><button data-admpl="x">Annuler</button></div>
 <div class="scsh" id="pfsh" hidden><div class="pfw dg" id="pfw" role="dialog" aria-label="Profil"></div></div>
 <div id="soc"><div class="win dg scw" role="dialog" aria-label="Copains, messages et rendez-vous">
@@ -2160,7 +2164,7 @@ function startLoc(quiet) {
 function stopLoc() { if (CAM.m) camSet(0, true); if (watch !== null) navigator.geolocation.clearWatch(watch); watch = null; wakeSync(); compStop(); hereK = null; me = null; HD = { ax: null, ay: null, h: null, t: 0 }; $('#loc').classList.remove('on'); schedule(); }
 $('#nr').onclick = () => camSet((CAM.m + 1) % 3, true);      // sans message : le badge de la boussole montre le mode
 $('#loc').onclick = () => watch === null ? startLoc() : (stopLoc(), toast('Localisation arrêtée'));
-$('#found').innerHTML = foundOff(); $('#found').onclick = () => {};      // le grand bouton « Balade » n'a plus d'action (à définir)
+$('#found').innerHTML = foundOff(); $('#found').onclick = () => wkTap();
 
 
 /* ===== Menu, import / export, toast ===== */
@@ -2169,7 +2173,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.29-174';
+const APP_V = '2026.10.29-175';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2225,7 +2229,7 @@ function presVisit(k) {      // 5 minutes sur place comptent comme une visite (u
 }
 function presTick() { const k = presDwell(); if (k !== (SOT.mine || null)) { SOT.mine = k || ''; SLV.t = 0; schedule(); } if (k) presVisit(k); if (clOn() && (k || '') !== SOT.here) soPresence(); }
 function soPresence() {      // mon état pour les copains ; sur une balade : son nom et son centre, jamais ma position exacte
-  if (!clOn()) return; const u = accU(), here = presDwell(), walk = !!(here && u.pres !== false), k = walk && here ? here : null, c = k ? ctr(k) : null; SOT.pt = Date.now(); SOT.here = here || '';
+  if (!clOn()) return; const u = accU(), here = (() => { try { return wkOn() && D.cells[WK.k] ? WK.k : null; } catch (e) { return null; } })() || presDwell(), walk = !!(here && u.pres !== false), k = walk && here ? here : null, c = k ? ctr(k) : null; SOT.pt = Date.now(); SOT.here = here || '';
   let bal = ''; if (walk) try { bal = String((k ? balName(k) : '') || ''); } catch (e) {}
   soRpc('set_presence', { st: u.vis === 'none' ? 'hid' : ['on', 'look', 'dnd', 'hid'].includes(u.st) ? u.st : 'on', walk, bal: bal.slice(0, 60), bx: c ? c[0] : null, by: c ? c[1] : null }).catch(() => {});
 }
@@ -2702,6 +2706,86 @@ async function baSend() {
 }
 $('#bash').addEventListener('click', e => { if (e.target.id === 'bash') { $('#bash').hidden = true; return; } const b = e.target.closest('[data-ba]'); if (!b) return; if (b.dataset.ba === 'x') { $('#bash').hidden = true; return; } baSend(); });
 $('#bash').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'ban') { e.preventDefault(); baSend(); } });
+/* ===== Bouton « Balade » : la balade où je suis, « Partir en balade », minuteur, copains prévenus ===== */
+const WK = (() => { try { const o = JSON.parse(localStorage.getItem('cartodog-walk') || 'null'); if (o && o.k && o.t0) return o; } catch (e) {} return { k: null, t0: 0 }; })(), WK_MAX = 4 * 36e5;
+const wkOn = () => !!(WK.k && WK.t0), wkSave = () => { try { WK.k ? localStorage.setItem('cartodog-walk', JSON.stringify(WK)) : localStorage.removeItem('cartodog-walk'); } catch (e) {} };
+const wkNotif = () => { try { return localStorage.getItem('cartodog-wknot') !== '0'; } catch (e) { return true; } };
+const hms = ms => { const t = Math.max(0, Math.floor(ms / 1000)), h = Math.floor(t / 3600), m = Math.floor(t / 60) % 60, s2 = t % 60; return (h ? h + ':' + String(m).padStart(2, '0') : String(m)) + ':' + String(s2).padStart(2, '0'); };
+function wkBtn() { const b = $('#found'); if (!b) return; const on = wkOn(); b.classList.toggle('rec', on);
+  if (on) { const t = hms(Date.now() - WK.t0); if (b.dataset.t !== t) { b.dataset.t = t; b.innerHTML = `🐾 <span class="wkt">${t}</span><small>Terminer</small>`; } b.setAttribute('aria-label', 'En balade depuis ' + t + ' : toucher pour terminer'); }
+  else if (b.dataset.t !== '') { b.dataset.t = ''; b.innerHTML = foundOff(); b.setAttribute('aria-label', 'Partir en balade'); } }
+setInterval(() => { if (wkOn() && Date.now() - WK.t0 > WK_MAX) { wkEnd(true); return toast('🐾 Balade terminée automatiquement après 4 h'); } wkBtn(); }, 1000);
+const wkClose = () => { $('#wksh').hidden = true; WKS.wait = 0; };
+const WKS = { wait: 0 };
+function wkCard(k) {      // aperçu rapide d'une balade : photo, nom, ville, note, équipements, copains présents
+  const c = D.cells[k], th = (c && c.th) || (bcOf(k) ? bcUrl(bcOf(k)) : ''), bt = btOf(k), ic = Object.keys(AMEN).filter(t => bt.tags[t]).map(t => AMEN[t][0]).join(' '), ct = cityOf(k); cityLoad(k);
+  const live = (() => { try { return socLive().get(k); } catch (e) { return null; } })(), fr = live ? live.fr.map(f => esc(f.d)).slice(0, 3) : [];
+  const dme = me ? rdist(ctr(k), [me.x, me.y]) : null;
+  return `<div class="wkc">${th ? `<img src="${th}" alt="">` : `<span class="wkph">${ICO.paw}</span>`}<div class="act"><b>${esc(balName(k) || 'Balade')}</b>
+    <small>${[ct && '📍 ' + esc(ct), dme != null ? 'à ' + fmtDist(dme) : ''].filter(Boolean).join(' · ')}</small>
+    <small>${bt.n ? '★ ' + String(bt.avg).replace('.', ',') + ' (' + bt.n + ' avis)' : 'Pas encore d\'avis'}${ic ? ' · ' + ic : ''}</small>
+    ${live && live.cnt ? `<small class="wklv">👥 ${fr.length ? fr.join(', ') + (live.cnt > fr.length ? ` et ${live.cnt - fr.length} autre${live.cnt - fr.length > 1 ? 's' : ''}` : '') : live.cnt + ' promeneur' + (live.cnt > 1 ? 's' : '')} sur place</small>` : ''}</div></div>`;
+}
+function wkRender() {
+  const w = $('#wkw'), x = '<button class="ib pfx" data-wk="x" aria-label="Fermer">✕</button>';
+  if (wkOn()) { const k = WK.k, d = Date.now() - WK.t0;
+    w.innerHTML = x + `<div class="rph">🐾 En balade depuis ${hms(d)}</div>${D.cells[k] ? wkCard(k) : ''}<div class="bab"><button class="btn" data-wk="x">Continuer</button><button class="btn gold" data-wk="end">⏹ Terminer la balade</button></div>`; return; }
+  if (!me) { w.innerHTML = x + `<div class="rph">🐾 Partir en balade</div><p class="rps">${watch === null ? 'La position est nécessaire pour trouver la balade où vous êtes.' : '📍 Recherche de votre position…'}</p>${watch === null ? '<button class="btn gold full" data-wk="gps">📍 Activer la position</button>' : ''}`; return; }
+  const k = presHere();
+  if (!k) { const L = walkPlaces().filter(p => p.k && D.cells[p.k]).map(p => [p.k, rdist(ctr(p.k), [me.x, me.y])]).sort((a, b) => a[1] - b[1]), n = L[0];
+    w.innerHTML = x + `<div class="rph">🐾 Aucune balade ici</div><p class="rps">Il faut être à moins de 500 m d'une balade pour partir en balade.</p>
+      ${n ? `<p class="rps">La plus proche : <b>${esc(balName(n[0]) || 'Balade')}</b>, à ${fmtDist(n[1])}.</p>` : ''}
+      <div class="bab">${n ? `<button class="btn" data-wk="see" data-k="${n[0]}">Voir la plus proche</button>` : ''}<button class="btn gold" data-wk="add">＋ Ajouter cette balade</button></div>`; return; }
+  const u = accU(), inv = u.vis === 'none' || u.pres === false;
+  w.innerHTML = x + `<div class="rph">🐾 Vous êtes ici</div>${wkCard(k)}
+    <label class="clterm wknot"><input type="checkbox" id="wknot"${wkNotif() && !inv ? ' checked' : ''}${inv ? ' disabled' : ''}><span>${inv ? 'Mode invisible : vos copains ne seront pas prévenus' : 'Prévenir mes copains (« ' + esc(accName()) + ' en balade »)'}</span></label>
+    <div class="bab"><button class="btn" data-wk="see" data-k="${k}">Voir la fiche</button><button class="btn gold" data-wk="go" data-k="${k}">🐾 Partir en balade</button></div>`;
+}
+const accName = () => { const dn = (D.prof && D.prof.name || '').trim(), hu = (accU().first || accU().name || '').trim(); return dn && hu ? dn + ' & ' + hu : dn || hu || 'Vous'; };
+function wkTap() { if (wkOn()) { wkRender(); $('#wksh').hidden = false; return; } if (!clOn()) return toast('☁️ Connectez-vous pour partir en balade');
+  wkRender(); $('#wksh').hidden = false; if (!me && watch !== null) wkWait(); }
+function wkWait() { WKS.wait = Date.now(); const t = setInterval(() => { if ($('#wksh').hidden || !WKS.wait) return clearInterval(t); if (me || Date.now() - WKS.wait > 20000) { clearInterval(t); WKS.wait = 0; wkRender(); } }, 500); }
+async function wkStart(k) {
+  if (!D.cells[k]) return; const c = ctr(k), d = new Date(), day = today(); WK.k = k; WK.t0 = Date.now(); WK.n = balName(k) || 'Balade'; wkSave();
+  const cell = D.cells[k]; let v = cell.v.find(x => x.d === day); if (!v) { v = { id: rid(), d: day, h: String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'), s: 0, m: 0, t: 'Balade', pts: [] }; cell.v.push(v); WK.nv = 1; } WK.v = v.id; wkSave();
+  save(); balVisitPub(k, day); soPresence(); wkBtn(); wkClose(); draw(); try { renderPanel(); hdrRender(); } catch (e) {} try { navigator.vibrate && navigator.vibrate([30, 40, 60]); } catch (e) {}
+  let n = 0; const u = accU(); if (($('#wknot') ? $('#wknot').checked : wkNotif()) && u.vis !== 'none' && u.pres !== false) {
+    try { n = await soRpc('walk_notify', { bx: Math.round(c[0]), by: Math.round(c[1]), bal: WK.n, city: cityOf(k) || '' }); } catch (e) {} }
+  toast(`🐾 Bonne balade${D.prof && D.prof.name ? ' avec ' + D.prof.name : ''} !` + (n ? ` · ${n} copain${n > 1 ? 's' : ''} prévenu${n > 1 ? 's' : ''}` : ''));
+}
+function wkEnd(auto) {
+  if (!wkOn()) return; const k = WK.k, dur = Math.min(WK_MAX, Date.now() - WK.t0), cell = D.cells[k], v = cell && cell.v.find(x => x.id === WK.v), nv = !!WK.nv, L0 = dogStats();
+  if (v) { v.s = Math.max(v.s || 0, Math.round(dur / 1000)); if (v.t === 'Présence détectée sur place') v.t = 'Balade'; }
+  WK.k = null; WK.t0 = 0; WK.v = null; WK.nv = 0; wkSave(); save(); soPresence(); wkBtn(); draw(); try { renderPanel(); hdrRender(); } catch (e) {}
+  if (auto) return; const S = dogStats(), w = $('#wkw');
+  w.innerHTML = `<button class="ib pfx" data-wk="x" aria-label="Fermer">✕</button><div class="rph">🎉 Balade terminée</div>
+    <div class="wkr"><div><b>${hms(dur).replace(/:(\d\d)$/, '')}</b><small>${dur >= 36e5 ? 'h:min' : 'minutes'}</small></div><div><b>${S.xp > L0.xp ? '+' + (S.xp - L0.xp) : nv ? '+25' : '✓'}</b><small>${nv || S.xp > L0.xp ? 'XP' : 'déjà comptée'}</small></div><div><b>${S.st ? '🔥 ' + S.st : '1'}</b><small>jour${S.st > 1 ? 's' : ''} de suite</small></div></div>
+    <p class="rps">${esc(balName(k) || 'Balade')}${S.L > L0.L ? ` · 🎉 ${esc(D.prof.name || 'Votre chien')} passe au niveau ${S.L} !` : ''}</p>
+    <div class="bab"><button class="btn" data-wk="x">Fermer</button><button class="btn gold" data-wk="rate" data-k="${k}">★ Donner mon avis</button></div>`;
+  $('#wksh').hidden = false;
+}
+$('#wksh').addEventListener('click', e => { if (e.target.id === 'wksh') return wkClose(); const b = e.target.closest('[data-wk]'); if (!b) return; const a = b.dataset.wk, k = b.dataset.k;
+  if (a === 'x') return wkClose();
+  if (a === 'gps') { startLoc(); wkRender(); return wkWait(); }
+  if (a === 'see' || a === 'rate') { wkClose(); if (k && D.cells[k]) { select(k); try { fitBal(k); } catch (x) {} if (a === 'rate') setTimeout(() => { const r = document.querySelector('#panel #bprv'); if (r) r.scrollIntoView({ block: 'center' }); }, 600); } return; }
+  if (a === 'add') { wkClose(); baStart(); if (me && ADM.pl) admPlace(me.x, me.y); return; }
+  if (a === 'go') { try { localStorage.setItem('cartodog-wknot', $('#wknot') && !$('#wknot').disabled && !$('#wknot').checked ? '0' : '1'); } catch (x) {} return wkStart(k); }
+  if (a === 'end') { wkEnd(); return; }
+  if (a === 'join' || a === 'maps') { const f = WKS.inv; if (!f) return; const [la, lo] = toLL(f.bx, f.by);
+    if (a === 'join') soRpc('send_message', { to_user: f.u, grp: null, body: `🐾 J'arrive au ${f.n} !`, meta: f.k ? { kn: f.n, x: f.bx, y: f.by } : null }).then(() => toast('🐾 ' + f.who + ' sait que vous arrivez')).catch(x => toast('⚠️ ' + x.message));
+    wkClose(); window.open(`https://www.google.com/maps/dir/?api=1&destination=${la.toFixed(6)},${lo.toFixed(6)}`, '_blank'); }
+});
+async function wkInvite(uid, bx, by) {      // notification « … en balade » touchée : la balade, avec Rejoindre / Ouvrir dans Maps
+  SOT.busy = false; try { await soPoll(); } catch (e) {} const p = person(uid), k = soCell(bx, by) || null;
+  const nm = (p && p.at && p.at.n) || (k && balName(k)) || 'la balade', whoN = p ? (p.n ? p.d + ' & ' + p.n : p.d) : 'Votre copain', still = p && p.st === 'walk';
+  WKS.inv = { u: uid, bx, by, k, n: nm, who: p ? p.n || p.d : 'votre copain' };
+  if (k) { select(k); try { fitBal(k); } catch (e) {} } else flyXY(bx, by, 3, 500);
+  $('#wkw').innerHTML = `<button class="ib pfx" data-wk="x" aria-label="Fermer">✕</button><div class="rph">🐾 ${esc(whoN)} ${p && p.n ? 'sont' : 'est'} en balade</div>
+    ${k ? wkCard(k) : `<p class="rps">à ${esc(nm)}</p>`}<p class="rps">${still ? `Sur place depuis ${p.t} min.` : 'La balade est peut-être terminée.'}</p>
+    <div class="bab"><button class="btn" data-wk="maps">🧭 Ouvrir dans Maps</button><button class="btn gold" data-wk="join">🐾 Rejoindre</button></div>`;
+  $('#wksh').hidden = false;
+}
+wkBtn();
 /* nombre de balades que j'ai ajoutées (compté par le serveur : une balade retirée par la modération ne compte plus) */
 const badN = () => { try { const o = JSON.parse(localStorage.getItem('cartodog-badd') || 'null'); return o && CLD.s && CLD.s.user && o.u === CLD.s.user.id ? Math.max(0, +o.n || 0) : 0; } catch (e) { return 0; } };
 const badSet = n => { try { if (CLD.s && CLD.s.user) localStorage.setItem('cartodog-badd', JSON.stringify({ u: CLD.s.user.id, n })); } catch (e) {} };
@@ -2771,11 +2855,12 @@ function pushHtml() {      // la ligne « Notifications » de la carte du compte
 const pushAsk = () => clOn() && !(PUSH.on && pushPerm() === 'granted') && pushPerm() !== 'denied' && (pushOk() || pushIosHint()) && (() => { try { return !localStorage.getItem('cartodog-pushno'); } catch (e) { return true; } })();
 async function pushGo(u) {      // toucher une notification : ouvrir la conversation, les demandes ou les rendez-vous
   u = u || SOC.pushU; SOC.pushU = null; if (!u || !clOn()) return; let m;
+  if ((m = /^#walk=([\w-]+),(-?\d+),(-?\d+)/.exec(u))) return wkInvite(m[1], +m[2], +m[3]);
   if (u === '#admin') { if (CLD.role === 'admin') { if (!$('#menu').classList.contains('open')) $('#mn').click(); admOpen(); } return; }
   if ((m = /^#chat=([\w-]+)/.exec(u))) { const id = m[1]; if (!who(id)) { SOT.busy = false; await soPoll(); } if (!$('#soc').classList.contains('open')) socOpen(); if (who(id)) chatOpen(id); return; }
   if ((m = /^#soc=(\w+)/.exec(u))) { if (!$('#soc').classList.contains('open')) socOpen(); if (m[1] === 'req') return faOpen('req'); SOC.tab = m[1] === 'ev' ? 'ev' : 'fr'; if (SOC.tab === 'ev') { (SO.E || []).forEach(x => SO.evs[x.id] = 1); soSave(); } socRender(); soTick(true); }
 }
-{ const m = /^#(chat=[\w-]+|soc=\w+|admin)$/.exec(location.hash); if (m) { SOC.pushU = '#' + m[1]; history.replaceState(null, '', location.pathname + location.search); } }
+{ const m = /^#(chat=[\w-]+|soc=\w+|admin|walk=[\w-]+,-?\d+,-?\d+)$/.exec(location.hash); if (m) { SOC.pushU = '#' + m[1]; history.replaceState(null, '', location.pathname + location.search); } }
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('message', e => { const d = e.data || {}; if (d.cartodog === 'push') soTick(true); if (d.cartodog === 'open') pushGo(d.u); });
   if (PUSH.on) pushReg();
@@ -3847,7 +3932,7 @@ if (!fitData()) { [V.cx, V.cy] = toM(46.6, 2.5); V.mpp = 1500; }
 { const op = id => () => { const e = document.getElementById(id); return !!e && e.classList.contains('open'); }, vis = id => () => { const e = document.getElementById(id); return !!e && !e.hidden; };
   /* couches, de la plus haute à la plus basse : [ouverte ?, retour (sous-page, sinon fermeture)] */
   const LAY = [
-    [vis('rpsh'), () => { $('#rpsh').hidden = true; }], [() => !!ADM.pl, () => { ADM.pl = null; admPlBar(); }], [vis('pfsh'), () => pfClose()], [op('pv'), () => closePh()], [op('rqm'), () => rqClose()], [op('dzq'), () => $('#dzl').click()], [op('mkm'), () => closeMk()],
+    [vis('rpsh'), () => { $('#rpsh').hidden = true; }], [vis('wksh'), () => wkClose()], [() => !!ADM.pl, () => { ADM.pl = null; admPlBar(); }], [vis('pfsh'), () => pfClose()], [op('pv'), () => closePh()], [op('rqm'), () => rqClose()], [op('dzq'), () => $('#dzl').click()], [op('mkm'), () => closeMk()],
     [op('encm'), () => { const b = !$('#encv').hidden && !(encFrom && !encStack.length) && $('#encbk'); b ? b.click() : encClose(); }],      // ouvert directement sur une fiche depuis une autre fenêtre : retour = revenir à cette fenêtre
     [op('dogm'), () => { const p = document.querySelector('#dogm .dgp.on'); p && p.dataset.p !== 'main' ? dogPane('main') : dogClose(); }],
     [op('com'), () => { !$('#cmsh').hidden ? ($('#cmsh').hidden = true) : comClose(); }], [op('lst'), () => $('#lst').classList.remove('open')], [op('dlm'), () => $('#dlm').classList.remove('open')], [op('srp'), () => srClose()], [op('soc'), () => { !$('#scgr').hidden ? grpBack() : !$('#scch').hidden ? chatClose() : !$('#scst').hidden ? ($('#scst').hidden = true) : socClose(); }], [op('menu'), () => { accPage('main') || $('#menu').classList.remove('open'); }],
