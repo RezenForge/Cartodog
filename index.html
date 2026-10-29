@@ -2183,7 +2183,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.29-181';
+const APP_V = '2026.10.29-182';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -3120,7 +3120,7 @@ async function clRecover(email) { await clAuth('recover?redirect_to=' + encodeUR
 async function clSignOut(gone) {      // le carnet reste dans le compte et quitte ce téléphone : le compte suivant démarre vierge
   if (!gone && PUSH.on) { await pushDisable(true); try { localStorage.setItem('cartodog-push', '1'); } catch (e) {} PUSH.on = true; }      // on se réabonnera pour le compte suivant
   if (!gone && clOn() && navigator.onLine !== false) { if (CLD.busy) await new Promise(r => { let n = 0; const w = setInterval(() => { if (!CLD.busy || ++n > 60) { clearInterval(w); r(); } }, 250); }); try { await sync(true); } catch (e) {} }
-  const t = CLD.s && CLD.s.access_token; CLD.s = null; CLD.role = ''; CLD.skip = false; clSave(); localWipe(); try { localStorage.removeItem(OWK); } catch (e) {} clUi(); if (t) try { await clAuth('logout', {}, t); } catch (e) {} }
+  const t = CLD.s && CLD.s.access_token; CLD.s = null; CLD.role = ''; CLD.skip = false; clSave(); localWipe(); try { localStorage.removeItem(OWK); } catch (e) {} toMap(); clUi(); if (t) try { await clAuth('logout', {}, t); } catch (e) {} }
 const OWK = 'cartodog-owner';      // compte à qui appartiennent les données de ce téléphone
 function localWipe() {
   D = { cells: {}, paths: [], marks: [], dog: '', prof: cleanProf({}, ''), user: cleanUser({}) }; sel = null; CLD.pulled = false;
@@ -3139,8 +3139,11 @@ const RGL = [['🤝', 'Je respecte les autres', 'pas d\'insultes, de moqueries, 
 const rgHtml = () => `<div class="rgbox"><b>📜 Règlement de la communauté</b><ol>${RGL.map(([i, t, d]) => `<li><span>${i}</span><span><b>${t}</b> · ${d}</span></li>`).join('')}</ol><small>Un manquement peut entraîner le retrait d'un contenu, la suspension ou la suppression du compte.</small><button type="button" class="cllink" data-lg="reglement">Lire le règlement complet ›</button></div>`;
 async function termsCheck() { try { const u = await sb('/auth/v1/user'); if (u && u.id && ((u.user_metadata || {}).terms !== TERMS_V)) { $('#lgck').checked = false; $('#lgerr').textContent = ''; $('#lgrg').innerHTML = rgHtml(); $('#lgacc').hidden = false; } } catch (e) {} }
 function legalOpen(a) { $('#lgf').src = 'legal.html?v=' + TERMS_V + '#' + (a || 'mentions'); $('#lg').hidden = false; }
+function toMap() {      /* retour à la carte : ferme menus, fenêtres et listes ouverts */
+  $('#menu').classList.remove('open'); for (const f of [socClose, comClose, srClose, wkClose, rqClose]) try { f(); } catch (e) {}
+  document.querySelectorAll('.scsh:not([hidden])').forEach(e => { if (e.id !== 'lgacc') e.hidden = true; }); }
 async function clAfterLogin(first) {
-  termsCheck();
+  if (first) toMap(); termsCheck();
   const uid = CLD.s && CLD.s.user && CLD.s.user.id; let own = ''; try { own = localStorage.getItem(OWK) || ''; } catch (e) {}
   if (uid && own && own !== uid) localWipe();      // données d'un autre compte : on repart de zéro
   if (uid) try { localStorage.setItem(OWK, uid); } catch (e) {}
