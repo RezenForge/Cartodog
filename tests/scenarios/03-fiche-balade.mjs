@@ -8,7 +8,7 @@ export default async T => {
   const xy = await A.evaluate(k => balXY(k), await cellOf(A, 'Bois du Taillan'));
   await B.evaluate(x => soRpc('bal_review', { ...x, name: 'Bois du Taillan', stars: 5, body: 'Super coin ombragé', tags: ['pk', 'eau', 'ombre', 'libre'] }), xy);
   await C.evaluate(x => soRpc('bal_review', { ...x, name: 'Bois du Taillan', stars: 4, body: 'Parking un peu petit.', tags: ['pk', 'laisse'] }), xy);
-  await B.evaluate(x => soRpc('bal_visit', { ...x, d: new Date(Date.now() - 864e5).toISOString().slice(0, 10) }), xy);
+  await B.evaluate(x => soRpc('bal_visit', { ...x, d: dayOf(new Date(Date.now() - 864e5)) }), xy);      // « hier » en date locale (comme l'app), pas en UTC — sinon test fragile près de minuit
   const ph = await jpeg(A, 'NOVA'); await A.evaluate(async ([k, d]) => { await pPut('phA', d); D.cells[k].ph.push({ id: 'phA', d: today() }); save(); }, [await cellOf(A, 'Bois du Taillan'), ph]);
   await poll(A);
   let opened = ''; await A.exposeFunction('__open', u => { opened = u; }); await A.evaluate(() => { window.open = u => { __open(u); return null; }; });

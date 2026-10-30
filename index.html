@@ -2213,7 +2213,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.30-186';
+const APP_V = '2026.10.31-187';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2608,7 +2608,7 @@ function pfOpen(id) {
   const uid = CLD.s.user.id; if (id !== uid && !PF.c[id]) { const p = (CM.posts || []).find(x => x.author === id); if (p) PF.c[id] = { name: p.name, first: p.first, dog: p.dog }; }
   pfRender(); $('#pfsh').hidden = false;
   soRpc('dog_card', { u: id }).then(c => { if (c && typeof c === 'object' && c.v && !c.off && PF.id === id) { PF.dog = c; if (!$('#pfsh').hidden) pfRender(); } }).catch(() => {});
-  if (id !== uid && !SO.fr.includes(id)) sb('/rest/v1/profiles?select=name,first,dog,sp,bio&id=eq.' + encodeURIComponent(id)).then(r => { if (r && r[0]) { PF.c[id] = { ...r[0], full: 1 }; if (PF.id === id && !$('#pfsh').hidden) pfRender(); } }).catch(() => {});
+  if (id !== uid && !SO.fr.includes(id)) soRpc('profile_card', { u: id }).then(r => { if (r && typeof r === 'object') { PF.c[id] = { ...r, full: 1 }; if (PF.id === id && !$('#pfsh').hidden) pfRender(); } }).catch(() => {});
 }
 const pfClose = () => { $('#pfsh').hidden = true; PF.id = null; };
 function pfRender() {
