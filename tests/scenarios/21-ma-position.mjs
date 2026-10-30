@@ -13,7 +13,7 @@ export default async T => {
   const r = await B.evaluate(() => posShared().map(m => ({ f: m.f, x: m.pos.x, y: m.pos.y })));
   T.eq(r, [{ f: idA, x: Math.round(pos[0] * 10) / 10, y: Math.round(pos[1] * 10) / 10 }], 'le copain reçoit ma position');
   // dessin : l'anneau doré autour de l'avatar à l'endroit exact
-  const px = await B.evaluate(([x, y]) => { socClose(); V.cx = x; V.cy = y; draw(); const [sx, sy] = scrOf(x, y), d = window.devicePixelRatio || 1, c = cv.getContext('2d').getImageData(Math.round(sx * d), Math.round((sy - 24) * d), 1, 1).data; return [c[0], c[1], c[2]]; }, pos);
+  const px = await B.evaluate(([x, y]) => { socClose(); V.cx = x; V.cy = y; draw(); const [sx, sy] = scrOf(x, y), d = window.devicePixelRatio || 1, c = cv.getContext('2d').getImageData(Math.round(sx * d), Math.round((sy - 28) * d), 1, 1).data; return [c[0], c[1], c[2]]; }, pos);
   T.ok(px[0] > 200 && px[1] > 160, 'avatar affiché sur la carte du copain', px.join(','));
   T.ok(await B.evaluate(([x, y]) => { const [sx, sy] = scrOf(x, y); return !!posAt(sx, sy); }, pos), 'avatar touchable');
   // au bout de 10 minutes, il disparaît
