@@ -1145,7 +1145,7 @@ body:has(#soc.open) #dock #socb,body:has(#com.open) #dock #comb{box-shadow:inset
   <div class="scp" data-sp="ms" id="scms"></div>
   <div class="scp" data-sp="ev" id="scev"></div>
   <div class="scch" id="scch" hidden><div class="scchh"><button class="ib" id="scchb" aria-label="Retour">‹</button><span id="scchw"></span></div><div class="scchl" id="scchl"></div>
-    <div class="scchq"><button data-q="🐾 On se balade ?">🐾 On se balade ?</button><button data-q="bal">📍 Ma balade</button><button data-q="👋 Tu es où ?">👋 Tu es où ?</button><button data-q="🕙 J'arrive dans 10 min">🕙 J'arrive</button></div>
+    <div class="scchq"><button data-q="🐾 On se balade ?">🐾 On se balade ?</button><button data-q="pos">🧭 Ma position</button><button data-q="bal">📍 Ma balade</button><button data-q="👋 Tu es où ?">👋 Tu es où ?</button><button data-q="🕙 J'arrive dans 10 min">🕙 J'arrive</button></div>
     <form class="scchf" id="scchf"><input id="scchi" maxlength="300" placeholder="Écrire un message…" autocomplete="off" enterkeyhint="send"><button type="submit" aria-label="Envoyer">➤</button></form></div>
   <div class="scsh" id="scgr" hidden><div class="scgw" id="scgw"></div></div>
   <div class="scsh" id="scfa" hidden><div class="scgw" id="scfw"></div></div>
@@ -1607,7 +1607,8 @@ function draw() {
   drawMarks(sx, sy, UP);
   const ring = (k, col, w) => { const c = D.cells[k]; if (!c || c.x == null) return; const u = UP(sx(c.x), sy(c.y)); g.beginPath(); g.arc(sx(c.x), sy(c.y) - ps / 2, ps * .62 + 3, 0, 7); g.lineWidth = w; g.strokeStyle = col; g.stroke(); if (u) g.restore(); };
   
-  if (me && mpp < 30) { const q = meDisp(), fa = Math.min(1, (30 - mpp) / 12); g.save(); g.globalAlpha = fa; drawMe(sx(q[0]), sy(q[1]), mpp); g.restore(); }      // s'efface au dézoom (au-delà d'≈ 1 km d'échelle) pour ne pas cacher les repères
+  if (me && mpp < 30) { const q = meDisp(), fa = Math.min(1, (30 - mpp) / 12); g.save(); g.globalAlpha = fa; drawMe(sx(q[0]), sy(q[1]), mpp); g.restore(); }
+  try { posDraw(sx, sy); } catch (e) {}      // s'efface au dézoom (au-delà d'≈ 1 km d'échelle) pour ne pas cacher les repères
   drawFX(sx, sy); repPos();
   g.setTransform(dpr, 0, 0, dpr, 0, 0); if (CAM.shown !== RT) { CAM.shown = RT; $('#nr svg').style.transform = RT ? `rotate(${RT}rad)` : ''; }
   { const real = mpp * Math.cos(toLL(V.cx, V.cy)[0] * Math.PI / 180), m = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000].filter(v => v / real <= 110).pop() || 1, el = $('#sc'); el.textContent = m >= 1000 ? m / 1000 + ' km' : m + ' m'; el.style.minWidth = Math.max(26, m / real) + 'px'; el.style.borderBottom = '3px solid #fff'; el.style.textAlign = 'center'; } if (commOn) scanSoon();
@@ -2144,6 +2145,28 @@ function compStart() {      // à appeler depuis un toucher (exigence de l'iPhon
 }
 function compStop() { removeEventListener('deviceorientationabsolute', compEvt); removeEventListener('deviceorientation', compEvt); CP.on = false; CP.h = null; CP.drawn = null; schedule(); updNav(); }
 const compLive = () => CP.h != null && Date.now() - CP.t < 3000;
+/* ===== « 🧭 Ma position » : ma dernière position, sur la carte du copain pendant 10 minutes ===== */
+const POS_TTL = 10 * 6e4;
+function posSend() { if (watch === null) startLoc();
+  if (!me || me.acc > 150) return toast('🧭 Position en attente du GPS : réessayez dans un instant');
+  chatSend({ t: '🧭 Ma position', pos: { x: Math.round(me.x * 10) / 10, y: Math.round(me.y * 10) / 10, a: Math.round(me.acc) } }); toast('🧭 Votre position est visible 10 min sur sa carte'); }
+function posShared() {      /* dernière position reçue de chaque copain, encore valable */
+  const out = new Map(), now = Date.now(); Object.values((typeof SO !== 'undefined' && SO.th) || {}).forEach(L => L.forEach(m => { if (m.me || !m.pos || !m.f || now - m.ts > POS_TTL) return; const o = out.get(m.f); if (!o || o.ts < m.ts) out.set(m.f, m); }));
+  return [...out.values()]; }
+function posDraw(sx, sy) {
+  posShared().forEach(m => { const x = sx(m.pos.x), y = sy(m.pos.y), f = person(m.f) || {}, r = 21, left = 1 - (Date.now() - m.ts) / POS_TTL, u = avUrlOf(m.f), im = u && avImg(u);
+    g.save(); g.beginPath(); g.arc(x, y, r + 7, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * left); g.lineWidth = 3; g.strokeStyle = 'rgba(255,210,122,.9)'; g.stroke();      /* anneau : temps restant */
+    g.beginPath(); g.moveTo(x - 6, y + r - 1); g.lineTo(x, y + r + 9); g.lineTo(x + 6, y + r - 1); g.fillStyle = '#ffd27a'; g.fill();
+    g.beginPath(); g.arc(x, y, r + 2.5, 0, 7); g.fillStyle = '#1a1208'; g.fill();
+    if (im) { g.save(); g.beginPath(); g.arc(x, y, r, 0, 7); g.clip(); g.drawImage(im, x - r, y - r, r * 2, r * 2); g.restore(); }
+    else { g.beginPath(); g.arc(x, y, r, 0, 7); g.fillStyle = f.c || '#8a6a3a'; g.fill(); g.fillStyle = '#1a1208'; g.font = '900 18px Georgia,serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText((f.d || '?')[0], x, y + 1); }
+    g.beginPath(); g.arc(x, y, r, 0, 7); g.lineWidth = 2; g.strokeStyle = '#ffd27a'; g.stroke();
+    const lb = (f.n || f.d || '') + ' · ' + Math.max(1, Math.round((Date.now() - m.ts) / 6e4)) + ' min'; g.font = '800 12px system-ui,sans-serif'; g.textAlign = 'center'; g.textBaseline = 'top'; g.lineWidth = 3.5; g.strokeStyle = '#000'; g.strokeText(lb, x, y + r + 11); g.fillStyle = '#fff1cf'; g.fillText(lb, x, y + r + 11);
+    g.restore(); }); }
+function posAt(px, py) { let best = null, bd = 30; posShared().forEach(m => { const [x, y] = scrOf(m.pos.x, m.pos.y), d = Math.hypot(px - x, py - y); if (d < bd) { bd = d; best = m; } }); return best; }
+function posShow(key) { const [f, ts] = key.split(':'), uid = CLD.s && CLD.s.user.id; let m = null; Object.values(SO.th || {}).forEach(L => L.forEach(x => { if (x.pos && String(x.ts) === ts && (f === 'me' ? x.me : x.f === f)) m = x; }));
+  if (!m) return; if (Date.now() - m.ts > POS_TTL) return toast('🧭 Position expirée (plus de 10 min)'); socClose(); flyXY(m.pos.x, m.pos.y, Math.min(V.mpp, 2), 600); }
+setInterval(() => { if (posShared().length) schedule(); }, 15000);      /* l'anneau du temps restant avance, et le repère disparaît à 10 min */
 function drawMe(x, y, mpp) {
   const cl = compLive(), HH = cl ? CP.h : HD.h, r = Math.max(10, me.acc / mpp), age = HH == null ? Infinity : cl ? 0 : Date.now() - HD.t, fresh = age < 45000;      // boussole si disponible, sinon direction de marche
   g.save();
@@ -2190,7 +2213,7 @@ $('#mn').onclick = () => { if ($('#menu').classList.contains('open')) return $('
 $('#rf').onclick = async () => { toast('🔄 Actualisation…'); try { if (navigator.serviceWorker) (await navigator.serviceWorker.getRegistrations()).forEach(r => r.update()); } catch (e) {} try { if (window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch (e) {}
   setTimeout(() => { try { const u = new URL(location.href); u.searchParams.set('maj', Date.now()); location.replace(u.href); } catch (e) { location.reload(); } }, 400); };
 /* ===== Mise à jour automatique : compare la version en ligne à celle-ci (sans cache) et recharge si besoin ===== */
-const APP_V = '2026.10.29-185';
+const APP_V = '2026.10.30-186';
 async function checkUpdate(manual) {
   if (location.protocol === 'file:') return;
   try { const t = await (await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' })).text(), m = t.match(/const APP_V = '([^']+)'/);
@@ -2227,6 +2250,7 @@ function soIngest(x, first) {
   if (L.some(m => m.id === x.id)) return null;
   const pend = me ? L.find(m => m.pend && m.t === (x.t || '')) : null, m = pend || {};
   Object.assign(m, { id: x.id, me: me ? 1 : 0, t: x.t || '', ts: Date.parse(x.ts) || Date.now(), f: x.f }); delete m.pend;
+  if (x.m && x.m.pos && isFinite(x.m.pos.x) && isFinite(x.m.pos.y)) m.pos = { x: +x.m.pos.x, y: +x.m.pos.y, a: Math.round(+x.m.pos.a || 0) };
   if (x.m && x.m.kn) { m.kn = String(x.m.kn).slice(0, 60); m.bx = x.m.x; m.by = x.m.y; m.k = soCell(m.bx, m.by); }
   if (!pend) { m.nw = !me && !first && !(SOC.chat === th && $('#soc').classList.contains('open') && !document.hidden) ? 1 : 0; L.push(m); }
   L.sort((a, b) => (a.id || 1e15) - (b.id || 1e15)); if (L.length > 300) L.splice(0, L.length - 300);
@@ -2453,18 +2477,18 @@ function chatRender() {
   const L = msgAll()[SOC.chat] || []; let lastD = '';
   const gr = (who(SOC.chat) || {}).grp; $('#scchl').innerHTML = (L.length ? '' : '<div class="scchn">👋 Dites bonjour !</div>') + L.map(m => { const d = new Date(m.ts).toDateString(), sep = d !== lastD ? `<div class="scchd">${new Date(m.ts).toDateString() === new Date().toDateString() ? 'Aujourd\'hui' : new Date(m.ts).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>` : ''; lastD = d;
     if (m.kn && !m.k && m.bx != null) m.k = soCell(m.bx, m.by);
-    return sep + `<div class="scb${m.me ? ' me' : ''}${m.pend ? ' pend' : ''}">${gr && !m.me ? `<em class="scbn">${esc(((p => p ? p.n || p.d : '')(person(m.f))))}${bdg(m.f)}</em>` : ''}${m.kn ? `<button class="scbk" data-emap="${m.k || ''}"><b>📍 ${esc(m.kn || 'Balade')}</b><small>Voir sur la carte ›</small></button>` : ''}${m.t ? `<span>${esc(m.t)}</span>` : ''}<small>${new Date(m.ts).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</small></div>`; }).join('');
+    return sep + `<div class="scb${m.me ? ' me' : ''}${m.pend ? ' pend' : ''}">${gr && !m.me ? `<em class="scbn">${esc(((p => p ? p.n || p.d : '')(person(m.f))))}${bdg(m.f)}</em>` : ''}${m.pos ? `<button class="scbk" data-posm="${m.me ? 'me' : esc(m.f)}:${m.ts}"><b>🧭 Position partagée</b><small>${Date.now() - m.ts < POS_TTL ? (m.me ? 'Visible sur sa carte encore ' : 'Sur votre carte encore ') + Math.max(1, Math.ceil((POS_TTL - (Date.now() - m.ts)) / 6e4)) + ' min · voir ›' : 'Expirée (10 min)'}</small></button>` : ''}${m.kn ? `<button class="scbk" data-emap="${m.k || ''}"><b>📍 ${esc(m.kn || 'Balade')}</b><small>Voir sur la carte ›</small></button>` : ''}${m.t && !m.pos ? `<span>${esc(m.t)}</span>` : ''}<small>${new Date(m.ts).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</small></div>`; }).join('');
   const l = $('#scchl'); requestAnimationFrame(() => l.scrollTop = l.scrollHeight);
 }
 function chatSend(m) { const id = SOC.chat; if (!id) return; if (!clOn()) return toast('☁️ Connectez-vous pour envoyer des messages');
   const f = who(id), c = m.k && D.cells[m.k] ? ctr(m.k) : null; m.me = 1; m.ts = Date.now(); m.pend = 1; (SO.th[id] ||= []).push(m); soSave(); chatRender(); msgList(); try { navigator.vibrate && navigator.vibrate(15); } catch (e) {}
-  soRpc('send_message', { to_user: f && f.grp ? null : id, grp: f && f.grp ? id : null, body: m.t || '', meta: m.kn ? { kn: m.kn, x: c ? c[0] : null, y: c ? c[1] : null } : null })
+  soRpc('send_message', { to_user: f && f.grp ? null : id, grp: f && f.grp ? id : null, body: m.t || '', meta: m.pos ? { pos: m.pos } : m.kn ? { kn: m.kn, x: c ? c[0] : null, y: c ? c[1] : null } : null })
     .then(r => { if (r && r.id && m.pend) { m.id = r.id; delete m.pend; } soSave(); if (SOC.chat === id) chatRender(); soTick(); })
     .catch(e => { const L = SO.th[id] || [], i = L.indexOf(m); if (i >= 0) L.splice(i, 1); soSave(); if (SOC.chat === id) chatRender(); msgList(); toast('⚠️ Message non envoyé : ' + e.message); if (m.t && !$('#scchi').value) $('#scchi').value = m.t; }); }
 const chatClose = () => { SOC.chat = null; $('#scch').hidden = true; $('#scchi').blur(); };
 $('#scchb').onclick = chatClose;
 $('#scchf').onsubmit = e => { e.preventDefault(); const v = $('#scchi').value.trim(); if (!v) return; $('#scchi').value = ''; chatSend({ t: v }); };
-document.querySelector('#scch .scchq').onclick = e => { const b = e.target.closest('[data-q]'); if (!b) return; if (b.dataset.q !== 'bal') return chatSend({ t: b.dataset.q });
+document.querySelector('#scch .scchq').onclick = e => { const b = e.target.closest('[data-q]'); if (!b) return; if (b.dataset.q === 'pos') return posSend(); if (b.dataset.q !== 'bal') return chatSend({ t: b.dataset.q });
   const k = sel && D.cells[sel] && cellGroup(sel) ? sel : Object.keys(D.cells).find(x => rec(D.cells[x]) && cellGroup(x)); if (!k) return toast('Aucune balade à partager'); chatSend({ t: '', k, kn: balName(k) }); };
 
 /* ===== Groupes de copains : renommables, on y invite des copains, on peut leur écrire ===== */
@@ -3047,6 +3071,7 @@ $('#soc').addEventListener('click', e => {
   const er = e.target.closest('[data-erem]'); if (er) { const id = er.dataset.erem; SO.rem[id] = SO.rem[id] ? 0 : 1; soSave(); toast(SO.rem[id] ? '🔔 Rappel 30 min avant le rendez-vous' : '🔕 Rappel retiré'); if (SO.rem[id]) try { window.Notification && Notification.permission === 'default' && Notification.requestPermission(); } catch (x) {} return socRender(); }
   const ecx = e.target.closest('[data-ecx]'); if (ecx) { const id = ecx.dataset.ecx, ev = (SO.E || []).find(x => x.id === id); if (!ev || !confirm(`Annuler le rendez-vous « ${ev.bal} » ? Les invités le verront annulé.`)) return; ev.x = true; soSave(); socRender(); soRpc('event_cancel', { e: id }).then(() => soTick(true)).catch(x => toast('⚠️ ' + x.message)); return toast('Rendez-vous annulé'); }
   const em = e.target.closest('[data-emap]'); if (em) return socShow(em.dataset.emap);
+  const pm = e.target.closest('[data-posm]'); if (pm) return posShow(pm.dataset.posm);
   const pn = e.target.closest('[data-pn]'); if (pn) { if (pn.dataset.pn === 'x') { try { localStorage.setItem('cartodog-pushno', '1'); } catch (x) {} return socRender(); } return pushEnable(); }
   const sx = e.target.closest('[data-sx]'); if (sx) { const a = sx.dataset.sx; if (a === 'add') return faOpen('add'); if (a === 'req') return faOpen('req'); if (a === 'newmsg') return faOpen('new'); if (a === 'org') return faOpen('ev'); return socSoon(); }
 });
@@ -4195,7 +4220,8 @@ function navTxt(k) {
 }
 function updNav() { const e = $('#nvt'); if (e && sel && D.cells[sel]) e.innerHTML = navSub(sel); }
 /* ===== Tap : 1 = action, 2 = zoom doux à l'endroit touché, 3 = dézoom doux ===== */
-function onTap(e) { const r = cv.getBoundingClientRect(); if (ADM.pl) { const [ux, uy] = unr(e.clientX - r.left - r.width / 2, e.clientY - r.top - r.height / 2); return admPlace(V.cx + ux * V.mpp, V.cy - uy * V.mpp); } if (!RM) { const q = clusterAt(e.clientX - r.left, e.clientY - r.top); if (q) { const xs = q.items.map(m => m.c.x), ys = q.items.map(m => m.c.y), W = cv.clientWidth, H = cv.clientHeight; flyXY((Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2, Math.max(.8, Math.min(V.mpp / 2.5, (Math.max(...xs) - Math.min(...xs)) / (W * .6), (Math.max(...ys) - Math.min(...ys)) / (H * .5))), 550); return; } } const pt = spotAt(e.clientX - r.left, e.clientY - r.top), mk = markAt(e.clientX - r.left, e.clientY - r.top); if (RM) { const w = (([ux, uy]) => ({ x: V.cx + ux * V.mpp, y: V.cy - uy * V.mpp }))(unr(e.clientX - r.left - r.width / 2, e.clientY - r.top - r.height / 2)); if (RMT) { const t = RMT; setRM(false); mkQuick(t, w.x, w.y); } else if (mk) openMark(mk.id); else openMk({ id: null, t: mkLast, note: '', ...w, where: 'tap' }); } else if (pt && pt !== sel) { select(pt); fitBal(pt); } else if (mk && !pt) openMark(mk.id); else if (sel) { sel = null; collapse(); renderPanel(); draw(); } }
+function onTap(e) { const r = cv.getBoundingClientRect(); if (ADM.pl) { const [ux, uy] = unr(e.clientX - r.left - r.width / 2, e.clientY - r.top - r.height / 2); return admPlace(V.cx + ux * V.mpp, V.cy - uy * V.mpp); } if (!RM) { const q = clusterAt(e.clientX - r.left, e.clientY - r.top); if (q) { const xs = q.items.map(m => m.c.x), ys = q.items.map(m => m.c.y), W = cv.clientWidth, H = cv.clientHeight; flyXY((Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2, Math.max(.8, Math.min(V.mpp / 2.5, (Math.max(...xs) - Math.min(...xs)) / (W * .6), (Math.max(...ys) - Math.min(...ys)) / (H * .5))), 550); return; } } { const pm = !RM && posAt(e.clientX - r.left, e.clientY - r.top); if (pm) { const f = person(pm.f) || {}; return toast(`🧭 ${f.d || ''}${f.n ? ' & ' + f.n : ''} était ici il y a ${Math.max(1, Math.round((Date.now() - pm.ts) / 6e4))} min (±${pm.pos.a} m)`); } }
+  const pt = spotAt(e.clientX - r.left, e.clientY - r.top), mk = markAt(e.clientX - r.left, e.clientY - r.top); if (RM) { const w = (([ux, uy]) => ({ x: V.cx + ux * V.mpp, y: V.cy - uy * V.mpp }))(unr(e.clientX - r.left - r.width / 2, e.clientY - r.top - r.height / 2)); if (RMT) { const t = RMT; setRM(false); mkQuick(t, w.x, w.y); } else if (mk) openMark(mk.id); else openMk({ id: null, t: mkLast, note: '', ...w, where: 'tap' }); } else if (pt && pt !== sel) { select(pt); fitBal(pt); } else if (mk && !pt) openMark(mk.id); else if (sel) { sel = null; collapse(); renderPanel(); draw(); } }
 var TT = { t: 0, n: 0, x: 0, y: 0, timer: 0 };
 function multiTap(e) {
   const now = performance.now(), same = now - TT.t < 330 && Math.hypot(e.clientX - TT.x, e.clientY - TT.y) < 36;
